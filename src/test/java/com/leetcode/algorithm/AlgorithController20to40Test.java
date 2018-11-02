@@ -27,4 +27,11 @@ public class AlgorithController20to40Test {
         int a = this.algorithController20to40.removeElement(test, 4);
         System.out.print(a);
     }
+
+    @Test
+    public void strStr() {
+        String hello = "hellow";
+        String needle = "ll";
+        System.out.print(this.algorithController20to40.strStr(hello, needle));
+    }
 }

@@ -3,6 +3,9 @@ package com.leetcode.algorithm;
 import com.leetcode.entity.ListNode;
 import com.leetcode.entity.Tool;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class AlgorithController20to40 {
 
     private Tool tool = new Tool();
@@ -63,5 +66,18 @@ public class AlgorithController20to40 {
             }
         }
         return result;
+    }
+
+    public int strStr(String haystack, String needle) {
+        return haystack.indexOf(needle);
+    }
+
+    public int searchInsert(int[] nums, int target) {
+        for (int i = 0;i < nums.length; i++) {
+            if (target <= nums[i]) {
+                return i;
+            }
+        }
+        return nums.length;
     }
 }
