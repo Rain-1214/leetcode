@@ -4,7 +4,9 @@ import com.leetcode.entity.ListNode;
 import com.leetcode.entity.Tool;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AlgorithController20to40 {
 
@@ -80,4 +82,80 @@ public class AlgorithController20to40 {
         }
         return nums.length;
     }
+
+    public List<String> generateParenthesis(int n) {
+        List<String> result = new ArrayList<>();
+        addParentheses(result, "", 0, 0, n);
+        return result;
+    }
+
+    public void addParentheses (List<String> result, String currentStr, int leftNum, int rightNum, int maxNum) {
+        if (currentStr.length() >= maxNum *2) {
+            result.add(currentStr);
+            return;
+        }
+
+        if (leftNum < maxNum) {
+            addParentheses(result, currentStr + "(", leftNum++, rightNum, maxNum);
+        }
+        if (leftNum > rightNum) {
+            addParentheses(result, currentStr + ")", leftNum, rightNum++, maxNum);
+        }
+    }
+
+    public ListNode mergeKLists(ListNode[] lists) {
+        if (lists.length == 0) {
+            return null;
+        }
+        ListNode result = new ListNode();
+        ListNode tempRef = result;
+        boolean first = true;
+        int complete = 0;
+        while (complete < lists.length) {
+            int currentMinNumIndex = -1;
+            for (int i = 0; i < lists.length; i++) {
+                ListNode currentListNode = lists[i];
+                System.out.print("currentListNode:");
+                System.out.print(currentListNode);
+                System.out.print("\n");
+                if (currentListNode == null) {
+                    if (first) {
+                        complete++;
+                    }
+                    continue;
+                }
+                if (currentMinNumIndex == -1) {
+                    currentMinNumIndex = i;
+                    continue;
+                }
+                if (currentListNode.val < lists[currentMinNumIndex].val) {
+                    currentMinNumIndex = i;
+                }
+            }
+            if (currentMinNumIndex == -1) {
+                return null;
+            }
+            first = false;
+            tempRef.val = lists[currentMinNumIndex].val;
+            lists[currentMinNumIndex] = lists[currentMinNumIndex].next;
+            if (lists[currentMinNumIndex] == null) {
+                complete++;
+            }
+            if (complete != lists.length) {
+                tempRef.next = new ListNode();
+                tempRef = tempRef.next;
+            }
+            System.out.print("currentMinNumIndex");
+            System.out.print(currentMinNumIndex);
+            System.out.print("\n");
+            System.out.print("result");
+            System.out.print(result);
+            System.out.print("\n");
+            System.out.print("complete");
+            System.out.print(complete);
+            System.out.print("\n");
+        }
+        return result;
+    }
+
 }

@@ -34,4 +34,24 @@ public class AlgorithController20to40Test {
         String needle = "ll";
         System.out.print(this.algorithController20to40.strStr(hello, needle));
     }
+
+    @Test
+    public void mergeKLists() {
+        ListNode[] lists = new ListNode[3];
+        ListNode l1 = new ListNode(1);
+        l1.next = new ListNode(4);
+        l1.next.next = new ListNode(5);
+        lists[0] = l1;
+        ListNode l2 = new ListNode(1);
+        l2.next = new ListNode(3);
+        l2.next.next = new ListNode(4);
+        lists[1] = l2;
+        ListNode l3 = new ListNode(2);
+        l3.next = new ListNode(6);
+        lists[2] = l3;
+        ListNode[] lists1 = new ListNode[1];
+        lists1[0] = new ListNode();
+        ListNode result = this.algorithController20to40.mergeKLists(lists1);
+        System.out.print(result);
+    }
 }
