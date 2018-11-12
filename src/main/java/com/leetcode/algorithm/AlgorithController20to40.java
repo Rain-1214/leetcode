@@ -158,4 +158,50 @@ public class AlgorithController20to40 {
         return result;
     }
 
+    public ListNode swapPairs(ListNode head) {
+        if (head == null) {
+            return null;
+        }
+        if (head.next == null) {
+            return head;
+        }
+        ListNode currentList = head;
+        ListNode nextList = head.next;
+        while (currentList != null && nextList != null) {
+            int tempValue = currentList.val;
+            currentList.val = nextList.val;
+            nextList.val = tempValue;
+            currentList = nextList.next == null ? null : nextList.next;
+            nextList = currentList != null && currentList.next != null ? currentList.next : null;
+        }
+        return head;
+    }
+
+    public ListNode reverseKGroup(ListNode head, int k) {
+        if (head == null) {
+            return null;
+        }
+        ListNode tempHead = head;
+        ListNode modifyHead = head;
+        int[] valueArray = new int[k];
+        while (tempHead != null) {
+            int i;
+            for (i = 0; i < k; i++) {
+                if (tempHead == null) {
+                    break;
+                }
+                valueArray[i] = tempHead.val;
+                tempHead = tempHead.next;
+            }
+            if (i != k) {
+                break;
+            }
+            for (int y = valueArray.length - 1; y >= 0; y--) {
+                modifyHead.val = valueArray[y];
+                modifyHead = modifyHead.next;
+            }
+        }
+        return head;
+    }
+
 }
