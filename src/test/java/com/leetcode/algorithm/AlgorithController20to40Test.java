@@ -54,4 +54,10 @@ public class AlgorithController20to40Test {
         ListNode result = this.algorithController20to40.mergeKLists(lists1);
         System.out.print(result);
     }
+
+    @Test
+    public void divide() {
+        int result = this.algorithController20to40.divide(87, 4);
+        System.out.print(result);
+    }
 }

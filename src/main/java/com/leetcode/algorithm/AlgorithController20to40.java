@@ -204,4 +204,77 @@ public class AlgorithController20to40 {
         return head;
     }
 
+    public int divide(int dividend, int divisor) {
+        if (dividend == 0) {
+            return 0;
+        }
+        if (dividend == Integer.MIN_VALUE && divisor == -1) {
+            return Integer.MAX_VALUE;
+        }
+        long tempDividend = Math.abs((long) dividend);
+        long tempDivisor = Math.abs((long) divisor);
+        if (tempDivisor > tempDividend) {
+            return 0;
+        }
+        int digits = 0;
+        while (tempDividend >= tempDivisor) {
+            tempDivisor <<= 1;
+            digits++;
+        }
+        int result = 0;
+        tempDivisor >>= digits;
+        digits--;
+        while (digits >= 0) {
+            if (tempDividend >= (tempDivisor << digits)) {
+                tempDividend -= tempDivisor << digits;
+                result += 1 << digits;
+            }
+            digits--;
+        }
+        return ((dividend > 0 && divisor > 0) || (dividend < 0 && divisor < 0)) ? result : 0 - result;
+    }
+
+//    public int divide(int dividend, int divisor) {
+//        if (dividend == Integer.MIN_VALUE && (divisor == 1 || divisor == -1)) {
+//            return divisor == 1 ? Integer.MIN_VALUE : Integer.MAX_VALUE;
+//        }
+//        return (int)divideLong(dividend, divisor);
+//    }
+//
+//    public long divideLong(long dd, long dv){
+//        boolean isPos = (dd > 0 && dv > 0) || (dd < 0 && dv < 0);
+//        dd = Math.abs(dd);
+//        dv = Math.abs(dv);
+//        int digits = 0;// 通过将除数乘2,乘4,乘8,一直乘下去,找到商的最高的次方// 比如87/4=21,商的最高次方是4,即2^4=16,即4 * 16 < 87
+//        while(dv <= dd){
+//            dv <<= 1;
+//            digits++;
+//        }
+//        System.out.println(digits);
+//        System.out.println("-----");
+//        // 重置除数,把最高次方减1得到实际最高位,刚才循环中多加了一次
+//        long res = 0;
+//        dv >>= digits;
+//        digits--;// 看商的每一位是否应该为1
+//        while(digits >= 0){
+//            System.out.println("-----");
+//            System.out.println(res);
+//            System.out.println(digits);
+//            System.out.println(dd);
+//            System.out.println(dv);
+//            if(dd >= (dv << digits)){
+//                dd -= dv << digits;
+//                res += 1 << digits;
+//            }
+//            digits--;
+//            System.out.println("++++++");
+//            System.out.println(res);
+//            System.out.println(digits);
+//            System.out.println(dd);
+//            System.out.println(dv);
+//            System.out.println("-----");
+//        }
+//        return isPos ? res : - res;
+//    }
+
 }
