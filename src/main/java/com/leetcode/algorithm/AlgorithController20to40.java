@@ -277,4 +277,52 @@ public class AlgorithController20to40 {
 //        return isPos ? res : - res;
 //    }
 
+    public List<Integer> findSubstring(String s, String[] words) {
+        List<Integer> result = new ArrayList<>();
+        if (words.length == 0) {
+            return result;
+        }
+        int windowWidth = words[0].length();
+        for (int i = 0; i < words.length; i++) {
+            if (words[i].length() != windowWidth) {
+                return result;
+            }
+        }
+        String[] strings = words.clone();
+        for (int y = 0; y <= s.length() - windowWidth * words.length; y++) {
+            String currentStr = s.substring(y, y + windowWidth);
+            System.out.println(currentStr);
+            if (arrayIncludes(strings, currentStr)) {
+                int currentIndex = y;
+                int matching = 1;
+                while (matching < words.length) {
+                    currentIndex += windowWidth;
+                    String tempStr = s.substring(currentIndex, currentIndex + windowWidth);
+                    System.out.println(tempStr);
+                    if (arrayIncludes(strings, tempStr)) {
+                        matching++;
+                    } else {
+                        break;
+                    }
+                }
+                System.out.println("********");
+                if (matching == words.length) {
+                    result.add(y);
+                }
+                strings = words.clone();
+            }
+        }
+        return result;
+    }
+
+    public Boolean arrayIncludes(String[] strings, String target) {
+        for (int i = 0; i < strings.length; i++) {
+            if (strings[i].equals(target)) {
+                strings[i] = "";
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

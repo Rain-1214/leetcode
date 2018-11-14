@@ -3,7 +3,7 @@ package com.leetcode.algorithm;
 import com.leetcode.entity.ListNode;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import java.util.List;
 
 public class AlgorithController20to40Test {
 
@@ -60,4 +60,42 @@ public class AlgorithController20to40Test {
         int result = this.algorithController20to40.divide(87, 4);
         System.out.print(result);
     }
+
+    @Test
+    public void findSubstring() {
+        String s = "wordgoodgoodgoodbestword";
+        String[] words = new String[]{"word","good","best","good"};
+        List<Integer> result = this.algorithController20to40.findSubstring(s, words);
+        for(Integer str: result) {
+            System.out.print(str);
+            System.out.print(",");
+        }
+    }
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
