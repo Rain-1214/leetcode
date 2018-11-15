@@ -325,4 +325,31 @@ public class AlgorithController20to40 {
         return false;
     }
 
+
+    public void nextPermutation(int[] nums) {
+        if (nums.length < 2) {
+            return;
+        }
+        for (int i = nums.length - 1; i > 0;i--) {
+            int currentValue = nums[i];
+            int currentIndex = i;
+            int targetValue = nums[currentIndex - 1];
+            while (currentValue < targetValue && currentIndex > 0) {
+                currentIndex--;
+                targetValue = nums[currentIndex];
+            }
+            if (currentIndex != -1) {
+                int temp = nums[currentIndex];
+                nums[currentIndex] = nums[i];
+                nums[i] = temp;
+                return;
+            }
+        }
+        for (int y = 0; y < nums.length / 2; y++) {
+            int temp = nums[y];
+            nums[y] = nums[nums.length - 1 - y];
+            nums[nums.length - 1 - y] = nums[y];
+        }
+    }
+
 }
