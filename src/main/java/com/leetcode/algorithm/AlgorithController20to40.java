@@ -330,26 +330,81 @@ public class AlgorithController20to40 {
         if (nums.length < 2) {
             return;
         }
-        for (int i = nums.length - 1; i > 0;i--) {
-            int currentValue = nums[i];
-            int currentIndex = i;
-            int targetValue = nums[currentIndex - 1];
-            while (currentValue < targetValue && currentIndex > 0) {
-                currentIndex--;
-                targetValue = nums[currentIndex];
-            }
-            if (currentIndex != -1) {
-                int temp = nums[currentIndex];
-                nums[currentIndex] = nums[i];
-                nums[i] = temp;
-                return;
-            }
+        int currentIndex = nums.length - 1;
+        while (currentIndex >= 1 && nums[currentIndex] <= nums[currentIndex - 1]) {
+            currentIndex--;
         }
-        for (int y = 0; y < nums.length / 2; y++) {
+        if (currentIndex == 0) {
+            reserve(nums, 0, nums.length - 1);
+            return;
+        } else {
+            System.out.print(currentIndex);
+            int y = nums.length - 1;
+            while (y > currentIndex - 1) {
+                if (nums[y] > nums[currentIndex - 1]) {
+                    break;
+                }
+                y--;
+            }
             int temp = nums[y];
-            nums[y] = nums[nums.length - 1 - y];
-            nums[nums.length - 1 - y] = nums[y];
+            nums[y] = nums[currentIndex - 1];
+            nums[currentIndex - 1] = temp;
+            reserve(nums, currentIndex, nums.length - 1);
         }
+    }
+
+    public void reserve(int[] nums, int start, int end) {
+        if (start >= end) {
+            return;
+        }
+        for (int i = start; i <= (start + end) / 2; i++) {
+            int temp = nums[i];
+            nums[i] = nums[end + start - i];
+            nums[end + start - i] = temp;
+        }
+    }
+
+    public int longestValidParentheses(String s) {
+//        if (s.length() < 2) {
+//            return 0;
+//        }
+//        int[] parenthesesType = new int[s.length()];
+//        int leftParenthesesNum = 1;
+//        int rightParenthesesNum = 2;
+//        char leftParentheses = '(';
+//        char rightParentheses = ')';
+//        for (int i = 0;i < s.length();i++) {
+//            System.out.println(parenthesesType);
+//            if (s.charAt(i) == leftParentheses) {
+//                parenthesesType[i] = leftParenthesesNum;
+//                continue;
+//            }
+//            if (s.charAt(i) == rightParentheses && parenthesesType[0] > 0) {
+//                if (tempList.get(0) == leftParentheses) {
+//                    parenthesesIndexs.remove(parenthesesIndexs.size() - 1);
+//                } else {
+//                    ArrayList<Integer> tempRightList = new ArrayList<>();
+//                    tempRightList.add(rightParenthesesNum);
+//                    tempRightList.add(i);
+//                    parenthesesIndexs.add(tempRightList);
+//                }
+//            }
+//            if (s.charAt(i) == rightParentheses && parenthesesType[0] == 0) {
+//                ArrayList<Integer> tempRightList = new ArrayList<>();
+//                tempRightList.add(rightParenthesesNum);
+//                tempRightList.add(i);
+//                parenthesesIndexs.add(tempRightList);
+//            }
+//        }
+//        System.out.println(parenthesesIndexs);
+//        int maxLength = 0;
+//        int tempIndex = 0;
+//        for (int y = 0; y < parenthesesIndexs.size(); y++) {
+//            int index = parenthesesIndexs.get(y).get(1);
+//            maxLength = index - tempIndex > maxLength ? index - tempIndex : maxLength;
+//            tempIndex = index;
+//        }
+        return 0;
     }
 
 }

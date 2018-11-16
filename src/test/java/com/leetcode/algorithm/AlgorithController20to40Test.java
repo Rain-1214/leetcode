@@ -72,6 +72,22 @@ public class AlgorithController20to40Test {
         }
     }
 
+    @Test
+    public void nextPermutation() {
+        int[] nums = new int[]{5,1,1};
+        this.algorithController20to40.nextPermutation(nums);
+        for(int num:nums) {
+            System.out.print(num);
+            System.out.print(",");
+        }
+    }
+
+    @Test
+    public void longestValidParentheses() {
+        int[] test = new int[2];
+        System.out.print(test[1]);
+    }
+
 }
 
 
