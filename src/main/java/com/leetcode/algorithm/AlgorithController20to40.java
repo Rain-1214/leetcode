@@ -3,6 +3,7 @@ package com.leetcode.algorithm;
 import com.leetcode.entity.ListNode;
 import com.leetcode.entity.Tool;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -365,46 +366,72 @@ public class AlgorithController20to40 {
     }
 
     public int longestValidParentheses(String s) {
-//        if (s.length() < 2) {
-//            return 0;
-//        }
-//        int[] parenthesesType = new int[s.length()];
-//        int leftParenthesesNum = 1;
-//        int rightParenthesesNum = 2;
-//        char leftParentheses = '(';
-//        char rightParentheses = ')';
-//        for (int i = 0;i < s.length();i++) {
-//            System.out.println(parenthesesType);
-//            if (s.charAt(i) == leftParentheses) {
-//                parenthesesType[i] = leftParenthesesNum;
-//                continue;
-//            }
-//            if (s.charAt(i) == rightParentheses && parenthesesType[0] > 0) {
-//                if (tempList.get(0) == leftParentheses) {
-//                    parenthesesIndexs.remove(parenthesesIndexs.size() - 1);
-//                } else {
-//                    ArrayList<Integer> tempRightList = new ArrayList<>();
-//                    tempRightList.add(rightParenthesesNum);
-//                    tempRightList.add(i);
-//                    parenthesesIndexs.add(tempRightList);
-//                }
-//            }
-//            if (s.charAt(i) == rightParentheses && parenthesesType[0] == 0) {
-//                ArrayList<Integer> tempRightList = new ArrayList<>();
-//                tempRightList.add(rightParenthesesNum);
-//                tempRightList.add(i);
-//                parenthesesIndexs.add(tempRightList);
-//            }
-//        }
-//        System.out.println(parenthesesIndexs);
-//        int maxLength = 0;
-//        int tempIndex = 0;
-//        for (int y = 0; y < parenthesesIndexs.size(); y++) {
-//            int index = parenthesesIndexs.get(y).get(1);
-//            maxLength = index - tempIndex > maxLength ? index - tempIndex : maxLength;
-//            tempIndex = index;
-//        }
+        int n = s.length();
+        if (n < 2) {
+            return 0;
+        }
+        List<ArrayList<Integer>> parenthesesIndexs = new ArrayList<>();
+        int leftParenthesesNum = 0;
+        int rightParenthesesNum = 1;
+        char leftParentheses = '(';
+        char rightParentheses = ')';
+        for (int i = 0;i < n;i++) {
+            if (s.charAt(i) == leftParentheses) {
+                ArrayList<Integer> tempLeftList = new ArrayList<>();
+                tempLeftList.add(leftParenthesesNum);
+                tempLeftList.add(i);
+                parenthesesIndexs.add(tempLeftList);
+            }
+            if (s.charAt(i) == rightParentheses && parenthesesIndexs.size() > 0) {
+                ArrayList<Integer> tempList = parenthesesIndexs.get(parenthesesIndexs.size() - 1);
+                if (tempList.get(0) == leftParenthesesNum) {
+                    parenthesesIndexs.remove(parenthesesIndexs.size() - 1);
+                } else {
+                    ArrayList<Integer> tempRightList = new ArrayList<>();
+                    tempRightList.add(rightParenthesesNum);
+                    tempRightList.add(i);
+                    parenthesesIndexs.add(tempRightList);
+                }
+                // parenthesesIndexs.remove(parenthesesIndexs.size() - 1);
+            } else if (s.charAt(i) == rightParentheses && parenthesesIndexs.size() == 0) {
+                ArrayList<Integer> tempRightList = new ArrayList<>();
+                tempRightList.add(rightParenthesesNum);
+                tempRightList.add(i);
+                parenthesesIndexs.add(tempRightList);
+            }
+        }
+        if (parenthesesIndexs.size() == 0) {
+            return n;
+        }
+        int maxLength = 0;
+        int tempIndex = n;
+        for (int y = parenthesesIndexs.size() - 1; y >= 0; y--) {
+            int index = parenthesesIndexs.get(y).get(1);
+            maxLength = tempIndex - index - 1 > maxLength ? tempIndex - index - 1 : maxLength;
+            tempIndex = index;
+        }
+        maxLength = tempIndex > maxLength ? tempIndex : maxLength;
+        return maxLength;
+    }
+
+    public int search(int[] nums, int target) throws IOException {
         return 0;
     }
+
+    public int dichotomy(int[] nums, int startIndex, int endIndex, int target) {
+        if (startIndex >= endIndex) {
+            return -1;
+        }
+        int centerIndex = (startIndex + endIndex) / 2;
+        if (nums[centerIndex] > target) {
+            return this.dichotomy(nums, startIndex, centerIndex, target);
+        } else if (nums[centerIndex] < target) {
+            return this.dichotomy(nums, centerIndex, endIndex, target);
+        } else {
+            return centerIndex;
+        }
+    }
+
+
 
 }

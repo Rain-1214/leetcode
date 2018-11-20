@@ -1,9 +1,16 @@
 package com.leetcode.algorithm;
 
 import com.leetcode.entity.ListNode;
+import org.apache.tomcat.jni.Error;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.Test;
 
+import java.io.*;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class AlgorithController20to40Test {
 
@@ -83,9 +90,31 @@ public class AlgorithController20to40Test {
     }
 
     @Test
-    public void longestValidParentheses() {
-        int[] test = new int[2];
-        System.out.print(test[1]);
+    public void longestValidParentheses() throws Exception {
+        HashMap<String, Integer> testMap = new HashMap<>();
+        testMap.put("(()", 2);
+        testMap.put("(()())", 6);
+        testMap.put("())))", 2);
+        testMap.put("((())()", 6);
+        testMap.put(")))(())((", 4);
+        for (Map.Entry<String, Integer> mapEntry: testMap.entrySet()) {
+            int result = this.algorithController20to40.longestValidParentheses(mapEntry.getKey());
+            if (result != mapEntry.getValue()) {
+                throw new Exception("当前值:" + mapEntry.getKey() + ";计算值:" + result + ";预期值:" + mapEntry.getValue());
+            }
+        }
+        System.out.println("测试完成");
+    }
+
+    @Test
+    public void search() throws IOException, JSONException {
+
+    }
+
+    @Test
+    public void dichotomy() {
+        int result = this.algorithController20to40.dichotomy(new int[]{1,2,3,4,5}, 0, 5, 5);
+        System.out.println(result);
     }
 
 }
