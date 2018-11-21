@@ -4,10 +4,7 @@ import com.leetcode.entity.ListNode;
 import com.leetcode.entity.Tool;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class AlgorithController20to40 {
 
@@ -415,10 +412,10 @@ public class AlgorithController20to40 {
     }
 
     public int search(int[] nums, int target) {
-        return custoMdichotomy(nums, 0, nums.length - 1, target);
+        return customDichotomy(nums, 0, nums.length - 1, target);
     }
 
-    public int custoMdichotomy(int[] nums, int startIndex, int endIndex, int target) {
+    public int customDichotomy(int[] nums, int startIndex, int endIndex, int target) {
         System.out.println("startIndex:" + startIndex + "; endIndex:" + endIndex);
         if (startIndex > endIndex) {
             return -1;
@@ -429,18 +426,119 @@ public class AlgorithController20to40 {
         }
         if (nums[endIndex] > nums[centerIndex]) {
             if (target > nums[centerIndex] && target <= nums[endIndex]) {
-                return custoMdichotomy(nums, centerIndex + 1, endIndex, target);
+                return customDichotomy(nums, centerIndex + 1, endIndex, target);
             } else {
-                return custoMdichotomy(nums, startIndex, centerIndex - 1, target);
+                return customDichotomy(nums, startIndex, centerIndex - 1, target);
             }
         } else {
             if (target >= nums[startIndex] && target < nums[centerIndex]) {
-                return custoMdichotomy(nums, startIndex, centerIndex - 1, target);
+                return customDichotomy(nums, startIndex, centerIndex - 1, target);
             } else {
-                return custoMdichotomy(nums, centerIndex + 1, endIndex, target);
+                return customDichotomy(nums, centerIndex + 1, endIndex, target);
             }
         }
     }
 
+    public int[] searchRange(int[] nums, int target) {
+        if (nums.length == 0) {
+            return new int[]{-1,-1};
+        }
+        int leftIndex = leftDichotomy(nums, 0, nums.length - 1, target);
+        if (leftIndex == -1) {
+            return new int[]{-1,-1};
+        } else {
+            for (int i = leftIndex; i < nums.length; i++) {
+                if (nums[i] != target) {
+                    return new int[]{leftIndex, i - 1};
+                }
+            }
+            return new int[]{leftIndex, nums.length - 1};
+        }
+    }
+
+    public int leftDichotomy(int[] nums, int start, int end, int target) {
+        if (start >= end) {
+            return nums[start] == target ? start : -1;
+        }
+        int mid = start + (end - start) / 2;
+        if (nums[mid] >= target) {
+            return leftDichotomy(nums, start, mid, target);
+        } else {
+            return leftDichotomy(nums, mid + 1, end, target);
+        }
+    }
+
+    public boolean isValidSudoku(char[][] board) {
+        for (int i = 0; i < 9; i++) {
+            if (!checkRepeatChar(board[i])) {
+                return false;
+            }
+        }
+        int currnetColumn = 0;
+        HashSet<Character> tempSet = new HashSet<>();
+        for (int i = 0; i <= 9; i++) {
+            if (board[i][currnetColumn] != '.') {
+                tempSet.add(board[i][currnetColumn]);
+            }
+            if (i == 9) {
+                if (!checkRepeatChar(tempSet)) {
+                    return false;
+                } else {
+                    tempSet.clear();
+                    i = 0;
+                    currnetColumn++;
+                    if (currnetColumn == 10) {
+                        break;
+                    }
+                }
+            }
+        }
+        tempSet.clear();
+        for (int i = 0; i < 9; i++) {
+            int x = 0;
+            int y = 0;
+            int xMax = x + 3;
+            int yMax = y + 3;
+            for (; x < xMax; x++) {
+                for (; y < yMax; y++) {
+                    if (board[x][y] != '.') {
+                        tempSet.add(board[x][y]);
+                    }
+                }
+            }
+            if (!checkRepeatChar(tempSet)) {
+                return false;
+            }
+            tempSet.clear();
+            x = i * 3;
+            y = 3 * (i % 3);
+        }
+    }
+
+
+
+    public boolean checkRepeatChar (HashSet<Character> hashSet) {
+        HashSet<Character> tempHashSet = new HashSet<>();
+        for (char tempChar: hashSet) {
+            if (tempHashSet.contains(tempChar)) {
+                return false;
+            } else if (tempChar != '.'){
+                tempHashSet.add(tempChar);
+            }
+        }
+        return true;
+    }
+
+    public boolean checkRepeatChar (char[] charArray) {
+        HashSet<Character> tempHashSet = new HashSet<>();
+        for (char tempChar: charArray) {
+            if (tempHashSet.contains(tempChar)) {
+                return false;
+            } else if (tempChar != '.'){
+                tempHashSet.add(tempChar);
+            }
+        }
+        return true;
+    }
 
 }

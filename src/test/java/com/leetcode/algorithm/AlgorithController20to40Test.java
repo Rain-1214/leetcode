@@ -5,6 +5,7 @@ import org.apache.tomcat.jni.Error;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Test;
+import org.omg.CORBA.PUBLIC_MEMBER;
 
 import java.io.*;
 import java.util.HashMap;
@@ -109,6 +110,12 @@ public class AlgorithController20to40Test {
     @Test
     public void search() {
         int result = this.algorithController20to40.search(new int[]{4,5,6,7,0,1,2}, 5);
+        System.out.println(result);
+    }
+
+    @Test
+    public void searchRange(){
+        int result = this.algorithController20to40.leftDichotomy(new int[]{0,1,1,2,3,5,5,5,8,9}, 0, 9,5);
         System.out.println(result);
     }
 
