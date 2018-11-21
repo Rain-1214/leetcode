@@ -107,13 +107,8 @@ public class AlgorithController20to40Test {
     }
 
     @Test
-    public void search() throws IOException, JSONException {
-
-    }
-
-    @Test
-    public void dichotomy() {
-        int result = this.algorithController20to40.dichotomy(new int[]{1,2,3,4,5}, 0, 5, 5);
+    public void search() {
+        int result = this.algorithController20to40.search(new int[]{4,5,6,7,0,1,2}, 5);
         System.out.println(result);
     }
 

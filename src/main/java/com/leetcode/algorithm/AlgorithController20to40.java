@@ -414,24 +414,33 @@ public class AlgorithController20to40 {
         return maxLength;
     }
 
-    public int search(int[] nums, int target) throws IOException {
-        return 0;
+    public int search(int[] nums, int target) {
+        return custoMdichotomy(nums, 0, nums.length - 1, target);
     }
 
-    public int dichotomy(int[] nums, int startIndex, int endIndex, int target) {
-        if (startIndex >= endIndex) {
+    public int custoMdichotomy(int[] nums, int startIndex, int endIndex, int target) {
+        System.out.println("startIndex:" + startIndex + "; endIndex:" + endIndex);
+        if (startIndex > endIndex) {
             return -1;
         }
-        int centerIndex = (startIndex + endIndex) / 2;
-        if (nums[centerIndex] > target) {
-            return this.dichotomy(nums, startIndex, centerIndex, target);
-        } else if (nums[centerIndex] < target) {
-            return this.dichotomy(nums, centerIndex, endIndex, target);
-        } else {
+        int centerIndex = startIndex + (endIndex - startIndex) / 2;
+        if (nums[centerIndex] == target) {
             return centerIndex;
         }
+        if (nums[endIndex] > nums[centerIndex]) {
+            if (target > nums[centerIndex] && target <= nums[endIndex]) {
+                return custoMdichotomy(nums, centerIndex + 1, endIndex, target);
+            } else {
+                return custoMdichotomy(nums, startIndex, centerIndex - 1, target);
+            }
+        } else {
+            if (target >= nums[startIndex] && target < nums[centerIndex]) {
+                return custoMdichotomy(nums, startIndex, centerIndex - 1, target);
+            } else {
+                return custoMdichotomy(nums, centerIndex + 1, endIndex, target);
+            }
+        }
     }
-
 
 
 }
