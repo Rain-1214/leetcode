@@ -477,54 +477,43 @@ public class AlgorithController20to40 {
         int currnetColumn = 0;
         HashSet<Character> tempSet = new HashSet<>();
         for (int i = 0; i <= 9; i++) {
-            if (board[i][currnetColumn] != '.') {
-                tempSet.add(board[i][currnetColumn]);
-            }
             if (i == 9) {
-                if (!checkRepeatChar(tempSet)) {
+                tempSet.clear();
+                i = -1;
+                currnetColumn++;
+                if (currnetColumn == 9) {
+                    break;
+                }
+                continue;
+            }
+            if (board[i][currnetColumn] != '.') {
+                if (tempSet.contains(board[i][currnetColumn])) {
                     return false;
                 } else {
-                    tempSet.clear();
-                    i = 0;
-                    currnetColumn++;
-                    if (currnetColumn == 10) {
-                        break;
-                    }
+                    tempSet.add(board[i][currnetColumn]);
                 }
             }
         }
         tempSet.clear();
         for (int i = 0; i < 9; i++) {
-            int x = 0;
-            int y = 0;
+            int x = i / 3 * 3;
+            int y = (i % 3) * 3;
             int xMax = x + 3;
             int yMax = y + 3;
+            int tempY = y;
             for (; x < xMax; x++) {
+                y = tempY;
                 for (; y < yMax; y++) {
                     if (board[x][y] != '.') {
-                        tempSet.add(board[x][y]);
+                        if (tempSet.contains(board[x][y])) {
+                            return false;
+                        } else {
+                            tempSet.add(board[x][y]);
+                        }
                     }
                 }
             }
-            if (!checkRepeatChar(tempSet)) {
-                return false;
-            }
             tempSet.clear();
-            x = i * 3;
-            y = 3 * (i % 3);
-        }
-    }
-
-
-
-    public boolean checkRepeatChar (HashSet<Character> hashSet) {
-        HashSet<Character> tempHashSet = new HashSet<>();
-        for (char tempChar: hashSet) {
-            if (tempHashSet.contains(tempChar)) {
-                return false;
-            } else if (tempChar != '.'){
-                tempHashSet.add(tempChar);
-            }
         }
         return true;
     }

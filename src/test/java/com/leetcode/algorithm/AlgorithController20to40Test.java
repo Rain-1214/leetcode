@@ -119,6 +119,31 @@ public class AlgorithController20to40Test {
         System.out.println(result);
     }
 
+    @Test
+    public void isValidSudoku() {
+//        [".","1",".","5","2",".",".",".","."],
+//        [".",".",".",".",".","6","4","3","."],
+//        [".",".",".",".",".",".",".",".","."],
+//        ["5",".",".",".",".",".","9",".","."],
+//        [".",".",".",".",".",".",".","5","."],
+//        [".",".",".","5",".",".",".",".","."],
+//        ["9",".",".",".",".","3",".",".","."],
+//        [".",".","6",".",".",".",".",".","."],
+//        [".",".",".",".",".",".",".",".","."]
+        char[] params  = new char[]{'.','1','.','5','2','.','.','.','.'};
+        char[] params1 = new char[]{'.','.','.','.','.','6','4','3','.'};
+        char[] params2 = new char[]{'.','.','.','.','.','.','.','.','.'};
+        char[] params3 = new char[]{'5','.','.','.','.','.','9','.','.'};
+        char[] params4 = new char[]{'.','.','.','.','.','.','.','5','.'};
+        char[] params5 = new char[]{'.','.','.','5','.','.','.','.','.'};
+        char[] params6 = new char[]{'9','.','.','.','.','3','.','.','.'};
+        char[] params7 = new char[]{'.','.','6','.','.','.','.','.','.'};
+        char[] params8 = new char[]{'.','.','.','.','.','.','.','.','.'};
+        char[][] test = new char[][]{params, params1, params2, params3, params4, params5, params6, params7, params8};
+        boolean result = this.algorithController20to40.isValidSudoku(test);
+        System.out.println(result);
+    }
+
 }
 
 
