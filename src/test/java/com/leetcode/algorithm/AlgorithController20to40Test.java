@@ -1,17 +1,12 @@
 package com.leetcode.algorithm;
 
 import com.leetcode.entity.ListNode;
-import org.apache.tomcat.jni.Error;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.leetcode.tool.Print;
 import org.junit.Test;
-import org.omg.CORBA.PUBLIC_MEMBER;
 
-import java.io.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class AlgorithController20to40Test {
 
@@ -142,6 +137,29 @@ public class AlgorithController20to40Test {
         char[][] test = new char[][]{params, params1, params2, params3, params4, params5, params6, params7, params8};
         boolean result = this.algorithController20to40.isValidSudoku(test);
         System.out.println(result);
+    }
+
+    @Test
+    public void solveSudoku() {
+        char[] params  = new char[]{'5','3','.','.','7','.','.','.','.'};
+        char[] params1 = new char[]{'6','.','.','1','9','5','.','.','.'};
+        char[] params2 = new char[]{'.','9','8','.','.','.','.','6','.'};
+        char[] params3 = new char[]{'8','.','.','.','6','.','.','.','3'};
+        char[] params4 = new char[]{'4','.','.','8','.','3','.','.','1'};
+        char[] params5 = new char[]{'7','.','.','.','2','.','.','.','6'};
+        char[] params6 = new char[]{'.','6','.','.','.','.','2','8','.'};
+        char[] params7 = new char[]{'.','.','.','4','1','9','.','.','5'};
+        char[] params8 = new char[]{'.','.','.','.','8','.','.','7','9'};
+        char[][] test = new char[][]{params, params1, params2, params3, params4, params5, params6, params7, params8};
+        this.algorithController20to40.solveSudoku(test);
+        Print.print2DCharArray(test);
+//        boolean result = this.algorithController20to40.checkBoardValid(test,4,8);
+//        System.out.println(result);
+    }
+
+    @Test
+    public void countAndSay() {
+        System.out.println(this.algorithController20to40.countAndSay(4));
     }
 
 }

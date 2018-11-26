@@ -2,6 +2,7 @@ package com.leetcode.algorithm;
 
 import com.leetcode.entity.ListNode;
 import com.leetcode.entity.Tool;
+import com.leetcode.tool.Print;
 
 import java.io.*;
 import java.util.*;
@@ -528,6 +529,77 @@ public class AlgorithController20to40 {
             }
         }
         return true;
+    }
+
+    public void solveSudoku(char[][] board) {
+        if (board.length == 0 || board == null) {
+            return;
+        }
+        solve(board);
+    }
+
+    public boolean solve(char[][] board) {
+        for (int col = 0; col < board.length; col++) {
+            for (int row = 0; row < board[col].length; row++) {
+                if (board[col][row] != '.') {
+                    continue;
+                }
+                for (char z = '1'; z <= '9'; z++) {
+                    board[col][row] = z;
+                    if (checkBoardValid(board, row, col)) {
+                        if (solve(board)) {
+                            return true;
+                        } else {
+                            board[col][row] = '.';
+                        }
+                    } else {
+                        board[col][row] = '.';
+                    }
+                }
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean checkBoardValid (char[][] board, int x, int y) {
+        for (int i = 0; i < 9; i++) {
+            if (board[y][i] == board[y][x] && i != x) {
+                return false;
+            }
+            if (board[i][x] == board[y][x] && i != y) {
+                return false;
+            }
+            if (board[i / 3 + (y / 3) * 3][i % 3 + (x / 3) * 3] == board[y][x] && (i / 3 + (y / 3) * 3 != y) && (i % 3 + (x / 3) * 3 != x)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public String countAndSay(int n) {
+        if (n <= 0) {
+            return null;
+        }
+        if (n == 1) {
+            return "1";
+        }
+        String currentStr = countAndSay(--n);
+        StringBuffer sb = new StringBuffer();
+        char currentChar = currentStr.charAt(0);
+        int currentCharNum = 1;
+        for (int i = 1; i < currentStr.length(); i++) {
+            char tempChar = currentStr.charAt(i);
+            if (currentChar == tempChar) {
+                currentCharNum++;
+            } else {
+                sb.append(Integer.toString(currentCharNum) + currentChar);
+                currentChar = tempChar;
+                currentCharNum = 1;
+            }
+        }
+        sb.append(Integer.toString(currentCharNum) + currentChar);
+        return sb.toString();
     }
 
 }
