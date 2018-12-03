@@ -602,4 +602,57 @@ public class AlgorithController20to40 {
         return sb.toString();
     }
 
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        Arrays.sort(candidates);
+        List<List<Integer>> result = new ArrayList<>();
+        combinationSum(result, new ArrayList<>(), 0, candidates, target);
+        return result;
+    }
+
+    public void combinationSum(List<List<Integer>> result, ArrayList<Integer> list, int startIndex, int[] candidates, int target) {
+        if (target > 0) {
+            for (int i = startIndex; i < candidates.length; i++) {
+                list.add(candidates[i]);
+                combinationSum(result, list, i, candidates, target - candidates[i]);
+                list.remove(list.size() - 1);
+            }
+        } else if (target == 0) {
+            result.add(new ArrayList<>(list));
+        }
+    }
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

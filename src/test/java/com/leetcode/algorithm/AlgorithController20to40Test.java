@@ -162,6 +162,12 @@ public class AlgorithController20to40Test {
         System.out.println(this.algorithController20to40.countAndSay(4));
     }
 
+    @Test
+    public void combinationSum() {
+        int[] test = new int[]{11,7,10,3,6,4,8};
+        List<List<Integer>> result = this.algorithController20to40.combinationSum(test, 14);
+        System.out.println(result);
+    }
 }
 
 
