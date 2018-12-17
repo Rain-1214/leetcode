@@ -3,6 +3,8 @@ package com.leetcode.algorithm;
 import com.leetcode.tool.Print;
 import org.junit.Test;
 
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 public class AlgorithController41to60Test {
@@ -23,6 +25,13 @@ public class AlgorithController41to60Test {
     @Test
     public void lengthOfLastWord() {
         int result = this.algorithController41to60.lengthOfLastWord("Hello World");
+        System.out.println(result);
+    }
+
+    @Test
+    public void combinationSum() {
+        int[] test = new int[]{10,1,2,7,6,1,5};
+        List<List<Integer>> result = this.algorithController41to60.combinationSum2(test, 8);
         System.out.println(result);
     }
 }
