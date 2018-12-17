@@ -34,4 +34,11 @@ public class AlgorithController41to60Test {
         List<List<Integer>> result = this.algorithController41to60.combinationSum2(test, 8);
         System.out.println(result);
     }
+
+    @Test
+    public void firstMissingPositive() {
+        int[] test = new int[]{1,2};
+        int result = this.algorithController41to60.firstMissingPositive(test);
+        System.out.println(result);
+    }
 }

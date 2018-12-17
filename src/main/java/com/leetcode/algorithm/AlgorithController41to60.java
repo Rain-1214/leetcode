@@ -51,6 +51,21 @@ public class AlgorithController41to60 {
         }
     }
 
+    public int firstMissingPositive(int[] nums) {
+        int[] tempNums = new int[nums.length + 1];
+        for (int i = 0; i < nums.length;i++) {
+            if (nums[i] < 0) {
+                continue;
+            }
+            tempNums[nums[i]] = 1;
+        }
+        for (int y = 1; y < tempNums.length; y++) {
+            if (tempNums[y] != 1) {
+                return y;
+            }
+        }
+        return tempNums.length;
+    }
 }
 
 
