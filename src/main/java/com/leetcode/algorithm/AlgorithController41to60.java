@@ -1,5 +1,6 @@
 package com.leetcode.algorithm;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -52,19 +53,83 @@ public class AlgorithController41to60 {
     }
 
     public int firstMissingPositive(int[] nums) {
-        int[] tempNums = new int[nums.length + 1];
+        int maxNum = 0;
         for (int i = 0; i < nums.length;i++) {
             if (nums[i] < 0) {
                 continue;
             }
-            tempNums[nums[i]] = 1;
-        }
-        for (int y = 1; y < tempNums.length; y++) {
-            if (tempNums[y] != 1) {
-                return y;
+            if (nums[i] > maxNum) {
+                maxNum = nums[i];
             }
         }
-        return tempNums.length;
+        if (maxNum <= 0) {
+            return 1;
+        }
+        int[] tempArray = new int[maxNum + 1];
+        for (int y = 0; y < nums.length; y++) {
+            if (nums[y] < 0) {
+                continue;
+            }
+            tempArray[nums[y]] = 1;
+        }
+        for (int z = 1; z < tempArray.length; z++) {
+            if (tempArray[z] != 1) {
+                return z;
+            }
+        }
+        return tempArray.length;
+    }
+
+    public int trap(int[] height) {
+        int n = height.length;
+        if (n < 3) {
+            return 0;
+        }
+        int left = 0;
+        int right = n - 1;
+        int maxLeft = 0;
+        int maxRight = 0;
+        int result = 0;
+        while (left <= right) {
+            if (height[left] <= height[right]) {
+                if (height[left] > maxLeft) {
+                    maxLeft = height[left];
+                } else {
+                    result += maxLeft - height[left];
+                }
+                left++;
+            } else {
+                if (height[right] > maxRight) {
+                    maxRight = height[right];
+                } else {
+                    result += maxRight - height[right];
+                }
+                right--;
+            }
+        }
+        return result;
+    }
+
+    public String multiply(String num1, String num2) {
+        int num1len = num1.length();
+        int num2len = num2.length();
+        int[] resultArray = new int[num1len + num2len];
+        for (int i = num1len - 1; i >= 0; i--) {
+            for (int y = num2len - 1; y >= 0; y--) {
+                int n1 = num1.charAt(i) - '0';
+                int n2 = num2.charAt(y) - '0';
+                int sum = n1 * n2 + resultArray[i + y + 1];
+                resultArray[i + y] += sum / 10;
+                resultArray[i + y + 1] = sum % 10;
+            }
+        }
+        StringBuffer stringBuffer = new StringBuffer();
+        for (int num: resultArray) {
+            if (!(stringBuffer.length() == 0 && num == 0)) {
+                stringBuffer.append(num);
+            }
+        }
+        return stringBuffer.length() == 0 ? "0" : stringBuffer.toString();
     }
 }
 

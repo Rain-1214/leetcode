@@ -41,4 +41,17 @@ public class AlgorithController41to60Test {
         int result = this.algorithController41to60.firstMissingPositive(test);
         System.out.println(result);
     }
+
+    @Test
+    public void trap() {
+        int[] test= new int[]{4233,42,5,436,6,57,7,546,452,3242,12};
+        int result = this.algorithController41to60.trap(test);
+        System.out.println(result);
+    }
+
+    @Test
+    public void multiply() {
+        System.out.println(this.algorithController41to60.multiply("123456789","987654321"));
+    }
+
 }
