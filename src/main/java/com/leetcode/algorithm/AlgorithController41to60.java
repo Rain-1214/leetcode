@@ -131,6 +131,40 @@ public class AlgorithController41to60 {
         }
         return stringBuffer.length() == 0 ? "0" : stringBuffer.toString();
     }
+
+
+    public boolean isMatch(String s, String p) {
+        if (s.equals(p)) {
+            return true;
+        }
+        int sLen = s.length();
+        int pLen = p.length();
+        return sLen != 0 && pLen != 0 && this.isMatch(0, 0, s, p);
+    }
+
+    private boolean isMatch(int start, int end, String s, String p) {
+        int sLen = s.length();
+        int pLen = p.length();
+        int sIndex = start;
+        int pIndex = end;
+        while (sIndex < sLen || pIndex < pLen) {
+            char curSChar = s.charAt(sIndex);
+            char curPChar = p.charAt(pIndex);
+            if (curSChar == curPChar || curPChar == '?') {
+                sIndex++;
+                pIndex++;
+            } else if (curPChar == '*') {
+                if (!this.isMatch(sIndex + 1, pIndex, s, p)) {
+                    pIndex++;
+                } else {
+                    return true;
+                }
+            }
+        }
+        return true;
+    }
+
+
 }
 
 
