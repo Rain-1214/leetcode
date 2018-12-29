@@ -137,31 +137,37 @@ public class AlgorithController41to60 {
         if (s.equals(p)) {
             return true;
         }
-        int sLen = s.length();
-        int pLen = p.length();
-        return sLen != 0 && pLen != 0 && this.isMatch(0, 0, s, p);
+        if (p.equals("*")) {
+            return true;
+        }
+        return this.isMatch(0, 0, s, p);
     }
 
-    private boolean isMatch(int start, int end, String s, String p) {
+    private boolean isMatch(int sStart, int pStart, String s, String p) {
         int sLen = s.length();
         int pLen = p.length();
-        int sIndex = start;
-        int pIndex = end;
-        while (sIndex < sLen || pIndex < pLen) {
+        int sIndex = sStart;
+        int pIndex = pStart;
+        while (sIndex < sLen && pIndex < pLen) {
             char curSChar = s.charAt(sIndex);
             char curPChar = p.charAt(pIndex);
             if (curSChar == curPChar || curPChar == '?') {
                 sIndex++;
                 pIndex++;
             } else if (curPChar == '*') {
+                if (pIndex == pLen - 1) {
+                    return true;
+                }
                 if (!this.isMatch(sIndex + 1, pIndex, s, p)) {
                     pIndex++;
                 } else {
                     return true;
                 }
+            } else {
+                return false;
             }
         }
-        return true;
+        return sIndex == sLen && pIndex == pLen;
     }
 
 
