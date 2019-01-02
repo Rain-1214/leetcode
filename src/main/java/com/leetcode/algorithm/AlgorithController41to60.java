@@ -133,43 +133,124 @@ public class AlgorithController41to60 {
     }
 
 
-    public boolean isMatch(String s, String p) {
-        if (s.equals(p)) {
-            return true;
-        }
-        if (p.equals("*")) {
-            return true;
-        }
-        return this.isMatch(0, 0, s, p);
-    }
+//    public boolean isMatch(String str, String pattern) {
+////        if (s.equals(p)) {
+////            return true;
+////        }
+////        return this.isMatch(0, 0, s, p);
+//        int s = 0, p = 0, match = 0, starIdx = -1;
+//        while (s < str.length()){
+//            // advancing both pointers
+//            if (p < pattern.length()  && (pattern.charAt(p) == '?' || str.charAt(s) == pattern.charAt(p))){
+//                s++;
+//                p++;
+//            }
+//            // * found, only advancing pattern pointer
+//            else if (p < pattern.length() && pattern.charAt(p) == '*'){
+//                starIdx = p;
+//                match = s;
+//                p++;
+//            }
+//            // last pattern pointer was *, advancing string pointer
+//            else if (starIdx != -1){
+//                p = starIdx + 1;
+//                match++;
+//                s = match;
+//            }
+//            //current pattern pointer is not star, last patter pointer was not *
+//            //characters do not match
+//            else return false;
+//        }
+//
+//        //check for remaining characters in pattern
+//        while (p < pattern.length() && pattern.charAt(p) == '*')
+//            p++;
+//
+//        return p == pattern.length();
+//    }
 
-    private boolean isMatch(int sStart, int pStart, String s, String p) {
+    public boolean isMatch(String s, String p) {
         int sLen = s.length();
         int pLen = p.length();
-        int sIndex = sStart;
-        int pIndex = pStart;
-        while (sIndex < sLen && pIndex < pLen) {
-            char curSChar = s.charAt(sIndex);
-            char curPChar = p.charAt(pIndex);
-            if (curSChar == curPChar || curPChar == '?') {
+        int sIndex = 0;
+        int pIndex = 0;
+        int cacheSIndex = 0;
+        int cachePIndex = -1;
+        while (sIndex < sLen) {
+            if (pIndex < pLen && (s.charAt(sIndex) == p.charAt(pIndex) || p.charAt(pIndex) == '?')) {
                 sIndex++;
                 pIndex++;
-            } else if (curPChar == '*') {
-                if (pIndex == pLen - 1) {
-                    return true;
-                }
-                if (!this.isMatch(sIndex + 1, pIndex, s, p)) {
-                    pIndex++;
-                } else {
-                    return true;
-                }
+            } else if (pIndex < pLen && p.charAt(pIndex) == '*') {
+                cacheSIndex = sIndex;
+                cachePIndex = pIndex;
+                pIndex++;
+            } else if (cachePIndex != -1) {
+                pIndex = cachePIndex + 1;
+                cacheSIndex += 1;
+                sIndex = cacheSIndex;
             } else {
                 return false;
             }
         }
-        return sIndex == sLen && pIndex == pLen;
+        while ((pIndex < pLen) && p.charAt(pIndex) == '*') {
+            pIndex++;
+        }
+        return pIndex == pLen;
     }
 
+    public int jump(int[] nums) {
+        int n = nums.length;
+        if (n <= 1) {
+            return 0;
+        }
+        int jumpTime = 0;
+        for (int i = 0; i < n - 1; i++) {
+            int y = 1;
+            int jumpMaxDistance = 0;
+            int jumpMaxIndex = i + y;
+            while (y <= nums[i]) {
+                int currentMax = nums[i + y] + i + y;
+                if (i + y >= n - 1) {
+                    return jumpTime + 1;
+                } else if (currentMax > jumpMaxDistance) {
+                    jumpMaxDistance = currentMax;
+                    jumpMaxIndex = i + y;
+                }
+                y++;
+            }
+            i = jumpMaxIndex - 1;
+            jumpTime++;
+        }
+        return jumpTime;
+    }
+
+    public List<List<Integer>> permute(int[] nums) {
+        List<List<Integer>> result = new ArrayList<>();
+        if (nums.length < 1) {
+            return result;
+        }
+        findList(result, nums, 0);
+        return result;
+    }
+
+    private void findList(List<List<Integer>> result, int[] nums, int start) {
+        if (start == nums.length - 1) {
+            List<Integer> tempList = new ArrayList<>();
+            tempList.add(nums[start]);
+            result.add(tempList);
+        } else {
+            findList(result, nums, start + 1);
+            List<List<Integer>> tempResult = new ArrayList<>(result);
+            result.clear();
+            for (List<Integer> currentList : tempResult) {
+                for (int y = 0; y <= currentList.size(); y++) {
+                    List<Integer> tempList = new ArrayList<>(currentList);
+                    tempList.add(y, nums[start]);
+                    result.add(tempList);
+                }
+            }
+        }
+    }
 
 }
 
