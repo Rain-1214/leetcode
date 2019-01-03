@@ -169,4 +169,10 @@ public class AlgorithController41to60Test {
         System.out.println(result);
     }
 
+    @Test
+    public void permuteUnique() {
+        List<List<Integer>> result = this.algorithController41to60.permuteUnique(new int[]{1,1,2});
+        System.out.println(result);
+    }
+
 }

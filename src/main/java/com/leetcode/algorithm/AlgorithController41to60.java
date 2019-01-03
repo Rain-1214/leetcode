@@ -1,20 +1,19 @@
 package com.leetcode.algorithm;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 import java.util.List;
 
 public class AlgorithController41to60 {
 
     public void rotate(int[][] matrix) {
-//        int[][] result = new int[matrix.length][matrix.length];
-//        for(int i = 0; i < matrix.length; i++) {
-//            for(int y = 0; y < matrix[i].length; y++) {
-//                result[matrix.length - 1 - i][y] = matrix[i][y];
-//            }
-//        }
-//        matrix = result;
+        int[][] result = new int[matrix.length][matrix.length];
+        for(int i = 0; i < matrix.length; i++) {
+            for(int y = 0; y < matrix[i].length; y++) {
+                result[matrix.length - 1 - i][y] = matrix[i][y];
+            }
+        }
+        matrix = result;
     }
 
     public int lengthOfLastWord(String s) {
@@ -252,6 +251,37 @@ public class AlgorithController41to60 {
         }
     }
 
+    public List<List<Integer>> permuteUnique(int[] nums) {
+        List<List<Integer>> result = new ArrayList<>();
+        if (nums.length < 1) {
+            return result;
+        }
+        Set<List<Integer>> set = new HashSet<>();
+        findListUnique(result, nums, 0, set);
+        return result;
+    }
+
+    private void findListUnique(List<List<Integer>> result, int[] nums, int start, Set<List<Integer>> set) {
+        if (start == nums.length - 1) {
+            List<Integer> tempList = new ArrayList<>();
+            tempList.add(nums[start]);
+            result.add(tempList);
+        } else {
+            findListUnique(result, nums, start + 1, set);
+            List<List<Integer>> tempResult = new ArrayList<>(result);
+            result.clear();
+            for (List<Integer> currentList : tempResult) {
+                for (int y = 0; y <= currentList.size(); y++) {
+                    List<Integer> tempList = new ArrayList<>(currentList);
+                    tempList.add(y, nums[start]);
+                    if (!set.contains(tempList)) {
+                        set.add(tempList);
+                        result.add(tempList);
+                    }
+                }
+            }
+        }
+    }
 }
 
 
