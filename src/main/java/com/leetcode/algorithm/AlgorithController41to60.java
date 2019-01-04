@@ -7,13 +7,17 @@ import java.util.List;
 public class AlgorithController41to60 {
 
     public void rotate(int[][] matrix) {
-        int[][] result = new int[matrix.length][matrix.length];
-        for(int i = 0; i < matrix.length; i++) {
-            for(int y = 0; y < matrix[i].length; y++) {
-                result[matrix.length - 1 - i][y] = matrix[i][y];
+        int b = matrix.length;
+        int a = matrix[0].length;
+        if (b <= 1 || a <= 1) {
+            return;
+        }
+        for (int i = 0; i < b / 2; i++) {
+            int y = i;
+            while (y < (a * b - 4)) {
+                y++;
             }
         }
-        matrix = result;
     }
 
     public int lengthOfLastWord(String s) {
