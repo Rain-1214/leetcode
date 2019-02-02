@@ -16,10 +16,10 @@ public class AlgorithController41to60Test {
 
     @Test
     public void rotate() {
-        int[] test1 = new int[]{1,2,3,4};
-        int[] test2 = new int[]{1,2,3,4};
-        int[] test3 = new int[]{1,2,3,4};
-        int[] test4 = new int[]{1,2,3,4};
+        int[] test1 = new int[]{1,2,3,4,8};
+        int[] test2 = new int[]{1,2,3,4,8};
+        int[] test3 = new int[]{1,2,3,4,8};
+        int[] test4 = new int[]{1,2,3,4,8};
         int[][] test = new int[][]{test1,test2,test3,test4};
 
         Print.print2DIntArray(test);

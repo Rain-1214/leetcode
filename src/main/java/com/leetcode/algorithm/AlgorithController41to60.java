@@ -9,25 +9,22 @@ public class AlgorithController41to60 {
     public void rotate(int[][] matrix) {
         int n = matrix.length;
         for (int i = 0; i < n / 2; i++) {
-            for (int j = 0; j < matrix[0].length - n * 2 - 1; j++) {
-//                int[] tmp = new int[4];
-//                int row = i;
-//                int col = j;
-//                for (int k = 0; k < 4; k++) {
-//                    tmp[k] = matrix[row][col];
-//                    int x = row;
-//                    row = col;
-//                    col = n - 1 - x;
-//                }
-//                for (int k = 0; k < 4; k++) {
-//                    System.out.print(row);
-//                    System.out.println(col);
-//                    matrix[row][col] = tmp[(k + 3) % 4];
-//                    int x = row;
-//                    row = col;
-//                    col = n - 1 - x;
-//                }
-//                System.out.println("====");
+            for (int j = i; j < n - i - 1; j++) {
+                int[] temp = new int[4];
+                int row = i;
+                int col = j;
+                for (int k = 0; k < 4; k++) {
+                    temp[k] = matrix[row][col];
+                    int tempNum = row;
+                    row = col;
+                    col = n - tempNum - 1;
+                }
+                for (int k = 0; k < 4; k++) {
+                    matrix[row][col] = temp[(k + 3) % 4];
+                    int tempNum = row;
+                    row = col;
+                    col = n - tempNum - 1;
+                }
             }
         }
     }
