@@ -295,6 +295,29 @@ public class AlgorithController41to60 {
             }
         }
     }
+
+    public List<List<String>> groupAnagrams(String[] strs) {
+        List<List<String>> result = new ArrayList<>();
+        Map<String, List<String>> table = new HashMap<>();
+        for (int i = 0; i < strs.length; i++) {
+            String curStr = strs[i];
+            char[] temp = curStr.toCharArray();
+            Arrays.sort(temp);
+            String newStr = new String(temp);
+            if (table.containsKey(newStr)) {
+                table.get(newStr).add(curStr);
+            } else {
+                List<String> tempList = new ArrayList<>();
+                tempList.add(curStr);
+                table.put(newStr, tempList);
+            }
+        }
+        for (List<String> temp: table.values()) {
+            result.add(temp);
+        }
+        return result;
+    }
+
 }
 
 

@@ -177,4 +177,10 @@ public class AlgorithController41to60Test {
         System.out.println(result);
     }
 
+    @Test
+    public void groupAnagrams() {
+        String[] test = new String[]{"eat", "tea", "tan", "ate", "nat", "bat"};
+        System.out.println(this.algorithController41to60.groupAnagrams(test));
+    }
+
 }
