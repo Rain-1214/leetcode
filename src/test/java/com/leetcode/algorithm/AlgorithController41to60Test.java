@@ -183,4 +183,9 @@ public class AlgorithController41to60Test {
         System.out.println(this.algorithController41to60.groupAnagrams(test));
     }
 
+    @Test
+    public void test() {
+        System.out.println(Math.pow(2, 31));
+    }
+
 }
