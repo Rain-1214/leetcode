@@ -185,7 +185,7 @@ public class AlgorithController41to60Test {
 
     @Test
     public void test() {
-        System.out.println(Math.pow(2, 31));
+        System.out.println(this.algorithController41to60.solveNQueens(4));
     }
 
 }

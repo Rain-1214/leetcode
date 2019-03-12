@@ -333,7 +333,54 @@ public class AlgorithController41to60 {
     }
 
     public List<List<String>> solveNQueens(int n) {
-        return new ArrayList<>();
+        char[][] board = new char[n][n];
+        for (int i = 0; i < n; i++) {
+            for (int y = 0; y < n; y++) {
+                board[i][y] = '.';
+            }
+        }
+        List<List<String>> res = new ArrayList<>();
+        createPieces(board, 0, res);
+        return res;
+    }
+
+    public void createPieces (char[][] board, int pieces, List<List<String>> res) {
+        if (pieces == board.length) {
+            res.add(parseBoard(board));
+            return;
+        }
+        for (int y = 0; y < board.length; y++) {
+            board[y][pieces] = 'Q';
+            if (checkValid(board, pieces, y)) {
+                createPieces(board, pieces + 1, res);
+            }
+            board[y][pieces] = '.';
+        }
+    }
+
+    public boolean checkValid(char[][] board, int x, int y) {
+        int len = board.length;
+        int result = 0;
+        for (int xt = 0; xt < len; xt++) {
+            for (int yt = 0; yt < len; yt++) {
+                if (board[yt][xt] == 'Q' && (xt + yt == x + y || xt + y == x + yt || xt == x || yt == y)) {
+                    result++;
+                }
+            }
+        }
+        return result == 1;
+    }
+
+    public List<String> parseBoard (char[][] board) {
+        List<String> res = new ArrayList<>();
+        for (char[] chars : board) {
+            StringBuilder s = new StringBuilder();
+            for (char aChar : chars) {
+                s.append(aChar);
+            }
+            res.add(s.toString());
+        }
+        return res;
     }
 
 
