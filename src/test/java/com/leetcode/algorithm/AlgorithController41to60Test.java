@@ -1,9 +1,17 @@
 package com.leetcode.algorithm;
 
 import com.leetcode.tool.Print;
+
+import org.json.JSONArray;
+import org.junit.Assert;
 import org.junit.Test;
 
+import net.minidev.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,11 +24,11 @@ public class AlgorithController41to60Test {
 
     @Test
     public void rotate() {
-        int[] test1 = new int[]{1,2,3,4,8};
-        int[] test2 = new int[]{1,2,3,4,8};
-        int[] test3 = new int[]{1,2,3,4,8};
-        int[] test4 = new int[]{1,2,3,4,8};
-        int[][] test = new int[][]{test1,test2,test3,test4};
+        int[] test1 = new int[] { 1, 2, 3, 4, 8 };
+        int[] test2 = new int[] { 1, 2, 3, 4, 8 };
+        int[] test3 = new int[] { 1, 2, 3, 4, 8 };
+        int[] test4 = new int[] { 1, 2, 3, 4, 8 };
+        int[][] test = new int[][] { test1, test2, test3, test4 };
 
         Print.print2DIntArray(test);
         this.algorithController41to60.rotate(test);
@@ -35,32 +43,55 @@ public class AlgorithController41to60Test {
 
     @Test
     public void combinationSum() {
-        int[] test = new int[]{10,1,2,7,6,1,5};
+        int[] test = new int[] { 10, 1, 2, 7, 6, 1, 5 };
         List<List<Integer>> result = this.algorithController41to60.combinationSum2(test, 8);
         System.out.println(result);
     }
 
     @Test
     public void firstMissingPositive() {
-        int[] test = new int[]{1,2};
+        int[] test = new int[] { 1, 2 };
         int result = this.algorithController41to60.firstMissingPositive(test);
         System.out.println(result);
     }
 
     @Test
+    public void spiralOrder() {
+        int[][] test = new int[3][3];
+        test[0] = new int[] { 1, 2, 3 };
+        test[1] = new int[] { 4, 5, 6 };
+        test[2] = new int[] { 7, 8, 9 };
+        List res1 = new ArrayList<Integer>();
+        Collections.addAll(res1, 1, 2, 3, 6, 9, 8, 7, 4, 5);
+        Assert.assertEquals(algorithController41to60.spiralOrder(test), res1);
+
+        int[][] test2 = new int[3][4];
+        test2[0] = new int[] { 1, 2, 3, 4 };
+        test2[1] = new int[] { 5, 6, 7, 8 };
+        test2[2] = new int[] { 9, 10, 11, 12 };
+        List res2 = new ArrayList<Integer>();
+        Collections.addAll(res2, 1, 2, 3, 4, 8, 12, 11, 10, 9, 5, 6, 7);
+        Assert.assertEquals(algorithController41to60.spiralOrder(test2), res2);
+
+        int[][] test3 = new int[1][2];
+        test3[0] = new int[] { 2, 3 };
+        List res3 = new ArrayList<Integer>();
+        Collections.addAll(res3, 2, 3);
+        Assert.assertEquals(algorithController41to60.spiralOrder(test3), res3);
+
     public void trap() {
-        int[] test= new int[]{4233,42,5,436,6,57,7,546,452,3242,12};
+        int[] test = new int[] { 4233, 42, 5, 436, 6, 57, 7, 546, 452, 3242, 12 };
         int result = this.algorithController41to60.trap(test);
         System.out.println(result);
     }
 
     @Test
     public void multiply() {
-        System.out.println(this.algorithController41to60.multiply("123456789","987654321"));
+        System.out.println(this.algorithController41to60.multiply("123456789", "987654321"));
     }
 
     @Test
-    public void isMatch(){
+    public void isMatch() {
         String sKey = "s";
         String pKey = "p";
         String valueKey = "value";
@@ -111,7 +142,8 @@ public class AlgorithController41to60Test {
         test9.put(valueKey, "true");
         list.add(test9);
         HashMap<String, String> test10 = new HashMap<>();
-        test10.put(sKey, "aaaabaaaabbbbaabbbaabbaababbabbaaaababaaabbbbbbaabbbabababbaaabaabaaaaaabbaabbbbaababbababaabbbaababbbba");
+        test10.put(sKey,
+                "aaaabaaaabbbbaabbbaabbaababbabbaaaababaaabbbbbbaabbbabababbaaabaabaaaaaabbaabbbbaababbababaabbbaababbbba");
         test10.put(pKey, "*****b*aba***babaa*bbaba***a*aaba*b*aa**a*b**ba***a*a*");
         test10.put(valueKey, "true");
         list.add(test10);
@@ -120,7 +152,8 @@ public class AlgorithController41to60Test {
             if (Boolean.toString(result).equals(map.get(valueKey))) {
                 System.out.println("验证成功");
             } else {
-                System.out.println("验证失败了,s:" + map.get(sKey) + ",p:" + map.get(pKey) + ",期望值:" + map.get(valueKey) + "当前值:" + Boolean.toString(result));
+                System.out.println("验证失败了,s:" + map.get(sKey) + ",p:" + map.get(pKey) + ",期望值:" + map.get(valueKey)
+                        + "当前值:" + Boolean.toString(result));
             }
         }
     }
@@ -150,36 +183,37 @@ public class AlgorithController41to60Test {
         test5.put(valueKey, "0,0,0,0,0,0,0,0,0,1");
         test5.put(resultKey, "9");
         testList.add(test5);
-        for(HashMap<String, String> map: testList){
+        for (HashMap<String, String> map : testList) {
             String[] input = map.get(valueKey).split(",");
             int[] intInput = new int[input.length];
-            for (int y = 0;y < input.length;y++) {
+            for (int y = 0; y < input.length; y++) {
                 intInput[y] = Integer.parseInt(input[y]);
             }
             String result = Integer.toString(this.algorithController41to60.jump(intInput));
             if (result.equals(map.get(resultKey))) {
                 System.out.println("验证成功");
             } else {
-                System.out.println("验证失败:输入值：" + Print.printArray(intInput) + "输出值:" + result + "期望值：" + map.get(resultKey));
+                System.out.println(
+                        "验证失败:输入值：" + Print.printArray(intInput) + "输出值:" + result + "期望值：" + map.get(resultKey));
             }
         }
     }
 
     @Test
     public void permute() {
-        List<List<Integer>> result = this.algorithController41to60.permute(new int[]{1,2,3});
+        List<List<Integer>> result = this.algorithController41to60.permute(new int[] { 1, 2, 3 });
         System.out.println(result);
     }
 
     @Test
     public void permuteUnique() {
-        List<List<Integer>> result = this.algorithController41to60.permuteUnique(new int[]{1,1,2});
+        List<List<Integer>> result = this.algorithController41to60.permuteUnique(new int[] { 1, 1, 2 });
         System.out.println(result);
     }
 
     @Test
     public void groupAnagrams() {
-        String[] test = new String[]{"eat", "tea", "tan", "ate", "nat", "bat"};
+        String[] test = new String[] { "eat", "tea", "tan", "ate", "nat", "bat" };
         System.out.println(this.algorithController41to60.groupAnagrams(test));
     }
 

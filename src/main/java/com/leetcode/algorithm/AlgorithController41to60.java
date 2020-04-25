@@ -1,6 +1,7 @@
 package com.leetcode.algorithm;
 
-import java.awt.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.*;
 import java.util.List;
 
@@ -49,7 +50,8 @@ public class AlgorithController41to60 {
         return result;
     }
 
-    public void combinationSum2Impl(List<List<Integer>> resultList, List<Integer> currentList, int[] candidates, int startIndex, int target) {
+    public void combinationSum2Impl(List<List<Integer>> resultList, List<Integer> currentList, int[] candidates,
+            int startIndex, int target) {
         if (target > 0) {
             for (int i = startIndex; i < candidates.length; i++) {
                 if (i > startIndex && candidates[i] == candidates[i - 1]) {
@@ -66,7 +68,7 @@ public class AlgorithController41to60 {
 
     public int firstMissingPositive(int[] nums) {
         int maxNum = 0;
-        for (int i = 0; i < nums.length;i++) {
+        for (int i = 0; i < nums.length; i++) {
             if (nums[i] < 0) {
                 continue;
             }
@@ -136,7 +138,7 @@ public class AlgorithController41to60 {
             }
         }
         StringBuffer stringBuffer = new StringBuffer();
-        for (int num: resultArray) {
+        for (int num : resultArray) {
             if (!(stringBuffer.length() == 0 && num == 0)) {
                 stringBuffer.append(num);
             }
@@ -144,42 +146,42 @@ public class AlgorithController41to60 {
         return stringBuffer.length() == 0 ? "0" : stringBuffer.toString();
     }
 
-
-//    public boolean isMatch(String str, String pattern) {
-////        if (s.equals(p)) {
-////            return true;
-////        }
-////        return this.isMatch(0, 0, s, p);
-//        int s = 0, p = 0, match = 0, starIdx = -1;
-//        while (s < str.length()){
-//            // advancing both pointers
-//            if (p < pattern.length()  && (pattern.charAt(p) == '?' || str.charAt(s) == pattern.charAt(p))){
-//                s++;
-//                p++;
-//            }
-//            // * found, only advancing pattern pointer
-//            else if (p < pattern.length() && pattern.charAt(p) == '*'){
-//                starIdx = p;
-//                match = s;
-//                p++;
-//            }
-//            // last pattern pointer was *, advancing string pointer
-//            else if (starIdx != -1){
-//                p = starIdx + 1;
-//                match++;
-//                s = match;
-//            }
-//            //current pattern pointer is not star, last patter pointer was not *
-//            //characters do not match
-//            else return false;
-//        }
-//
-//        //check for remaining characters in pattern
-//        while (p < pattern.length() && pattern.charAt(p) == '*')
-//            p++;
-//
-//        return p == pattern.length();
-//    }
+    // public boolean isMatch(String str, String pattern) {
+    //// if (s.equals(p)) {
+    //// return true;
+    //// }
+    //// return this.isMatch(0, 0, s, p);
+    // int s = 0, p = 0, match = 0, starIdx = -1;
+    // while (s < str.length()){
+    // // advancing both pointers
+    // if (p < pattern.length() && (pattern.charAt(p) == '?' || str.charAt(s) ==
+    // pattern.charAt(p))){
+    // s++;
+    // p++;
+    // }
+    // // * found, only advancing pattern pointer
+    // else if (p < pattern.length() && pattern.charAt(p) == '*'){
+    // starIdx = p;
+    // match = s;
+    // p++;
+    // }
+    // // last pattern pointer was *, advancing string pointer
+    // else if (starIdx != -1){
+    // p = starIdx + 1;
+    // match++;
+    // s = match;
+    // }
+    // //current pattern pointer is not star, last patter pointer was not *
+    // //characters do not match
+    // else return false;
+    // }
+    //
+    // //check for remaining characters in pattern
+    // while (p < pattern.length() && pattern.charAt(p) == '*')
+    // p++;
+    //
+    // return p == pattern.length();
+    // }
 
     public boolean isMatch(String s, String p) {
         int sLen = s.length();
@@ -312,7 +314,7 @@ public class AlgorithController41to60 {
                 table.put(newStr, tempList);
             }
         }
-        for (List<String> temp: table.values()) {
+        for (List<String> temp : table.values()) {
             result.add(temp);
         }
         return result;
@@ -327,7 +329,7 @@ public class AlgorithController41to60 {
         }
         if (n < 0) {
             n = -n;
-            x = 1/x;
+            x = 1 / x;
         }
         return n % 2 == 0 ? myPow(x * x, n / 2) : x * myPow(x * x, n / 2);
     }
@@ -344,7 +346,7 @@ public class AlgorithController41to60 {
         return res;
     }
 
-    public void createPieces (char[][] board, int pieces, List<List<String>> res) {
+    public void createPieces(char[][] board, int pieces, List<List<String>> res) {
         if (pieces == board.length) {
             res.add(parseBoard(board));
             return;
@@ -371,7 +373,7 @@ public class AlgorithController41to60 {
         return result == 1;
     }
 
-    public List<String> parseBoard (char[][] board) {
+    public List<String> parseBoard(char[][] board) {
         List<String> res = new ArrayList<>();
         for (char[] chars : board) {
             StringBuilder s = new StringBuilder();
@@ -383,40 +385,31 @@ public class AlgorithController41to60 {
         return res;
     }
 
-
-
+    public List<Integer> spiralOrder(int[][] matrix) {
+        List<Integer> result = new ArrayList<Integer>();
+        if (matrix.length == 0) {
+            return result;
+        }
+        int row = matrix.length;
+        int column = matrix[0].length;
+        int time = 0;
+        while (time < row && time < column) {
+            for (int i = time; i < column; i++) {
+                result.add(matrix[time][i]);
+            }
+            for (int y = time + 1; y < row; y++) {
+                result.add(matrix[y][column - 1]);
+            }
+            for (int x = column - 2; x >= time && (row != time + 1); x--) {
+                result.add(matrix[row - 1][x]);
+            }
+            for (int z = row - 2; z > time && (column != time + 1); z--) {
+                result.add(matrix[z][time]);
+            }
+            time++;
+            row--;
+            column--;
+        }
+        return result;
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
