@@ -31,4 +31,13 @@ public class Print {
         }
         System.out.println(stringBuffer.toString());
     }
+
+    public static String printArray (int[] value) {
+        StringBuffer stringBuffer = new StringBuffer();
+        for(int i : value) {
+            stringBuffer.append(i + ",");
+        }
+        return stringBuffer.toString();
+    }
+
 }
