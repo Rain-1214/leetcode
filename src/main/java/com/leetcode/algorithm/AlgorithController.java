@@ -14,9 +14,11 @@ public class AlgorithController {
             return s.isEmpty();
         }
         if (p.length() > 1 && p.charAt(1) == '*') {
-            return isMatch(s, p.substring(2)) || (!s.isEmpty() && ((s.charAt(0) == p.charAt(0) || p.charAt(0) == '.')) && isMatch(s.substring(1), p));
+            return isMatch(s, p.substring(2)) || (!s.isEmpty() && ((s.charAt(0) == p.charAt(0) || p.charAt(0) == '.'))
+                    && isMatch(s.substring(1), p));
         } else {
-            return (!s.isEmpty() && (((s.charAt(0) == p.charAt(0)) || (p.charAt(0) == '.')))) && isMatch(s.substring(1), p.substring(1));
+            return (!s.isEmpty() && (((s.charAt(0) == p.charAt(0)) || (p.charAt(0) == '.'))))
+                    && isMatch(s.substring(1), p.substring(1));
         }
     }
 
@@ -90,7 +92,7 @@ public class AlgorithController {
         for (int i = 0; i < nums.length; i++) {
             int tempNum = target - nums[i];
             if (map.containsKey(tempNum)) {
-                result = new int[] {map.get(tempNum), i};
+                result = new int[] { map.get(tempNum), i };
             } else {
                 map.put(nums[i], i);
             }
@@ -191,8 +193,8 @@ public class AlgorithController {
         map.put('M', 1000);
         int result = 0;
         for (int i = 0; i < s.length(); i++) {
-            if (i != s.length() - 1 && map.get(s.charAt(i)) < map.get(s.charAt(i+1))) {
-                result += map.get(s.charAt(i+1)) - map.get(s.charAt(i));
+            if (i != s.length() - 1 && map.get(s.charAt(i)) < map.get(s.charAt(i + 1))) {
+                result += map.get(s.charAt(i + 1)) - map.get(s.charAt(i));
                 i++;
             } else {
                 result += map.get(s.charAt(i));
@@ -224,8 +226,9 @@ public class AlgorithController {
 
     public List<List<Integer>> threeSum(int[] nums) {
         if (nums.length < 3) {
-            List<Integer> list = new ArrayList<>();
-            return new ArrayList(list);
+            List<List<Integer>> list = new ArrayList<>();
+            list.add(new ArrayList<Integer>());
+            return list;
         }
         List<List<Integer>> list = new ArrayList<>();
         this.tool.sort(nums);
@@ -246,7 +249,7 @@ public class AlgorithController {
                     maxRef--;
                 } else {
                     if (minRef < i + 2 || nums[minRef] != nums[minRef - 1]) {
-                        List tempList = new ArrayList<Integer>();
+                        List<Integer> tempList = new ArrayList<Integer>();
                         tempList.add(nums[i]);
                         tempList.add(nums[minRef]);
                         tempList.add(nums[maxRef]);
@@ -332,15 +335,15 @@ public class AlgorithController {
     }
 
     public List<String> letterCombinations(String digits) {
-        Map map = new HashMap<Character, String[]>();
-        map.put('2', new String[] {"a", "b", "c"});
-        map.put('3', new String[] {"d", "e", "f"});
-        map.put('4', new String[] {"g", "h", "i"});
-        map.put('5', new String[] {"j", "k", "l"});
-        map.put('6', new String[] {"m", "n", "o"});
-        map.put('7', new String[] {"p", "q", "r", "s"});
-        map.put('8', new String[] {"t", "u", "v"});
-        map.put('9', new String[] {"w", "x", "y", "z"});
+        Map<Character, String[]> map = new HashMap<Character, String[]>();
+        map.put('2', new String[] { "a", "b", "c" });
+        map.put('3', new String[] { "d", "e", "f" });
+        map.put('4', new String[] { "g", "h", "i" });
+        map.put('5', new String[] { "j", "k", "l" });
+        map.put('6', new String[] { "m", "n", "o" });
+        map.put('7', new String[] { "p", "q", "r", "s" });
+        map.put('8', new String[] { "t", "u", "v" });
+        map.put('9', new String[] { "w", "x", "y", "z" });
         List<String> result = new LinkedList<>();
         for (int i = 0; i < digits.length(); i++) {
             Character currentNum = digits.charAt(i);
@@ -350,7 +353,7 @@ public class AlgorithController {
                 if (result.size() == 0) {
                     newResult.add(currentStrArray[y]);
                 } else {
-                    for (String str: result) {
+                    for (String str : result) {
                         newResult.add(str + currentStrArray[y]);
                     }
                 }
@@ -363,14 +366,15 @@ public class AlgorithController {
     public List<List<Integer>> fourSum(int[] nums, int target) {
         List<List<Integer>> list = new ArrayList<>();
         if (nums.length < 4) {
-            return new ArrayList(list);
+            list.add(new ArrayList<Integer>());
+            return list;
         }
         this.tool.sort(nums);
         for (int i = 0; i < nums.length - 3; i++) {
             if (i >= 1 && nums[i] == nums[i - 1]) {
                 continue;
             }
-            for (int y = i + 1; y < nums.length - 2;y++) {
+            for (int y = i + 1; y < nums.length - 2; y++) {
                 if (y >= i + 2 && nums[y] == nums[y - 1]) {
                     continue;
                 }
@@ -383,7 +387,7 @@ public class AlgorithController {
                         maxRef--;
                     } else {
                         if (minRef < y + 2 || nums[minRef] != nums[minRef - 1]) {
-                            List tempList = new ArrayList<Integer>();
+                            List<Integer> tempList = new ArrayList<Integer>();
                             tempList.add(nums[i]);
                             tempList.add(nums[y]);
                             tempList.add(nums[minRef]);
@@ -430,8 +434,8 @@ public class AlgorithController {
         } else if (s.length() < 2) {
             return false;
         }
-        List<Character> left = new ArrayList();
-        Map<Character, Character> map = new HashMap();
+        List<Character> left = new ArrayList<Character>();
+        Map<Character, Character> map = new HashMap<Character, Character>();
         map.put('{', '}');
         map.put('[', ']');
         map.put('(', ')');
@@ -454,34 +458,4 @@ public class AlgorithController {
         return left.size() == 0;
     }
 
-
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
