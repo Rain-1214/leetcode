@@ -1,15 +1,10 @@
 package com.leetcode.algorithm;
 
 import com.leetcode.entity.ListNode;
-import com.leetcode.entity.Tool;
-import com.leetcode.tool.Print;
 
-import java.io.*;
 import java.util.*;
 
 public class AlgorithController20to40 {
-
-    private Tool tool = new Tool();
 
     public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
         if (l1 == null && l2 == null) {
@@ -44,7 +39,7 @@ public class AlgorithController20to40 {
     public int removeElement(int[] nums, int val) {
         int result = nums.length;
         for (int i = 0; i < nums.length; i++) {
-            for (int y: nums) {
+            for (int y : nums) {
                 System.out.print(y);
             }
             System.out.print("\n");
@@ -74,7 +69,7 @@ public class AlgorithController20to40 {
     }
 
     public int searchInsert(int[] nums, int target) {
-        for (int i = 0;i < nums.length; i++) {
+        for (int i = 0; i < nums.length; i++) {
             if (target <= nums[i]) {
                 return i;
             }
@@ -88,8 +83,8 @@ public class AlgorithController20to40 {
         return result;
     }
 
-    public void addParentheses (List<String> result, String currentStr, int leftNum, int rightNum, int maxNum) {
-        if (currentStr.length() >= maxNum *2) {
+    public void addParentheses(List<String> result, String currentStr, int leftNum, int rightNum, int maxNum) {
+        if (currentStr.length() >= maxNum * 2) {
             result.add(currentStr);
             return;
         }
@@ -233,48 +228,49 @@ public class AlgorithController20to40 {
         return ((dividend > 0 && divisor > 0) || (dividend < 0 && divisor < 0)) ? result : 0 - result;
     }
 
-//    public int divide(int dividend, int divisor) {
-//        if (dividend == Integer.MIN_VALUE && (divisor == 1 || divisor == -1)) {
-//            return divisor == 1 ? Integer.MIN_VALUE : Integer.MAX_VALUE;
-//        }
-//        return (int)divideLong(dividend, divisor);
-//    }
-//
-//    public long divideLong(long dd, long dv){
-//        boolean isPos = (dd > 0 && dv > 0) || (dd < 0 && dv < 0);
-//        dd = Math.abs(dd);
-//        dv = Math.abs(dv);
-//        int digits = 0;// 通过将除数乘2,乘4,乘8,一直乘下去,找到商的最高的次方// 比如87/4=21,商的最高次方是4,即2^4=16,即4 * 16 < 87
-//        while(dv <= dd){
-//            dv <<= 1;
-//            digits++;
-//        }
-//        System.out.println(digits);
-//        System.out.println("-----");
-//        // 重置除数,把最高次方减1得到实际最高位,刚才循环中多加了一次
-//        long res = 0;
-//        dv >>= digits;
-//        digits--;// 看商的每一位是否应该为1
-//        while(digits >= 0){
-//            System.out.println("-----");
-//            System.out.println(res);
-//            System.out.println(digits);
-//            System.out.println(dd);
-//            System.out.println(dv);
-//            if(dd >= (dv << digits)){
-//                dd -= dv << digits;
-//                res += 1 << digits;
-//            }
-//            digits--;
-//            System.out.println("++++++");
-//            System.out.println(res);
-//            System.out.println(digits);
-//            System.out.println(dd);
-//            System.out.println(dv);
-//            System.out.println("-----");
-//        }
-//        return isPos ? res : - res;
-//    }
+    // public int divide(int dividend, int divisor) {
+    // if (dividend == Integer.MIN_VALUE && (divisor == 1 || divisor == -1)) {
+    // return divisor == 1 ? Integer.MIN_VALUE : Integer.MAX_VALUE;
+    // }
+    // return (int)divideLong(dividend, divisor);
+    // }
+    //
+    // public long divideLong(long dd, long dv){
+    // boolean isPos = (dd > 0 && dv > 0) || (dd < 0 && dv < 0);
+    // dd = Math.abs(dd);
+    // dv = Math.abs(dv);
+    // int digits = 0;// 通过将除数乘2,乘4,乘8,一直乘下去,找到商的最高的次方//
+    // 比如87/4=21,商的最高次方是4,即2^4=16,即4 * 16 < 87
+    // while(dv <= dd){
+    // dv <<= 1;
+    // digits++;
+    // }
+    // System.out.println(digits);
+    // System.out.println("-----");
+    // // 重置除数,把最高次方减1得到实际最高位,刚才循环中多加了一次
+    // long res = 0;
+    // dv >>= digits;
+    // digits--;// 看商的每一位是否应该为1
+    // while(digits >= 0){
+    // System.out.println("-----");
+    // System.out.println(res);
+    // System.out.println(digits);
+    // System.out.println(dd);
+    // System.out.println(dv);
+    // if(dd >= (dv << digits)){
+    // dd -= dv << digits;
+    // res += 1 << digits;
+    // }
+    // digits--;
+    // System.out.println("++++++");
+    // System.out.println(res);
+    // System.out.println(digits);
+    // System.out.println(dd);
+    // System.out.println(dv);
+    // System.out.println("-----");
+    // }
+    // return isPos ? res : - res;
+    // }
 
     public List<Integer> findSubstring(String s, String[] words) {
         List<Integer> result = new ArrayList<>();
@@ -324,7 +320,6 @@ public class AlgorithController20to40 {
         return false;
     }
 
-
     public void nextPermutation(int[] nums) {
         if (nums.length < 2) {
             return;
@@ -373,7 +368,7 @@ public class AlgorithController20to40 {
         int rightParenthesesNum = 1;
         char leftParentheses = '(';
         char rightParentheses = ')';
-        for (int i = 0;i < n;i++) {
+        for (int i = 0; i < n; i++) {
             if (s.charAt(i) == leftParentheses) {
                 ArrayList<Integer> tempLeftList = new ArrayList<>();
                 tempLeftList.add(leftParenthesesNum);
@@ -442,18 +437,18 @@ public class AlgorithController20to40 {
 
     public int[] searchRange(int[] nums, int target) {
         if (nums.length == 0) {
-            return new int[]{-1,-1};
+            return new int[] { -1, -1 };
         }
         int leftIndex = leftDichotomy(nums, 0, nums.length - 1, target);
         if (leftIndex == -1) {
-            return new int[]{-1,-1};
+            return new int[] { -1, -1 };
         } else {
             for (int i = leftIndex; i < nums.length; i++) {
                 if (nums[i] != target) {
-                    return new int[]{leftIndex, i - 1};
+                    return new int[] { leftIndex, i - 1 };
                 }
             }
-            return new int[]{leftIndex, nums.length - 1};
+            return new int[] { leftIndex, nums.length - 1 };
         }
     }
 
@@ -519,12 +514,12 @@ public class AlgorithController20to40 {
         return true;
     }
 
-    public boolean checkRepeatChar (char[] charArray) {
+    public boolean checkRepeatChar(char[] charArray) {
         HashSet<Character> tempHashSet = new HashSet<>();
-        for (char tempChar: charArray) {
+        for (char tempChar : charArray) {
             if (tempHashSet.contains(tempChar)) {
                 return false;
-            } else if (tempChar != '.'){
+            } else if (tempChar != '.') {
                 tempHashSet.add(tempChar);
             }
         }
@@ -562,7 +557,7 @@ public class AlgorithController20to40 {
         return true;
     }
 
-    public boolean checkBoardValid (char[][] board, int x, int y) {
+    public boolean checkBoardValid(char[][] board, int x, int y) {
         for (int i = 0; i < 9; i++) {
             if (board[y][i] == board[y][x] && i != x) {
                 return false;
@@ -570,7 +565,8 @@ public class AlgorithController20to40 {
             if (board[i][x] == board[y][x] && i != y) {
                 return false;
             }
-            if (board[i / 3 + (y / 3) * 3][i % 3 + (x / 3) * 3] == board[y][x] && (i / 3 + (y / 3) * 3 != y) && (i % 3 + (x / 3) * 3 != x)) {
+            if (board[i / 3 + (y / 3) * 3][i % 3 + (x / 3) * 3] == board[y][x] && (i / 3 + (y / 3) * 3 != y)
+                    && (i % 3 + (x / 3) * 3 != x)) {
                 return false;
             }
         }
@@ -609,7 +605,8 @@ public class AlgorithController20to40 {
         return result;
     }
 
-    public void combinationSum(List<List<Integer>> result, ArrayList<Integer> list, int startIndex, int[] candidates, int target) {
+    public void combinationSum(List<List<Integer>> result, ArrayList<Integer> list, int startIndex, int[] candidates,
+            int target) {
         if (target > 0) {
             for (int i = startIndex; i < candidates.length; i++) {
                 list.add(candidates[i]);
@@ -622,37 +619,3 @@ public class AlgorithController20to40 {
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

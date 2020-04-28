@@ -9,15 +9,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.*;
-
 public class AlgorithControllerTest {
 
     private AlgorithController algorithController;
     private Tool tool;
 
     @Before
-    public void beforeTest () {
+    public void beforeTest() {
         this.tool = new Tool();
         this.algorithController = new AlgorithController();
     }
@@ -75,12 +73,12 @@ public class AlgorithControllerTest {
 
     @Test
     public void longestCommonPrefix() {
-        System.out.print(this.algorithController.longestCommonPrefix(new String[] {"aa","a"}));
+        System.out.print(this.algorithController.longestCommonPrefix(new String[] { "aa", "a" }));
     }
 
     @Test
     public void sort() {
-        int[] a = new int[] {9, 5,98,745,13,1,568,489,643,21};
+        int[] a = new int[] { 9, 5, 98, 745, 13, 1, 568, 489, 643, 21 };
         this.tool.sort(a);
         for (int i : a) {
             System.out.print(i);
@@ -90,13 +88,13 @@ public class AlgorithControllerTest {
 
     @Test
     public void threeSum() {
-        List list = this.algorithController.threeSum(new int[] {-4,-1,-1, 0,1,2,});
+        List<List<Integer>> list = this.algorithController.threeSum(new int[] { -4, -1, -1, 0, 1, 2, });
         System.out.print(list);
     }
 
     @Test
     public void threeSumClosest() {
-        int result = this.algorithController.threeSumClosest(new int[] {1,2,5,10,11}, 12);
+        int result = this.algorithController.threeSumClosest(new int[] { 1, 2, 5, 10, 11 }, 12);
         System.out.print(result);
     }
 
@@ -113,16 +111,14 @@ public class AlgorithControllerTest {
     @Test
     public void test1() {
         ListNode a = new ListNode(1);
-        ListNode b = a;
         ListNode c = a;
-        b = null;
         System.out.print(c);
     }
 
     @Test
     public void letterCombinations() {
         List<String> test = this.algorithController.letterCombinations("23");
-        for (String str: test) {
+        for (String str : test) {
             System.out.print(str);
             System.out.print(",");
         }
@@ -130,7 +126,7 @@ public class AlgorithControllerTest {
 
     @Test
     public void fourSum() {
-        List list = this.algorithController.fourSum(new int[] {0,0,0,0}, 0);
+        List<List<Integer>> list = this.algorithController.fourSum(new int[] { 0, 0, 0, 0 }, 0);
         System.out.print(list);
     }
 
@@ -153,12 +149,3 @@ public class AlgorithControllerTest {
     }
 
 }
-
-
-
-
-
-
-
-
-

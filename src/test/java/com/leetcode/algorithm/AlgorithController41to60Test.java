@@ -2,21 +2,13 @@ package com.leetcode.algorithm;
 
 import com.leetcode.tool.Print;
 
-import org.json.JSONArray;
 import org.junit.Assert;
 import org.junit.Test;
 
-import net.minidev.json.JSONObject;
-
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import static org.junit.Assert.*;
 
 public class AlgorithController41to60Test {
 
@@ -61,7 +53,7 @@ public class AlgorithController41to60Test {
         test[0] = new int[] { 1, 2, 3 };
         test[1] = new int[] { 4, 5, 6 };
         test[2] = new int[] { 7, 8, 9 };
-        List res1 = new ArrayList<Integer>();
+        List<Integer> res1 = new ArrayList<Integer>();
         Collections.addAll(res1, 1, 2, 3, 6, 9, 8, 7, 4, 5);
         Assert.assertEquals(algorithController41to60.spiralOrder(test), res1);
 
@@ -69,15 +61,16 @@ public class AlgorithController41to60Test {
         test2[0] = new int[] { 1, 2, 3, 4 };
         test2[1] = new int[] { 5, 6, 7, 8 };
         test2[2] = new int[] { 9, 10, 11, 12 };
-        List res2 = new ArrayList<Integer>();
+        List<Integer> res2 = new ArrayList<Integer>();
         Collections.addAll(res2, 1, 2, 3, 4, 8, 12, 11, 10, 9, 5, 6, 7);
         Assert.assertEquals(algorithController41to60.spiralOrder(test2), res2);
 
         int[][] test3 = new int[1][2];
         test3[0] = new int[] { 2, 3 };
-        List res3 = new ArrayList<Integer>();
+        List<Integer> res3 = new ArrayList<Integer>();
         Collections.addAll(res3, 2, 3);
         Assert.assertEquals(algorithController41to60.spiralOrder(test3), res3);
+    }
 
     public void trap() {
         int[] test = new int[] { 4233, 42, 5, 436, 6, 57, 7, 546, 452, 3242, 12 };
@@ -95,7 +88,7 @@ public class AlgorithController41to60Test {
         String sKey = "s";
         String pKey = "p";
         String valueKey = "value";
-        List<HashMap> list = new ArrayList<>();
+        List<HashMap<String, String>> list = new ArrayList<>();
         HashMap<String, String> test1 = new HashMap<>();
         test1.put(sKey, "aa");
         test1.put(pKey, "a");
