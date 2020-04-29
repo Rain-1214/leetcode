@@ -412,4 +412,35 @@ public class AlgorithController41to60 {
         }
         return result;
     }
+
+    public boolean canJumpFail(int[] nums) {
+        return canJumpDeepFail(0, nums);
+    }
+
+    public boolean canJumpDeepFail(int start, int[] nums) {
+        if (start >= nums.length - 1) {
+            return true;
+        }
+        for (int i = nums[start]; i >= 1; i--) {
+            if (canJumpDeepFail(i + start, nums)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean canJump(int[] nums) {
+        boolean result = true;
+        int canSuccessPoint = nums.length - 1;
+        for (int i = nums.length - 2; i >= 0; i--) {
+            if (nums[i] + i >= canSuccessPoint) {
+                result = true;
+                canSuccessPoint = i;
+            } else {
+                result = false;
+            }
+        }
+        return result;
+    }
+
 }

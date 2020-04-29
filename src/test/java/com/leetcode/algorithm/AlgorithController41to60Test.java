@@ -215,4 +215,15 @@ public class AlgorithController41to60Test {
         System.out.println(this.algorithController41to60.solveNQueens(4));
     }
 
+    @Test
+    public void canJumpTest() {
+        int[] test1 = new int[] { 2, 3, 1, 1, 4 };
+        Assert.assertEquals(this.algorithController41to60.canJump(test1), true);
+        int[] test2 = new int[] { 3, 2, 1, 0, 4 };
+        Assert.assertEquals(this.algorithController41to60.canJump(test2), false);
+        System.out.println(this.algorithController41to60.canJump(test2) + "");
+        int[] test3 = new int[] { 0 };
+        Assert.assertEquals(this.algorithController41to60.canJump(test3), true);
+    }
+
 }
