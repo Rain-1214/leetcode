@@ -443,4 +443,67 @@ public class AlgorithController41to60 {
         return result;
     }
 
+    public int[][] mergeFail(int[][] intervals) {
+        ArrayList<ArrayList<Integer>> resultTemp = new ArrayList<ArrayList<Integer>>();
+        for (int i = 0; i < intervals.length; i++) {
+            int[] currentRange = intervals[i];
+            int currentStart = currentRange[0];
+            int currentEnd = currentRange[1];
+            boolean canMerge = false;
+            for (int z = 0; z < resultTemp.size(); z++) {
+                ArrayList<Integer> range = resultTemp.get(z);
+                int start = range.get(0);
+                int end = range.get(1);
+                if (currentStart >= start && currentStart <= end && currentEnd >= end) {
+                    canMerge = true;
+                    range.set(1, currentEnd);
+                }
+                if (currentEnd >= start && currentEnd <= end && currentStart <= start) {
+                    canMerge = true;
+                    range.set(0, currentStart);
+                }
+                if (currentStart < start && currentEnd > end) {
+                    canMerge = true;
+                    range.set(0, currentStart);
+                    range.set(1, currentEnd);
+                }
+                if (currentStart >= start && currentEnd <= end) {
+                    canMerge = true;
+                } 
+            }
+            if (!canMerge) {
+                ArrayList<Integer> newRange = new ArrayList<Integer>();
+                newRange.add(currentStart);
+                newRange.add(currentEnd);
+                resultTemp.add(newRange);
+            }
+        }
+        ArrayList<int[]> result = new ArrayList<>();
+        for(int y = 0; y < resultTemp.size(); y++) {
+            // ...
+            ArrayList<Integer> range = resultTemp.get(y);
+            int[] temp = new int[2];
+            temp[0] = range.get(0);
+            temp[1] = range.get(1);
+            if (result.contains(temp)) {
+                continue;
+            } else {
+                result.add(temp);
+            }
+        }
+        return result.toArray(new int[result.size()][2]);
+    }
+
+    public int[][] merge(int[][] intervals) {
+        Collections.sort(Arrays.asList(intervals), (x, y) -> Integer.compare(x[0], y[0]));
+        LinkedList<int[]> result = new LinkedList<>();
+        for(int[] range: intervals) {
+            if (result.isEmpty() || result.getLast()[1] < range[0]) {
+                result.add(range);
+            } else {
+                result.getLast()[1] = Math.max(result.getLast()[1], range[1]);
+            }
+        }
+        return result.toArray(new int[result.size()][]);
+    }
 }
