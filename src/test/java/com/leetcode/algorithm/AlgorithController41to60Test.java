@@ -13,7 +13,6 @@ import java.util.List;
 public class AlgorithController41to60Test {
 
     private AlgorithController41to60 algorithController41to60 = new AlgorithController41to60();
-    private Print print = new Print();
 
     @Test
     public void rotate() {
@@ -235,8 +234,7 @@ public class AlgorithController41to60Test {
         test1[2] = new int[]{6,7};
         test1[3] = new int[]{8,9};
         test1[3] = new int[]{1,10};
-        print.print2DIntArray(this.algorithController41to60.merge(test1));
-
+        this.algorithController41to60.merge(test1);
     }
 
 }

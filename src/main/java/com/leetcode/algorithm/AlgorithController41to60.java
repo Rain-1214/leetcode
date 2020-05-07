@@ -1,9 +1,6 @@
 package com.leetcode.algorithm;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.*;
-import java.util.List;
 
 public class AlgorithController41to60 {
 
@@ -505,5 +502,35 @@ public class AlgorithController41to60 {
             }
         }
         return result.toArray(new int[result.size()][]);
+    }
+
+    public int[][] insertSoSlow(int[][] intervals, int[] newInterval) {
+        int[][] params = new int[intervals.length + 1][2];
+        for (int i = 0; i<intervals.length; i++) {
+            params[i] = intervals[i];
+        }
+        params[params.length - 1] = newInterval;
+        return this.merge(params);
+    }
+
+    public int[][] insert(int[][] intervals, int[] newInterval) {
+        ArrayList<int[]> resultList = new ArrayList<>();
+        boolean insert = false;
+        for (int i = 0;i < intervals.length; i++) {
+            if (insert || intervals[i][1] < newInterval[0]) {
+                resultList.add(intervals[i]);
+            } else if (intervals[i][0] > newInterval[1]) {
+                resultList.add(newInterval);
+                resultList.add(intervals[i]);
+                insert = true;
+            } else {
+                newInterval[0] = Math.min(intervals[i][0], newInterval[0]);
+                newInterval[1] = Math.max(intervals[i][1], newInterval[1]);
+            }
+        }
+        if (!insert) {
+            resultList.add(newInterval);
+        }
+        return resultList.toArray(new int[resultList.size()][2]);
     }
 }
