@@ -237,4 +237,9 @@ public class AlgorithController41to60Test {
         this.algorithController41to60.merge(test1);
     }
 
+    @Test
+    public void generateMatrix() {
+        Print.print2DIntArray(this.algorithController41to60.generateMatrix(3));
+    }
+
 }
