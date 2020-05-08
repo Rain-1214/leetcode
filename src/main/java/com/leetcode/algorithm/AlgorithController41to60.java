@@ -533,4 +533,30 @@ public class AlgorithController41to60 {
         }
         return resultList.toArray(new int[resultList.size()][2]);
     }
+
+    public int[][] generateMatrix(int n) {
+        int[][] result = new int[n][n];
+        int side = n;
+        int time = 0;
+        int num = 1;
+        while (time < side) {
+            for (int i = time; i < side; i++) {
+                result[time][i] = num++;
+            }
+            for (int y = time + 1; y < side; y++) {
+                result[y][side - 1] = num++;
+            }
+            for (int x = side - 2; x >= time && (side != time + 1); x--) {
+                result[side - 1][x] = num++;
+            }
+            for (int z = side - 2; z > time && (side != time + 1); z--) {
+                result[z][time] = num++;
+            }
+            time++;
+            side--;
+        }
+        return result;
+    }
+
+
 }
