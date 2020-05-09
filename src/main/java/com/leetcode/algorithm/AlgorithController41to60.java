@@ -558,5 +558,49 @@ public class AlgorithController41to60 {
         return result;
     }
 
+    public List<String> generateList(int n, int maxN) {
+        List<String> newResult = new ArrayList<>();
+        if (n == maxN) {
+            newResult.add(maxN + "");
+            return newResult;
+        }
+        List<String> result = this.generateList(n + 1, maxN);
+        for (int i = 0; i < result.size(); i++) {
+            String str = result.get(i);
+            for (int y = 0; y <= str.length(); y++) {
+                String newStr = str.substring(0, y) + n + str.substring(y);
+                newResult.add(newStr);
+            }
+        }
+        return newResult;
+    }
+
+    public String getPermutationSoSlow(int n, int k) {
+        List<String> list = this.generateList(1, n);
+        Collections.sort(list, (a, b) -> Integer.parseInt(a) - Integer.parseInt(b));
+        System.out.println(list);
+        return list.get(k - 1);
+    }
+
+    public int factorail (int n) {
+        if (n == 1) {
+            return 1;
+        }
+        return n * factorail(n -1);
+    }
+
+    public String getPermutation(int n, int k) {
+        List<Integer> set = new ArrayList<>();
+        for (int i = 1; i <= n; i++) {
+            set.add(i);
+        }
+        int max = factorail(n);
+        int result = 0;
+        for (int i = n; i >= 1; i--) {
+            int current = k / max;
+            result += Math.pow(10, i) * set.get(current);
+        }
+        return Integer.toString(result);
+    }
 
 }
