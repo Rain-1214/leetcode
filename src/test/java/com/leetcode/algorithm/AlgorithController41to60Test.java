@@ -242,4 +242,9 @@ public class AlgorithController41to60Test {
         Print.print2DIntArray(this.algorithController41to60.generateMatrix(3));
     }
 
+    @Test
+    public void getPermutation() {
+        System.out.print(this.algorithController41to60.getPermutation(9, 20000));
+    }
+
 }

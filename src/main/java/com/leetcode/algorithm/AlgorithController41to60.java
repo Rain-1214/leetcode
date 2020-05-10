@@ -558,5 +558,55 @@ public class AlgorithController41to60 {
         return result;
     }
 
+    public List<String> generateList(int n, int maxN) {
+        List<String> newResult = new ArrayList<>();
+        if (n == maxN) {
+            newResult.add(maxN + "");
+            return newResult;
+        }
+        List<String> result = this.generateList(n + 1, maxN);
+        for (int i = 0; i < result.size(); i++) {
+            String str = result.get(i);
+            for (int y = 0; y <= str.length(); y++) {
+                String newStr = str.substring(0, y) + n + str.substring(y);
+                newResult.add(newStr);
+            }
+        }
+        return newResult;
+    }
+
+    public String getPermutationSoSlow(int n, int k) {
+        List<String> list = this.generateList(1, n);
+        Collections.sort(list, (a, b) -> Integer.parseInt(a) - Integer.parseInt(b));
+        System.out.println(list);
+        return list.get(k - 1);
+    }
+
+    public int factorail (int n) {
+        if (n == 1) {
+            return 1;
+        }
+        return n * factorail(n -1);
+    }
+
+    public String getPermutation(int n, int k) {
+        List<Integer> fact= new ArrayList<>();
+        List<Integer> nums = new ArrayList<>();
+        fact.add(1);
+        for(int i = 1; i < n; i++) {
+            fact.add(i, i * fact.get(i - 1));
+        }
+        for(int i = 1; i <= n; i++) {
+            nums.add(i);
+        }
+        k--;
+        String s = "";
+        for(int i= n-1; i >= 0; i--) {
+            int index = k / fact.get(i);
+            s = s + "" + nums.remove(index);
+            k = k % fact.get(i);
+        }
+        return s;
+    }
 
 }
