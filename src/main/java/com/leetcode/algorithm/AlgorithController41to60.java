@@ -590,17 +590,23 @@ public class AlgorithController41to60 {
     }
 
     public String getPermutation(int n, int k) {
-        List<Integer> set = new ArrayList<>();
-        for (int i = 1; i <= n; i++) {
-            set.add(i);
+        List<Integer> fact= new ArrayList<>();
+        List<Integer> nums = new ArrayList<>();
+        fact.add(1);
+        for(int i = 1; i < n; i++) {
+            fact.add(i, i * fact.get(i - 1));
         }
-        int max = factorail(n);
-        int result = 0;
-        for (int i = n; i >= 1; i--) {
-            int current = k / max;
-            result += Math.pow(10, i) * set.get(current);
+        for(int i = 1; i <= n; i++) {
+            nums.add(i);
         }
-        return Integer.toString(result);
+        k--;
+        String s = "";
+        for(int i= n-1; i >= 0; i--) {
+            int index = k / fact.get(i);
+            s = s + "" + nums.remove(index);
+            k = k % fact.get(i);
+        }
+        return s;
     }
 
 }
