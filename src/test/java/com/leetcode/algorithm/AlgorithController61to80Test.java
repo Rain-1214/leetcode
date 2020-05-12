@@ -25,4 +25,10 @@ public class AlgorithController61to80Test {
     this.algorithController61to80.rotateRight(null, 0);
   }
 
+
+  @Test
+  public void uniquePaths() {
+    System.out.println(this.algorithController61to80.uniquePaths(3, 2));
+  }
+
 }
