@@ -43,4 +43,23 @@ public class AlgorithController61to80 {
     return result;
   }
 
+  public int uniquePaths(int m, int n) {
+    int[][] board = new int[m][n];
+    return countPath(0, 0, m, n, board);
+  }
+
+  public int countPath(int i, int j, int m, int n, int[][] board) {
+      if (i >= m || j >= n) {
+          return 0;
+      }
+      if (i == m - 1 && j == n - 1) {
+          return 1;
+      }
+      if (board[i][j] != 0) {
+          return board[i][j];
+      }
+      board[i][j] = countPath(i + 1, j, m, n, board) + countPath(i, j + 1, m, n, board);
+      return board[i][j];
+  }
+
 }
