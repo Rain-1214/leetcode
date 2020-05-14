@@ -39,4 +39,9 @@ public class AlgorithController61to80Test {
     this.algorithController61to80.minPathSum(test);
   }
 
+  @Test
+  public void isNumber() {
+    System.out.println(this.algorithController61to80.isNumber("2e0"));
+  }
+
 }

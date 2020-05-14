@@ -1,7 +1,5 @@
 package com.leetcode.algorithm;
 
-import java.util.*;
-
 import com.leetcode.entity.ListNode;
 
 public class AlgorithController61to80 {
@@ -118,4 +116,66 @@ public class AlgorithController61to80 {
     }
     return dp[width - 1];
   }
+
+  public boolean isNumber(String s) {
+    s = s.trim();
+    int state = 0;
+    for (int i = 0; i < s.length(); i++) {
+        switch (s.charAt(i)) {
+            case '+':
+            case '-':
+                if (state == 0) {
+                    state = 1;
+                } else if (state == 4) {
+                    state = 6;
+                } else {
+                    return false;
+                }
+                break;
+            case '0':
+            case '1':
+            case '2':
+            case '3':
+            case '4':
+            case '5':
+            case '6':
+            case '7':
+            case '8':
+            case '9':
+                if (state == 0 || state == 1 || state == 2) {
+                    state = 2;
+                } else if (state == 7 || state == 8) {
+                    state = 8;
+                } else if (state == 3) {
+                    state = 3;
+                } else if (state == 4 || state == 5 || state == 6) {
+                    state = 5;
+                } else {
+                    return false;
+                }
+                break;
+            case '.':
+                if (state == 0 || state == 1) {
+                    state = 7;
+                } else if (state == 2) {
+                    state = 3;
+                } else {
+                    return false;
+                }
+                break;
+            case 'e':
+                if (state == 2 || state == 3 || state == 8) {
+                    state = 4;
+                } else {
+                    return false;
+                }
+                break;
+            default:
+                return false;
+            
+        }
+    }
+    return state == 2 || state == 5 || state == 3 || state == 8;
+  }
+
 }
