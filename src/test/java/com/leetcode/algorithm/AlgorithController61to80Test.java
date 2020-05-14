@@ -5,7 +5,7 @@ import com.leetcode.entity.ListNode;
 import org.junit.Test;
 
 public class AlgorithController61to80Test {
-  
+
   private AlgorithController61to80 algorithController61to80 = new AlgorithController61to80();
 
   @Test
@@ -25,10 +25,18 @@ public class AlgorithController61to80Test {
     this.algorithController61to80.rotateRight(null, 0);
   }
 
-
   @Test
   public void uniquePaths() {
     System.out.println(this.algorithController61to80.uniquePaths(3, 2));
+  }
+
+  @Test
+  public void minPathSum() {
+    int[][] test = new int[3][3];
+    test[0] = new int[] { 1, 3, 1 };
+    test[1] = new int[] { 1, 5, 1 };
+    test[2] = new int[] { 4, 2, 1 };
+    this.algorithController61to80.minPathSum(test);
   }
 
 }
