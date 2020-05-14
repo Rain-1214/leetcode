@@ -9,7 +9,7 @@ public class AlgorithController61to80 {
   public ListNode rotateRight(ListNode head, int k) {
     int len = 0;
     ListNode currentNode = head;
-    while(currentNode != null) {
+    while (currentNode != null) {
       len++;
       currentNode = currentNode.next;
     }
@@ -23,16 +23,16 @@ public class AlgorithController61to80 {
     currentNode = head;
     int newLen = 1;
     ListNode result = null;
-    while(currentNode != null) {
+    while (currentNode != null) {
       if (newLen == len - point) {
         result = currentNode.next;
         currentNode.next = null;
         ListNode tempResult = result;
-        while(true) {
+        while (true) {
           if (tempResult.next == null) {
             tempResult.next = head;
             break;
-          } 
+          }
           tempResult = tempResult.next;
         }
         break;
@@ -79,7 +79,8 @@ public class AlgorithController61to80 {
     if (board[i][j] != 0) {
       return board[i][j];
     }
-    board[i][j] = countPathWithObstacles(i + 1, j, m, n, board, sourceBoard) + countPathWithObstacles(i, j + 1, m, n, board, sourceBoard);
+    board[i][j] = countPathWithObstacles(i + 1, j, m, n, board, sourceBoard)
+        + countPathWithObstacles(i, j + 1, m, n, board, sourceBoard);
     return board[i][j];
   }
 
@@ -87,7 +88,7 @@ public class AlgorithController61to80 {
     int rowLen = obstacleGrid[0].length;
     int[] dp = new int[rowLen];
     dp[0] = 1;
-    for (int[] row: obstacleGrid) {
+    for (int[] row : obstacleGrid) {
       for (int i = 0; i < row.length; i++) {
         if (row[i] == 1) {
           dp[i] = 0;
@@ -99,4 +100,22 @@ public class AlgorithController61to80 {
     return dp[rowLen - 1];
   }
 
+  public int minPathSum(int[][] grid) {
+    int width = grid[0].length;
+    int[] dp = new int[width];
+    dp[0] = grid[0][0];
+    for (int y = 0; y < grid.length; y++) {
+      int[] row = grid[y];
+      for (int i = 0; i < row.length; i++) {
+        if (y == 0 && i > 0) {
+          dp[i] = row[i] + dp[i - 1];
+        } else if (i == 0 && y > 0) {
+          dp[i] = row[i] + dp[i];
+        } else if (i > 0 && y > 0) {
+          dp[i] = Math.min(row[i] + dp[i - 1], row[i] + dp[i]);
+        }
+      }
+    }
+    return dp[width - 1];
+  }
 }
