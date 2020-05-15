@@ -46,7 +46,13 @@ public class AlgorithController61to80Test {
 
   @Test
   public void plusOne() {
-    this.algorithController61to80.plusOne(new int[]{9});
+    this.algorithController61to80.plusOne(new int[] { 9 });
+  }
+
+  @Test
+  public void addBinary() {
+    System.out.println(this.algorithController61to80.addBinary("11", "1"));
+    ;
   }
 
 }

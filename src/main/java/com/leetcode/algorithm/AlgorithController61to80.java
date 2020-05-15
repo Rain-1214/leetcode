@@ -121,74 +121,127 @@ public class AlgorithController61to80 {
     s = s.trim();
     int state = 0;
     for (int i = 0; i < s.length(); i++) {
-        switch (s.charAt(i)) {
-            case '+':
-            case '-':
-                if (state == 0) {
-                    state = 1;
-                } else if (state == 4) {
-                    state = 6;
-                } else {
-                    return false;
-                }
-                break;
-            case '0':
-            case '1':
-            case '2':
-            case '3':
-            case '4':
-            case '5':
-            case '6':
-            case '7':
-            case '8':
-            case '9':
-                if (state == 0 || state == 1 || state == 2) {
-                    state = 2;
-                } else if (state == 7 || state == 8) {
-                    state = 8;
-                } else if (state == 3) {
-                    state = 3;
-                } else if (state == 4 || state == 5 || state == 6) {
-                    state = 5;
-                } else {
-                    return false;
-                }
-                break;
-            case '.':
-                if (state == 0 || state == 1) {
-                    state = 7;
-                } else if (state == 2) {
-                    state = 3;
-                } else {
-                    return false;
-                }
-                break;
-            case 'e':
-                if (state == 2 || state == 3 || state == 8) {
-                    state = 4;
-                } else {
-                    return false;
-                }
-                break;
-            default:
-                return false;
-            
-        }
+      switch (s.charAt(i)) {
+        case '+':
+        case '-':
+          if (state == 0) {
+            state = 1;
+          } else if (state == 4) {
+            state = 6;
+          } else {
+            return false;
+          }
+          break;
+        case '0':
+        case '1':
+        case '2':
+        case '3':
+        case '4':
+        case '5':
+        case '6':
+        case '7':
+        case '8':
+        case '9':
+          if (state == 0 || state == 1 || state == 2) {
+            state = 2;
+          } else if (state == 7 || state == 8) {
+            state = 8;
+          } else if (state == 3) {
+            state = 3;
+          } else if (state == 4 || state == 5 || state == 6) {
+            state = 5;
+          } else {
+            return false;
+          }
+          break;
+        case '.':
+          if (state == 0 || state == 1) {
+            state = 7;
+          } else if (state == 2) {
+            state = 3;
+          } else {
+            return false;
+          }
+          break;
+        case 'e':
+          if (state == 2 || state == 3 || state == 8) {
+            state = 4;
+          } else {
+            return false;
+          }
+          break;
+        default:
+          return false;
+
+      }
     }
     return state == 2 || state == 5 || state == 3 || state == 8;
   }
 
   public int[] plusOne(int[] digits) {
-    for(int i = digits.length - 1; i >= 0 ; i--) {
+    for (int i = digits.length - 1; i >= 0; i--) {
       if (++digits[i] > 9) {
         digits[i] = 0;
       } else {
         return digits;
-      };
+      }
+      ;
     }
     int[] result = new int[digits.length + 1];
     result[0] = 1;
     return result;
   }
-  
+
+  public String addBinarySoSlow(String a, String b) {
+    int i = a.length() - 1;
+    int y = b.length() - 1;
+    String result = "";
+    boolean flag = false;
+    while (i >= 0 || y >= 0) {
+      Character aChar = i >= 0 ? a.charAt(i) : '0';
+      Character bChar = y >= 0 ? b.charAt(y) : '0';
+      if (aChar == '1' && bChar == '1') {
+        result = (flag ? '1' : '0') + result;
+        flag = true;
+      } else if (aChar == '0' && bChar == '0') {
+        result = (flag ? '1' : '0') + result;
+        flag = false;
+      } else {
+        result = (flag ? '0' : '1') + result;
+      }
+      i--;
+      y--;
+    }
+    if (flag) {
+      result = '1' + result;
+    }
+    return result;
+  }
+
+  public String addBinary(String a, String b) {
+    int i = a.length() - 1;
+    int y = b.length() - 1;
+    StringBuilder sb = new StringBuilder();
+    boolean flag = false;
+    while (i >= 0 || y >= 0) {
+      Character aChar = i >= 0 ? a.charAt(i) : '0';
+      Character bChar = y >= 0 ? b.charAt(y) : '0';
+      if (aChar == '1' && bChar == '1') {
+        sb.append(flag ? '1' : '0');
+        flag = true;
+      } else if (aChar == '0' && bChar == '0') {
+        sb.append(flag ? '1' : '0');
+        flag = false;
+      } else {
+        sb.append(flag ? '0' : '1');
+      }
+      i--;
+      y--;
+    }
+    if (flag) {
+      sb.append('1');
+    }
+    return sb.reverse().toString();
+  }
+
 }
