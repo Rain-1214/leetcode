@@ -44,4 +44,9 @@ public class AlgorithController61to80Test {
     System.out.println(this.algorithController61to80.isNumber("2e0"));
   }
 
+  @Test
+  public void plusOne() {
+    this.algorithController61to80.plusOne(new int[]{9});
+  }
+
 }
