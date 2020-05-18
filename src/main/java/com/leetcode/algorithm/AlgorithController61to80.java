@@ -244,4 +244,22 @@ public class AlgorithController61to80 {
     return sb.reverse().toString();
   }
 
+  public int mySqrt(int x) {
+    int left = 2;
+    int right = x / 2;
+    while (left <= right) {
+      int mid = left + (right - left) / 2;
+      if (Math.pow(mid, 2) <= x && Math.pow(mid + 1, 2) > x) {
+        return mid;
+      }
+      if (Math.pow(mid, 2) > x) {
+        right = left + (right - left) / 2;
+      }
+      if (Math.pow(mid, 2) < x) {
+        left = left + (right - left) / 2;
+      }
+    }
+    return left - 1;
+  }
+
 }
