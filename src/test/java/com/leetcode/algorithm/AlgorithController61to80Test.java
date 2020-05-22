@@ -60,4 +60,9 @@ public class AlgorithController61to80Test {
     System.out.println(this.algorithController61to80.mySqrt(5));
   }
 
+  @Test
+  public void climbStairs() {
+    System.out.println(this.algorithController61to80.climbStairs(4));
+  }
+
 }
