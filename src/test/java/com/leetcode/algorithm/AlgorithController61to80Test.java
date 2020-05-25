@@ -2,6 +2,7 @@ package com.leetcode.algorithm;
 
 import com.leetcode.entity.ListNode;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 public class AlgorithController61to80Test {
@@ -63,6 +64,16 @@ public class AlgorithController61to80Test {
   @Test
   public void climbStairs() {
     System.out.println(this.algorithController61to80.climbStairs(4));
+  }
+
+  @Test
+  public void simplifyPath() {
+    Assert.assertEquals(this.algorithController61to80.simplifyPath("/home/"), "/home");
+    Assert.assertEquals(this.algorithController61to80.simplifyPath("/../"), "/");
+    Assert.assertEquals(this.algorithController61to80.simplifyPath("/home//foo/"), "/home/foo");
+    Assert.assertEquals(this.algorithController61to80.simplifyPath("/a/./b/../../c/"), "/c");
+    Assert.assertEquals(this.algorithController61to80.simplifyPath("/a/../../b/../c//.//"), "/c");
+    Assert.assertEquals(this.algorithController61to80.simplifyPath("/a//b////c/d//././/.."), "/a/b/c");
   }
 
 }

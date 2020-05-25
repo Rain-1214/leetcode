@@ -1,6 +1,9 @@
 package com.leetcode.algorithm;
 
+import java.util.ArrayList;
+
 import com.leetcode.entity.ListNode;
+import com.sun.tools.javac.util.List;
 
 public class AlgorithController61to80 {
 
@@ -273,6 +276,30 @@ public class AlgorithController61to80 {
       dp[i] = dp[i - 1] + dp[i - 2];
     }
     return dp[n - 1];
+  }
+
+  public String simplifyPath(String path) {
+    if (path.length() == 0) {
+      return path;
+    }
+    ArrayList<String> tempPath = new ArrayList<>();
+    String[] paths = path.split("/");
+    for (int i = 0; i < paths.length; i++) {
+      String p = paths[i];
+      if (p.equals(".") || p.equals("")) {
+        continue;
+      } else if (p.equals("..")) {
+        if (tempPath.size() > 0) {
+          tempPath.remove(tempPath.size() - 1);
+          continue;
+        } else {
+          continue;
+        }
+      } else {
+        tempPath.add(p);
+      }
+    }
+    return "/" + String.join("/", tempPath);
   }
 
 }
