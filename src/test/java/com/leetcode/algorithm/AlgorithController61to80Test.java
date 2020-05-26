@@ -76,4 +76,10 @@ public class AlgorithController61to80Test {
     Assert.assertEquals(this.algorithController61to80.simplifyPath("/a//b////c/d//././/.."), "/a/b/c");
   }
 
+  @Test
+  public void minDistance() {
+    System.out.println(this.algorithController61to80.minDistance("horse", "ros"));
+    System.out.println(this.algorithController61to80.minDistance("intention", "execution"));
+  }
+
 }
