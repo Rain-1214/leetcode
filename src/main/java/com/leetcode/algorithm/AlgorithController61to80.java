@@ -3,7 +3,6 @@ package com.leetcode.algorithm;
 import java.util.ArrayList;
 
 import com.leetcode.entity.ListNode;
-import com.sun.tools.javac.util.List;
 
 public class AlgorithController61to80 {
 
@@ -300,6 +299,36 @@ public class AlgorithController61to80 {
       }
     }
     return "/" + String.join("/", tempPath);
+  }
+
+  public int minDistance(String word1, String word2) {
+    if (word1 == null && word2 != null) {
+      return word2.length();
+    }
+    if (word1 != null && word2 == null) {
+      return word1.length();
+    }
+    if (word1 == null && word2 == null) {
+      return 0;
+    }
+    int[][] dp = new int[word1.length() + 1][word2.length() + 1];
+    for (int i = 0; i <= word1.length(); i++) {
+      dp[i][0] = i;
+    }
+    for (int y = 0; y <= word2.length(); y++) {
+      dp[0][y] = y;
+    }
+    for (int i = 1; i <= word1.length(); i++) {
+      for (int y = 1; y <= word2.length(); y++) {
+        int delete = Math.min(dp[i][y - 1], dp[i - 1][y]) + 1;
+        int replace = dp[i - 1][y - 1];
+        if (word1.charAt(i - 1) != word2.charAt(y - 1)) {
+          replace++;
+        }
+        dp[i][y] = Math.min(delete, replace);
+      }
+    }
+    return dp[word1.length()][word2.length()];
   }
 
 }
