@@ -82,4 +82,11 @@ public class AlgorithController61to80Test {
     System.out.println(this.algorithController61to80.minDistance("intention", "execution"));
   }
 
+  @Test
+  public void searchMatrix() {
+    int[][] test1 = new int[1][2];
+    test1[0] = new int[] { 1, 3 };
+    System.out.println(this.algorithController61to80.searchMatrix(test1, 3));
+  }
+
 }
