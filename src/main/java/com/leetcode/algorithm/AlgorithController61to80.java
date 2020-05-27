@@ -1,6 +1,8 @@
 package com.leetcode.algorithm;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.leetcode.entity.ListNode;
 
@@ -329,6 +331,31 @@ public class AlgorithController61to80 {
       }
     }
     return dp[word1.length()][word2.length()];
+  }
+
+  public void setZeroes(int[][] matrix) {
+    Set<Integer> rowFlag = new HashSet<>();
+    Set<Integer> colFlag = new HashSet<>();
+    int colLen = matrix[0].length;
+    int rowLen = matrix.length;
+    for (int i = 0; i < rowLen; i++) {
+      for (int y = 0; y < colLen; y++) {
+        if (matrix[i][y] == 0) {
+          rowFlag.add(i);
+          colFlag.add(y);
+        }
+      }
+    }
+    for (int row : rowFlag) {
+      for (int i = 0; i < colLen; i++) {
+        matrix[row][i] = 0;
+      }
+    }
+    for (int col : colFlag) {
+      for (int i = 0; i < rowLen; i++) {
+        matrix[i][col] = 0;
+      }
+    }
   }
 
 }
