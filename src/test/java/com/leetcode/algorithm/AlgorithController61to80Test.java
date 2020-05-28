@@ -1,6 +1,7 @@
 package com.leetcode.algorithm;
 
 import com.leetcode.entity.ListNode;
+import com.leetcode.tool.Print;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -87,6 +88,26 @@ public class AlgorithController61to80Test {
     int[][] test1 = new int[1][2];
     test1[0] = new int[] { 1, 3 };
     System.out.println(this.algorithController61to80.searchMatrix(test1, 3));
+  }
+
+  @Test
+  public void sortColors() {
+    int[] test1 = new int[] { 2, 0, 2, 1, 1, 0 };
+    this.algorithController61to80.sortColors(test1);
+    Assert.assertArrayEquals(test1, new int[] { 0, 0, 1, 1, 2, 2 });
+    int[] test2 = new int[] { 2, 0, 1 };
+    this.algorithController61to80.sortColors(test2);
+    Assert.assertArrayEquals(test2, new int[] { 0, 1, 2 });
+    int[] test3 = new int[] { 0, 1 };
+    this.algorithController61to80.sortColors(test3);
+    Assert.assertArrayEquals(test3, new int[] { 0, 1 });
+    int[] test4 = new int[] { 0, 2 };
+    this.algorithController61to80.sortColors(test4);
+    Assert.assertArrayEquals(test4, new int[] { 0, 2 });
+    int[] test5 = new int[] { 0, 0, 1, 0, 1, 1 };
+    this.algorithController61to80.sortColors(test5);
+    System.out.println(Print.printArray(test5));
+    Assert.assertArrayEquals(test5, new int[] { 0, 0, 0, 1, 1, 1 });
   }
 
 }
