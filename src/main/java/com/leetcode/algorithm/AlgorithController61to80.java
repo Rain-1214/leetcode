@@ -390,4 +390,53 @@ public class AlgorithController61to80 {
     return false;
   }
 
+  public void sortColorsSoBad(int[] nums) {
+    if (nums.length <= 1) {
+      return;
+    }
+    int flag = 0;
+    int left = 0;
+    int right = 1;
+    while (flag < 3 && left < nums.length - 1) {
+      int leftValue = nums[left];
+      if (leftValue == flag) {
+        left++;
+        right = left + 1;
+        continue;
+      }
+      int rightValue = nums[right];
+      if (rightValue == flag) {
+        nums[right] = nums[left];
+        nums[left] = flag;
+        left++;
+      }
+      right++;
+      if (right >= nums.length) {
+        flag++;
+        right = left + 1;
+      }
+    }
+  }
+
+  public void sortColors(int[] nums) {
+    if (nums.length <= 1) {
+      return;
+    }
+    int zero = 0, one = 0;
+    for (int i = 0; i < nums.length; i++) {
+      if (nums[i] == 0)
+        zero++;
+      if (nums[i] == 1)
+        one++;
+    }
+    for (int i = 0; i < nums.length; i++) {
+      if (i < zero)
+        nums[i] = 0;
+      else if (i < zero + one)
+        nums[i] = 1;
+      else
+        nums[i] = 2;
+    }
+  }
+
 }
