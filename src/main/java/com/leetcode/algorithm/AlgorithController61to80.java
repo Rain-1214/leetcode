@@ -1,10 +1,14 @@
 package com.leetcode.algorithm;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import com.leetcode.entity.ListNode;
+import com.sun.tools.javac.util.List;
 
 public class AlgorithController61to80 {
 
@@ -437,6 +441,92 @@ public class AlgorithController61to80 {
       else
         nums[i] = 2;
     }
+  }
+
+  public String minWindowSoSlow(String s, String t) {
+    if (s == null || t == null || s.length() < t.length()) {
+      return "";
+    }
+    Set<Character> tcl = new HashSet<>();
+    for (char c : t.toCharArray()) {
+      tcl.add(c);
+    }
+    String result = "";
+    for (int i = 0; i <= s.length() - t.length(); i++) {
+      char currentChar = s.charAt(i);
+      if (tcl.contains(currentChar)) {
+        String children = findChildren(s.substring(i), t);
+        if (children.length() != 0) {
+          if (result.equals("") || children.length() < result.length()) {
+            result = children;
+          }
+        }
+      }
+    }
+    return result;
+  }
+
+  public String findChildren(String s, String t) {
+    Map<Character, Integer> tcl = new HashMap<>();
+    for (char c : t.toCharArray()) {
+      if (tcl.containsKey(c)) {
+        tcl.put(c, tcl.get(c) + 1);
+      } else {
+        tcl.put(c, 1);
+      }
+    }
+    for (int i = 0; i < s.length(); i++) {
+      char currentChar = s.charAt(i);
+      if (tcl.containsKey(currentChar)) {
+        if (tcl.get(currentChar) == 1) {
+          tcl.remove(currentChar);
+        } else {
+          tcl.put(currentChar, tcl.get(currentChar) - 1);
+        }
+        if (tcl.size() == 0) {
+          return i == s.length() - 1 ? s.substring(0) : s.substring(0, i + 1);
+        }
+      }
+    }
+    return "";
+  }
+
+  public String minWindow(String s, String t) {
+    if (s == null || t == null || s.length() < t.length()) {
+      return "";
+    }
+    int[] tCharNum = new int[256];
+    Set<Integer> matchSet = new HashSet<>();
+    for (int i = 0; i < t.length(); i++) {
+      int charCode = t.charAt(i);
+      tCharNum[charCode]++;
+      matchSet.add(charCode);
+    }
+    int left = 0;
+    int[] sCharNum = new int[256];
+    String window = "";
+    for (int i = 0; i < s.length(); i++) {
+      int charCode = s.charAt(i);
+      sCharNum[charCode]++;
+      if (tCharNum[charCode] == sCharNum[charCode]) {
+        matchSet.remove(charCode);
+      }
+      if (matchSet.isEmpty()) {
+        for (int j = left; j < s.length(); j++) {
+          int tempCharCode = s.charAt(j);
+          sCharNum[tempCharCode]--;
+          if (sCharNum[tempCharCode] < tCharNum[tempCharCode]) {
+            if (window.length() == 0 || window.length() > (i - j + 1)) {
+              window = s.substring(j, i + 1);
+            }
+            matchSet.add(tempCharCode);
+            left = j + 1;
+            break;
+          }
+        }
+      }
+    }
+    return window;
   }
 
 }

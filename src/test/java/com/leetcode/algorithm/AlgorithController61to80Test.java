@@ -110,4 +110,11 @@ public class AlgorithController61to80Test {
     Assert.assertArrayEquals(test5, new int[] { 0, 0, 0, 1, 1, 1 });
   }
 
+  @Test
+  public void minWindow() {
+    Assert.assertEquals(this.algorithController61to80.minWindow("ADOBECODEBANC", "ABC"), "BANC");
+    Assert.assertEquals(this.algorithController61to80.minWindow("a", "a"), "a");
+    Assert.assertEquals(this.algorithController61to80.minWindow("aa", "aa"), "aa");
+  }
+
 }
