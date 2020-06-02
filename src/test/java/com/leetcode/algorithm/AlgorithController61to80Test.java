@@ -117,4 +117,9 @@ public class AlgorithController61to80Test {
     Assert.assertEquals(this.algorithController61to80.minWindow("aa", "aa"), "aa");
   }
 
+  @Test
+  public void combine() {
+    System.out.println(this.algorithController61to80.combine(4, 2));
+  }
+
 }
