@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import com.leetcode.entity.ListNode;
-import com.sun.tools.javac.util.List;
 
 public class AlgorithController61to80 {
 
@@ -529,4 +529,56 @@ public class AlgorithController61to80 {
     return window;
   }
 
+  public List<List<Integer>> combineSoSlow(int n, int k) {
+    if (k > n) {
+      return new ArrayList<>();
+    }
+    List<List<Integer>>[][] dp = new List[k][n];
+    for (int i = 0; i < n; i++) {
+      List<List<Integer>> temp = new ArrayList<>();
+      for (int y = 1; y <= i + 1; y++) {
+        ArrayList<Integer> list = new ArrayList<Integer>();
+        list.add(y);
+        temp.add(list);
+      }
+      dp[0][i] = temp;
+    }
+    for (int i = 1; i < k; i++) {
+      for (int y = i; y < n; y++) {
+        List<List<Integer>> temp = new ArrayList<>();
+        for (List<Integer> item: dp[i - 1][y - 1]) {
+          ArrayList<Integer> list = new ArrayList<Integer>(item);
+          list.add(y + 1);
+          temp.add(list);
+        }
+        if (y > i) {
+          temp.addAll(dp[i][y - 1]);
+        }
+        dp[i][y] = temp;
+      }
+    }
+    return dp[k - 1][n - 1];
+  }
+
+  public List<List<Integer>> combine(int n, int k) {
+    if (k > n) {
+      return new ArrayList<>();
+    }
+    List<List<Integer>> result = new ArrayList<>();
+    combineImpl(n, k, 1, result, new ArrayList<>());
+    return result;
+  }
+
+  private void combineImpl (int n, int k, int currentN, List<List<Integer>> result, List<Integer> currentList) {
+    if (currentList.size() == k) {
+      result.add(new ArrayList<>(currentList));
+      return;
+    }
+    for (int i = currentN; i <= n - (k - currentList.size()) + 1; i++) {
+      currentList.add(i);
+      combineImpl(n, k, i + 1, result, currentList);
+      currentList.remove(currentList.size() - 1);
+    }
+  }
+  
 }
