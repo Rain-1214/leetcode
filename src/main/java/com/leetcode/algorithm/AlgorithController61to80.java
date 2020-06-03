@@ -546,7 +546,7 @@ public class AlgorithController61to80 {
     for (int i = 1; i < k; i++) {
       for (int y = i; y < n; y++) {
         List<List<Integer>> temp = new ArrayList<>();
-        for (List<Integer> item: dp[i - 1][y - 1]) {
+        for (List<Integer> item : dp[i - 1][y - 1]) {
           ArrayList<Integer> list = new ArrayList<Integer>(item);
           list.add(y + 1);
           temp.add(list);
@@ -569,7 +569,7 @@ public class AlgorithController61to80 {
     return result;
   }
 
-  private void combineImpl (int n, int k, int currentN, List<List<Integer>> result, List<Integer> currentList) {
+  private void combineImpl(int n, int k, int currentN, List<List<Integer>> result, List<Integer> currentList) {
     if (currentList.size() == k) {
       result.add(new ArrayList<>(currentList));
       return;
@@ -580,5 +580,21 @@ public class AlgorithController61to80 {
       currentList.remove(currentList.size() - 1);
     }
   }
-  
+
+  public List<List<Integer>> subsets(int[] nums) {
+    List<List<Integer>> result = new ArrayList<>();
+    result.add(new ArrayList<>());
+    subsetsImpl(nums, 0, result, new ArrayList<>());
+    return result;
+  }
+
+  public void subsetsImpl(int[] nums, int currentN, List<List<Integer>> result, ArrayList<Integer> currentList) {
+    for (int i = currentN; i < nums.length; i++) {
+      currentList.add(nums[i]);
+      result.add(new ArrayList<>(currentList));
+      subsetsImpl(nums, currentN + 1, result, currentList);
+      currentList.remove(currentList.size() - 1);
+    }
+  }
+
 }
