@@ -122,4 +122,18 @@ public class AlgorithController61to80Test {
     System.out.println(this.algorithController61to80.combine(4, 2));
   }
 
+  @Test
+  public void exist() {
+    char[][] board = new char[3][4];
+    board[0] = new char[] { 'A', 'B', 'C', 'E' };
+    board[1] = new char[] { 'S', 'D', 'C', 'S' };
+    board[2] = new char[] { 'A', 'D', 'E', 'E' };
+    System.out.println(this.algorithController61to80.exist(board, "SEE"));
+    char[][] board2 = new char[3][4];
+    board2[0] = new char[] { 'a', 'a', 'a', 'a' };
+    board2[1] = new char[] { 'a', 'a', 'a', 'a' };
+    board2[2] = new char[] { 'a', 'a', 'a', 'a' };
+    System.out.println(this.algorithController61to80.exist(board2, "aaaaaaaaaaaaa"));
+  }
+
 }
