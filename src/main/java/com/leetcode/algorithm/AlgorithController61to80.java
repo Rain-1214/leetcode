@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.leetcode.entity.ListNode;
+import com.leetcode.tool.Print;
 
 public class AlgorithController61to80 {
 
@@ -595,6 +596,70 @@ public class AlgorithController61to80 {
       subsetsImpl(nums, currentN + 1, result, currentList);
       currentList.remove(currentList.size() - 1);
     }
+  }
+
+  public boolean exist(char[][] board, String word) {
+    int[][] flag = new int[board.length][board[0].length];
+    for (int y = 0; y < board.length; y++) {
+      for (int x = 0; x < board[0].length; x++) {
+        if (board[y][x] == word.charAt(0)) {
+          if (word.length() == 1) {
+            return true;
+          } else {
+            flag[y][x] = -1;
+            if (existImpl(board, flag, word, x, y, 0)) {
+              return true;
+            }
+            flag[y][x] = 0;
+          }
+        }
+      }
+    }
+    return false;
+  }
+
+  private boolean existImpl(char[][] board, int[][] flag, String word, int x, int y, int index) {
+    char currentChar = word.charAt(index + 1);
+    boolean lastChar = index + 1 == word.length() - 1;
+    for (int i = 0; i < 4; i++) {
+      int nextX = 0, nextY = 0;
+      if (i == 0) {
+        nextX = x;
+        nextY = y - 1;
+        if (nextY < 0) {
+          continue;
+        }
+      }
+      if (i == 1) {
+        nextX = x + 1;
+        nextY = y;
+        if (nextX >= board[0].length) {
+          continue;
+        }
+      }
+      if (i == 2) {
+        nextX = x;
+        nextY = y + 1;
+        if (nextY >= board.length) {
+          continue;
+        }
+      }
+      if (i == 3) {
+        nextX = x - 1;
+        nextY = y;
+        if (nextX < 0) {
+          continue;
+        }
+      }
+      if (board[nextY][nextX] == currentChar && flag[nextY][nextX] != -1) {
+        flag[nextY][nextX] = -1;
+        if (lastChar || existImpl(board, flag, word, nextX, nextY, index + 1)) {
+          return true;
+        }
+        flag[nextY][nextX] = 0;
+      }
+    }
+    return false;
   }
 
 }
