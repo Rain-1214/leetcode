@@ -662,4 +662,39 @@ public class AlgorithController61to80 {
     return false;
   }
 
+  public int removeDuplicatesSoSlow(int[] nums) {
+    int newLen = 0;
+    int index = 0;
+    Map<Integer, Integer> visit = new HashMap<>();
+    for (int i = 0; i < nums.length; i++) {
+      if (!visit.containsKey(nums[i])) {
+        visit.put(nums[i], 1);
+        newLen++;
+        nums[index++] = nums[i];
+      } else if (visit.get(nums[i]) < 2) {
+        visit.put(nums[i], visit.get(nums[i]) + 1);
+        newLen++;
+        nums[index++] = nums[i];
+      } else if (index == 0) {
+        index = i;
+      }
+    }
+    return newLen;
+  }
+
+  public int removeDuplicates(int[] nums) {
+    if (nums.length < 3) {
+      return nums.length;
+    }
+    int slow = 0;
+    for (int fast = 0; fast < nums.length - 2; fast++) {
+      if (nums[fast] != nums[fast + 2]) {
+        nums[slow++] = nums[fast];
+      }
+    }
+    nums[slow++] = nums[nums.length - 2];
+    nums[slow++] = nums[nums.length - 1];
+    return slow;
+  }
+
 }
