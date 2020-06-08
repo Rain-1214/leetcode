@@ -683,31 +683,17 @@ public class AlgorithController61to80 {
   }
 
   public int removeDuplicates(int[] nums) {
+    if (nums.length < 3) {
+      return nums.length;
+    }
     int slow = 0;
-    int num = 0;
-    boolean write = false;
-    int currentNum = nums[0];
-    for (int fast = 0; fast < nums.length; fast++) {
-      if (nums[fast] == currentNum) {
-        num++;
-        if (write) {
-          write = num < 2;
-        }
-      } else {
-        num = 1;
-        currentNum = nums[fast];
-        if (slow != 0) {
-          write = true;
-        }
-      }
-      if (num > 2 && !write && slow == 0) {
-        slow = fast;
-        write = true;
-      }
-      if (write) {
+    for (int fast = 0; fast < nums.length - 2; fast++) {
+      if (nums[fast] != nums[fast + 2]) {
         nums[slow++] = nums[fast];
       }
     }
+    nums[slow++] = nums[nums.length - 2];
+    nums[slow++] = nums[nums.length - 1];
     return slow;
   }
 
