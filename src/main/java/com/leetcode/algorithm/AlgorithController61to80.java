@@ -1,7 +1,6 @@
 package com.leetcode.algorithm;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -9,7 +8,6 @@ import java.util.Map;
 import java.util.Set;
 
 import com.leetcode.entity.ListNode;
-import com.leetcode.tool.Print;
 
 public class AlgorithController61to80 {
 
