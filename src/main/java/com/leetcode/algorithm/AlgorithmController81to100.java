@@ -33,7 +33,7 @@ public class AlgorithmController81to100 {
     }
   }
 
-  public ListNode deleteDuplicates(ListNode head) {
+  public ListNode deleteDuplicatesII(ListNode head) {
     if (head == null || head.next == null) {
       return head;
     }
@@ -50,11 +50,32 @@ public class AlgorithmController81to100 {
       }
     }
     if (jump) {
-      return deleteDuplicates(currentNode);
+      return deleteDuplicatesII(currentNode);
     } else {
-      head.next = deleteDuplicates(head.next);
+      head.next = deleteDuplicatesII(head.next);
       return head;
     }
+  }
+
+  public ListNode deleteDuplicates(ListNode head) {
+    if (head == null || head.next == null){
+      return head;
+    }
+    ListNode currentNode = head;
+    while (currentNode != null && currentNode.next != null) {
+      if (currentNode.val == currentNode.next.val) {
+        int val = currentNode.val;
+        ListNode nextPoint = currentNode;
+        while(nextPoint != null && nextPoint.val == val) {
+          nextPoint = nextPoint.next;
+        }
+        currentNode.next = nextPoint;
+        currentNode = nextPoint;
+      } else {
+        currentNode = currentNode.next;
+      }
+    }
+    return head;
   }
 
 }
