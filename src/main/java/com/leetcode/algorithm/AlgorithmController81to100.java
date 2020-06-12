@@ -1,5 +1,8 @@
 package com.leetcode.algorithm;
 
+import java.util.Arrays;
+import java.util.Stack;
+
 import com.leetcode.entity.ListNode;
 
 public class AlgorithmController81to100 {
@@ -76,6 +79,22 @@ public class AlgorithmController81to100 {
       }
     }
     return head;
+  }
+
+  public int largestRectangleArea(int[] heights) {
+    int res = 0;
+    Stack<Integer> sk = new Stack<>();
+    int[] hs = new int[heights.length + 1];
+    hs = Arrays.copyOf(heights, heights.length + 1);
+    for (int i = 0; i < hs.length;) {
+      if (sk.empty() || hs[i] >= hs[sk.peek()]) {
+        sk.push(i++);
+      } else {
+        int top = sk.pop();
+        res = Math.max(res, hs[top] * (sk.empty() ? i : i - sk.peek() - 1));
+      }
+    }
+    return res;
   }
 
 }
