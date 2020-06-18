@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Stack;
 
 import com.leetcode.entity.ListNode;
+import com.leetcode.tool.Print;
 
 public class AlgorithmController81to100 {
 
@@ -93,6 +94,28 @@ public class AlgorithmController81to100 {
         int top = sk.pop();
         res = Math.max(res, hs[top] * (sk.empty() ? i : i - sk.peek() - 1));
       }
+    }
+    return res;
+  }
+
+  public int maximalRectangle(char[][] matrix) {
+    if (matrix == null || matrix.length == 0) {
+      return 0;
+    }
+    int row = matrix.length;
+    int column = matrix[0].length;
+    int res = 0;
+    int[] height = new int[column];
+    for (int i = 0; i < row; i++) {
+      char[] currentRow = matrix[i];
+      for (int y = 0; y < column; y++) {
+        if (currentRow[y] == '1') {
+          height[y]++;
+        } else {
+          height[y] = 0;
+        }
+      }
+      res = Math.max(res, this.largestRectangleArea(height));
     }
     return res;
   }
