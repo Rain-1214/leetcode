@@ -49,4 +49,15 @@ public class AlgorithmController81to100Test {
     System.out.println(this.algorithmController81to100.maximalRectangle(test1));
   }
 
+  @Test
+  public void partition() {
+    ListNode test1 = new ListNode(1);
+    test1.next = new ListNode(4);
+    test1.next.next = new ListNode(3);
+    test1.next.next.next = new ListNode(2);
+    test1.next.next.next.next = new ListNode(5);
+    test1.next.next.next.next.next = new ListNode(2);
+    System.out.println(this.algorithmController81to100.partition(test1, 3).toString());
+  }
+
 }

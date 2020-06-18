@@ -1,10 +1,11 @@
 package com.leetcode.algorithm;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Stack;
 
 import com.leetcode.entity.ListNode;
-import com.leetcode.tool.Print;
 
 public class AlgorithmController81to100 {
 
@@ -119,5 +120,66 @@ public class AlgorithmController81to100 {
     }
     return res;
   }
+
+  public ListNode partitionSoSlow(ListNode head, int x) {
+    if (head == null || head.next == null) {
+      return head;
+    }
+    ListNode res = new ListNode();
+    ListNode currentRes = res;
+    List<Integer> temp = new ArrayList<>();
+    while(head != null) {
+      if (head.val < x) {
+        currentRes.next = new ListNode(head.val);
+        currentRes = currentRes.next;
+      } else {
+        temp.add(head.val);
+      }
+      head = head.next;
+    }
+    if (temp.size() > 0) {
+      for(int val: temp) {
+        currentRes.next = new ListNode(val);
+        currentRes = currentRes.next;
+      }
+    }
+    return res.next;
+  }
+
+  public ListNode partition(ListNode head, int x) {
+    if (head == null || head.next == null) {
+      return head;
+    }
+    ListNode res = new ListNode();
+    partitionImpl(res, head, x, true);
+    ListNode currentRes = res;
+    while(currentRes.next != null) {
+      currentRes = currentRes.next;
+    }
+    partitionImpl(currentRes, head, x, false);
+    return res.next;
+  }
+
+  public ListNode partitionImpl(ListNode res, ListNode currentNode, int x, boolean flag) {
+    if (currentNode == null) {
+      return null;
+    }
+    if (flag) {
+      if (currentNode.val < x) {
+        res.next = new ListNode(currentNode.val);
+        return partitionImpl(res.next, currentNode.next, x, flag);
+      } else {
+        return partitionImpl(res, currentNode.next, x, flag);
+      }
+    } else {
+      if (currentNode.val >= x) {
+        res.next = new ListNode(currentNode.val);
+        return partitionImpl(res.next, currentNode.next, x, flag);
+      } else {
+        return partitionImpl(res, currentNode.next, x, flag);
+      }
+    }
+  }
+
 
 }
