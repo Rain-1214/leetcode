@@ -37,4 +37,16 @@ public class AlgorithmController81to100Test {
     Assert.assertEquals(this.algorithmController81to100.largestRectangleArea(test3), 12);
   }
 
+  @Test
+  public void maximalRectangle() {
+    char[][] test1 = new char[6][5];
+    test1[0] = new char[]{'1','1','1','0','1'};
+    test1[1] = new char[]{'1','1','0','1','0'};
+    test1[2] = new char[]{'0','1','1','1','0'};
+    test1[3] = new char[]{'1','1','1','1','0'};
+    test1[4] = new char[]{'1','1','1','1','1'};
+    test1[5] = new char[]{'0','0','0','0','0'};
+    System.out.println(this.algorithmController81to100.maximalRectangle(test1));
+  }
+
 }
