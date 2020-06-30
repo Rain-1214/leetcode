@@ -60,4 +60,10 @@ public class AlgorithmController81to100Test {
     System.out.println(this.algorithmController81to100.partition(test1, 3).toString());
   }
 
+  @Test
+  public void subsetsWithDup() {
+    int[] test1 = new int[]{4,4,4,1,4};
+    System.out.println(this.algorithmController81to100.subsetsWithDup(test1));
+  }
+
 }

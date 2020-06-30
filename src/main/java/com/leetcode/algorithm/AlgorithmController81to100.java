@@ -2,7 +2,9 @@ package com.leetcode.algorithm;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.Stack;
 
 import com.leetcode.entity.ListNode;
@@ -210,6 +212,30 @@ public class AlgorithmController81to100 {
       }
     }
     return res;
+  }
+
+  public List<List<Integer>> subsetsWithDup(int[] nums) {
+    List<List<Integer>> res = new ArrayList<>();
+    Arrays.sort(nums);
+    subsetsWithDupImpl(nums, res, new ArrayList<>(), 0);
+    res.add(new ArrayList<Integer>());
+    return res;
+  }
+
+  public void subsetsWithDupImpl(int[] nums, List<List<Integer>> res, List<Integer> current, int start) {
+    if (start == nums.length) {
+      return;
+    }
+    List<Integer> temp = new ArrayList<>(current);
+    for (int i = start; i < nums.length; i++){
+      temp.add(nums[i]);
+      res.add(new ArrayList<>(temp));
+      subsetsWithDupImpl(nums, res, temp, i + 1);
+      temp.remove(temp.size() - 1);
+      while (i + 1 < nums.length && nums[i] == nums[i+1]) {
+        i++;
+      }
+    }
   }
 
 }
