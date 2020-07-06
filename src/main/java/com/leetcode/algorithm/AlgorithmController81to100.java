@@ -2,9 +2,7 @@ package com.leetcode.algorithm;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.Stack;
 
 import com.leetcode.entity.ListNode;
@@ -65,7 +63,7 @@ public class AlgorithmController81to100 {
   }
 
   public ListNode deleteDuplicates(ListNode head) {
-    if (head == null || head.next == null){
+    if (head == null || head.next == null) {
       return head;
     }
     ListNode currentNode = head;
@@ -73,7 +71,7 @@ public class AlgorithmController81to100 {
       if (currentNode.val == currentNode.next.val) {
         int val = currentNode.val;
         ListNode nextPoint = currentNode;
-        while(nextPoint != null && nextPoint.val == val) {
+        while (nextPoint != null && nextPoint.val == val) {
           nextPoint = nextPoint.next;
         }
         currentNode.next = nextPoint;
@@ -130,7 +128,7 @@ public class AlgorithmController81to100 {
     ListNode res = new ListNode();
     ListNode currentRes = res;
     List<Integer> temp = new ArrayList<>();
-    while(head != null) {
+    while (head != null) {
       if (head.val < x) {
         currentRes.next = new ListNode(head.val);
         currentRes = currentRes.next;
@@ -140,7 +138,7 @@ public class AlgorithmController81to100 {
       head = head.next;
     }
     if (temp.size() > 0) {
-      for(int val: temp) {
+      for (int val : temp) {
         currentRes.next = new ListNode(val);
         currentRes = currentRes.next;
       }
@@ -155,7 +153,7 @@ public class AlgorithmController81to100 {
     ListNode res = new ListNode();
     partitionImpl(res, head, x, true);
     ListNode currentRes = res;
-    while(currentRes.next != null) {
+    while (currentRes.next != null) {
       currentRes = currentRes.next;
     }
     partitionImpl(currentRes, head, x, false);
@@ -184,8 +182,8 @@ public class AlgorithmController81to100 {
   }
 
   public void merge(int[] nums1, int m, int[] nums2, int n) {
-    int i = m - 1, j = n - 1, x = m + n -1;
-    while(j >= 0) {
+    int i = m - 1, j = n - 1, x = m + n - 1;
+    while (j >= 0) {
       if (i >= 0) {
         nums1[x--] = nums1[i] > nums2[j] ? nums1[i--] : nums2[j--];
       } else {
@@ -227,15 +225,34 @@ public class AlgorithmController81to100 {
       return;
     }
     List<Integer> temp = new ArrayList<>(current);
-    for (int i = start; i < nums.length; i++){
+    for (int i = start; i < nums.length; i++) {
       temp.add(nums[i]);
       res.add(new ArrayList<>(temp));
       subsetsWithDupImpl(nums, res, temp, i + 1);
       temp.remove(temp.size() - 1);
-      while (i + 1 < nums.length && nums[i] == nums[i+1]) {
+      while (i + 1 < nums.length && nums[i] == nums[i + 1]) {
         i++;
       }
     }
+  }
+
+  public int numDecodings(String s) {
+    if (s == null || s.charAt(0) == '0') {
+      return 0;
+    }
+    int[] dp = new int[s.length() + 1];
+    dp[0] = 1;
+    for (int i = 1; i < dp.length; i++) {
+      char c = s.charAt(i - 1);
+      dp[i] = c == '0' ? 0 : dp[i - 1];
+      if (i > 1) {
+        char prevC = s.charAt(i - 2);
+        if (prevC == '1' || prevC == '2' && c < '7') {
+          dp[i] += dp[i - 2];
+        }
+      }
+    }
+    return dp[s.length()];
   }
 
 }

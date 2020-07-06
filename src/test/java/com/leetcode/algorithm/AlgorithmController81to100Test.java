@@ -29,23 +29,23 @@ public class AlgorithmController81to100Test {
 
   @Test
   public void largestRectangleArea() {
-    int[] test1 = new int[]{2,1,5,6,2,3};
+    int[] test1 = new int[] { 2, 1, 5, 6, 2, 3 };
     Assert.assertEquals(this.algorithmController81to100.largestRectangleArea(test1), 10);
-    int[] test2 = new int[]{6};
+    int[] test2 = new int[] { 6 };
     Assert.assertEquals(this.algorithmController81to100.largestRectangleArea(test2), 6);
-    int[] test3 = new int[]{5,5,1,7,1,1,5,2,7,6};
+    int[] test3 = new int[] { 5, 5, 1, 7, 1, 1, 5, 2, 7, 6 };
     Assert.assertEquals(this.algorithmController81to100.largestRectangleArea(test3), 12);
   }
 
   @Test
   public void maximalRectangle() {
     char[][] test1 = new char[6][5];
-    test1[0] = new char[]{'1','1','1','0','1'};
-    test1[1] = new char[]{'1','1','0','1','0'};
-    test1[2] = new char[]{'0','1','1','1','0'};
-    test1[3] = new char[]{'1','1','1','1','0'};
-    test1[4] = new char[]{'1','1','1','1','1'};
-    test1[5] = new char[]{'0','0','0','0','0'};
+    test1[0] = new char[] { '1', '1', '1', '0', '1' };
+    test1[1] = new char[] { '1', '1', '0', '1', '0' };
+    test1[2] = new char[] { '0', '1', '1', '1', '0' };
+    test1[3] = new char[] { '1', '1', '1', '1', '0' };
+    test1[4] = new char[] { '1', '1', '1', '1', '1' };
+    test1[5] = new char[] { '0', '0', '0', '0', '0' };
     System.out.println(this.algorithmController81to100.maximalRectangle(test1));
   }
 
@@ -62,8 +62,13 @@ public class AlgorithmController81to100Test {
 
   @Test
   public void subsetsWithDup() {
-    int[] test1 = new int[]{4,4,4,1,4};
+    int[] test1 = new int[] { 4, 4, 4, 1, 4 };
     System.out.println(this.algorithmController81to100.subsetsWithDup(test1));
+  }
+
+  @Test
+  public void numDecodings() {
+    System.out.println(this.algorithmController81to100.numDecodings("122221"));
   }
 
 }
