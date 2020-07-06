@@ -71,4 +71,14 @@ public class AlgorithmController81to100Test {
     System.out.println(this.algorithmController81to100.numDecodings("122221"));
   }
 
+  @Test
+  public void reverseBetween() {
+    ListNode test1 = new ListNode(1);
+    test1.next = new ListNode(2);
+    test1.next.next = new ListNode(3);
+    test1.next.next.next = new ListNode(4);
+    test1.next.next.next.next = new ListNode(5);
+    System.out.println(this.algorithmController81to100.reverseBetween(test1, 1, 5).toString());
+  }
+
 }

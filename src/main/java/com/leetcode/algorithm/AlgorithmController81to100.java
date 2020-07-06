@@ -255,4 +255,35 @@ public class AlgorithmController81to100 {
     return dp[s.length()];
   }
 
+  public ListNode reverseBetween(ListNode head, int m, int n) {
+    ListNode current = head;
+    ListNode afterHeadCurrent = head;
+    int[] nums = new int[n - m + 1];
+    int i = 1;
+    while (current != null) {
+      if (i < m - 1) {
+        afterHeadCurrent = afterHeadCurrent.next;
+      } else if (i >= m) {
+        nums[i - m] = current.val;
+      }
+      if (i == n) {
+        ListNode temp = new ListNode();
+        ListNode currentTemp = temp;
+        for (int y = nums.length - 1; y >= 0; y--) {
+          currentTemp.next = new ListNode(nums[y]);
+          currentTemp = currentTemp.next;
+        }
+        currentTemp.next = current.next;
+        afterHeadCurrent.next = temp.next;
+        if (m == 1) {
+          return temp.next;
+        }
+        break;
+      }
+      current = current.next;
+      i++;
+    }
+    return head;
+  }
+
 }
