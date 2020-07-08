@@ -1,5 +1,8 @@
 package com.leetcode.algorithm;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.leetcode.entity.ListNode;
 
 import org.junit.Assert;
@@ -79,6 +82,11 @@ public class AlgorithmController81to100Test {
     test1.next.next.next = new ListNode(4);
     test1.next.next.next.next = new ListNode(5);
     System.out.println(this.algorithmController81to100.reverseBetween(test1, 1, 5).toString());
+  }
+
+  @Test
+  public void restoreIpAddresses() {
+    System.out.println(this.algorithmController81to100.restoreIpAddresses("010010"));
   }
 
 }
