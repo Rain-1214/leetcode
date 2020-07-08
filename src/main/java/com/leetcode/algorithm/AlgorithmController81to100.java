@@ -286,4 +286,37 @@ public class AlgorithmController81to100 {
     return head;
   }
 
+  public List<String> restoreIpAddresses(String s) {
+    List<String> res = new ArrayList<>();
+    restoreIpAddressesImpl(s, 0, new ArrayList<String>(), res);
+    return res;
+  }
+
+  public void restoreIpAddressesImpl(String s, int start, List<String> temp, List<String> res) {
+    String current = "";
+    if (temp.size() == 3) {
+      if (s.length() - start > 3) {
+        return;
+      }
+      String last = s.substring(start);
+      if ((!last.equals("0") && last.startsWith("0")) || Integer.parseInt(last) > 255) {
+        return;
+      }
+      res.add(String.join(".", temp) + "." + last);
+      return;
+    }
+    for (int i = start; i < start + 3 && i < s.length() - 1; i++) {
+      current += s.charAt(i);
+      if (Integer.parseInt(current) > 255) {
+        break;
+      }
+      temp.add(current);
+      restoreIpAddressesImpl(s, i + 1, temp, res);
+      temp.remove(temp.size() - 1);
+      if (current.equals("0")) {
+        break;
+      }
+    }
+  }
+
 }
