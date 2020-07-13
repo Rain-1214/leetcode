@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Stack;
 
 import com.leetcode.entity.ListNode;
+import com.leetcode.entity.TreeNode;
 
 public class AlgorithmController81to100 {
 
@@ -316,6 +317,25 @@ public class AlgorithmController81to100 {
       if (current.equals("0")) {
         break;
       }
+    }
+  }
+
+  public List<Integer> inorderTraversal(TreeNode root) {
+    List<Integer> res = new ArrayList<>();
+    if (root == null) {
+      return res;
+    }
+    inorderTraversalImpl(root, res);
+    return res;
+  }
+
+  public void inorderTraversalImpl(TreeNode root, List<Integer> res) {
+    if (root.left != null) {
+      inorderTraversalImpl(root.left, res);
+    }
+    res.add(root.val);
+    if (root.right != null) {
+      inorderTraversalImpl(root.right, res);
     }
   }
 
