@@ -89,4 +89,9 @@ public class AlgorithmController81to100Test {
     System.out.println(this.algorithmController81to100.restoreIpAddresses("010010"));
   }
 
+  @Test
+  public void genereateTrees() {
+    this.algorithmController81to100.generateTrees(3);
+  }
+
 }

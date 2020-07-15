@@ -2,6 +2,8 @@ package com.leetcode.algorithm;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
 
@@ -337,6 +339,35 @@ public class AlgorithmController81to100 {
     if (root.right != null) {
       inorderTraversalImpl(root.right, res);
     }
+  }
+
+  public List<TreeNode> generateTrees(int n) {
+    if (n == 0) {
+      return Collections.emptyList();
+    }
+    return generateTreesImpl(1, n);
+  }
+
+  public List<TreeNode> generateTreesImpl(int start, int end) {
+    List<TreeNode> res = new ArrayList<>();
+    if (start > end) {
+      res.add(null);
+      return res;
+    }
+    for (int i = start; i <= end; i++) {
+      List<TreeNode> left = generateTreesImpl(start, i - 1);
+      List<TreeNode> right = generateTreesImpl(i + 1, end);
+
+      for (int x = 0; x < left.size(); x++) {
+        for (int y = 0; y < right.size(); y++) {
+          TreeNode root = new TreeNode(i);
+          root.left = left.get(x);
+          root.right = right.get(y);
+          res.add(root);
+        }
+      }
+    }
+    return res;
   }
 
 }
