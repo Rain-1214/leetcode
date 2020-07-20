@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.leetcode.entity.ListNode;
+import com.leetcode.tool.Print;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -92,6 +93,11 @@ public class AlgorithmController81to100Test {
   @Test
   public void genereateTrees() {
     this.algorithmController81to100.generateTrees(3);
+  }
+
+  @Test
+  public void isInterleave() {
+    System.out.println(this.algorithmController81to100.isInterLeaveDP("aa", "ab", "abaa"));
   }
 
 }

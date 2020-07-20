@@ -4,11 +4,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.Stack;
 
 import com.leetcode.entity.ListNode;
 import com.leetcode.entity.TreeNode;
+import com.leetcode.tool.Print;
 
 public class AlgorithmController81to100 {
 
@@ -380,6 +383,53 @@ public class AlgorithmController81to100 {
       }
     }
     return dp[n];
+  }
+
+  public boolean isInterleave(String s1, String s2, String s3) {
+    if (s1.length() + s2.length() != s3.length()) {
+      return false;
+    }
+    Set<Integer> cache = new HashSet<>();
+    return isInterleaveImple(s1, 0, s2, 0, s3, 0, cache);
+  }
+
+  public boolean isInterleaveImple(String s1, int i, String s2, int j, String s3, int x, Set<Integer> cache) {
+    int key = i + j * s3.length();
+    if (cache.contains(key))
+      return false;
+    if (i == s1.length())
+      return s2.substring(j).equals(s3.substring(x));
+    if (j == s2.length())
+      return s1.substring(i).equals(s3.substring(x));
+    if ((s1.charAt(i) == s3.charAt(x) && isInterleaveImple(s1, i + 1, s2, j, s3, x + 1, cache))
+        || (s2.charAt(j) == s3.charAt(x) && isInterleaveImple(s1, i, s2, j + 1, s3, x + 1, cache))) {
+      return true;
+    }
+    cache.add(key);
+    return false;
+  }
+
+  public boolean isInterLeaveDP(String s1, String s2, String s3) {
+    int n = s1.length();
+    int m = s2.length();
+    if (n + m != s3.length()) {
+      return false;
+    }
+    boolean[][] dp = new boolean[m + 1][n + 1];
+    dp[0][0] = true;
+    for (int i = 1; i <= n; i++) {
+      dp[0][i] = dp[0][i - 1] && s1.charAt(i - 1) == s3.charAt(i - 1);
+    }
+    for (int i = 1; i <= m; i++) {
+      dp[i][0] = dp[i - 1][0] && s2.charAt(i - 1) == s3.charAt(i - 1);
+    }
+    for (int i = 1; i <= m; i++) {
+      for (int y = 1; y <= n; y++) {
+        dp[i][y] = (dp[i][y - 1] && s1.charAt(y - 1) == s3.charAt(i + y - 1))
+            || (dp[i - 1][y] && s2.charAt(i - 1) == s3.charAt(i - 1 + y));
+      }
+    }
+    return dp[m][n];
   }
 
 }
