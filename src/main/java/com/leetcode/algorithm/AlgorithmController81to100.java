@@ -432,4 +432,39 @@ public class AlgorithmController81to100 {
     return dp[m][n];
   }
 
+  public boolean isValidBST2Slow(TreeNode root) {
+    List<Integer> temp = inorderTraversal(root);
+    if (temp.size() < 2) {
+      return true;
+    }
+    int max = temp.get(0);
+    for (int i = 1; i < temp.size(); i++) {
+      if (temp.get(i) > max) {
+        max = temp.get(i);
+      } else {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  public long a = Long.MIN_VALUE;
+
+  public boolean isValidBST(TreeNode root) {
+    if (root == null) {
+      return true;
+    }
+    if (!isValidBST(root.left)) {
+      return false;
+    }
+    if (root.val <= a) {
+      return false;
+    }
+    a = root.val;
+    if (!isValidBST(root.right)) {
+      return false;
+    }
+    return true;
+  }
+
 }
