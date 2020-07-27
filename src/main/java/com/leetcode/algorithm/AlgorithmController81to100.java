@@ -467,4 +467,32 @@ public class AlgorithmController81to100 {
     return true;
   }
 
+  public TreeNode temp;
+  public TreeNode small;
+  public TreeNode big;
+
+  public void recoverTree(TreeNode root) {
+    recoverTreeImpl(root);
+    if (small != null && big != null) {
+      int t = small.val;
+      small.val = big.val;
+      big.val = t;
+    }
+  }
+
+  public void recoverTreeImpl(TreeNode root) {
+    if (root == null) {
+      return;
+    }
+    recoverTreeImpl(root.left);
+    if (temp != null && root.val <= temp.val) {
+      small = root;
+      if (big == null) {
+        big = temp;
+      }
+    }
+    temp = root;
+    recoverTreeImpl(root.right);
+  }
+
 }
