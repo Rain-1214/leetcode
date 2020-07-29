@@ -1,7 +1,9 @@
 package com.leetcode.algorithm;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 import com.leetcode.entity.TreeNode;
 
@@ -45,6 +47,37 @@ public class AlgorithmController101to120 {
     }
     levelOrderImpl(node.left, level + 1, res);
     levelOrderImpl(node.right, level + 1, res);
+  }
+
+  public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+    List<List<Integer>> res = new ArrayList<>();
+    Queue<TreeNode> q = new LinkedList<>();
+    if (root == null) {
+      return res;
+    }
+    q.offer(root);
+    boolean flag = true;
+    while (!q.isEmpty()) {
+      int len = q.size();
+      LinkedList<Integer> temp = new LinkedList<>();
+      for (int i = 0; i < len; i++) {
+        TreeNode c = q.poll();
+        if (flag) {
+          temp.add(c.val);
+        } else {
+          temp.addFirst(c.val);
+        }
+        if (c.left != null) {
+          q.add(c.left);
+        }
+        if (c.right != null) {
+          q.add(c.right);
+        }
+      }
+      res.add(temp);
+      flag = !flag;
+    }
+    return res;
   }
 
 }
