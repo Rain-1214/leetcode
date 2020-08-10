@@ -1,11 +1,7 @@
 package com.leetcode.algorithm;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.leetcode.entity.ListNode;
 import com.leetcode.entity.TreeNode;
-import com.leetcode.tool.Print;
 
 import org.junit.Assert;
 import org.junit.Test;
