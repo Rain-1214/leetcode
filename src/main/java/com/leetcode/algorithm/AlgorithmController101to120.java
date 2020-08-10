@@ -87,4 +87,25 @@ public class AlgorithmController101to120 {
     return Math.max(maxDepth(root.left), maxDepth(root.right)) + 1;
   }
 
+  public TreeNode buildTree(int[] preorder, int[] inorder) {
+    if (preorder == null || inorder == null || preorder.length != inorder.length) {
+      return null;
+    }
+    return buildTree(preorder, inorder, 0, preorder.length - 1, 0);
+  }
+
+  public TreeNode buildTree(int[] preorder, int[] inorder, int start, int end, int index) {
+    if (start > end) {
+      return null;
+    }
+    TreeNode node = new TreeNode(preorder[index]);
+    int inIndex = start;
+    while (preorder[index] != inorder[inIndex]) {
+      inIndex++;
+    }
+    node.left = buildTree(preorder, inorder, start, inIndex - 1, index + 1);
+    node.right = buildTree(preorder, inorder, inIndex + 1, end, index + inIndex - start + 1);
+    return node;
+  }
+
 }
