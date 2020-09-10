@@ -129,4 +129,30 @@ public class AlgorithmController101to120 {
     return node;
   }
 
+  public List<List<Integer>> levelOrderBottom(TreeNode root) {
+    List<List<Integer>> res = new ArrayList<>();
+    if (root == null) {
+      return res;
+    }
+    levelOrderBottom(root, 0, res);
+    return res;
+  }
+
+  public void levelOrderBottom(TreeNode root, int deep, List<List<Integer>> res) {
+    int size = res.size();
+    if (size == deep) {
+      List<Integer> temp = new ArrayList<>();
+      temp.add(root.val);
+      res.add(0, temp);
+    } else {
+      res.get(size - deep - 1).add(root.val);
+    }
+    if (root.left != null) {
+      levelOrderBottom(root.left, deep + 1, res);
+    }
+    if (root.right != null) {
+      levelOrderBottom(root.right, deep + 1, res);
+    }
+  }
+
 }
