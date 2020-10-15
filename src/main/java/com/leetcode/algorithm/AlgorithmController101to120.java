@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+import com.leetcode.entity.ListNode;
 import com.leetcode.entity.TreeNode;
 
 public class AlgorithmController101to120 {
@@ -176,6 +177,31 @@ public class AlgorithmController101to120 {
     TreeNode temp = new TreeNode(nums[mid]);
     temp.left = sortedArrayToBST(nums, start, mid - 1);
     temp.right = sortedArrayToBST(nums, mid + 1, end);
+    return temp;
+  }
+
+  public TreeNode sortedListToBST(ListNode head) {
+    if (head == null) {
+      return null;
+    }
+    if (head.next == null) {
+      return new TreeNode(head.val);
+    }
+    ListNode slow = head;
+    ListNode fast = head;
+    ListNode slowLast = head;
+    while (fast.next != null && fast.next.next != null) {
+      slowLast = slow;
+      slow = slow.next;
+      fast = fast.next.next;
+    }
+    fast = slow.next;
+    slowLast.next = null;
+    TreeNode temp = new TreeNode(slow.val);
+    if (head != slow) {
+      temp.left = sortedListToBST(head);
+    }
+    temp.right = sortedListToBST(fast);
     return temp;
   }
 
