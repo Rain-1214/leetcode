@@ -205,4 +205,26 @@ public class AlgorithmController101to120 {
     return temp;
   }
 
+  public boolean isBalanced(TreeNode root) {
+    if (root == null) {
+      return true;
+    }
+    return isBalancedImpl(root) != -1;
+  }
+
+  public int isBalancedImpl(TreeNode root) {
+    if (root == null) {
+      return 0;
+    }
+    int left = isBalancedImpl(root.left);
+    int right = isBalancedImpl(root.right);
+    if (left == -1 || right == -1) {
+      return -1;
+    }
+    if (Math.abs(right - left) <= 1) {
+      return Math.max(left, right) + 1;
+    }
+    return -1;
+  }
+
 }
