@@ -227,4 +227,41 @@ public class AlgorithmController101to120 {
     return -1;
   }
 
+  public int minDepthSoSlow(TreeNode root) {
+    if (root == null) {
+      return 0;
+    }
+    if (root.left == null)
+      return minDepthSoSlow(root.right) + 1;
+    if (root.right == null)
+      return minDepthSoSlow(root.left) + 1;
+    return Math.min(minDepthSoSlow(root.left), minDepthSoSlow(root.right)) + 1;
+  }
+
+  public int minDepth(TreeNode root) {
+    if (root == null) {
+      return 0;
+    }
+    Queue<TreeNode> q = new LinkedList<>();
+    int res = 1;
+    q.offer(root);
+    while (!q.isEmpty()) {
+      int size = q.size();
+      for (int i = 0; i < size; i++) {
+        TreeNode temp = q.poll();
+        if (temp.left == null && temp.right == null) {
+          return res;
+        }
+        if (temp.left != null) {
+          q.offer(temp.left);
+        }
+        if (temp.right != null) {
+          q.offer(temp.right);
+        }
+      }
+      res += 1;
+    }
+    return res;
+  }
+
 }
