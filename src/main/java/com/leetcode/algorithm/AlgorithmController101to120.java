@@ -1,6 +1,7 @@
 package com.leetcode.algorithm;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -291,6 +292,36 @@ public class AlgorithmController101to120 {
       return sum == 0;
     }
     return hasPathSum(root.left, sum) || hasPathSum(root.right, sum);
+  }
+
+  public List<List<Integer>> pathSum(TreeNode root, int sum) {
+    if (root == null) {
+      return new ArrayList<>();
+    }
+    List<List<Integer>> res = new ArrayList<>();
+    pathSum(root, new LinkedList<Integer>(), res, sum);
+    return res;
+  }
+
+  public void pathSum(TreeNode root, LinkedList<Integer> list, List<List<Integer>> res, int sum) {
+    list.add(root.val);
+    sum = sum - root.val;
+    if (root.left == null && root.right == null) {
+      if (sum == 0) {
+        ArrayList<Integer> temp = new ArrayList<>();
+        temp.addAll(list);
+        res.add(temp);
+      }
+      list.removeLast();
+      return;
+    }
+    if (root.left != null) {
+      pathSum(root.left, list, res, sum);
+    }
+    if (root.right != null) {
+      pathSum(root.right, list, res, sum);
+    }
+    list.removeLast();
   }
 
 }
