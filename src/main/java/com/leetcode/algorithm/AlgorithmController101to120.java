@@ -264,4 +264,33 @@ public class AlgorithmController101to120 {
     return res;
   }
 
+  public boolean hasPathSumSoMemory(TreeNode root, int sum) {
+    if (root == null) {
+      return false;
+    }
+    return hasPathSumImpl(root, 0, sum);
+  }
+
+  public boolean hasPathSumImpl(TreeNode root, int currentSum, int sum) {
+    if (root == null) {
+      return false;
+    }
+    if (root.left == null && root.right == null) {
+      return root.val + currentSum == sum;
+    }
+    return hasPathSumImpl(root.left, currentSum + root.val, sum)
+        || hasPathSumImpl(root.right, currentSum + root.val, sum);
+  }
+
+  public boolean hasPathSum(TreeNode root, int sum) {
+    if (root == null) {
+      return false;
+    }
+    sum = sum - root.val;
+    if (root.left == null && root.right == null) {
+      return sum == 0;
+    }
+    return hasPathSum(root.left, sum) || hasPathSum(root.right, sum);
+  }
+
 }
