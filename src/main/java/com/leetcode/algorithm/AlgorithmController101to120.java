@@ -8,6 +8,7 @@ import java.util.Queue;
 
 import com.leetcode.entity.ListNode;
 import com.leetcode.entity.TreeNode;
+import com.leetcode.tool.Print;
 
 public class AlgorithmController101to120 {
   public boolean isSymmetric(TreeNode root) {
@@ -342,6 +343,44 @@ public class AlgorithmController101to120 {
       current = current.right;
     }
     current.right = temp;
+  }
+
+  public int numDistinct(String s, String t) {
+    if (s == null || t == null) {
+      return 0;
+    }
+    int sn = s.length(), tn = t.length();
+    if (tn > sn) {
+      return 0;
+    }
+    if (s.equals(t)) {
+      return 1;
+    }
+    int[][] dp = new int[sn][tn];
+    dp[0][0] = s.charAt(0) == t.charAt(0) ? 1 : 0;
+    char tfc = t.charAt(0);
+    for (int i = 1; i < sn; i++) {
+      char sc = s.charAt(i);
+      if (sc == tfc) {
+        dp[i][0] = dp[i - 1][0] + 1;
+      } else {
+        dp[i][0] = dp[i - 1][0];
+      }
+    }
+    Print.print2DIntArray(dp);
+    for (int i = 1; i < sn; i++) {
+      for (int y = 1; y < tn; y++) {
+        char sc = s.charAt(i);
+        char tc = t.charAt(y);
+        if (sc == tc) {
+          dp[i][y] = dp[i - 1][y] + dp[i][y - 1];
+        } else {
+          dp[i][y] = dp[i - 1][y];
+        }
+      }
+    }
+    Print.print2DIntArray(dp);
+    return dp[sn - 1][tn - 1];
   }
 
 }
