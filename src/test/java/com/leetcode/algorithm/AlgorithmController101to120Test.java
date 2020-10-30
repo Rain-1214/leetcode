@@ -22,4 +22,9 @@ public class AlgorithmController101to120Test {
     TreeNode a = this.algorithmController81to100.buildTree106(inorder, postorder);
   }
 
+  @Test
+  public void numDistinct() {
+    System.out.println(this.algorithmController81to100.numDistinct("babgbag", "bag"));
+  }
+
 }
