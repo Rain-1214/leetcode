@@ -345,7 +345,7 @@ public class AlgorithmController101to120 {
     current.right = temp;
   }
 
-  public int numDistinct(String s, String t) {
+  public int numDistinctSlow(String s, String t) {
     if (s == null || t == null) {
       return 0;
     }
@@ -373,7 +373,7 @@ public class AlgorithmController101to120 {
         char sc = s.charAt(i);
         char tc = t.charAt(y);
         if (sc == tc) {
-          dp[i][y] = dp[i - 1][y] + dp[i][y - 1];
+          dp[i][y] = dp[i - 1][y - 1] + dp[i - 1][y];
         } else {
           dp[i][y] = dp[i - 1][y];
         }
@@ -381,6 +381,30 @@ public class AlgorithmController101to120 {
     }
     Print.print2DIntArray(dp);
     return dp[sn - 1][tn - 1];
+  }
+
+  public int numDistinct(String s, String t) {
+    if (s == null || t == null) {
+      return 0;
+    }
+    char[] sca = s.toCharArray(), tca = t.toCharArray();
+    int sn = s.length(), tn = t.length();
+    int[][] dp = new int[sn + 1][tn + 1];
+    dp[0][0] = 1;
+    for (int i = 1; i <= sn; i++) {
+      dp[i][0] = 1;
+      for (int y = 1; y <= tn; y++) {
+        char sc = sca[i - 1];
+        char tc = tca[y - 1];
+        if (sc == tc) {
+          dp[i][y] = dp[i - 1][y - 1] + dp[i - 1][y];
+        } else {
+          dp[i][y] = dp[i - 1][y];
+        }
+      }
+    }
+    Print.print2DIntArray(dp);
+    return dp[sn][tn];
   }
 
 }
