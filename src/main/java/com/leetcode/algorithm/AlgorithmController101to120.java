@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Queue;
 
 import com.leetcode.entity.ListNode;
+import com.leetcode.entity.Node;
 import com.leetcode.entity.TreeNode;
 import com.leetcode.tool.Print;
 
@@ -405,6 +406,37 @@ public class AlgorithmController101to120 {
     }
     Print.print2DIntArray(dp);
     return dp[sn][tn];
+  }
+
+  public Node connectSoSlow(Node root) {
+    if (root == null) {
+      return root;
+    }
+    Queue<Node> q = new LinkedList<>();
+    q.add(root);
+    while(!q.isEmpty()) {
+      int n = q.size();
+      for (int i = 0; i < n; i++) {
+        Node current = q.poll();
+        if (i != n - 1) {
+          current.next = q.peek();
+        } else {
+          current.next = null;
+        }
+        if (current.left != null) {
+          q.add(current.left);
+          q.add(current.right);
+        }
+      }
+    }
+    return root;
+  }
+
+  public Node connect(Node root) {
+    if (root == null) {
+      return root;
+    }
+    return root;
   }
 
 }
