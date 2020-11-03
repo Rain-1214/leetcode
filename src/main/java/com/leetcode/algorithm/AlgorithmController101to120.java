@@ -447,4 +447,60 @@ public class AlgorithmController101to120 {
     return root;
   }
 
+  public Node connect117tooSlow(Node root) {
+    if (root == null) {
+      return root;
+    }
+    if (root.left != null && root.right != null) {
+      root.left.next = root.right;
+      if (root.next != null) {
+        root.right.next = root.next.left;
+      }
+    } else if (root.next != null) {
+      if (root.left != null) {
+        root.left.next = root.next.left;
+      } else {
+        root.right.next = root.next.left;
+      }
+    }
+    if (root.left != null) {
+      
+    }
+    connect117tooSlow(root.left);
+    connect117tooSlow(root.right);
+    return root;
+  }
+
+  public Node connect117(Node root) {
+    if (root == null) {
+      return root;
+    }
+    if (root.left != null) {
+      if (root.right != null) {
+        root.left.next = root.right;
+      } else {
+        root.left.next = connect117Help(root.next);
+      }
+    }
+    if (root.right != null) {
+      root.right.next = connect117Help(root.next);
+    }
+    connect117Help(root.right);
+    connect117Help(root.left);
+    return root;
+  }
+
+  public Node connect117Help(Node root) {
+    if (root == null) {
+      return null;
+    }
+    if (root.left != null) {
+      return root.left;
+    }
+    if (root.right != null) {
+      return root.right;
+    }
+    return connect117Help(root.next);
+  }
+
 }
