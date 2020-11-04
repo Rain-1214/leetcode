@@ -1,5 +1,8 @@
 package com.leetcode.algorithm;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.leetcode.entity.TreeNode;
 
 import org.junit.Test;
@@ -24,6 +27,8 @@ public class AlgorithmController101to120Test {
 
   @Test
   public void numDistinct() {
+    List<Integer> res = new ArrayList<>();
+    System.out.println(res);
     System.out.println(this.algorithmController81to100.numDistinct("babgbag", "bag"));
   }
 
