@@ -524,4 +524,24 @@ public class AlgorithmController101to120 {
     return res;
   }
 
+  public List<Integer> generate2(int rowIndex) {
+    int[][] set = new int[rowIndex + 1][rowIndex + 1];
+    set[0][0] = 1;
+    for (int i = 1; i <= rowIndex; i++) {
+      for (int j = 0; j <= i; j ++) {
+        if (j == 0 || j == i) {
+          set[i][j] = 1;
+          continue;
+        }
+        set[i][j] = set[i - 1][j - 1] + set[i - 1][j];
+      }
+    }
+
+    List<Integer> res = new ArrayList<>();
+    for (int i: set[rowIndex]) {
+      res.add(i);
+    }
+    return res;
+  }
+
 }
