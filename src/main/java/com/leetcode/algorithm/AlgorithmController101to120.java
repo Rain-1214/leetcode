@@ -503,4 +503,25 @@ public class AlgorithmController101to120 {
     return connect117Help(root.next);
   }
 
+  public List<List<Integer>> generate(int numRows) {
+    List<List<Integer>> res = new ArrayList<>();
+    if (numRows <= 0) {
+      return res;
+    }
+    for (int i = 0; i < numRows; i++) {
+      List<Integer> temp = new ArrayList<>();
+      temp.add(1);
+      for (int y = 1; y <= i; y++) {
+        if (y == i) {
+          temp.add(1);
+          continue;
+        }
+        List<Integer> prev = res.get(i - 1);
+        temp.add(prev.get(y - 1) + prev.get(y));
+      }
+      res.add(temp);
+    }
+    return res;
+  }
+
 }
