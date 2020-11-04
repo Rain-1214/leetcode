@@ -556,8 +556,12 @@ public class AlgorithmController101to120 {
       List<Integer> row = triangle.get(i);
       int rowWidth = row.size();
       for (int j = 0; j < rowWidth; j++) {
-        if (j == 0 || j == rowWidth - 1) {
+        if (j == 0) {
           dp[i][j] = row.get(j) + dp[i - 1][j];
+          continue;
+        }
+        if (j == rowWidth - 1) {
+          dp[i][j] = row.get(j) + dp[i - 1][j - 1];
           continue;
         }
         dp[i][j] = row.get(j) + Math.min(dp[i - 1][j], dp[i - 1][j - 1]);
