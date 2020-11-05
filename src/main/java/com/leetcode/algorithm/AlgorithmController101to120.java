@@ -544,4 +544,34 @@ public class AlgorithmController101to120 {
     return res;
   }
 
+  public int minimumTotal(List<List<Integer>> triangle) {
+    int deep = triangle.size();
+    if (deep == 0) {
+      return 0;
+    }
+    int width = triangle.get(deep - 1).size();
+    int[][] dp = new int[deep][width];
+    dp[0][0] = triangle.get(0).get(0);
+    for (int i = 1; i < deep; i++) {
+      List<Integer> row = triangle.get(i);
+      int rowWidth = row.size();
+      for (int j = 0; j < rowWidth; j++) {
+        if (j == 0) {
+          dp[i][j] = row.get(j) + dp[i - 1][j];
+          continue;
+        }
+        if (j == rowWidth - 1) {
+          dp[i][j] = row.get(j) + dp[i - 1][j - 1];
+          continue;
+        }
+        dp[i][j] = row.get(j) + Math.min(dp[i - 1][j], dp[i - 1][j - 1]);
+      }
+    }
+    int min = Integer.MAX_VALUE;
+    for (int n: dp[deep - 1]) {
+      min = Math.min(min, n);
+    }
+    return min;
+  }
+
 }
