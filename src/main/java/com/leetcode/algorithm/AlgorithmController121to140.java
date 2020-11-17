@@ -1,5 +1,6 @@
 package com.leetcode.algorithm;
 
+import com.leetcode.entity.TreeNode;
 import com.leetcode.tool.Print;
 
 public class AlgorithmController121to140 {
@@ -66,6 +67,23 @@ public class AlgorithmController121to140 {
 
     return sell2;
 
+  }
+
+  public int maxPath = 0;
+
+  public int maxPathSum(TreeNode root) {
+   maxPathSumImpl(root);
+   return this.maxPath;
+  }
+
+  public int maxPathSumImpl(TreeNode root) {
+    if (root == null) {
+      return 0;
+    }
+    int left = Math.max(maxPathSumImpl(root.left), 0);
+    int right = Math.max(maxPathSumImpl(root.right), 0);
+    this.maxPath = Math.max(Math.max(left, right) + root.val, this.maxPath);
+    return Math.max(left, right) + root.val;
   }
 
 }
