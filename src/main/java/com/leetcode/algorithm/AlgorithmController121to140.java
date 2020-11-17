@@ -69,7 +69,7 @@ public class AlgorithmController121to140 {
 
   }
 
-  public int maxPath = 0;
+  public int maxPath = Integer.MIN_VALUE;
 
   public int maxPathSum(TreeNode root) {
    maxPathSumImpl(root);
@@ -82,7 +82,7 @@ public class AlgorithmController121to140 {
     }
     int left = Math.max(maxPathSumImpl(root.left), 0);
     int right = Math.max(maxPathSumImpl(root.right), 0);
-    this.maxPath = Math.max(Math.max(left, right) + root.val, this.maxPath);
+    this.maxPath = Math.max(left + right + root.val, this.maxPath);
     return Math.max(left, right) + root.val;
   }
 
