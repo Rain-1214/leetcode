@@ -15,4 +15,10 @@ public class AlgorithmController121to140Test {
     Assert.assertEquals(this.algorithmController121to140.maxProfit3(test2), 13);
   }
 
+  @Test
+  public void isPalindrome() {
+    System.out.println('a' - 'A');
+    // this.algorithmController121to140.isPalindrome("A man, a plan, a canal: Panama");
+  }
+
 }

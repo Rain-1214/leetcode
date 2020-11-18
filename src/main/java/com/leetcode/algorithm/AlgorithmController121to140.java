@@ -86,4 +86,45 @@ public class AlgorithmController121to140 {
     return Math.max(left, right) + root.val;
   }
 
+  public boolean isPalindromeValid(char c) {
+    return (c >= '0' && c <= '9') || (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
+  }
+
+  public boolean isPalindrome(String s) {
+    if (s == null) {
+      return false;
+    }
+    int n = s.length();
+    if (n < 2) {
+      return true;
+    }
+    int l = 0, r = n - 1;
+    while (l < r) {
+      char left = s.charAt(l);
+      char right = s.charAt(r);
+      if (!isPalindromeValid(left)) {
+        l++;
+        continue;
+      }
+      if (!isPalindromeValid(right)) {
+        r--;
+        continue;
+      }
+      if (left != right) {
+        if ((left >= '0' && left <= '9') || (right >= '0' && right <= '9')) {
+          return false;
+        } else if (Math.abs(right - left) != 32) {
+          return false;
+        } else {
+          l++;
+          r--;
+        }
+      } else {
+        l++;
+        r--;
+      }
+    }
+    return true;
+  }
+
 }
