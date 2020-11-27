@@ -279,4 +279,37 @@ public class AlgorithmController121to140 {
   // }
   // }
 
+  public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+    HashSet<String> use = new HashSet<>(wordList);
+    Queue<String> path = new LinkedList<>();
+    Set<String> endSet = new HashSet<>();
+    endSet.add(endWord);
+    int level = 1;
+    path.add(beginWord);
+    while (!path.isEmpty()) {
+      int len = path.size();
+      System.out.println(path);
+      for (int l = 0; l < len; l++) {
+        String prev = path.poll();
+        for (int i = 0; i < prev.length(); i++) {
+          char[] charArray = prev.toCharArray();
+          for (char c = 'a'; c <= 'z'; c++) {
+            charArray[i] = c;
+            String sbs = new String(charArray);
+            if (use.contains(sbs)) {
+              if (endSet.contains(sbs)) {
+                return level + 1;
+              } else {
+                use.remove(sbs);
+                path.add(sbs);
+              }
+            }
+          }
+        }
+      }
+      level++;
+    }
+    return 0;
+  }
+
 }
