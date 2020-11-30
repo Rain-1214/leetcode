@@ -374,4 +374,24 @@ public class AlgorithmController121to140 {
     return res;
   }
 
+  public int sumNumbers(TreeNode root) {
+    if (root == null) {
+      return 0;
+    }
+    return sumNumbersImpl(root, 0);
+  }
+
+  public int sumNumbersImpl(TreeNode root, int parentVal) {
+    if (root == null) {
+      return 0;
+    }
+    int val = parentVal * 10 + root.val;
+    int left = sumNumbersImpl(root.left, val);
+    int right = sumNumbersImpl(root.right, val);
+    if (left == 0 && right == 0) {
+      return val;
+    }
+    return left + right;
+  }
+
 }
