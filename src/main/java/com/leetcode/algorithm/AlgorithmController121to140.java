@@ -312,4 +312,66 @@ public class AlgorithmController121to140 {
     return 0;
   }
 
+  public int longestConsecutiveTooSlow(int[] nums) {
+    if (nums.length <= 0) {
+      return 0;
+    }
+    Set<Integer> dic = new HashSet<>();
+    for (int n : nums) {
+      dic.add(n);
+    }
+    int max = 1;
+    for (int i = 0; i < nums.length; i++) {
+      if (dic.size() <= 0) {
+        break;
+      }
+      int t = nums[i];
+      int right = t;
+      int left = t;
+      while (true) {
+        if (dic.contains(++right)) {
+          dic.remove(right);
+        } else {
+          break;
+        }
+      }
+      while (true) {
+        if (dic.contains(--left)) {
+          dic.remove(left);
+        } else {
+          break;
+        }
+      }
+      max = Math.max(max, right - left - 1);
+    }
+    return max;
+  }
+
+  public int longestConsecutive(int[] nums) {
+    if (nums.length <= 0) {
+      return 0;
+    }
+    int max = Integer.MIN_VALUE;
+    int min = Integer.MAX_VALUE;
+    for (int n : nums) {
+      max = Math.max(max, n);
+      min = Math.min(min, n);
+    }
+    int[] dic = new int[max - min + 1];
+    for (int n : nums) {
+      dic[n - min] = 1;
+    }
+    int res = 0;
+    int currentRes = 0;
+    for (int i = 0; i < max - min + 1; i++) {
+      if (dic[i] == 1) {
+        currentRes++;
+        res = Math.max(res, currentRes);
+      } else {
+        currentRes = 0;
+      }
+    }
+    return res;
+  }
+
 }
