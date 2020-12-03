@@ -434,4 +434,36 @@ public class AlgorithmController121to140 {
     solveHelp(x, y + 1, board);
   }
 
+  public List<List<String>> partition(String s) {
+    List<List<String>> res = new ArrayList<>();
+    partitionImpl(s, 0, new LinkedList<>(), res);
+    return res;
+  }
+
+  public void partitionImpl(String sb, int index, LinkedList<String> current, List<List<String>> res) {
+    int sLen = sb.length();
+    if (index >= sLen) {
+      res.add(new ArrayList<>(current));
+      return;
+    }
+    for (int i = index; i < sLen; i++) {
+      if (!isPalindrome(sb, index, i)) {
+        continue;
+      }
+      current.add(sb.substring(index, i + 1));
+      partitionImpl(sb, i + 1, current, res);
+      current.removeLast();
+    }
+
+  }
+
+  public boolean isPalindrome(String s, int b, int e) {
+    while (b < e) {
+      if (s.charAt(b++) != s.charAt(e--)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
 }
