@@ -394,4 +394,44 @@ public class AlgorithmController121to140 {
     return left + right;
   }
 
+  public void solve(char[][] board) {
+    if (board.length < 2 || board[0].length < 2) {
+      return;
+    }
+    int xLen = board[0].length;
+    int yLen = board.length;
+    for (int y = 0; y < yLen; y++) {
+      solveHelp(0, y, board);
+      solveHelp(xLen - 1, y, board);
+    }
+    for (int x = 0; x < xLen; x++) {
+      solveHelp(x, 0, board);
+      solveHelp(x, yLen - 1, board);
+    }
+    for (int y = 0; y < xLen; y++) {
+      for (int x = 0; x < yLen; x++) {
+        if (board[x][y] == 'O') {
+          board[x][y] = 'X';
+        }
+        if (board[x][y] == 't') {
+          board[x][y] = 'O';
+        }
+      }
+    }
+  }
+
+  public void solveHelp(int x, int y, char[][] board) {
+    if (x < 0 || y < 0 || y >= board.length || x >= board[0].length) {
+      return;
+    }
+    if (board[y][x] == 'X' || board[y][x] == 't') {
+      return;
+    }
+    board[y][x] = 't';
+    solveHelp(x - 1, y, board);
+    solveHelp(x + 1, y, board);
+    solveHelp(x, y - 1, board);
+    solveHelp(x, y + 1, board);
+  }
+
 }
