@@ -12,6 +12,7 @@ import java.util.Queue;
 import java.util.Set;
 
 import com.leetcode.entity.TreeNode;
+import com.leetcode.tool.Node;
 import com.leetcode.tool.Print;
 
 public class AlgorithmController121to140 {
@@ -492,7 +493,7 @@ public class AlgorithmController121to140 {
     int[] cuts = new int[length];
     char[] ar = s.toCharArray();
     Arrays.fill(cuts, length);
-    for(int index = 0; index < length; index++) {
+    for (int index = 0; index < length; index++) {
       fill(index, index, cuts, ar);
       fill(index, index + 1, cuts, ar);
     }
@@ -500,11 +501,28 @@ public class AlgorithmController121to140 {
   }
 
   private void fill(int left, int right, int[] cuts, char[] ar) {
-    while(left >= 0 && right < cuts.length && ar[left] == ar[right]) {
+    while (left >= 0 && right < cuts.length && ar[left] == ar[right]) {
       cuts[right] = Math.min(cuts[right], left == 0 ? 0 : cuts[left - 1] + 1);
       left--;
       right++;
     }
+  }
+
+  public Map<Integer, Node> graphPool = new HashMap<>();
+
+  public Node cloneGraph(Node node) {
+    if (node == null) {
+      return node;
+    }
+    if (this.graphPool.containsKey(node.val)) {
+      return this.graphPool.get(node.val);
+    }
+    Node temp = new Node(node.val);
+    this.graphPool.put(node.val, temp);
+    for (Node n : node.neighbors) {
+      temp.neighbors.add(cloneGraph(n));
+    }
+    return temp;
   }
 
 }
