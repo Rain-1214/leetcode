@@ -1,6 +1,7 @@
 package com.leetcode.algorithm;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -464,6 +465,46 @@ public class AlgorithmController121to140 {
       }
     }
     return true;
+  }
+
+  public int minCutTooSlow(String s) {
+    if (s.isEmpty()) {
+      return 0;
+    }
+    int sLen = s.length();
+    boolean[][] p = new boolean[sLen][sLen];
+    int[] dp = new int[sLen];
+    char[] ca = s.toCharArray();
+    for (int i = 0; i < sLen; ++i) {
+      dp[i] = i;
+      for (int j = 0; j <= i; ++j) {
+        if (ca[i] == ca[j] && (i - j < 2 || p[j + 1][i - 1])) {
+          p[j][i] = true;
+          dp[i] = j == 0 ? 0 : Math.min(dp[i], dp[j - 1] + 1);
+        }
+      }
+    }
+    return dp[sLen - 1];
+  }
+
+  public int minCut(String s) {
+    int length = s.length();
+    int[] cuts = new int[length];
+    char[] ar = s.toCharArray();
+    Arrays.fill(cuts, length);
+    for(int index = 0; index < length; index++) {
+      fill(index, index, cuts, ar);
+      fill(index, index + 1, cuts, ar);
+    }
+    return cuts[length - 1];
+  }
+
+  private void fill(int left, int right, int[] cuts, char[] ar) {
+    while(left >= 0 && right < cuts.length && ar[left] == ar[right]) {
+      cuts[right] = Math.min(cuts[right], left == 0 ? 0 : cuts[left - 1] + 1);
+      left--;
+      right++;
+    }
   }
 
 }

@@ -48,4 +48,9 @@ public class AlgorithmController121to140Test {
     System.out.println(this.algorithmController121to140.partition("aabaa"));
   }
 
+  @Test
+  public void minCut() {
+    this.algorithmController121to140.minCut("abcdefedcba");
+  }
+
 }
