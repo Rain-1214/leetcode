@@ -53,4 +53,9 @@ public class AlgorithmController121to140Test {
     this.algorithmController121to140.minCut("abcdefedcba");
   }
 
+  @Test
+  public void canCompleteCircuit() {
+    this.algorithmController121to140.canCompleteCircuit(new int[] { 1, 2, 3, 4, 5 }, new int[] { 3, 4, 5, 1, 2 });
+  }
+
 }

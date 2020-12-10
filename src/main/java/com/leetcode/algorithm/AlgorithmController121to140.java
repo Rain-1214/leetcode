@@ -525,4 +525,41 @@ public class AlgorithmController121to140 {
     return temp;
   }
 
+  public int canCompleteCircuitTooSlow(int[] gas, int[] cost) {
+    int temp = 0;
+    for (int i = 0; i < gas.length; i++) {
+      if (gas[i] < cost[i]) {
+        continue;
+      }
+      int index = i + 1 == gas.length ? 0 : i + 1;
+      temp = gas[i] - cost[i];
+      while (index != i) {
+        temp = temp + gas[index] - cost[index];
+        System.out.print(index);
+        System.out.println(temp);
+        if (temp < 0) {
+          break;
+        }
+        index = index + 1 == gas.length ? 0 : index + 1;
+      }
+      if (index == i && temp >= 0) {
+        return temp;
+      }
+    }
+    return -1;
+  }
+
+  public int canCompleteCircuit(int[] gas, int[] cost) {
+    int total = 0, current = 0, start = 0;
+    for (int i = 0; i < gas.length; i++) {
+      total += gas[i] - cost[i];
+      current += gas[i] - cost[i];
+      if (current < 0) {
+        start = i + 1;
+        current = 0;
+      }
+    }
+    return total < 0 ? -1 : start;
+  }
+
 }
