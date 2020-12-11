@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
+import java.util.Map.Entry;
 
 import com.leetcode.entity.TreeNode;
 import com.leetcode.tool.Node;
@@ -592,6 +593,19 @@ public class AlgorithmController121to140 {
       }
     }
     return t.iterator().next();
+  }
+
+  public int singleNumberII(int[] nums) {
+    Map<Integer, Integer> t = new HashMap<>();
+    for (int n : nums) {
+      t.put(n, t.getOrDefault(n, 0) + 1);
+    }
+    for (Entry<Integer, Integer> e : t.entrySet()) {
+      if (e.getValue() == 1) {
+        return e.getKey();
+      }
+    }
+    return 0;
   }
 
 }
