@@ -562,4 +562,24 @@ public class AlgorithmController121to140 {
     return total < 0 ? -1 : start;
   }
 
+  public int candy(int[] ratings) {
+    int[] t = new int[ratings.length];
+    Arrays.fill(t, 1);
+    int len = ratings.length;
+    for (int i = 0; i < len - 1; i++) {
+      if (ratings[i + 1] > ratings[i]) {
+        t[i + 1] = t[i] + 1;
+      }
+    }
+    int res = 0;
+    for (int i = len - 1; i > 0; i--) {
+      if (ratings[i - 1] > ratings[i]) {
+        t[i - 1] = Math.max(t[i] + 1, t[i - 1]);
+      }
+      res += t[i];
+    }
+    res += t[0];
+    return res;
+  }
+
 }
