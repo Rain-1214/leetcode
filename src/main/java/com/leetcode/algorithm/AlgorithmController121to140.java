@@ -582,4 +582,16 @@ public class AlgorithmController121to140 {
     return res;
   }
 
+  public int singleNumber(int[] nums) {
+    Set<Integer> t = new HashSet<>();
+    for (int i = 0; i < nums.length; i++) {
+      if (!t.contains(nums[i])) {
+        t.add(nums[i]);
+      } else {
+        t.remove(nums[i]);
+      }
+    }
+    return t.iterator().next();
+  }
+
 }
