@@ -608,4 +608,47 @@ public class AlgorithmController121to140 {
     return 0;
   }
 
+  public boolean wordBreak(String s, List<String> wordDict) {
+    if (wordDict == null || wordDict.size() == 0) {
+      return false;
+    }
+    int[] memo = new int[s.length()];
+    return wordBreakHelper(s, 0, wordDict, memo);
+  }
+
+  public boolean wordBreakHelper(String s, int start, List<String> wordDict, int[] memo) {
+    if (start > s.length() - 1) {
+      return true;
+    }
+    if (memo[start] != 0) {
+      return memo[start] == 1;
+    }
+    for (String cd : wordDict) {
+      if (s.indexOf(cd, start) == start && wordBreakHelper(s, start + cd.length(), wordDict, memo)) {
+        memo[start] = 1;
+        return true;
+      }
+    }
+    memo[start] = -1;
+    return false;
+  }
+
+  public boolean wordBreakTooSlow(String s, List<String> wordDict) {
+    if (wordDict == null || wordDict.size() == 0) {
+      return false;
+    }
+    Set<String> set = new HashSet<>(wordDict);
+    boolean[] dp = new boolean[s.length() + 1];
+    dp[0] = true;
+    for (int i = 0; i < dp.length; i++) {
+      for (int j = 0; j < i; j++) {
+        if (dp[j] && set.contains(s.substring(j, i))) {
+          dp[i] = true;
+          break;
+        }
+      }
+    }
+    return dp[dp.length - 1];
+  }
+
 }

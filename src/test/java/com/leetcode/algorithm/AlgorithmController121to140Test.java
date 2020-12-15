@@ -58,4 +58,19 @@ public class AlgorithmController121to140Test {
     this.algorithmController121to140.canCompleteCircuit(new int[] { 1, 2, 3, 4, 5 }, new int[] { 3, 4, 5, 1, 2 });
   }
 
+  @Test
+  public void wordBreak() {
+    List<String> s = new ArrayList<>();
+    s.add("a");
+    Assert.assertEquals(this.algorithmController121to140.wordBreak("aaaaaaa", s), true);
+    List<String> s1 = new ArrayList<>();
+    s1.add("leet");
+    s1.add("code");
+    Assert.assertEquals(this.algorithmController121to140.wordBreak("leetcode", s1), true);
+    Assert.assertEquals(this.algorithmController121to140.wordBreak("a", new ArrayList<>()), false);
+    List<String> s2 = new ArrayList<>();
+    s2.add("b");
+    Assert.assertEquals(this.algorithmController121to140.wordBreak("a", s2), false);
+  }
+
 }
