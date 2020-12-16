@@ -73,4 +73,12 @@ public class AlgorithmController121to140Test {
     Assert.assertEquals(this.algorithmController121to140.wordBreak("a", s2), false);
   }
 
+  @Test
+  public void wordBreakII() {
+    List<String> s = new ArrayList<>();
+    s.add("aa");
+    s.add("a");
+    System.out.println(this.algorithmController121to140.wordBreakII("aaaaaaa", s));
+  }
+
 }
