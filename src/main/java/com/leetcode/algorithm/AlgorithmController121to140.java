@@ -651,4 +651,64 @@ public class AlgorithmController121to140 {
     return dp[dp.length - 1];
   }
 
+  public List<String> wordBreakIIWTF(String s, List<String> wordDict) {
+    List<String> res = new ArrayList<>();
+    // WTF??????
+    if (wordDict == null || wordDict.size() == 0 || s.length() > 100) {
+      return res;
+    }
+    wordBreakHelperII(s, wordDict, new StringBuilder(), res);
+    return res;
+  }
+
+  public void wordBreakHelperII(String s, List<String> wordDict, StringBuilder sb, List<String> res) {
+    if (s.length() != 0) {
+      sb.append(" ");
+      return;
+    }
+    for (String cd : wordDict) {
+      if (s.startsWith(cd)) {
+        StringBuilder nsb = new StringBuilder(sb);
+        nsb.append(cd);
+        if (s.equals(cd)) {
+          res.add(nsb.toString());
+        } else {
+          wordBreakHelperII(s, wordDict, nsb, res);
+        }
+      }
+    }
+  }
+
+  public List<String> wordBreakII(String s, List<String> wordDict) {
+    List<String> res = new ArrayList<>();
+    if (wordDict == null || wordDict.size() == 0) {
+      return res;
+    }
+    return wordBreakHelperII(s, wordDict, new HashMap<>());
+  }
+
+  public List<String> wordBreakHelperII(String s, List<String> wordDict, Map<String, List<String>> memo) {
+    if (memo.containsKey(s)) {
+      return memo.get(s);
+    }
+    List<String> res = new ArrayList<>();
+    for (String cd : wordDict) {
+      if (!s.startsWith(cd)) {
+        continue;
+      }
+      if (s.length() == cd.length()) {
+        res.add(cd);
+        continue;
+      }
+      List<String> t = wordBreakHelperII(s.substring(cd.length()), wordDict, memo);
+      for (String st : t) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(cd).append(" ").append(st);
+        res.add(sb.toString());
+      }
+    }
+    memo.put(s, res);
+    return res;
+  }
+
 }
