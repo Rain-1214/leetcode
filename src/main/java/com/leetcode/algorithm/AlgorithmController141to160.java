@@ -1,12 +1,15 @@
 package com.leetcode.algorithm;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 import java.util.Stack;
 
 import com.leetcode.entity.ListNode;
+import com.leetcode.entity.TreeNode;
 
 public class AlgorithmController141to160 {
 
@@ -147,6 +150,21 @@ public class AlgorithmController141to160 {
       current = c;
       node = n;
     }
+  }
+
+  public List<Integer> preorderTraversal(TreeNode root) {
+    List<Integer> res = new ArrayList<>();
+    preorderTraversal(root, res);
+    return res;
+  }
+
+  public void preorderTraversal(TreeNode root, List<Integer> res) {
+    if (root == null) {
+      return;
+    }
+    res.add(root.val);
+    preorderTraversal(root.left, res);
+    preorderTraversal(root.right, res);
   }
 
 }
