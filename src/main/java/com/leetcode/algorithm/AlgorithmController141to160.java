@@ -1,7 +1,10 @@
 package com.leetcode.algorithm;
 
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Set;
+import java.util.Stack;
 
 import com.leetcode.entity.ListNode;
 
@@ -76,6 +79,74 @@ public class AlgorithmController141to160 {
       fast = fast.next;
     }
     return slow;
+  }
+
+  public void reorderListToolSlow(ListNode head) {
+    if (head == null || head.next == null || head.next.next == null) {
+      return;
+    }
+    ListNode slow = head.next;
+    ListNode fast = head.next.next;
+    while (fast != null && fast.next != null) {
+      slow = slow.next;
+      fast = fast.next.next;
+    }
+    ListNode last = slow.next;
+    slow.next = null;
+    Stack<ListNode> s = new Stack<>();
+    while (last != null) {
+      s.push(last);
+      last = last.next;
+    }
+    ListNode current = head;
+    while (!s.isEmpty()) {
+      ListNode next = current.next;
+      current.next = s.pop();
+      current.next.next = next;
+      current = next;
+    }
+  }
+
+  public ListNode reverse(ListNode node) {
+    if (node == null || node.next == null) {
+      return node;
+    }
+    ListNode prev = null;
+    ListNode curr = node;
+    while (curr != null) {
+      ListNode temp = curr.next;
+      curr.next = prev;
+      prev = curr;
+      curr = temp;
+    }
+    return prev;
+  }
+
+  public void reorderList(ListNode head) {
+    if (head == null || head.next == null || head.next.next == null) {
+      return;
+    }
+    ListNode slow = head;
+    ListNode fast = head.next;
+    while (fast != null && fast.next != null) {
+      slow = slow.next;
+      fast = fast.next.next;
+    }
+    ListNode flow = slow.next;
+    slow.next = null;
+    flow = reverse(flow);
+    ListNode current = head;
+    ListNode node = flow;
+    while (current != null && node != null) {
+      ListNode c = current.next;
+      ListNode n = node.next;
+
+      current.next = node;
+      node.next = c;
+
+      current = c;
+      node = n;
+    }
   }
 
 }
