@@ -370,4 +370,103 @@ public class AlgorithmController141to160 {
     return newHead.next;
   }
 
+  /**
+   * emmmm....... 对于已经排序过的大部分的List 快排效率太低了。 emmmm.......
+   * 大佬说要先检查是不是排好了。。orz。。。WTF！！！！！！
+   */
+  public ListNode sortList(ListNode head) {
+    if (head == null || head.next == null) {
+      return head;
+    }
+
+    boolean sortedAsc = true;
+    int prevVal = head.val;
+    ListNode curr = head.next;
+
+    while (curr != null && sortedAsc) {
+      sortedAsc = sortedAsc && curr.val >= prevVal;
+      prevVal = curr.val;
+      curr = curr.next;
+    }
+
+    if (sortedAsc) {
+      return head;
+    }
+
+    ListNode mid = head;
+    ListNode left = new ListNode(0);
+    ListNode right = new ListNode(0);
+    ListNode c = head.next;
+    ListNode lc = left;
+    ListNode rc = right;
+    while (c != null) {
+      if (c.val <= mid.val) {
+        lc.next = c;
+        lc = lc.next;
+      } else {
+        rc.next = c;
+        rc = rc.next;
+      }
+      c = c.next;
+    }
+    lc.next = null;
+    rc.next = null;
+    left = sortList(left.next);
+    right = sortList(right.next);
+    mid.next = right;
+    if (left != null) {
+      lc = left;
+      while (lc.next != null) {
+        lc = lc.next;
+      }
+      lc.next = mid;
+      return left;
+    }
+    return mid;
+  }
+
+  public ListNode sortListTooSlow(ListNode head) {
+    if (head == null || head.next == null) {
+      return head;
+    }
+    ListNode slow = head;
+    ListNode fast = head;
+    ListNode slowLast = head;
+    while (fast != null && fast.next != null) {
+      slowLast = slow;
+      slow = slow.next;
+      fast = fast.next.next;
+    }
+    slowLast.next = null;
+    return mergeListNode(sortListTooSlow(head), sortListTooSlow(slow));
+  }
+
+  public ListNode mergeListNode(ListNode l1, ListNode l2) {
+    if (l1 == null) {
+      return l2;
+    }
+    if (l2 == null) {
+      return l1;
+    }
+    ListNode temp = new ListNode(0);
+    ListNode current = temp;
+    while (l1 != null || l2 != null) {
+      if (l2.val < l1.val) {
+        current.next = l2;
+        l2 = l2.next;
+      } else {
+        current.next = l1;
+        l1 = l1.next;
+      }
+      current = current.next;
+    }
+    if (l1 != null) {
+      current.next = l1;
+    }
+    if (l2 != null) {
+      current.next = l2;
+    }
+    return temp.next;
+  }
+
 }
