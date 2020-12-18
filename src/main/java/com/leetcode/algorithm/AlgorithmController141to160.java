@@ -1,9 +1,11 @@
 package com.leetcode.algorithm;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 import java.util.Stack;
@@ -180,6 +182,148 @@ public class AlgorithmController141to160 {
     postorderTraversal(root.left, res);
     postorderTraversal(root.right, res);
     res.add(root.val);
+  }
+
+  class LRUCacheTooSlow {
+
+    public int capacity;
+    public LinkedList<Integer> q = new LinkedList<>();
+    public Map<Integer, Integer> dic = new HashMap<>();
+
+    public LRUCacheTooSlow(int capacity) {
+      this.capacity = capacity;
+    }
+
+    public int get(int key) {
+      if (dic.containsKey(key)) {
+        q.remove(new Integer(key));
+        q.addFirst(key);
+        return dic.get(key);
+      }
+      return -1;
+    }
+
+    public void put(int key, int value) {
+      if (dic.containsKey(key)) {
+        dic.put(key, value);
+        q.remove(new Integer(key));
+        q.addFirst(key);
+        return;
+      }
+      if (q.size() == capacity) {
+        int last = q.removeLast();
+        dic.remove(last);
+      }
+      q.addFirst(key);
+      dic.put(key, value);
+    }
+
+  }
+
+  public static class LRUCache {
+
+    class DLinkNode {
+      public int val = 0;
+      public int key = 0;
+      public DLinkNode prev = null;
+      public DLinkNode next = null;
+
+      public DLinkNode() {
+      }
+
+      public DLinkNode(int key, int val) {
+        this.val = val;
+        this.key = key;
+      }
+
+      public DLinkNode(int val, DLinkNode prev, DLinkNode next) {
+        this.val = val;
+        this.prev = prev;
+        this.next = next;
+      }
+
+      @Override
+      public String toString() {
+        int maxSize = 0;
+        String res = "";
+        DLinkNode node = this;
+        while (node != null) {
+          res += node.val;
+          node = node.next;
+          maxSize++;
+          if (maxSize > 100) {
+            break;
+          }
+        }
+        return res;
+      }
+
+    }
+
+    public int capacity;
+    public int size = 0;
+    public Map<Integer, DLinkNode> cache = new HashMap<>();
+    public DLinkNode head = null;
+    public DLinkNode tail = null;
+
+    public LRUCache(int capacity) {
+      this.capacity = capacity;
+      head = new DLinkNode();
+      tail = new DLinkNode();
+      head.next = tail;
+      tail.prev = head;
+    }
+
+    public int get(int key) {
+      if (!cache.containsKey(key)) {
+        return -1;
+      }
+      DLinkNode node = cache.get(key);
+      moveToHead(node);
+      return node.val;
+    }
+
+    public void moveToHead(DLinkNode node) {
+      node.prev.next = node.next;
+      node.next.prev = node.prev;
+      node.next = head.next;
+      head.next.prev = node;
+      node.prev = head;
+      head.next = node;
+    }
+
+    public void addNode(DLinkNode node) {
+      DLinkNode h1 = head.next;
+      head.next = node;
+      node.next = h1;
+      node.prev = head;
+      h1.prev = node;
+    }
+
+    public void removeLast() {
+      DLinkNode last = tail.prev;
+      last.prev.next = tail;
+      tail.prev = last.prev;
+      cache.remove(last.key);
+    }
+
+    public void put(int key, int value) {
+      if (cache.containsKey(key)) {
+        DLinkNode node = cache.get(key);
+        node.val = value;
+        moveToHead(node);
+        return;
+      }
+      if (size == capacity) {
+        removeLast();
+      } else {
+        size++;
+      }
+      DLinkNode temp = new DLinkNode(key, value);
+      addNode(temp);
+      cache.put(key, temp);
+    }
+
   }
 
 }

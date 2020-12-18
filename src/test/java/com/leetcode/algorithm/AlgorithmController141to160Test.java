@@ -22,4 +22,18 @@ public class AlgorithmController141to160Test {
     System.out.println(l);
   }
 
+  @Test
+  public void LRUCache() {
+    AlgorithmController141to160.LRUCache l = new AlgorithmController141to160.LRUCache(2);
+    l.put(1, 1);
+    l.put(2, 2);
+    System.out.println(l.get(1));
+    l.put(3, 3);
+    System.out.println(l.get(2));
+    l.put(4, 4);
+    System.out.println(l.get(1));
+    System.out.println(l.get(3));
+    System.out.println(l.get(4));
+  }
+
 }
