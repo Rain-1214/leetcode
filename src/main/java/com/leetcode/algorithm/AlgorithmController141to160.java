@@ -326,4 +326,48 @@ public class AlgorithmController141to160 {
 
   }
 
+  public ListNode insertionSortListTooSlow(ListNode head) {
+    if (head == null) {
+      return head;
+    }
+    ListNode newHead = new ListNode(Integer.MIN_VALUE);
+    ListNode current = head;
+    while (current != null) {
+      ListNode temp = current.next;
+      ListNode newCurrent = newHead;
+      while (newCurrent.next != null && current.val >= newCurrent.next.val) {
+        newCurrent = newCurrent.next;
+      }
+      current.next = newCurrent.next;
+      newCurrent.next = current;
+      current = temp;
+    }
+    return newHead.next;
+  }
+
+  public ListNode insertionSortList(ListNode head) {
+    if (head == null) {
+      return head;
+    }
+    ListNode newHead = new ListNode(Integer.MIN_VALUE);
+    newHead.next = head;
+    ListNode current = head;
+    while (current != null && current.next != null) {
+      if (current.val <= current.next.val) {
+        current = current.next;
+      } else {
+        ListNode shouldMove = current.next;
+        current.next = shouldMove.next;
+        ListNode temp = newHead;
+        while (shouldMove.val > temp.next.val) {
+          temp = temp.next;
+        }
+        shouldMove.next = temp.next;
+        temp.next = shouldMove;
+      }
+    }
+
+    return newHead.next;
+  }
+
 }
