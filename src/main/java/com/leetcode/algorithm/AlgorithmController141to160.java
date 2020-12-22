@@ -10,6 +10,8 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.Stack;
 
+import javax.validation.constraints.Max;
+
 import com.leetcode.entity.ListNode;
 import com.leetcode.entity.TreeNode;
 
@@ -467,6 +469,78 @@ public class AlgorithmController141to160 {
       current.next = l2;
     }
     return temp.next;
+  }
+
+  public int maxPoints(int[][] points) {
+    int maxX = 0;
+    int maxY = 0;
+    int max = 0;
+    for (int[] point : points) {
+      maxX = Math.max(maxX, point[0]);
+      maxY = Math.max(maxY, point[1]);
+    }
+    int[][] board = new int[maxY + 1][maxX + 1];
+    for (int[] point : points) {
+      board[point[1]][point[0]] += 1;
+    }
+    Set<Integer> vertical = new HashSet<>();
+    Set<Integer> horizontal = new HashSet<>();
+    Set<Integer> diagonal = new HashSet<>();
+    Set<Integer> antiDiagonal = new HashSet<>();
+
+    for (int i = 0; i < points.length; i++) {
+      int cx = points[i][0];
+      int cy = points[i][1];
+
+      int cmax = 0;
+      if (!horizontal.contains(cy)) {
+        int cHorMax = 0;
+        for (int x = 0; x <= maxX; x++) {
+          cHorMax += board[cy][x];
+        }
+        cmax = Math.max(cmax, cHorMax);
+        horizontal.add(cy);
+      }
+      if (!vertical.contains(cx)) {
+        int cVerMax = 0;
+        for (int y = 0; y <= maxY; y++) {
+          cVerMax += board[y][cx];
+        }
+        cmax = Math.max(cmax, cVerMax);
+        vertical.add(cx);
+      }
+      int slope = cy - cx;
+      int xi = slope >= 0 ? 0 : Math.abs(slope);
+      int yi = slope >= 0 ? slope : 0;
+
+      if (!diagonal.contains(slope)) {
+        int cDiaMax = 0;
+        while (xi <= maxX && yi <= maxY) {
+          cDiaMax += board[yi][xi];
+          xi++;
+          yi++;
+        }
+        cmax = Math.max(cmax, cDiaMax);
+        diagonal.add(slope);
+      }
+
+      slope = cy + cx;
+      xi = slope >= maxY ? slope - maxY : 0;
+      yi = slope >= maxY ? maxY : slope;
+
+      if (!antiDiagonal.contains(slope)) {
+        int cAntiDiaMax = 0;
+        while (xi <= maxX && yi >= 0) {
+          cAntiDiaMax += board[yi][xi];
+          xi++;
+          yi--;
+        }
+        cmax = Math.max(cmax, cAntiDiaMax);
+        antiDiagonal.add(slope);
+      }
+      max = Math.max(max, cmax);
+    }
+    return max;
   }
 
 }

@@ -36,4 +36,16 @@ public class AlgorithmController141to160Test {
     System.out.println(l.get(4));
   }
 
+  @Test
+  public void maxPoints() {
+    int[][] l = new int[6][2];
+    l[0] = new int[] { 3, 2 };
+    l[1] = new int[] { 3, 2 };
+    l[2] = new int[] { 5, 3 };
+    l[3] = new int[] { 4, 1 };
+    l[4] = new int[] { 2, 3 };
+    l[5] = new int[] { 1, 4 };
+    System.out.println(this.algorithmController141to160.maxPoints(l));
+  }
+
 }
