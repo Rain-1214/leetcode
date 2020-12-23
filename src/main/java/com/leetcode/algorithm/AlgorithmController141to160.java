@@ -472,75 +472,35 @@ public class AlgorithmController141to160 {
   }
 
   public int maxPoints(int[][] points) {
-    int maxX = 0;
-    int maxY = 0;
     int max = 0;
-    for (int[] point : points) {
-      maxX = Math.max(maxX, point[0]);
-      maxY = Math.max(maxY, point[1]);
-    }
-    int[][] board = new int[maxY + 1][maxX + 1];
-    for (int[] point : points) {
-      board[point[1]][point[0]] += 1;
-    }
-    Set<Integer> vertical = new HashSet<>();
-    Set<Integer> horizontal = new HashSet<>();
-    Set<Integer> diagonal = new HashSet<>();
-    Set<Integer> antiDiagonal = new HashSet<>();
-
+    Map<Integer, Map<Integer, Integer>> m = new HashMap<>();
     for (int i = 0; i < points.length; i++) {
-      int cx = points[i][0];
-      int cy = points[i][1];
-
-      int cmax = 0;
-      if (!horizontal.contains(cy)) {
-        int cHorMax = 0;
-        for (int x = 0; x <= maxX; x++) {
-          cHorMax += board[cy][x];
+      m.clear();
+      int duplicate = 1;
+      int curMax = 0;
+      for (int j = i + 1; j < points.length; j++) {
+        if (points[i][0] == points[j][0] && points[i][1] == points[j][1]) {
+          duplicate += 1;
+          continue;
         }
-        cmax = Math.max(cmax, cHorMax);
-        horizontal.add(cy);
+        int dx = points[j][0] - points[i][0];
+        int dy = points[j][1] - points[i][1];
+        int d = gcd(dy, dx);
+        dx /= d;
+        dy /= d;
+        Map<Integer, Integer> t = m.getOrDefault(dx, new HashMap<>());
+        int cp = t.getOrDefault(dy, 0) + 1;
+        t.put(dy, cp);
+        curMax = Math.max(curMax, cp);
+        m.put(dx, t);
       }
-      if (!vertical.contains(cx)) {
-        int cVerMax = 0;
-        for (int y = 0; y <= maxY; y++) {
-          cVerMax += board[y][cx];
-        }
-        cmax = Math.max(cmax, cVerMax);
-        vertical.add(cx);
-      }
-      int slope = cy - cx;
-      int xi = slope >= 0 ? 0 : Math.abs(slope);
-      int yi = slope >= 0 ? slope : 0;
-
-      if (!diagonal.contains(slope)) {
-        int cDiaMax = 0;
-        while (xi <= maxX && yi <= maxY) {
-          cDiaMax += board[yi][xi];
-          xi++;
-          yi++;
-        }
-        cmax = Math.max(cmax, cDiaMax);
-        diagonal.add(slope);
-      }
-
-      slope = cy + cx;
-      xi = slope >= maxY ? slope - maxY : 0;
-      yi = slope >= maxY ? maxY : slope;
-
-      if (!antiDiagonal.contains(slope)) {
-        int cAntiDiaMax = 0;
-        while (xi <= maxX && yi >= 0) {
-          cAntiDiaMax += board[yi][xi];
-          xi++;
-          yi--;
-        }
-        cmax = Math.max(cmax, cAntiDiaMax);
-        antiDiagonal.add(slope);
-      }
-      max = Math.max(max, cmax);
+      max = Math.max(max, duplicate + curMax);
     }
     return max;
+  }
+
+  public int gcd(int a, int b) { 
+    return b == 0 ? a : gcd(b, a % b);
   }
 
 }

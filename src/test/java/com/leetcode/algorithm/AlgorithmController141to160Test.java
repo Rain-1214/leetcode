@@ -1,5 +1,8 @@
 package com.leetcode.algorithm;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.leetcode.entity.ListNode;
 
 import org.junit.Test;
@@ -45,7 +48,15 @@ public class AlgorithmController141to160Test {
     l[3] = new int[] { 4, 1 };
     l[4] = new int[] { 2, 3 };
     l[5] = new int[] { 1, 4 };
-    System.out.println(this.algorithmController141to160.maxPoints(l));
+    // System.out.println(this.algorithmController141to160.maxPoints(l));
+    Map<Map<Integer, Integer>, Integer> m = new HashMap<>();
+    Map<Integer, Integer> m1 = new HashMap<>();
+    m1.put(1, 1);
+    m.put(m1, 100);
+    System.out.print(m.get(m1));
+    Map<Integer, Integer> m2 = new HashMap<>();
+    m2.put(1, 1);
+    System.out.print(m.get(m2));
   }
 
 }
