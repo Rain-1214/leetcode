@@ -10,6 +10,8 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.Stack;
 
+import javax.validation.constraints.Max;
+
 import com.leetcode.entity.ListNode;
 import com.leetcode.entity.TreeNode;
 
@@ -467,6 +469,38 @@ public class AlgorithmController141to160 {
       current.next = l2;
     }
     return temp.next;
+  }
+
+  public int maxPoints(int[][] points) {
+    int max = 0;
+    Map<Integer, Map<Integer, Integer>> m = new HashMap<>();
+    for (int i = 0; i < points.length; i++) {
+      m.clear();
+      int duplicate = 1;
+      int curMax = 0;
+      for (int j = i + 1; j < points.length; j++) {
+        if (points[i][0] == points[j][0] && points[i][1] == points[j][1]) {
+          duplicate += 1;
+          continue;
+        }
+        int dx = points[j][0] - points[i][0];
+        int dy = points[j][1] - points[i][1];
+        int d = gcd(dy, dx);
+        dx /= d;
+        dy /= d;
+        Map<Integer, Integer> t = m.getOrDefault(dx, new HashMap<>());
+        int cp = t.getOrDefault(dy, 0) + 1;
+        t.put(dy, cp);
+        curMax = Math.max(curMax, cp);
+        m.put(dx, t);
+      }
+      max = Math.max(max, duplicate + curMax);
+    }
+    return max;
+  }
+
+  public int gcd(int a, int b) { 
+    return b == 0 ? a : gcd(b, a % b);
   }
 
 }
