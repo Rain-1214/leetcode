@@ -59,4 +59,9 @@ public class AlgorithmController141to160Test {
     System.out.print(m.get(m2));
   }
 
+  @Test
+  public void reverseWords() {
+    System.out.println(this.algorithmController141to160.reverseWords("  world hello   "));
+  }
+
 }
