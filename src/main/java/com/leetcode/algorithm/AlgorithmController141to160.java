@@ -503,4 +503,31 @@ public class AlgorithmController141to160 {
     return b == 0 ? a : gcd(b, a % b);
   }
 
+  public int evalRPN(String[] tokens) {
+    Stack<Integer> s = new Stack<>();
+    Set<String> set = new HashSet<>();
+    set.add("+");
+    set.add("-");
+    set.add("*");
+    set.add("/");
+    for (String t: tokens) {
+      if (set.contains(t)) {
+        int n2 = s.pop();
+        int n1 = s.pop();
+        if (t.equals("+")) {
+          s.push(n1 + n2);
+        } else if (t.equals("-")) {
+          s.push(n1 - n2);
+        } else if (t.equals("*")) {
+          s.push(n1 * n2);
+        } else {
+          s.push(n1 / n2);
+        }
+      } else {
+        s.push(Integer.parseInt(t));
+      }
+    }
+    return s.pop();
+  }
+
 }
