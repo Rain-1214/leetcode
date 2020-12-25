@@ -530,4 +530,27 @@ public class AlgorithmController141to160 {
     return s.pop();
   }
 
+  public String reverseWords(String s) {
+    char[] sca = s.toCharArray();
+    int si = 0;
+    int fi = 1;
+    StringBuilder sb = new StringBuilder();
+    while (si < sca.length) {
+      if (sca[si] == ' ') {
+        si++;
+        continue;
+      }
+      if (sb.length() > 0) {
+        sb.insert(0, ' ');
+      }
+      fi = si + 1;
+      while(fi < sca.length && sca[fi] != ' ') {
+        fi++;
+      }
+      sb.insert(0 ,s.substring(si, fi));
+      si = fi;
+    }
+    return sb.toString();
+  }
+
 }
