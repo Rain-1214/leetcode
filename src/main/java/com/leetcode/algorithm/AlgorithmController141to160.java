@@ -584,4 +584,23 @@ public class AlgorithmController141to160 {
     return nums[right];
   }
 
+  public int findMinII(int[] nums) {
+    int left = 0;
+    int right = nums.length - 1;
+    while (left < right) {
+      int mid = (left + right) / 2;
+      if (nums[left] == nums[mid] && nums[mid] == nums[right]) {
+        left++;
+        right--;
+        continue;
+      }
+      if (nums[mid] > nums[right]) {
+        left = mid + 1;
+      } else {
+        right = mid;
+      }
+    }
+    return nums[right];
+  }
+
 }
