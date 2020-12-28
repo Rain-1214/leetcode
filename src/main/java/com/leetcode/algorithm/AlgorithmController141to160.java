@@ -603,4 +603,45 @@ public class AlgorithmController141to160 {
     return nums[right];
   }
 
+  class MinStack {
+
+    public ArrayList<Integer> l;
+    public int min;
+
+    /** initialize your data structure here. */
+    public MinStack() {
+      this.l = new ArrayList<Integer>();
+      this.min = Integer.MAX_VALUE;
+    }
+    
+    public void push(int x) {
+      l.add(x);
+      min = Math.min(x, min);
+    }
+    
+    public void pop() {
+      int t = l.get(l.size() - 1);
+      l.remove(l.size() - 1);
+      if (t == min) {
+        min = _getMin();
+      }
+    }
+    
+    public int top() {
+      return l.get(l.size() - 1);
+    }
+
+    public int getMin() {
+      return min;
+    }
+    
+    public int _getMin() {
+      int min = Integer.MAX_VALUE;
+      for (int m: l) {
+        min = Math.min(m, min);
+      }
+      return min;
+    }
+  }
+
 }
