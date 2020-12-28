@@ -553,4 +553,21 @@ public class AlgorithmController141to160 {
     return sb.toString();
   }
 
+  public int maxProduct(int[] nums) {
+    if (nums == null || nums.length == 0) {
+      return 0;
+    }
+    int min = nums[0];
+    int max = nums[0];
+    int res = nums[0];
+    for (int i = 1; i < nums.length; i++) {
+      int c = nums[i];
+      int tempMin = min;
+      min = Math.min(Math.min(min * c, max * c), c);
+      max = Math.max(Math.max(tempMin * c, max * c), c);
+      res = Math.max(res, max);
+    }     
+    return res;
+  }
+
 }
