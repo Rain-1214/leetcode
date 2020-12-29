@@ -499,7 +499,7 @@ public class AlgorithmController141to160 {
     return max;
   }
 
-  public int gcd(int a, int b) { 
+  public int gcd(int a, int b) {
     return b == 0 ? a : gcd(b, a % b);
   }
 
@@ -510,7 +510,7 @@ public class AlgorithmController141to160 {
     set.add("-");
     set.add("*");
     set.add("/");
-    for (String t: tokens) {
+    for (String t : tokens) {
       if (set.contains(t)) {
         int n2 = s.pop();
         int n1 = s.pop();
@@ -544,10 +544,10 @@ public class AlgorithmController141to160 {
         sb.insert(0, ' ');
       }
       fi = si + 1;
-      while(fi < sca.length && sca[fi] != ' ') {
+      while (fi < sca.length && sca[fi] != ' ') {
         fi++;
       }
-      sb.insert(0 ,s.substring(si, fi));
+      sb.insert(0, s.substring(si, fi));
       si = fi;
     }
     return sb.toString();
@@ -566,7 +566,7 @@ public class AlgorithmController141to160 {
       min = Math.min(Math.min(min * c, max * c), c);
       max = Math.max(Math.max(tempMin * c, max * c), c);
       res = Math.max(res, max);
-    }     
+    }
     return res;
   }
 
@@ -613,12 +613,12 @@ public class AlgorithmController141to160 {
       this.l = new ArrayList<Integer>();
       this.min = Integer.MAX_VALUE;
     }
-    
+
     public void push(int x) {
       l.add(x);
       min = Math.min(x, min);
     }
-    
+
     public void pop() {
       int t = l.get(l.size() - 1);
       l.remove(l.size() - 1);
@@ -626,7 +626,7 @@ public class AlgorithmController141to160 {
         min = _getMin();
       }
     }
-    
+
     public int top() {
       return l.get(l.size() - 1);
     }
@@ -634,14 +634,28 @@ public class AlgorithmController141to160 {
     public int getMin() {
       return min;
     }
-    
+
     public int _getMin() {
       int min = Integer.MAX_VALUE;
-      for (int m: l) {
+      for (int m : l) {
         min = Math.min(m, min);
       }
       return min;
     }
+  }
+
+  public TreeNode upsideDownBinaryTree(TreeNode root) {
+    if (root == null || root.left == null) {
+      return root;
+    }
+    TreeNode l = root.left;
+    TreeNode r = root.right;
+    TreeNode t = upsideDownBinaryTree(l);
+    root.left = null;
+    root.right = null;
+    l.left = r;
+    l.right = root;
+    return t;
   }
 
 }
