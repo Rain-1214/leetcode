@@ -13,9 +13,10 @@ import java.util.Stack;
 import javax.validation.constraints.Max;
 
 import com.leetcode.entity.ListNode;
+import com.leetcode.entity.Read4;
 import com.leetcode.entity.TreeNode;
 
-public class AlgorithmController141to160 {
+public class AlgorithmController141to160 extends Read4 {
 
   public boolean hasCycleTooSlow(ListNode head) {
     return hasCycle(head, new HashSet<>());
@@ -656,6 +657,25 @@ public class AlgorithmController141to160 {
     l.left = r;
     l.right = root;
     return t;
+  }
+
+  public int read(char[] buf, int n) {
+    char[] temp = new char[4];
+    for (int i = 0; i < n; i += 4) {
+      int c = read4(temp);
+      for (int j = 0; j < c; j++) {
+        buf[i + j] = temp[j];
+        // 注掉也能过。。但是可能会在某些情况下多写
+        // if (i + j == n) {
+        // break;
+        // }
+        temp[j] = ' ';
+      }
+      if (c < 4) {
+        return Math.min(i + c, n);
+      }
+    }
+    return n;
   }
 
 }
