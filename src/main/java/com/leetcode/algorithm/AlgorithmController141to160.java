@@ -772,4 +772,34 @@ public class AlgorithmController141to160 extends Read4 {
     return max;
   }
 
+  public ListNode getIntersectionNodeTooSlow(ListNode headA, ListNode headB) {
+    if (headA == null || headB == null) {
+      return null;
+    }
+    Set<ListNode> set = new HashSet<>();
+    ListNode c = headA;
+    while (c != null) {
+      set.add(c);
+      c = c.next;
+    }
+    c = headB;
+    while (c != null) {
+      if (set.contains(c)) {
+        return c;
+      }
+      c = c.next;
+    }
+    return null;
+  }
+
+  public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+    ListNode a = headA;
+    ListNode b = headB;
+    while (a != b) {
+      a = a == null ? headB : a.next;
+      b = b == null ? headA : b.next;
+    }
+    return a;
+  }
+
 }
