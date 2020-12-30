@@ -678,6 +678,25 @@ public class AlgorithmController141to160 extends Read4 {
     return n;
   }
 
+  public char[] cache = new char[4];
+  public int index = 0;
+  public int max = 0;
+
+  public int readII(char[] buf, int n) {
+
+    for (int i = 0; i < n; i++) {
+      if (index == max) {
+        max = read4(cache);
+        index = 0;
+        if (max == 0) {
+          return i;
+        }
+      }
+      buf[i] = cache[index++];
+    }
+    return n;
+  }
+
   public int lengthOfLongestSubstringTwoDistinctTooSlow(String s) {
     char[] ca = s.toCharArray();
     int len = ca.length;
