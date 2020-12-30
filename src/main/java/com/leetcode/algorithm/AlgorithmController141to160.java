@@ -678,4 +678,79 @@ public class AlgorithmController141to160 extends Read4 {
     return n;
   }
 
+  public int lengthOfLongestSubstringTwoDistinctTooSlow(String s) {
+    char[] ca = s.toCharArray();
+    int len = ca.length;
+    if (len < 2) {
+      return len;
+    }
+    Map<Character, Integer> cache = new HashMap<>();
+    int left = 0, right = 0;
+    int charNum = 0;
+    int max = 0;
+    while (left < len && right < len) {
+      if (cache.containsKey(ca[right])) {
+        cache.put(ca[right], cache.getOrDefault(ca[right], 0) + 1);
+        right++;
+      } else {
+        if (charNum == 2) {
+          while (charNum == 2) {
+            int ln = cache.get(ca[left]);
+            if (ln == 1) {
+              cache.remove(ca[left]);
+              left++;
+              charNum--;
+              break;
+            } else {
+              cache.put(ca[left], ln - 1);
+            }
+            left++;
+          }
+        } else {
+          charNum++;
+          cache.put(ca[right], 1);
+          right++;
+        }
+      }
+      max = Math.max(max, right - left);
+    }
+    return max;
+  }
+
+  public int lengthOfLongestSubstringTwoDistinct(String s) {
+    char[] ca = s.toCharArray();
+    int len = ca.length;
+    if (len < 2) {
+      return len;
+    }
+    char[] cache = new char[128];
+    int left = 0, right = 0;
+    int charNum = 0;
+    int max = 0;
+    while (left < len && right < len) {
+      if (cache[ca[right]] != 0) {
+        cache[ca[right]]++;
+        right++;
+      } else {
+        if (charNum == 2) {
+          while (charNum == 2) {
+            cache[ca[left]]--;
+            if (cache[ca[left]] == 0) {
+              left++;
+              charNum--;
+              break;
+            }
+            left++;
+          }
+        } else {
+          charNum++;
+          cache[ca[right]]++;
+          right++;
+        }
+      }
+      max = Math.max(max, right - left);
+    }
+    return max;
+  }
+
 }

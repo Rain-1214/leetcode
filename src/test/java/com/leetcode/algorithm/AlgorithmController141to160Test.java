@@ -64,4 +64,9 @@ public class AlgorithmController141to160Test {
     System.out.println(this.algorithmController141to160.reverseWords("  world hello   "));
   }
 
+  @Test
+  public void lengthOfLongestSubstringTwoDistinct() {
+    System.out.println(this.algorithmController141to160.lengthOfLongestSubstringTwoDistinct("eceba"));
+  }
+
 }
