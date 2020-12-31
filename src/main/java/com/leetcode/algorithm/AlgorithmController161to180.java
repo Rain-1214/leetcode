@@ -58,4 +58,17 @@ public class AlgorithmController161to180 {
     return true;
   }
 
+  public int findPeakElement(int[] nums) {
+    int prev = nums[0] - 1;
+    int next = nums[0] - 1;
+    for (int i = 0; i < nums.length; i++) {
+      prev = i == 0 ? nums[0] - 1 : nums[i - 1];
+      next = i == nums.length - 1 ? nums[i] - 1 : nums[i + 1];
+      if (nums[i] > prev && nums[i] > next) {
+        return i;
+      }
+    }
+    return 0;
+  }
+
 }
