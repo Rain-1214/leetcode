@@ -1,6 +1,7 @@
 package com.leetcode.algorithm;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class AlgorithmController161to180 {
@@ -99,6 +100,43 @@ public class AlgorithmController161to180 {
         sb.append(Integer.toString(upper));
       }
       res.add(sb.toString());
+    }
+    return res;
+  }
+
+  public int maximumGap(int[] nums) {
+    if (nums.length < 2) {
+      return 0;
+    }
+    int len = nums.length;
+    int max = Arrays.stream(nums).max().getAsInt();
+    int min = Arrays.stream(nums).min().getAsInt();
+    int distance = Math.max(1, (max - min) / (len - 1));
+    int size = (max - min) / distance + 1;
+    int[][] buckets = new int[size][2];
+    for (int[] bucket : buckets) {
+      Arrays.fill(bucket, -1);
+    }
+    for (int num : nums) {
+      int temp = (num - min) / distance;
+      if (buckets[temp][0] == -1) {
+        buckets[temp][0] = num;
+        buckets[temp][1] = num;
+      } else {
+        buckets[temp][0] = Math.min(buckets[temp][0], num);
+        buckets[temp][1] = Math.max(buckets[temp][1], num);
+      }
+    }
+    int res = 0;
+    int[] prev = null;
+    for (int[] bucket : buckets) {
+      if (bucket[0] == -1) {
+        continue;
+      }
+      if (prev != null) {
+        res = Math.max(res, bucket[0] - prev[1]);
+      }
+      prev = bucket;
     }
     return res;
   }
