@@ -1,5 +1,8 @@
 package com.leetcode.algorithm;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class AlgorithmController161to180 {
 
   public boolean isOneEditDistanceTooSlow(String s, String t) {
@@ -71,4 +74,32 @@ public class AlgorithmController161to180 {
     return 0;
   }
 
+  public List<String> findMissingRanges(int[] nums, int lower, int upper) {
+    List<String> res = new ArrayList<>();
+    for (int num : nums) {
+      if (num > lower) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(Integer.toString(lower));
+        if (num - 1 > lower) {
+          sb.append("->");
+          sb.append(Integer.toString(num - 1));
+        }
+        res.add(sb.toString());
+      }
+      if (num >= upper) {
+        return res;
+      }
+      lower = num + 1;
+    }
+    if (upper >= lower) {
+      StringBuilder sb = new StringBuilder();
+      sb.append(Integer.toString(lower));
+      if (upper > lower) {
+        sb.append("->");
+        sb.append(Integer.toString(upper));
+      }
+      res.add(sb.toString());
+    }
+    return res;
+  }
 }
