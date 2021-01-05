@@ -140,4 +140,63 @@ public class AlgorithmController161to180 {
     }
     return res;
   }
+
+  public int compareVersionTooSlow(String version1, String version2) {
+    if (version2 == null || version2.length() == 0) {
+      return 1;
+    }
+    String[] v1Arr = version1.split("\\.");
+    String[] v2Arr = version2.split("\\.");
+    for (int i = 0; i < Math.max(v1Arr.length, v2Arr.length); i++) {
+      String s1 = i >= v1Arr.length ? "0" : v1Arr[i];
+      String s2 = i >= v2Arr.length ? "0" : v2Arr[i];
+      if (s1.equals(s2)) {
+        continue;
+      } else {
+        int s1i = s1.length() - 1;
+        int s2i = s2.length() - 1;
+        int res = 0;
+        while (s1i >= 0 || s2i >= 0) {
+          char s1a = s1i >= 0 ? s1.charAt(s1i--) : '0';
+          char s2a = s2i >= 0 ? s2.charAt(s2i--) : '0';
+          if (s1a == s2a) {
+            continue;
+          }
+          if (s1a > s2a) {
+            res = 1;
+          } else {
+            res = -1;
+          }
+        }
+        if (res != 0) {
+          return res;
+        }
+      }
+    }
+    return 0;
+  }
+
+  public int compareVersion(String version1, String version2) {
+    int len1 = version1.length();
+    int len2 = version2.length();
+    int i = 0, j = 0;
+    while (i < len1 || j < len2) {
+      int v1 = 0, v2 = 0;
+      while (i < len1 && version1.charAt(i) != '.') {
+        v1 = v1 * 10 + version1.charAt(i) - '0';
+        i++;
+      }
+      while (j < len2 && version2.charAt(j) != '.') {
+        v2 = v2 * 10 + version2.charAt(j) - '0';
+        j++;
+      }
+      if (v1 != v2) {
+        return v1 > v2 ? 1 : -1;
+      }
+      i++;
+      j++;
+    }
+    return 0;
+  }
+
 }
