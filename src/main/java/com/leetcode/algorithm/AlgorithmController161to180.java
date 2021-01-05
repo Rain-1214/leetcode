@@ -2,7 +2,9 @@ package com.leetcode.algorithm;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AlgorithmController161to180 {
 
@@ -197,6 +199,37 @@ public class AlgorithmController161to180 {
       j++;
     }
     return 0;
+  }
+
+  public String fractionToDecimal(int numerator, int denominator) {
+    if (numerator == 0) {
+      return "0";
+    }
+    StringBuilder sb = new StringBuilder();
+    if (numerator < 0 && denominator > 0 || numerator >= 0 && denominator < 0) {
+      sb.append("-");
+    }
+    long n = Math.abs(Long.valueOf(numerator));
+    long d = Math.abs(Long.valueOf(denominator));
+    sb.append(String.valueOf(n / d));
+    long mod = n % d;
+    if (mod == 0) {
+      return sb.toString();
+    }
+    sb.append(".");
+    Map<Long, Integer> loop = new HashMap<>();
+    while (mod != 0) {
+      if (loop.containsKey(mod)) {
+        sb.insert(loop.get(mod), "(");
+        sb.append(")");
+        break;
+      }
+      loop.put(mod, sb.length());
+      mod *= 10;
+      sb.append(String.valueOf(mod / d));
+      mod %= d;
+    }
+    return sb.toString();
   }
 
 }
