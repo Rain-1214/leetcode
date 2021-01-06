@@ -275,4 +275,36 @@ public class AlgorithmController161to180 {
     return sb.reverse().toString();
   }
 
+  public int majorityElementTooSlow(int[] nums) {
+    int max = 0;
+    int res = 0;
+    Map<Integer, Integer> map = new HashMap<>();
+    for (int i = 0; i < nums.length; i++) {
+      int cm = map.getOrDefault(nums[i], 0) + 1;
+      map.put(nums[i], cm);
+      if (cm > max) {
+        max = cm;
+        res = nums[i];
+      }
+    }
+    return res;
+  }
+
+  public int majorityElementTooSlowII(int[] nums) {
+    Arrays.sort(nums);
+    return nums[nums.length / 2];
+  }
+
+  public int majorityElement(int[] nums) {
+    int max = 0;
+    int val = 0;
+    for (int num : nums) {
+      if (max == 0) {
+        val = num;
+      }
+      max += val == num ? 1 : -1;
+    }
+    return val;
+  }
+
 }
