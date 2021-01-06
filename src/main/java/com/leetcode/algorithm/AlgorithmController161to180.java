@@ -3,8 +3,11 @@ package com.leetcode.algorithm;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class AlgorithmController161to180 {
 
@@ -305,6 +308,72 @@ public class AlgorithmController161to180 {
       max += val == num ? 1 : -1;
     }
     return val;
+  }
+
+  class TwoSumII {
+
+    public Map<Integer, Integer> map;
+
+    /** Initialize your data structure here. */
+    public TwoSumII() {
+      this.map = new HashMap<>();
+    }
+
+    /** Add the number to an internal data structure.. */
+    public void add(int number) {
+      map.put(number, map.getOrDefault(number, 0) + 1);
+    }
+
+    /** Find if there exists any pair of numbers which sum is equal to the value. */
+    public boolean find(int value) {
+      for (Map.Entry<Integer, Integer> me : map.entrySet()) {
+        int target = value - me.getKey();
+        if (map.containsKey(target)) {
+          if (target == me.getKey()) {
+            if (me.getValue() > 1) {
+              return true;
+            }
+          } else {
+            return true;
+          }
+        }
+      }
+      return false;
+    }
+  }
+
+  class TwoSum {
+
+    public LinkedList<Integer> list;
+    public int min = Integer.MAX_VALUE;
+    public int max = Integer.MIN_VALUE;
+
+    /** Initialize your data structure here. */
+    public TwoSum() {
+      list = new LinkedList<>();
+    }
+
+    /** Add the number to an internal data structure.. */
+    public void add(int number) {
+      list.add(number);
+      min = Math.min(min, number);
+      max = Math.max(max, number);
+    }
+
+    /** Find if there exists any pair of numbers which sum is equal to the value. */
+    public boolean find(int value) {
+      if (value < min * 2 || value > max * 2) {
+        return false;
+      }
+      Set<Integer> set = new HashSet<>();
+      for (int n : list) {
+        if (set.contains(value - n)) {
+          return true;
+        }
+        set.add(n);
+      }
+      return false;
+    }
   }
 
 }
