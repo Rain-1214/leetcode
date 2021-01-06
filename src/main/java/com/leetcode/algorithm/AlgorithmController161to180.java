@@ -272,7 +272,7 @@ public class AlgorithmController161to180 {
     StringBuilder sb = new StringBuilder();
     while (n > 0) {
       n--;
-      sb.append((char) n / 26 + 'A');
+      sb.append((char) n % 26 + 'A');
       n /= 26;
     }
     return sb.reverse().toString();
@@ -374,6 +374,17 @@ public class AlgorithmController161to180 {
       }
       return false;
     }
+  }
+
+  public int titleToNumber(String s) {
+    char[] sc = s.toCharArray();
+    int multiple = 0;
+    int res = 0;
+    for (int i = sc.length - 1; i >= 0; i--) {
+      res += Math.pow(26, multiple) * (sc[i] - 'A' + 1);
+      multiple++;
+    }
+    return res;
   }
 
 }
