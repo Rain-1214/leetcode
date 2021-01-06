@@ -7,7 +7,10 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
+
+import com.leetcode.entity.TreeNode;
 
 public class AlgorithmController161to180 {
 
@@ -394,6 +397,32 @@ public class AlgorithmController161to180 {
       zeroNum += n;
     }
     return zeroNum;
+  }
+
+  class BSTIterator {
+
+    public Queue<TreeNode> q = new LinkedList<>();
+
+    public void loop(TreeNode root) {
+      if (root == null) {
+        return;
+      }
+      loop(root.left);
+      q.add(root);
+      loop(root.right);
+    }
+
+    public BSTIterator(TreeNode root) {
+      this.loop(root);
+    }
+
+    public int next() {
+      return q.poll().val;
+    }
+
+    public boolean hasNext() {
+      return q.peek() != null;
+    }
   }
 
 }
