@@ -387,4 +387,13 @@ public class AlgorithmController161to180 {
     return res;
   }
 
+  public int trailingZeroes(int n) {
+    int zeroNum = 0;
+    while (n > 0) {
+      n /= 5;
+      zeroNum += n;
+    }
+    return zeroNum;
+  }
+
 }
