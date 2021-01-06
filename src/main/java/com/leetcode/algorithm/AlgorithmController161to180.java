@@ -232,4 +232,37 @@ public class AlgorithmController161to180 {
     return sb.toString();
   }
 
+  public int[] twoSumTooSlow(int[] numbers, int target) {
+    int[] res = new int[2];
+    Map<Integer, Integer> map = new HashMap<>();
+    for (int i = 0; i < numbers.length; i++) {
+      if (map.containsKey(numbers[i])) {
+        res[0] = map.get(numbers[i]) + 1;
+        res[1] = i + 1;
+        return res;
+      }
+      map.put(target - numbers[i], i);
+    }
+    return res;
+  }
+
+  public int[] twoSum(int[] numbers, int target) {
+    int[] res = new int[2];
+    int i = 0;
+    int j = numbers.length - 1;
+    while (i < j) {
+      int sum = numbers[i] + numbers[j];
+      if (sum > target) {
+        j--;
+      } else if (target > sum) {
+        i++;
+      } else {
+        res[0] = i + 1;
+        res[1] = j + 1;
+        break;
+      }
+    }
+    return res;
+  }
+
 }
