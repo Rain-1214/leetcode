@@ -425,4 +425,26 @@ public class AlgorithmController161to180 {
     }
   }
 
+  public int calculateMinimumHP(int[][] dungeon) {
+    int x = dungeon[0].length;
+    int y = dungeon.length;
+    int[][] dp = new int[y][x];
+    dp[y - 1][x - 1] = dungeon[y - 1][x - 1] >= 0 ? 1 : 1 - dungeon[y - 1][x - 1];
+    for (int i = y - 1; i >= 0; i--) {
+      for (int j = x - 1; j >= 0; j--) {
+        if (i == y - 1 && j == x - 1) {
+          continue;
+        }
+        int down = i + 1 > y - 1 ? Integer.MAX_VALUE : dp[i + 1][j];
+        int right = j + 1 > x - 1 ? Integer.MAX_VALUE : dp[i][j + 1];
+        if (dungeon[i][j] >= Math.min(down, right)) {
+          dp[i][j] = 1;
+        } else {
+          dp[i][j] = Math.min(down, right) - dungeon[i][j];
+        }
+      }
+    }
+    return dp[0][0];
+  }
+
 }
