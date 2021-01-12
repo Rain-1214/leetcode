@@ -11,6 +11,7 @@ import java.util.Queue;
 import java.util.Set;
 
 import com.leetcode.entity.TreeNode;
+import com.leetcode.tool.Print;
 
 public class AlgorithmController161to180 {
 
@@ -445,6 +446,81 @@ public class AlgorithmController161to180 {
       }
     }
     return dp[0][0];
+  }
+
+  public String largestNumberLow(int[] nums) {
+    String[] numsStr = new String[nums.length];
+    for (int i = 0; i < nums.length; i++) {
+      numsStr[i] = Integer.toString(nums[i]);
+    }
+
+    Arrays.sort(numsStr, (a, b) -> {
+      String t1 = a + b;
+      String t2 = b + a;
+      return t2.compareTo(t1);
+    });
+
+    if (numsStr[0].equals("0")) {
+      return "0";
+    }
+
+    StringBuilder sb = new StringBuilder();
+    for (String s : numsStr) {
+      sb.append(s);
+    }
+    return sb.toString();
+  }
+
+  public String largestNumber(int[] nums) {
+    largestNumberSort(nums, 0, nums.length - 1);
+    if (nums[0] == 0) {
+      return "0";
+    }
+    StringBuilder sb = new StringBuilder();
+    for (int i = 0; i < nums.length; i++) {
+      sb.append(String.valueOf(nums[i]));
+    }
+    return sb.toString();
+  }
+
+  public void largestNumberSort(int[] nums, int start, int end) {
+    if (start >= end) {
+      return;
+    }
+    int base = nums[start];
+    int index = start + 1;
+    for (int i = start + 1; i <= end; i++) {
+      if (large(nums[i], base)) {
+        int temp = nums[i];
+        nums[i] = nums[index];
+        nums[index++] = temp;
+      }
+    }
+    nums[start] = nums[index - 1];
+    nums[index - 1] = base;
+    largestNumberSort(nums, start, index - 2);
+    largestNumberSort(nums, index, end);
+  }
+
+  public boolean large(int a, int b) {
+    String as = String.valueOf(a);
+    String bs = String.valueOf(b);
+    int i = 0;
+    int j = 0;
+    while (true) {
+      char ac = as.charAt(i++);
+      char bc = bs.charAt(j++);
+      if (ac != bc) {
+        return ac > bc;
+      }
+      if (i >= as.length() && j >= bs.length()) {
+        return false;
+      } else if (i >= as.length()) {
+        i = 0;
+      } else if (j >= bs.length()) {
+        j = 0;
+      }
+    }
   }
 
 }
