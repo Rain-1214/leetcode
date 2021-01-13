@@ -19,4 +19,11 @@ public class AlgorithmController181to200Test {
 
   }
 
+  @Test
+  public void reverseBits() {
+    System.out.println(Integer.parseInt("11111111111111111111111111111101", 2));
+    // this.algorithmController161to180.reverseBits(Integer.parseInt("11111111111111111111111111111101",
+    // 2));
+  }
+
 }
