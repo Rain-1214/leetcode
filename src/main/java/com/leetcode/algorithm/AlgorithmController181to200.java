@@ -53,6 +53,11 @@ public class AlgorithmController181to200 {
       return 0;
     }
     int n = prices.length;
+
+    if (k >= n / 2) {
+      return maxProfit(prices);
+    }
+
     k = Math.min(n / 2, k);
 
     int[] buy = new int[k + 1];
@@ -71,6 +76,16 @@ public class AlgorithmController181to200 {
       }
     }
     return sell[k];
+  }
+
+  public int maxProfit(int[] prices) {
+    int res = 0;
+    for (int i = 0; i < prices.length - 1; i++) {
+      if (prices[i + 1] > prices[i]) {
+        res += prices[i + 1] - prices[i];
+      }
+    }
+    return res;
   }
 
 }
