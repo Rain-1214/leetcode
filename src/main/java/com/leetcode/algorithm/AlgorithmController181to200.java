@@ -88,4 +88,64 @@ public class AlgorithmController181to200 {
     return res;
   }
 
+  public void rotateTooSlow(int[] nums, int k) {
+    int len = nums.length;
+    if (k % len == 0 || len < 2) {
+      return;
+    }
+    k = k % len;
+    for (int i = 0; i < k; i++) {
+      rotate(nums);
+    }
+  }
+
+  public void rotate(int[] nums) {
+    int len = nums.length;
+    int prev = nums[len - 1];
+    for (int i = 0; i < len; i++) {
+      int t = nums[i];
+      nums[i] = prev;
+      prev = t;
+    }
+  }
+
+  public void rotateTooSlowII(int[] nums, int k) {
+    int len = nums.length;
+    if (k % len == 0 || len < 2) {
+      return;
+    }
+    k = k % len;
+    int[] temp = new int[k];
+    for (int i = 0; i < k; i++) {
+      temp[i] = nums[len - k + i];
+    }
+    int j = 0;
+    for (int i = 0; i < len; i++) {
+      int t = nums[i];
+      nums[i] = temp[j];
+      temp[j++] = t;
+      if (j >= k) {
+        j = 0;
+      }
+    }
+  }
+
+  public void rotate(int[] nums, int k) {
+    if (nums.length < 2) {
+      return;
+    }
+    reverse(nums, 0, nums.length - 1);
+    k = k % nums.length;
+    reverse(nums, 0, k - 1);
+    reverse(nums, k, nums.length - 1);
+  }
+
+  public void reverse(int[] nums, int left, int right) {
+    while (left < right) {
+      int t = nums[left];
+      nums[left++] = nums[right];
+      nums[right--] = t;
+    }
+  }
+
 }
