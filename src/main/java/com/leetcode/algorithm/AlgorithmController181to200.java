@@ -3,9 +3,12 @@ package com.leetcode.algorithm;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import java.util.Set;
 
+import com.leetcode.entity.TreeNode;
 import com.leetcode.tool.Print;
 
 public class AlgorithmController181to200 {
@@ -181,6 +184,31 @@ public class AlgorithmController181to200 {
       dp[i] = Math.max(dp[i - 2] + nums[i - 2], dp[i - 1]);
     }
     return dp[dp.length - 1];
+  }
+
+  public List<Integer> rightSideView(TreeNode root) {
+    List<Integer> res = new ArrayList<>();
+    if (root == null) {
+      return res;
+    }
+    Queue<TreeNode> q = new LinkedList<>();
+    q.add(root);
+    while (!q.isEmpty()) {
+      int len = q.size();
+      for (int i = 0; i < len; i++) {
+        TreeNode temp = q.poll();
+        if (i == len - 1) {
+          res.add(temp.val);
+        }
+        if (temp.left != null) {
+          q.add(temp.left);
+        }
+        if (temp.right != null) {
+          q.add(temp.right);
+        }
+      }
+    }
+    return res;
   }
 
 }
