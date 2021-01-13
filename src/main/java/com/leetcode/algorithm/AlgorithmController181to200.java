@@ -148,4 +148,16 @@ public class AlgorithmController181to200 {
     }
   }
 
+  public int reverseBits(int n) {
+    int res = 0;
+    int i = 32;
+    while (i > 0) {
+      res <<= 1;
+      res = 1 & n | res;
+      n >>= 1;
+      i--;
+    }
+    return res;
+  }
+
 }
