@@ -3,6 +3,8 @@ package com.leetcode.algorithm;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.leetcode.entity.ListNode;
+
 public class AlgorithmController201to220 {
 
   public int rangeBitwiseAnd(int m, int n) {
@@ -42,6 +44,46 @@ public class AlgorithmController201to220 {
       n /= 10;
     }
     return res;
+  }
+
+  public ListNode removeElements(ListNode head, int val) {
+    ListNode temp = new ListNode();
+    temp.next = head;
+    ListNode index = temp;
+    while (index != null && index.next != null) {
+      if (index.next.val == val) {
+        index.next = findDiffNode(index.next, val);
+      }
+      index = index.next;
+    }
+    return temp.next;
+  }
+
+  public ListNode findDiffNode(ListNode node, int val) {
+    if (node == null) {
+      return null;
+    }
+    return node.val != val ? node : findDiffNode(node.next, val);
+  }
+
+  public ListNode removeElementsII(ListNode head, int val) {
+    if (head == null) {
+      return null;
+    }
+    if (head.val == val) {
+      return removeElementsII(head.next, val);
+    }
+    ListNode curr = head.next;
+    ListNode prev = head;
+    while (curr != null) {
+      if (curr.val == val) {
+        prev.next = curr.next;
+      } else {
+        prev = curr;
+      }
+      curr = curr.next;
+    }
+    return head;
   }
 
 }
