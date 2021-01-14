@@ -211,4 +211,37 @@ public class AlgorithmController181to200 {
     return res;
   }
 
+  public int numIslands(char[][] grid) {
+    int res = 0;
+    int yMax = grid.length;
+    int xMax = grid[0].length;
+    for (int y = 0; y < yMax; y++) {
+      for (int x = 0; x < xMax; x++) {
+        if (grid[y][x] == '1') {
+          res++;
+          turnToLand(grid, x, y);
+        }
+      }
+    }
+    return res;
+  }
+
+  public void turnToLand(char[][] grid, int x, int y) {
+    int yMax = grid.length - 1;
+    int xMax = grid[0].length - 1;
+    grid[y][x] = 'm';
+    if (y > 0 && grid[y - 1][x] == '1') {
+      turnToLand(grid, x, y - 1);
+    }
+    if (y < yMax && grid[y + 1][x] == '1') {
+      turnToLand(grid, x, y + 1);
+    }
+    if (x > 0 && grid[y][x - 1] == '1') {
+      turnToLand(grid, x - 1, y);
+    }
+    if (x < xMax && grid[y][x + 1] == '1') {
+      turnToLand(grid, x + 1, y);
+    }
+  }
+
 }
