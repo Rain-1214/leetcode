@@ -86,4 +86,20 @@ public class AlgorithmController201to220 {
     return head;
   }
 
+  public int countPrimes(int n) {
+    int[] primes = new int[n];
+    int res = 0;
+    for (int i = 2; i < n; i++) {
+      if (primes[i] == 0) {
+        res++;
+        if ((long) i * i < n) {
+          for (int j = i * i; j < n; j += i) {
+            primes[j] = 1;
+          }
+        }
+      }
+    }
+    return res;
+  }
+
 }
