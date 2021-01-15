@@ -1,6 +1,8 @@
 package com.leetcode.algorithm;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import com.leetcode.entity.ListNode;
@@ -100,6 +102,42 @@ public class AlgorithmController201to220 {
       }
     }
     return res;
+  }
+
+  public boolean isIsomorphic(String s, String t) {
+    if (s == null || t == null) {
+      return s.equals(t);
+    }
+    Map<Character, Character> map = new HashMap<>();
+    for (int i = 0; i < s.length(); i++) {
+      char sa = s.charAt(i);
+      char ta = t.charAt(i);
+      if (map.containsKey(sa)) {
+        if (map.get(sa) != ta) {
+          return false;
+        }
+      } else if (map.containsValue(ta)) {
+        return false;
+      } else {
+        map.put(sa, ta);
+      }
+    }
+    return true;
+  }
+
+  public boolean isIsomorphicII(String s, String t) {
+    char[] sa = s.toCharArray();
+    char[] ta = t.toCharArray();
+    int[] saIndex = new int[256];
+    int[] taIndex = new int[256];
+    for (int i = 0; i < sa.length; i++) {
+      if (saIndex[sa[i]] != taIndex[ta[i]]) {
+        return false;
+      }
+      saIndex[sa[i]] = i + 1;
+      taIndex[ta[i]] = i + 1;
+    }
+    return true;
   }
 
 }
