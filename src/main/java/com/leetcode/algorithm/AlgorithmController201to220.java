@@ -1,9 +1,16 @@
 package com.leetcode.algorithm;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
+import java.util.Stack;
 
 import com.leetcode.entity.ListNode;
 
@@ -154,6 +161,73 @@ public class AlgorithmController201to220 {
     }
     current.next = prev;
     return current;
+  }
+
+  public boolean flag = true;
+  public int[] visitor;
+  public List<List<Integer>> edges;
+
+  public boolean canFinish(int numCourses, int[][] prerequisites) {
+    visitor = new int[numCourses];
+    edges = new ArrayList<>();
+    for (int i = 0; i < numCourses; i++) {
+      edges.add(new ArrayList<>());
+    }
+    for (int i = 0; i < prerequisites.length; i++) {
+      edges.get(prerequisites[i][0]).add(prerequisites[i][1]);
+    }
+    for (int i = 0; i < numCourses && flag; i++) {
+      if (visitor[i] == 0) {
+        canFinish(i);
+      }
+    }
+    return flag;
+  }
+
+  public void canFinish(int i) {
+    visitor[i] = 1;
+    for (int v : edges.get(i)) {
+      if (visitor[v] == 0) {
+        canFinish(v);
+        if (!flag) {
+          break;
+        }
+      } else if (visitor[v] == 1) {
+        flag = false;
+        return;
+      }
+    }
+    visitor[i] = 2;
+  }
+
+  public boolean canFinishII(int numCourses, int[][] prerequisites) {
+    int[] dep = new int[numCourses];
+    List<List<Integer>> list = new ArrayList<>();
+    for (int i = 0; i < numCourses; i++) {
+      list.add(new ArrayList<>());
+    }
+    for (int[] p : prerequisites) {
+      list.get(p[1]).add(p[0]);
+      dep[p[0]]++;
+    }
+    Queue<Integer> q = new LinkedList<>();
+    for (int i = 0; i < numCourses; i++) {
+      if (dep[i] == 0) {
+        q.offer(i);
+      }
+    }
+    int visitor = 0;
+    while (!q.isEmpty()) {
+      visitor++;
+      int t = q.poll();
+      for (int val : list.get(t)) {
+        dep[val]--;
+        if (dep[val] == 0) {
+          q.offer(val);
+        }
+      }
+    }
+    return visitor == numCourses;
   }
 
 }
