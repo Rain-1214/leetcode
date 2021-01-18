@@ -147,6 +147,22 @@ public class AlgorithmController201to220 {
     return true;
   }
 
+  public ListNode reverseList(ListNode head) {
+    if (head == null) {
+      return head;
+    }
+    ListNode prev = null;
+    ListNode current = head;
+    while (current.next != null) {
+      ListNode t = current.next;
+      current.next = prev;
+      prev = current;
+      current = t;
+    }
+    current.next = prev;
+    return current;
+  }
+
   public boolean flag = true;
   public int[] visitor;
   public List<List<Integer>> edges;
