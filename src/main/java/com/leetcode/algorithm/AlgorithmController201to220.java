@@ -311,4 +311,24 @@ public class AlgorithmController201to220 {
     }
   }
 
+  public int minSubArrayLen(int s, int[] nums) {
+    int res = Integer.MAX_VALUE;
+    int window = 0;
+    int left = 0;
+    for (int i = 0; i < nums.length; i++) {
+      window += nums[i];
+      if (window >= s) {
+        for (int j = left; j <= i; j++) {
+          window -= nums[j];
+          if (window < s) {
+            res = Math.min(res, i - j + 1);
+            left = j + 1;
+            break;
+          }
+        }
+      }
+    }
+    return res == Integer.MAX_VALUE ? 0 : res;
+  }
+
 }
