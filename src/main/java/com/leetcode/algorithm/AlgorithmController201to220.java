@@ -331,4 +331,43 @@ public class AlgorithmController201to220 {
     return res == Integer.MAX_VALUE ? 0 : res;
   }
 
+  public int[] findOrder(int numCourses, int[][] prerequisites) {
+    visitor = new int[numCourses];
+    edges = new ArrayList<>();
+    for (int i = 0; i < numCourses; i++) {
+      edges.add(new ArrayList<>());
+    }
+    for (int[] p : prerequisites) {
+      edges.get(p[1]).add(p[0]);
+    }
+    Stack<Integer> s = new Stack<>();
+    for (int i = 0; i < numCourses && flag; i++) {
+      if (visitor[i] == 0) {
+        findOrder(i, s);
+      }
+    }
+    if (!flag) {
+      return new int[0];
+    }
+    int[] res = new int[numCourses];
+    for (int i = 0; i < numCourses; i++) {
+      res[i] = s.pop();
+    }
+    return res;
+  }
+
+  public void findOrder(int i, Stack<Integer> s) {
+    visitor[i] = 1;
+    for (int val : edges.get(i)) {
+      if (visitor[val] == 0) {
+        findOrder(val, s);
+      } else if (visitor[val] == 1) {
+        flag = false;
+        return;
+      }
+    }
+    visitor[i] = 2;
+    s.add(i);
+  }
+
 }
