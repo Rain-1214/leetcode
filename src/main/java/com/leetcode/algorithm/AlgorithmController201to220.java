@@ -12,6 +12,8 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.Stack;
 
+import javax.swing.border.Border;
+
 import com.leetcode.entity.ListNode;
 
 public class AlgorithmController201to220 {
@@ -451,6 +453,74 @@ public class AlgorithmController201to220 {
       return node;
     }
 
+  }
+
+  class WordsTrie {
+    Map<Character, WordsTrie> children;
+    String word;
+
+    public WordsTrie() {
+      word = null;
+      children = new HashMap<Character, WordsTrie>();
+    }
+  }
+
+  public WordsTrie root;
+  public List<String> findWordsRes;
+
+  public List<String> findWords(char[][] board, String[] words) {
+    findWordsRes = new ArrayList<>();
+    root = new WordsTrie();
+    for (String w : words) {
+      WordsTrie node = root;
+      for (Character c : w.toCharArray()) {
+        if (node.children.containsKey(c)) {
+          node = node.children.get(c);
+        } else {
+          WordsTrie t = new WordsTrie();
+          node.children.put(c, t);
+          node = t;
+        }
+      }
+      node.word = w;
+    }
+    for (int y = 0; y < board.length; y++) {
+      for (int x = 0; x < board[0].length; x++) {
+        if (root.children.containsKey(board[y][x])) {
+          findWords(x, y, board, root);
+        }
+      }
+    }
+    return findWordsRes;
+  }
+
+  public void findWords(int x, int y, char[][] board, WordsTrie current) {
+    char letter = board[y][x];
+    WordsTrie temp = current.children.get(letter);
+    if (temp.word != null) {
+      findWordsRes.add(temp.word);
+      temp.word = null;
+    }
+
+    board[y][x] = '#';
+
+    int[] xOffset = { -1, 0, 1, 0 };
+    int[] yOffset = { 0, -1, 0, 1 };
+    for (int i = 0; i < 4; i++) {
+      int nextX = x + xOffset[i];
+      int nextY = y + yOffset[i];
+      if (nextX < 0 || nextY < 0 || nextX >= board[0].length || nextY >= board.length) {
+        continue;
+      }
+      if (temp.children.containsKey(board[nextY][nextX]) && board[nextY][nextX] != '#') {
+        findWords(nextX, nextY, board, temp);
+      }
+    }
+
+    board[y][x] = letter;
+    if (temp.children.isEmpty()) {
+      current.children.remove(letter);
+    }
   }
 
 }
