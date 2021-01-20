@@ -370,4 +370,87 @@ public class AlgorithmController201to220 {
     s.add(i);
   }
 
+  class WordDictionary {
+
+    class TrieNode {
+      private TrieNode[] nodes;
+      private boolean isEnd;
+
+      public TrieNode() {
+        nodes = new TrieNode[26];
+        isEnd = false;
+      }
+
+      public boolean containsKey(char c) {
+        return nodes[c - 'a'] != null;
+      }
+
+      public TrieNode getNode(char c) {
+        return nodes[c - 'a'];
+      }
+
+      public void putNode(char c, TrieNode node) {
+        nodes[c - 'a'] = node;
+      }
+
+      public void setIsEnd() {
+        isEnd = true;
+      }
+
+      public boolean getIsEnd() {
+        return isEnd;
+      }
+
+    }
+
+    public TrieNode root;
+
+    /** Initialize your data structure here. */
+    public WordDictionary() {
+      root = new TrieNode();
+    }
+
+    public void addWord(String word) {
+      TrieNode node = root;
+      for (int i = 0; i < word.length(); i++) {
+        char c = word.charAt(i);
+        if (!node.containsKey(c)) {
+          node.putNode(c, new TrieNode());
+        }
+        node = node.getNode(c);
+      }
+      node.setIsEnd();
+    }
+
+    public boolean search(String word) {
+      TrieNode node = getWordNode(word, root, 0);
+      return node != null && node.getIsEnd();
+    }
+
+    public TrieNode getWordNode(String word, TrieNode current, int index) {
+      TrieNode node = current;
+      for (int i = index; i < word.length(); i++) {
+        char c = word.charAt(i);
+        if (c == '.') {
+          for (int j = 0; j < node.nodes.length; j++) {
+            if (node.nodes[j] != null) {
+              TrieNode m = getWordNode(word, node.nodes[j], i + 1);
+              if (m != null && m.getIsEnd()) {
+                return m;
+              }
+            }
+          }
+          return null;
+        } else {
+          if (!node.containsKey(c)) {
+            return null;
+          }
+          node = node.getNode(c);
+        }
+      }
+      return node;
+    }
+
+  }
+
 }
