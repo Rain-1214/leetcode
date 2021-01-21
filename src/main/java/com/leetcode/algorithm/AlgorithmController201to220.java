@@ -1,6 +1,7 @@
 package com.leetcode.algorithm;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -521,6 +522,26 @@ public class AlgorithmController201to220 {
     if (temp.children.isEmpty()) {
       current.children.remove(letter);
     }
+  }
+
+  public int rob(int[] nums) {
+    if (nums.length == 0) {
+      return 0;
+    }
+    if (nums.length == 1) {
+      return nums[0];
+    }
+    int m1 = 0;
+    int[] dp = new int[nums.length + 2];
+    for (int i = 0; i < nums.length - 1; i++) {
+      dp[i + 2] = Math.max(dp[i + 1], dp[i] + nums[i]);
+    }
+    m1 = dp[dp.length - 2];
+    Arrays.fill(dp, 0);
+    for (int i = 1; i < nums.length; i++) {
+      dp[i + 2] = Math.max(dp[i + 1], dp[i] + nums[i]);
+    }
+    return Math.max(m1, dp[dp.length - 1]);
   }
 
 }
