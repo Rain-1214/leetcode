@@ -544,4 +544,32 @@ public class AlgorithmController201to220 {
     return Math.max(m1, dp[dp.length - 1]);
   }
 
+  public String shortestPalindrome(String s) {
+    if (s.length() <= 1) {
+      return s;
+    }
+    char[] sa = s.toCharArray();
+    int right = sa.length - 1;
+    while (right > 0) {
+      if (sa[right] == sa[0]) {
+        int l = 0;
+        int r = right;
+        while (r >= 0 && l < sa.length && sa[r] == sa[l]) {
+          r--;
+          l++;
+        }
+        if (l > r) {
+          break;
+        }
+      }
+      right--;
+    }
+    StringBuilder sb = new StringBuilder();
+    for (int i = sa.length - 1; i > right; i--) {
+      sb.append(sa[i]);
+    }
+    sb.append(s);
+    return sb.toString();
+  }
+
 }
