@@ -10,6 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
+import java.util.Random;
 import java.util.Set;
 import java.util.Stack;
 
@@ -570,6 +571,41 @@ public class AlgorithmController201to220 {
     }
     sb.append(s);
     return sb.toString();
+  }
+
+  public Random r = new Random();
+
+  public int findKthLargest(int[] nums, int k) {
+    return findKthLargest(nums, 0, nums.length - 1, k - 1);
+  }
+
+  public int findKthLargest(int[] nums, int left, int right, int k) {
+    int i = quickSort(nums, left, right);
+    if (i == k) {
+      return nums[i];
+    } else {
+      return i < k ? findKthLargest(nums, i + 1, right, k) : findKthLargest(nums, left, i - 1, k);
+    }
+  }
+
+  public int quickSort(int[] nums, int left, int right) {
+    int temp = r.nextInt(right - left + 1) + left;
+    swap(nums, left, temp);
+    int bash = nums[left];
+    int j = left + 1;
+    for (int i = left + 1; i <= right; i++) {
+      if (nums[i] > bash) {
+        swap(nums, i, j++);
+      }
+    }
+    swap(nums, left, j - 1);
+    return j - 1;
+  }
+
+  public void swap(int[] a, int i, int j) {
+    int temp = a[i];
+    a[i] = a[j];
+    a[j] = temp;
   }
 
 }
