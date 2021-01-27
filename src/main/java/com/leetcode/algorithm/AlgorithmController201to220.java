@@ -608,4 +608,35 @@ public class AlgorithmController201to220 {
     a[j] = temp;
   }
 
+  public int findKthLargestII(int[] nums, int k) {
+    for (int i = nums.length / 2 - 1; i >= 0; i--) {
+      adjustHeap(nums, i, nums.length);
+    }
+    for (int i = nums.length - 1; i >= 0; i--) {
+      k--;
+      swap(nums, 0, i);
+      if (k == 0) {
+        return nums[i];
+      }
+      adjustHeap(nums, 0, i);
+    }
+    return 0;
+  }
+
+  public void adjustHeap(int[] nums, int i, int right) {
+    int temp = nums[i];
+    for (int j = 2 * i + 1; j < right; j = 2 * j + 1) {
+      if (j + 1 < right && nums[j] < nums[j + 1]) {
+        j++;
+      }
+      if (temp < nums[j]) {
+        nums[i] = nums[j];
+        i = j;
+      } else {
+        break;
+      }
+    }
+    nums[i] = temp;
+  }
+
 }
