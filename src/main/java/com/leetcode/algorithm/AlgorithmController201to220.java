@@ -639,4 +639,25 @@ public class AlgorithmController201to220 {
     nums[i] = temp;
   }
 
+  public List<List<Integer>> combinationSum3(int k, int n) {
+    List<List<Integer>> res = new ArrayList<>();
+    combinationSum3(res, new ArrayList<>(), 1, n, 0, k);
+    return res;
+  }
+
+  public void combinationSum3(List<List<Integer>> res, List<Integer> current, int index, int sum, int currentSum,
+      int maxLen) {
+    for (int i = index; i <= 9; i++) {
+      current.add(i);
+      if (currentSum + i == sum && current.size() == maxLen) {
+        List<Integer> temp = new ArrayList<>(current);
+        res.add(temp);
+        current.remove(current.size() - 1);
+        return;
+      }
+      combinationSum3(res, current, i + 1, sum, currentSum + i, maxLen);
+      current.remove(current.size() - 1);
+    }
+  }
+
 }
