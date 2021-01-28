@@ -660,4 +660,25 @@ public class AlgorithmController201to220 {
     }
   }
 
+  public boolean containsDuplicate(int[] nums) {
+    Set<Integer> set = new HashSet<>();
+    for (int n : nums) {
+      if (set.contains(n)) {
+        return true;
+      }
+      set.add(n);
+    }
+    return false;
+  }
+
+  public boolean containsDuplicateII(int[] nums) {
+    Arrays.sort(nums);
+    for (int i = 0; i < nums.length; i++) {
+      if (i + 1 < nums.length && nums[i] == nums[i + 1]) {
+        return true;
+      }
+    }
+    return false;
+  }
+
 }
