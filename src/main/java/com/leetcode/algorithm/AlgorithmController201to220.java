@@ -720,4 +720,31 @@ public class AlgorithmController201to220 {
     return res;
   }
 
+  public boolean containsNearbyDuplicate(int[] nums, int k) {
+    if (nums == null) {
+      return false;
+    }
+    Map<Integer, Integer> map = new HashMap<>();
+    for (int i = k; i < nums.length; i++) {
+      if (map.containsKey(nums[i]) && i - map.get(nums[i]) <= k) {
+        return true;
+      }
+      map.put(nums[i], i);
+    }
+    return false;
+  }
+
+  public boolean containsNearbyDuplicateII(int[] nums, int k) {
+    Set<Integer> set = new HashSet<>();
+    for (int i = 0; i < nums.length; i++) {
+      if (!set.add(nums[i])) {
+        return true;
+      }
+      if (set.size() > k) {
+        set.remove(nums[i - k]);
+      }
+    }
+    return false;
+  }
+
 }
