@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Random;
 import java.util.Set;
@@ -679,6 +680,44 @@ public class AlgorithmController201to220 {
       }
     }
     return false;
+  }
+
+  /**
+   * @param buildings [[left, right, height]]
+   * @return skylines
+   */
+  public List<List<Integer>> getSkyline(int[][] buildings) {
+    PriorityQueue<int[]> build = new PriorityQueue<>((a, b) -> {
+      return a[0] != b[0] ? a[0] - b[0] : a[1] - b[1];
+    });
+
+    for (int[] b : buildings) {
+      build.offer(new int[] { b[0], -b[2] });
+      build.offer(new int[] { b[1], b[2] });
+    }
+
+    PriorityQueue<Integer> heights = new PriorityQueue<>((a, b) -> b - a);
+    heights.offer(0);
+    List<List<Integer>> res = new ArrayList<>();
+    Integer[] last = new Integer[] { 0, 0 };
+    while (!build.isEmpty()) {
+      int[] point = build.poll();
+      if (point[1] < 0) {
+        heights.offer(-point[1]);
+      } else {
+        heights.remove(point[1]);
+      }
+
+      int height = heights.peek();
+
+      if (last[1] != height) {
+        last[0] = point[0];
+        last[1] = height;
+        res.add(Arrays.asList(last[0], last[1]));
+      }
+    }
+
+    return res;
   }
 
 }
