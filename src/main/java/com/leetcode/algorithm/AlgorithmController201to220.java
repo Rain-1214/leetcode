@@ -14,6 +14,7 @@ import java.util.Queue;
 import java.util.Random;
 import java.util.Set;
 import java.util.Stack;
+import java.util.TreeSet;
 
 import javax.swing.border.Border;
 
@@ -745,6 +746,56 @@ public class AlgorithmController201to220 {
       }
     }
     return false;
+  }
+
+  public boolean containsNearbyAlmostDuplicate(int[] nums, int k, int t) {
+    TreeSet<Integer> set = new TreeSet<>();
+    for (int i = 0; i < nums.length; i++) {
+      int temp = nums[i];
+      Integer big = set.ceiling(temp);
+      if (big != null && big - temp <= t) {
+        return true;
+      }
+      Integer small = set.floor(temp);
+      if (small != null && temp - small <= t) {
+        return true;
+      }
+      set.add(temp);
+      if (set.size() > k) {
+        set.remove(nums[i - k]);
+      }
+    }
+    return false;
+  }
+
+  public boolean containsNearbyAlmostDuplicateII(int[] nums, int k, int t) {
+    if (t < 0) {
+      return false;
+    }
+    Map<Long, Long> map = new HashMap<>();
+    long width = (long) t + 1;
+    for (int i = 0; i < nums.length; i++) {
+      long temp = nums[i];
+      long id = containsNearbyAlmostDuplicateHelp(temp, width);
+      if (map.containsKey(id)) {
+        return true;
+      }
+      if (map.containsKey(id - 1) && Math.abs(map.get(id - 1) - temp) < width) {
+        return true;
+      }
+      if (map.containsKey(id + 1) && Math.abs(map.get(id + 1) - temp) < width) {
+        return true;
+      }
+      map.put(id, temp);
+      if (i >= k) {
+        map.remove(containsNearbyAlmostDuplicateHelp(nums[i - k], width));
+      }
+    }
+    return false;
+  }
+
+  public long containsNearbyAlmostDuplicateHelp(long num, long width) {
+    return num < 0 ? (num + 1) / width - 1 : num / width;
   }
 
 }
