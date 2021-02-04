@@ -1,5 +1,7 @@
 package com.leetcode.algorithm;
 
+import com.leetcode.entity.TreeNode;
+
 public class AlgorithmController221to241 {
   public int maximalSquare(char[][] matrix) {
     int y = matrix.length;
@@ -21,5 +23,21 @@ public class AlgorithmController221to241 {
       }
     }
     return res * res;
+  }
+
+  public int countNodes;
+
+  public int countNodes(TreeNode root) {
+    countNodesHelp(root);
+    return countNodes;
+  }
+
+  public void countNodesHelp(TreeNode root) {
+    if (root == null) {
+      return;
+    }
+    this.countNodes += 1;
+    this.countNodes(root.left);
+    this.countNodes(root.right);
   }
 }
