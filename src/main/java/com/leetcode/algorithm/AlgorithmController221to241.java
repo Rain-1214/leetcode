@@ -1,5 +1,7 @@
 package com.leetcode.algorithm;
 
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Stack;
 
 import com.leetcode.entity.TreeNode;
@@ -84,6 +86,49 @@ public class AlgorithmController221to241 {
       }
     }
     return res + (sign * operator);
+  }
+
+  class MyStack {
+
+    Queue<Integer> q;
+
+    int last;
+
+    /** Initialize your data structure here. */
+    public MyStack() {
+      this.q = new LinkedList<>();
+    }
+
+    /** Push element x onto stack. */
+    public void push(int x) {
+      this.q.offer(x);
+      this.last = x;
+    }
+
+    /** Removes the element on top of the stack and returns that element. */
+    public int pop() {
+      Queue<Integer> temp = new LinkedList<>();
+      int x = 0;
+      while (!q.isEmpty()) {
+        this.last = x;
+        x = q.poll();
+        if (!q.isEmpty()) {
+          temp.offer(x);
+        }
+      }
+      q = temp;
+      return x;
+    }
+
+    /** Get the top element. */
+    public int top() {
+      return this.last;
+    }
+
+    /** Returns whether the stack is empty. */
+    public boolean empty() {
+      return this.q.isEmpty();
+    }
   }
 
 }
