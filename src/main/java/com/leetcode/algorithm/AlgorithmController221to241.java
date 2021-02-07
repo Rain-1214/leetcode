@@ -1,5 +1,7 @@
 package com.leetcode.algorithm;
 
+import java.util.Stack;
+
 import com.leetcode.entity.TreeNode;
 
 public class AlgorithmController221to241 {
@@ -50,6 +52,38 @@ public class AlgorithmController221to241 {
     int top = Math.min(D, H);
     int bottom = Math.max(B, F);
     return (C - A) * (D - B) - (right - left) * (top - bottom) + (G - E) * (H - F);
+  }
+
+  public int calculate(String s) {
+    Stack<Integer> sk = new Stack<>();
+    int operator = 0;
+    int res = 0;
+    int sign = 1;
+    for (int i = 0; i < s.length(); i++) {
+      char ca = s.charAt(i);
+      if (Character.isDigit(ca)) {
+        operator = operator * 10 + (ca - '0');
+      } else if (ca == '+') {
+        res += sign * operator;
+        sign = 1;
+        operator = 0;
+      } else if (ca == '-') {
+        res += sign * operator;
+        sign = -1;
+        operator = 0;
+      } else if (ca == '(') {
+        sk.add(res);
+        sk.add(sign);
+        res = 0;
+        sign = 1;
+      } else if (ca == ')') {
+        res += sign * operator;
+        res *= sk.pop();
+        res += sk.pop();
+        operator = 0;
+      }
+    }
+    return res + (sign * operator);
   }
 
 }
