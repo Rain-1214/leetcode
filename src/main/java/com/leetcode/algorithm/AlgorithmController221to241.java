@@ -143,4 +143,35 @@ public class AlgorithmController221to241 {
     return root;
   }
 
+  public int calculateII(String s) {
+    char[] ca = s.toCharArray();
+    Stack<Integer> sk = new Stack<>();
+    int operator = 0;
+    char sign = '+';
+    for (int i = 0; i < ca.length; i++) {
+      char c = ca[i];
+      if (Character.isDigit(c)) {
+        operator = operator * 10 + (c - '0');
+      }
+      if ((!Character.isDigit(c) && c != ' ') || i == ca.length - 1) {
+        if (sign == '+') {
+          sk.add(operator);
+        } else if (sign == '-') {
+          sk.add(-operator);
+        } else if (sign == '*') {
+          sk.add(sk.pop() * operator);
+        } else if (sign == '/') {
+          sk.add(sk.pop() / operator);
+        }
+        sign = c;
+        operator = 0;
+      }
+    }
+    int res = 0;
+    while (!sk.isEmpty()) {
+      res += sk.pop();
+    }
+    return res;
+  }
+
 }
