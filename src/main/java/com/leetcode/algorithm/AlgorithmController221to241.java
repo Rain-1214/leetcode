@@ -1,6 +1,8 @@
 package com.leetcode.algorithm;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 import java.util.Stack;
 
@@ -170,6 +172,25 @@ public class AlgorithmController221to241 {
     int res = 0;
     while (!sk.isEmpty()) {
       res += sk.pop();
+    }
+    return res;
+  }
+
+  public List<String> summaryRanges(int[] nums) {
+    List<String> res = new ArrayList<>();
+    for (int i = 0; i < nums.length; i++) {
+      StringBuilder sb = new StringBuilder();
+      sb.append(Integer.toString(nums[i]));
+      int j = i;
+      while (j + 1 < nums.length && nums[j + 1] == nums[j] + 1) {
+        j++;
+      }
+      if (i != j) {
+        sb.append("->");
+        sb.append(Integer.toString(nums[j]));
+      }
+      res.add(sb.toString());
+      i = j;
     }
     return res;
   }
