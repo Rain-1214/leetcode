@@ -1,6 +1,10 @@
 package com.leetcode.algorithm;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 import java.util.Stack;
 
@@ -170,6 +174,76 @@ public class AlgorithmController221to241 {
     int res = 0;
     while (!sk.isEmpty()) {
       res += sk.pop();
+    }
+    return res;
+  }
+
+  public List<Integer> majorityElement(int[] nums) {
+    List<Integer> res = new ArrayList<>();
+    Map<Integer, Integer> cache = new HashMap<>();
+    int size = nums.length / 3 + 1;
+    for (int num : nums) {
+      int time = cache.getOrDefault(num, 0) + 1;
+      if (time > size) {
+        continue;
+      }
+      if (time == size) {
+        res.add(num);
+      }
+      cache.put(num, time);
+    }
+    return res;
+  }
+
+  public List<Integer> majorityElementII(int[] nums) {
+    List<Integer> res = new ArrayList<>();
+    int max1 = nums[0];
+    int max1Cand = 0;
+
+    int max2 = nums[0];
+    int max2Cand = 0;
+
+    for (int num : nums) {
+      if (num == max1) {
+        max1Cand++;
+        continue;
+      }
+      if (num == max2) {
+        max2Cand++;
+        continue;
+      }
+
+      if (max1Cand == 0) {
+        max1 = num;
+        max1Cand++;
+        continue;
+      }
+
+      if (max2Cand == 0) {
+        max2 = num;
+        max2Cand++;
+        continue;
+      }
+
+      max1Cand--;
+      max2Cand--;
+    }
+
+    max1Cand = 0;
+    max2Cand = 0;
+    for (int num : nums) {
+      if (num == max1) {
+        max1Cand++;
+      }
+      if (num == max2 && max2 != max1) {
+        max2Cand++;
+      }
+    }
+    if (max2Cand > nums.length / 3) {
+      res.add(max2);
+    }
+    if (max1Cand > nums.length / 3) {
+      res.add(max1);
     }
     return res;
   }
