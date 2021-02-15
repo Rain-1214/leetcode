@@ -248,4 +248,25 @@ public class AlgorithmController221to241 {
     return res;
   }
 
+  public int kthSmallestTime = 0;
+
+  public int kthSmallest(TreeNode root, int k) {
+    if (root == null) {
+      return -1;
+    }
+    int val = kthSmallest(root.left, k);
+    if (val != -1) {
+      return val;
+    }
+    kthSmallestTime += 1;
+    if (k == kthSmallestTime) {
+      return root.val;
+    }
+    val = kthSmallest(root.right, k);
+    if (val != -1) {
+      return val;
+    }
+    return -1;
+  }
+
 }
