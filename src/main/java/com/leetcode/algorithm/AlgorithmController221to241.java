@@ -285,4 +285,98 @@ public class AlgorithmController221to241 {
     return (x & -x) == x;
   }
 
+  class MyQueue {
+
+    public Stack<Integer> s;
+    public Stack<Integer> cache;
+
+    public Integer top = null;
+
+    /** Initialize your data structure here. */
+    public MyQueue() {
+      this.s = new Stack<>();
+      this.cache = new Stack<>();
+    }
+
+    /** Push element x to the back of queue. */
+    public void push(int x) {
+      this.s.add(x);
+      if (this.top == null) {
+        this.top = x;
+      }
+    }
+
+    /** Removes the element from in front of queue and returns that element. */
+    public int pop() {
+      while (!s.isEmpty()) {
+        cache.add(s.pop());
+      }
+      int t = cache.pop();
+      if (!cache.isEmpty()) {
+        this.top = cache.peek();
+      } else {
+        this.top = null;
+      }
+      while (!cache.isEmpty()) {
+        s.add(cache.pop());
+      }
+      return t;
+    }
+
+    /** Get the front element. */
+    public int peek() {
+      return this.top;
+    }
+
+    /** Returns whether the queue is empty. */
+    public boolean empty() {
+      return this.s.isEmpty();
+    }
+  }
+
+  class MyQueueII {
+
+    public Stack<Integer> s;
+    public Stack<Integer> reverse;
+
+    public Integer top = null;
+
+    /** Initialize your data structure here. */
+    public MyQueueII() {
+      this.s = new Stack<>();
+      this.reverse = new Stack<>();
+    }
+
+    /** Push element x to the back of queue. */
+    public void push(int x) {
+      if (this.s.isEmpty()) {
+        this.top = x;
+      }
+      this.s.add(x);
+    }
+
+    /** Removes the element from in front of queue and returns that element. */
+    public int pop() {
+      if (this.reverse.isEmpty()) {
+        while (!this.s.isEmpty()) {
+          this.reverse.add(this.s.pop());
+        }
+      }
+      return this.reverse.pop();
+    }
+
+    /** Get the front element. */
+    public int peek() {
+      if (!this.reverse.isEmpty()) {
+        return this.reverse.peek();
+      }
+      return this.top;
+    }
+
+    /** Returns whether the queue is empty. */
+    public boolean empty() {
+      return this.s.isEmpty() && this.reverse.isEmpty();
+    }
+  }
+
 }
