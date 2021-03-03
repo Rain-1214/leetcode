@@ -379,4 +379,13 @@ public class AlgorithmController221to241 {
     }
   }
 
+  public int countDigitOne(int n) {
+    int count = 0;
+    for (long i = 1; i <= n; i *= 10) {
+      long div = i * 10;
+      count += (n / div) * i + Math.min(Math.max(n % div - i + 1, 0), i);
+    }
+    return count;
+  }
+
 }
