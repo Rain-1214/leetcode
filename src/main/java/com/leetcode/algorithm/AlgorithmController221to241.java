@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.Stack;
 
+import com.leetcode.entity.ListNode;
 import com.leetcode.entity.TreeNode;
 
 public class AlgorithmController221to241 {
@@ -386,6 +387,71 @@ public class AlgorithmController221to241 {
       count += (n / div) * i + Math.min(Math.max(n % div - i + 1, 0), i);
     }
     return count;
+  }
+
+  public boolean isPalindrome(ListNode head) {
+    if (head == null || head.next == null) {
+      return true;
+    }
+    ListNode fast = head;
+    ListNode slow = head;
+    ListNode prev = null;
+    while (fast.next != null && fast.next.next != null) {
+      fast = fast.next.next;
+      ListNode temp = slow.next;
+      slow.next = prev;
+      prev = slow;
+      slow = temp;
+    }
+    ListNode tail = slow.next;
+    if (fast.next == null) {
+      slow = prev;
+    } else {
+      slow.next = prev;
+    }
+    while (slow != null) {
+      if (slow.val != tail.val) {
+        return false;
+      }
+      slow = slow.next;
+      tail = tail.next;
+    }
+    return true;
+  }
+
+  // .......
+  public boolean isPalindromeII(ListNode head) {
+    if (head == null || head.next == null) {
+      return true;
+    }
+    ListNode fast = head;
+    ListNode slow = head;
+    while (fast.next != null && fast.next.next != null) {
+      fast = fast.next.next;
+      slow = slow.next;
+    }
+
+    ListNode newHead = isPalindromeIIHelp(slow.next);
+
+    while (head != null && newHead != null) {
+      if (head.val != newHead.val) {
+        return false;
+      }
+      head = head.next;
+      newHead = newHead.next;
+    }
+
+    return true;
+  }
+
+  public ListNode isPalindromeIIHelp(ListNode head) {
+    if (head.next == null) {
+      return head;
+    }
+    ListNode newHead = isPalindromeIIHelp(head.next);
+    head.next.next = head;
+    head.next = null;
+    return newHead;
   }
 
 }
