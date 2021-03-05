@@ -454,4 +454,27 @@ public class AlgorithmController221to241 {
     return newHead;
   }
 
+  public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+    Queue<Integer> queue = new LinkedList<>();
+    TreeNode f = root;
+    while (f.val != p.val) {
+      queue.add(f.val);
+      f = f.val > p.val ? f.left : f.right;
+    }
+    queue.add(p.val);
+    f = root;
+    TreeNode prev = root;
+    while (true) {
+      if (queue.peek() != f.val) {
+        return prev;
+      }
+      queue.poll();
+      if (queue.isEmpty()) {
+        return f;
+      }
+      prev = f;
+      f = f.val > q.val ? f.left : f.right;
+    }
+  }
+
 }
