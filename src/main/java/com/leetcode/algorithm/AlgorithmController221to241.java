@@ -477,4 +477,51 @@ public class AlgorithmController221to241 {
     }
   }
 
+  public TreeNode lowestCommonAncestorIITooSlow(TreeNode root, TreeNode p, TreeNode q) {
+    Stack<TreeNode> pp = new Stack<>();
+    Stack<TreeNode> qp = new Stack<>();
+    lowestCommonAncestorIIHelp(root, p, pp);
+    lowestCommonAncestorIIHelp(root, q, qp);
+    TreeNode pPrev = null;
+    TreeNode qPrev = null;
+    while (!pp.isEmpty() && !qp.isEmpty()) {
+      if (pp.peek().val != qp.peek().val) {
+        return pPrev;
+      }
+      pPrev = pp.pop();
+      qPrev = qp.pop();
+    }
+    return pp.isEmpty() ? pPrev : qPrev;
+  }
+
+  public boolean lowestCommonAncestorIIHelp(TreeNode root, TreeNode target, Stack<TreeNode> path) {
+    if (root == null) {
+      return false;
+    }
+    if (root.val == target.val || lowestCommonAncestorIIHelp(root.left, target, path)
+        || lowestCommonAncestorIIHelp(root.right, target, path)) {
+      path.add(root);
+      return true;
+    }
+    return false;
+  }
+
+  public TreeNode lowestCommonAncestorII(TreeNode root, TreeNode p, TreeNode q) {
+    if (root == null || root == q || root == p) {
+      return root;
+    }
+    TreeNode left = lowestCommonAncestorII(root.left, p, q);
+    TreeNode right = lowestCommonAncestorII(root.right, p, q);
+    if (left == null) {
+      return right;
+    }
+    if (right == null) {
+      return left;
+    }
+    if (left != null && right != null) {
+      return root;
+    }
+    return null;
+  }
+
 }
