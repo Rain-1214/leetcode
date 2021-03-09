@@ -530,4 +530,44 @@ public class AlgorithmController221to241 {
     node.next = node.next.next;
   }
 
+  public int[] productExceptSelf(int[] nums) {
+    if (nums == null || nums.length <= 1) {
+      return nums;
+    }
+    int len = nums.length;
+    int[] positive = new int[len];
+    int[] reverse = new int[len];
+    positive[0] = nums[0];
+    for (int i = 1; i < nums.length; i++) {
+      positive[i] = positive[i - 1] * nums[i];
+    }
+    reverse[len - 1] = nums[len - 1];
+    for (int i = len - 2; i >= 0; i--) {
+      reverse[i] = reverse[i + 1] * nums[i];
+    }
+    int[] res = new int[len];
+    res[0] = reverse[1];
+    res[len - 1] = positive[len - 2];
+    for (int i = 1; i < len - 1; i++) {
+      res[i] = positive[i - 1] * reverse[i + 1];
+    }
+    return res;
+  }
+
+  public int[] productExceptSelfII(int[] nums) {
+    int len = nums.length;
+    int[] res = new int[len];
+    int m = 1;
+    for (int i = 0; i < len; i++) {
+      res[i] = m;
+      m *= nums[i];
+    }
+    int n = 1;
+    for (int i = len - 1; i >= 0; i--) {
+      res[i] = res[i] * n;
+      n *= nums[i];
+    }
+    return res;
+  }
+
 }
