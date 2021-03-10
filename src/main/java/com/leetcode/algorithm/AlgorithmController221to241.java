@@ -1,10 +1,13 @@
 package com.leetcode.algorithm;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Stack;
 
@@ -566,6 +569,101 @@ public class AlgorithmController221to241 {
     for (int i = len - 1; i >= 0; i--) {
       res[i] = res[i] * n;
       n *= nums[i];
+    }
+    return res;
+  }
+
+  public int[] maxSlidingWindow(int[] nums, int k) {
+    int[] res = new int[nums.length - k + 1];
+    LinkedList<Integer> l = new LinkedList<>();
+    l.add(nums[0]);
+    for (int i = 1; i < k; i++) {
+      insertLinkedList(l, nums[i]);
+    }
+    res[0] = l.peek();
+    for (int i = k; i < nums.length; i++) {
+      l.remove(new Integer(nums[i - k]));
+      insertLinkedList(l, nums[i]);
+      res[i - k + 1] = l.peek();
+    }
+    return res;
+  }
+
+  public void insertLinkedList(LinkedList<Integer> l, int val) {
+    if (l.isEmpty() || val <= l.getLast()) {
+      l.add(val);
+      return;
+    }
+    for (int i = 0; i < l.size(); i++) {
+      if (val >= l.get(i)) {
+        l.add(i, val);
+        break;
+      }
+    }
+  }
+
+  public int[] maxSlidingWindowII(int[] nums, int k) {
+    int[] res = new int[nums.length - k + 1];
+    PriorityQueue<Integer> q = new PriorityQueue<>(new Comparator<Integer>() {
+      @Override
+      public int compare(Integer o1, Integer o2) {
+        return o1 > o2 ? -1 : 1;
+      }
+    });
+    for (int i = 0; i < k; i++) {
+      q.add(nums[i]);
+    }
+    res[0] = q.peek();
+    for (int i = k; i < nums.length; i++) {
+      q.remove(new Integer(nums[i - k]));
+      q.add(nums[i]);
+      res[i - k + 1] = q.peek();
+    }
+    return res;
+  }
+
+  public int[] maxSlidingWindowIII(int[] nums, int k) {
+    int[] res = new int[nums.length - k + 1];
+    PriorityQueue<int[]> q = new PriorityQueue<>(new Comparator<int[]>() {
+      @Override
+      public int compare(int[] o1, int[] o2) {
+        return o1[0] > o2[0] ? -1 : 1;
+      }
+    });
+    for (int i = 0; i < k; i++) {
+      q.add(new int[] { nums[i], i });
+    }
+    res[0] = q.peek()[0];
+    for (int i = k; i < nums.length; i++) {
+      q.add(new int[] { nums[i], i });
+      while (q.peek()[1] <= i - k) {
+        q.poll();
+      }
+
+      res[i - k + 1] = q.peek()[0];
+    }
+    return res;
+  }
+
+  public int[] maxSlidingWindowIV(int[] nums, int k) {
+    int[] res = new int[nums.length - k + 1];
+    Deque<Integer> q = new LinkedList<>();
+    for (int i = 0; i < k; i++) {
+      while (!q.isEmpty() && nums[i] >= nums[q.peekLast()]) {
+        q.pollLast();
+      }
+      q.offerLast(i);
+    }
+    res[0] = q.peekFirst();
+    for (int i = k; i < nums.length - 1; i++) {
+      while (!q.isEmpty() && nums[i] >= nums[q.peekLast()]) {
+        q.pollLast();
+      }
+      q.offerLast(i);
+      while (q.peekFirst() <= i - k) {
+        q.pollFirst();
+      }
+      res[i - k + 1] = nums[q.peekFirst()];
     }
     return res;
   }
