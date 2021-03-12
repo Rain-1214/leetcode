@@ -668,4 +668,36 @@ public class AlgorithmController221to241 {
     return res;
   }
 
+  public boolean searchMatrix(int[][] matrix, int target) {
+    return searchMatrix(matrix, 0, 0, target);
+  }
+
+  public boolean searchMatrix(int[][] matrix, int x, int y, int target) {
+    if (x >= matrix[0].length || y >= matrix.length || matrix[y][x] > target) {
+      return false;
+    }
+    if (target == matrix[y][x]) {
+      return true;
+    }
+    return searchMatrix(matrix, x + 1, y, target) || searchMatrix(matrix, x, y + 1, target);
+  }
+
+  public boolean searchMatrixII(int[][] matrix, int target) {
+    int xMax = matrix[0].length;
+    int yMax = matrix.length;
+    int x = 0;
+    int y = yMax;
+    while (matrix[y][x] != target) {
+      if (matrix[y][x] > target) {
+        y--;
+      } else {
+        x++;
+      }
+      if (x == xMax || y < 0) {
+        return false;
+      }
+    }
+    return true;
+  }
+
 }
