@@ -81,4 +81,22 @@ public class AlgorithmController241to260 {
     }
     return true;
   }
+
+  public int shortestDistance(String[] wordsDict, String word1, String word2) {
+    int distance = Integer.MAX_VALUE;
+    int i1 = -1;
+    int i2 = -1;
+    for (int i = 0; i < wordsDict.length; i++) {
+      String t = wordsDict[i];
+      if (t.equals(word1)) {
+        i1 = i;
+      } else if (t.equals(word2)) {
+        i2 = i;
+      }
+      if (i1 != -1 && i2 != -1) {
+        distance = Math.min(Math.abs(i1 - i2), distance);
+      }
+    }
+    return distance;
+  }
 }
