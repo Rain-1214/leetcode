@@ -165,4 +165,22 @@ public class AlgorithmController241to260 {
       return min;
     }
   }
+
+  public int shortestWordDistance(String[] wordsDict, String word1, String word2) {
+    int min = wordsDict.length;
+    for (int i = 0; i < wordsDict.length; i++) {
+      if (wordsDict[i].equals(word1)) {
+        int j = 1;
+        while (i - j >= 0 || i + j < wordsDict.length) {
+          if (i - j >= 0 && wordsDict[i - j].equals(word2)
+              || i + j < wordsDict.length && wordsDict[i + j].equals(word2)) {
+            break;
+          }
+          j++;
+        }
+        min = Math.min(min, j);
+      }
+    }
+    return min;
+  }
 }
