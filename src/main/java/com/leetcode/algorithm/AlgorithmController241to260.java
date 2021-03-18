@@ -2,8 +2,10 @@ package com.leetcode.algorithm;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class AlgorithmController241to260 {
   public List<Integer> diffWaysToCompute(String input) {
@@ -183,4 +185,37 @@ public class AlgorithmController241to260 {
     }
     return min;
   }
+
+  public boolean isStrobogrammatic(String num) {
+    int len = num.length();
+    int left = len / 2;
+    int right = len / 2;
+    if (len % 2 == 0) {
+      left = len == 1 ? 0 : right - 1;
+    }
+    char[] c = num.toCharArray();
+    Set<Character> unable = new HashSet<>();
+    unable.add('2');
+    unable.add('3');
+    unable.add('4');
+    unable.add('5');
+    unable.add('7');
+    while (left >= 0 && right < len) {
+      if (unable.contains(c[right])) {
+        return false;
+      }
+      if (c[right] == '0' || c[right] == '1' || c[right] == '8') {
+        if (c[right] != c[left]) {
+          return false;
+        }
+      }
+      if (c[right] == '6' && c[left] != '9' || c[right] == '9' && c[left] != '6') {
+        return false;
+      }
+      left--;
+      right++;
+    }
+    return true;
+  }
+
 }
