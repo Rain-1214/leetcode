@@ -218,4 +218,63 @@ public class AlgorithmController241to260 {
     return true;
   }
 
+  public List<String> findStrobogrammatic(int n) {
+    return findStrobogrammaticHelper(n, n);
+  }
+
+  public List<String> findStrobogrammaticHelper(int n, int m) {
+    List<String> res = new ArrayList<>();
+    if (m == 0) {
+      res.add("");
+      return res;
+    }
+    if (m == 1) {
+      res.add("1");
+      res.add("8");
+      res.add("0");
+      return res;
+    }
+    List<String> temp = findStrobogrammaticHelper(n, m - 2);
+    for (String s : temp) {
+      if (m != n) {
+        res.add("0" + s + "0");
+      }
+      res.add("1" + s + "1");
+      res.add("8" + s + "8");
+      res.add("6" + s + "9");
+      res.add("9" + s + "6");
+    }
+    return res;
+  }
+
+  public final char[][] strobogrammaticMap = new char[][] { { '0', '0' }, { '1', '1' }, { '6', '9' }, { '8', '8' },
+      { '9', '6' } };
+
+  public List<String> findStrobogrammaticII(int n) {
+    List<String> res = new ArrayList<>();
+    if (n < 1) {
+      return res;
+    }
+    char[] current = new char[n];
+    findStrobogrammaticII(0, n - 1, current, res);
+    return res;
+  }
+
+  public void findStrobogrammaticII(int l, int r, char[] current, List<String> res) {
+    if (l > r) {
+      if (current.length == 1 || current[0] != '0') {
+        res.add(String.valueOf(current));
+      }
+      return;
+    }
+    for (char[] chars : this.strobogrammaticMap) {
+      if (l == r && chars[0] != chars[1]) {
+        continue;
+      }
+      current[l] = chars[0];
+      current[r] = chars[1];
+      findStrobogrammaticII(l + 1, r - 1, current, res);
+    }
+  }
+
 }
