@@ -317,4 +317,30 @@ public class AlgorithmController241to260 {
     return s1.length() > s2.length();
   }
 
+  public List<List<String>> groupStrings(String[] strings) {
+    Map<String, ArrayList<String>> table = new HashMap<>();
+    for (String s : strings) {
+      StringBuilder sb = new StringBuilder();
+      if (s.length() == 1) {
+        ArrayList<String> temp = table.getOrDefault("-1", new ArrayList<>());
+        temp.add(s);
+        table.put("-1", temp);
+        continue;
+      }
+      char[] t = s.toCharArray();
+      for (int i = 1; i < t.length; i++) {
+        int sub = t[i] - t[i - 1];
+        if (sub < 0) {
+          sub += 26;
+        }
+        sb.append(sub);
+      }
+      String key = sb.toString();
+      ArrayList<String> temp = table.getOrDefault(key, new ArrayList<>());
+      temp.add(s);
+      table.put(sb.toString(), temp);
+    }
+    return new ArrayList<List<String>>(table.values());
+  }
+
 }
