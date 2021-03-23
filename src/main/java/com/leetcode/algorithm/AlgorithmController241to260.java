@@ -277,4 +277,44 @@ public class AlgorithmController241to260 {
     }
   }
 
+  public int strobogrammaticNum = 0;
+
+  public int strobogrammaticInRange(String low, String high) {
+    int res = 0;
+    for (int i = low.length(); i <= high.length(); i++) {
+      strobogrammaticNum = 0;
+      char[] chars = new char[i];
+      findStrobogrammaticIII(0, i - 1, chars, low, high);
+      res += strobogrammaticNum;
+    }
+    return res;
+  }
+
+  public void findStrobogrammaticIII(int l, int r, char[] current, String low, String high) {
+    if (l > r) {
+      if (current.length == 1 || current[0] != '0') {
+        String temp = String.valueOf(current);
+        if (comparatorStringIsBigger(temp, low) && comparatorStringIsBigger(high, temp)) {
+          strobogrammaticNum += 1;
+        }
+      }
+      return;
+    }
+    for (char[] chars : this.strobogrammaticMap) {
+      if (l == r && chars[0] != chars[1]) {
+        continue;
+      }
+      current[l] = chars[0];
+      current[r] = chars[1];
+      findStrobogrammaticIII(l + 1, r - 1, current, low, high);
+    }
+  }
+
+  public boolean comparatorStringIsBigger(String s1, String s2) {
+    if (s1.length() == s2.length()) {
+      return s1.compareTo(s2) >= 0;
+    }
+    return s1.length() > s2.length();
+  }
+
 }
