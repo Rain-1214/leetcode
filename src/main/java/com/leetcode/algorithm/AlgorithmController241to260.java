@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.leetcode.entity.TreeNode;
+
 public class AlgorithmController241to260 {
   public List<Integer> diffWaysToCompute(String input) {
     return diffWaysToCompute(input.toCharArray(), 0, input.length() - 1);
@@ -341,6 +343,47 @@ public class AlgorithmController241to260 {
       table.put(sb.toString(), temp);
     }
     return new ArrayList<List<String>>(table.values());
+  }
+
+  public int countUnivalSubtreesRes = 0;
+
+  public int countUnivalSubtrees(TreeNode root) {
+    countUnivalSubtreesHelper(root);
+    return countUnivalSubtreesRes;
+  }
+
+  public boolean countUnivalSubtreesHelper(TreeNode root) {
+    if (root == null) {
+      return true;
+    }
+    boolean left = countUnivalSubtreesHelper(root.left);
+    boolean right = countUnivalSubtreesHelper(root.right);
+    if (!left || !right) {
+      return false;
+    }
+    if (root.left == null && root.right == null) {
+      countUnivalSubtreesRes += 1;
+      return true;
+    }
+    if (root.left == null) {
+      if (root.val == root.right.val) {
+        countUnivalSubtreesRes += 1;
+        return true;
+      }
+      return false;
+    }
+    if (root.right == null) {
+      if (root.val == root.left.val) {
+        countUnivalSubtreesRes += 1;
+        return true;
+      }
+      return false;
+    }
+    if (root.val == root.left.val && root.val == root.right.val) {
+      countUnivalSubtreesRes += 1;
+      return true;
+    }
+    return false;
   }
 
 }
