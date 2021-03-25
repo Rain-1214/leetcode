@@ -3,8 +3,10 @@ package com.leetcode.algorithm;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
 
 import com.leetcode.entity.TreeNode;
@@ -384,6 +386,56 @@ public class AlgorithmController241to260 {
       return true;
     }
     return false;
+  }
+
+  class Vector2D {
+
+    Queue<Integer> q = new LinkedList<>();
+
+    public Vector2D(int[][] vec) {
+      for (int i = 0; i < vec.length; i++) {
+        for (int j = 0; j < vec[i].length; j++) {
+          q.add(vec[i][j]);
+        }
+      }
+    }
+
+    public int next() {
+      return q.poll();
+    }
+
+    public boolean hasNext() {
+      return !q.isEmpty();
+    }
+  }
+
+  class Vector2DII {
+
+    int[][] vec;
+    int innerIndex = 0;
+    int outIndex = 0;
+
+    public Vector2DII(int[][] vec) {
+      this.vec = vec;
+    }
+
+    public int next() {
+      if (innerIndex >= vec[outIndex].length) {
+        innerIndex = 0;
+        outIndex++;
+        return this.next();
+      }
+      return vec[outIndex][innerIndex++];
+    }
+
+    public boolean hasNext() {
+      if (outIndex < vec.length && innerIndex >= vec[outIndex].length) {
+        innerIndex = 0;
+        outIndex++;
+        return hasNext();
+      }
+      return outIndex < vec.length;
+    }
   }
 
 }
