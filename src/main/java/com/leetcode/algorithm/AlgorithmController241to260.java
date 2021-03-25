@@ -1,6 +1,7 @@
 package com.leetcode.algorithm;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -436,6 +437,18 @@ public class AlgorithmController241to260 {
       }
       return outIndex < vec.length;
     }
+  }
+
+  public boolean canAttendMeetings(int[][] intervals) {
+    Arrays.sort(intervals, (int[] a, int[] b) -> {
+      return a[0] - b[0];
+    });
+    for (int i = 1; i < intervals.length; i++) {
+      if (intervals[i][0] < intervals[i - 1][1]) {
+        return false;
+      }
+    }
+    return true;
   }
 
 }
