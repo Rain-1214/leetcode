@@ -12,4 +12,9 @@ public class AlgorithmController241to260Test {
     System.out.println(this.algorithmController241to260.diffWaysToCompute("2*3-4*5"));
   }
 
+  @Test
+  public void getFactors() {
+    System.out.println(this.algorithmController241to260.getFactorsII(32));
+  }
+
 }
