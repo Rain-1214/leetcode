@@ -465,4 +465,56 @@ public class AlgorithmController241to260 {
     return pq.size();
   }
 
+  public List<List<Integer>> getFactors(int n) {
+    List<List<Integer>> res = new ArrayList<>();
+    if (n == 1) {
+      return res;
+    }
+    getFactors(n, new ArrayList<>(), res, (int) Math.sqrt(n));
+    return res;
+  }
+
+  public void getFactors(int n, List<Integer> currentList, List<List<Integer>> res, int max) {
+    if (n == 1) {
+      List<Integer> temp = new ArrayList<>(currentList);
+      res.add(temp);
+      return;
+    }
+    int start = currentList.isEmpty() ? 2 : currentList.get(currentList.size() - 1);
+    for (int i = start; i <= max; i++) {
+      if (n % i == 0) {
+        currentList.add(i);
+        getFactors(n / i, currentList, res, max);
+        currentList.remove(currentList.size() - 1);
+      }
+    }
+  }
+
+  public List<List<Integer>> getFactorsII(int n) {
+    return getFactorsII(2, n);
+  }
+
+  public List<List<Integer>> getFactorsII(int start, int end) {
+    List<List<Integer>> res = new ArrayList<>();
+    if (end == 1) {
+      return res;
+    }
+    int max = (int) Math.sqrt(end);
+    for (int i = start; i <= max; i++) {
+      if (end % i == 0) {
+        List<Integer> temp = new ArrayList<>();
+        temp.add(i);
+        temp.add(end / i);
+        res.add(temp);
+        List<List<Integer>> next = getFactorsII(i, end / i);
+        for (List<Integer> l : next) {
+          l.add(i);
+          res.add(l);
+        }
+      }
+    }
+    return res;
+
+  }
+
 }
