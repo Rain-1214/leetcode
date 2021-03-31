@@ -517,4 +517,47 @@ public class AlgorithmController241to260 {
 
   }
 
+  public boolean verifyPreorder(int[] preorder) {
+    if (preorder.length < 3) {
+      return true;
+    }
+    return verifyPreorder(preorder, 0, preorder.length - 1);
+  }
+
+  public boolean verifyPreorder(int[] preorder, int start, int end) {
+    if (start >= end) {
+      return true;
+    }
+    int middle = -1;
+    for (int i = start + 1; i <= end; i++) {
+      if (preorder[i] > preorder[start] && middle == -1) {
+        middle = i;
+        continue;
+      }
+      if (middle != -1 && preorder[i] < preorder[start]) {
+        return false;
+      }
+    }
+    if (middle == -1) {
+      return verifyPreorder(preorder, start + 1, end);
+    }
+    return verifyPreorder(preorder, start + 1, middle - 1) && verifyPreorder(preorder, middle, end);
+  }
+
+  public boolean verifyPreorderII(int[] preorder) {
+    int[] stack = new int[preorder.length];
+    int index = -1;
+    int min = Integer.MIN_VALUE;
+    for (int num : preorder) {
+      if (num < min) {
+        return false;
+      }
+      while (index > -1 && num > stack[index]) {
+        min = stack[index--];
+      }
+      stack[++index] = num;
+    }
+    return true;
+  }
+
 }
