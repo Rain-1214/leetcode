@@ -560,4 +560,30 @@ public class AlgorithmController241to260 {
     return true;
   }
 
+  public int minCost(int[][] costs) {
+    int[][] dp = new int[costs.length + 1][3];
+    dp[0] = new int[] { 0, 0, 0 };
+    for (int i = 0; i < costs.length; i++) {
+      int[] temp = new int[3];
+      temp[0] = Math.min(dp[i][1], dp[i][2]) + costs[i][0];
+      temp[1] = Math.min(dp[i][0], dp[i][2]) + costs[i][1];
+      temp[2] = Math.min(dp[i][0], dp[i][1]) + costs[i][2];
+      dp[i + 1] = temp;
+    }
+    return Math.min(Math.min(dp[costs.length][1], dp[costs.length][2]), dp[costs.length][0]);
+  }
+
+  public int minCostII(int[][] costs) {
+    int dp0 = 0, dp1 = 0, dp2 = 0;
+    for (int i = 0; i < costs.length; i++) {
+      int temp0 = Math.min(dp1, dp2) + costs[i][0];
+      int temp1 = Math.min(dp0, dp2) + costs[i][1];
+      int temp2 = Math.min(dp0, dp1) + costs[i][2];
+      dp0 = temp0;
+      dp1 = temp1;
+      dp2 = temp2;
+    }
+    return Math.min(Math.min(dp0, dp1), dp2);
+  }
+
 }
