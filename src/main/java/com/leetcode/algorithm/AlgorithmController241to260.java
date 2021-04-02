@@ -586,4 +586,25 @@ public class AlgorithmController241to260 {
     return Math.min(Math.min(dp0, dp1), dp2);
   }
 
+  public List<String> binaryTreePaths(TreeNode root) {
+    List<String> res = new ArrayList<>();
+    binaryTreePaths(root, res, "");
+    return res;
+  }
+
+  public void binaryTreePaths(TreeNode root, List<String> res, String s) {
+    if (root == null) {
+      return;
+    }
+    StringBuilder tempSb = new StringBuilder(s);
+    tempSb.append(Integer.toString(root.val));
+    if (root.left == null && root.right == null) {
+      res.add(tempSb.toString());
+    } else {
+      tempSb.append("->");
+      binaryTreePaths(root.left, res, tempSb.toString());
+      binaryTreePaths(root.right, res, tempSb.toString());
+    }
+  }
+
 }
