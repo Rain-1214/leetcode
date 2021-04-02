@@ -619,4 +619,53 @@ public class AlgorithmController241to260 {
     return res < 10 ? res : addDigits(res);
   }
 
+  public int threeSumSmaller(int[] nums, int target) {
+    Arrays.sort(nums);
+    int res = 0;
+    for (int i = 0; i <= nums.length - 3; i++) {
+      res += twoSumSmaller(nums, i + 1, target - nums[i]);
+    }
+    return res;
+  }
+
+  public int twoSumSmaller(int[] nums, int startIndex, int target) {
+    int left = startIndex;
+    int right = nums.length - 1;
+    int res = 0;
+    while (left < right) {
+      if (nums[left] + nums[right] < target) {
+        res += right - left;
+        left++;
+      } else {
+        right--;
+      }
+    }
+    return res;
+  }
+
+  public int threeSumSmallerII(int[] nums, int target) {
+    if (nums.length < 3) {
+      return 0;
+    }
+    Arrays.sort(nums);
+    int res = 0;
+    for (int i = 0; i < nums.length - 2; i++) {
+      if (nums[i] * 3 >= target) {
+        break;
+      }
+      int temp = target - nums[i];
+      int left = i + 1;
+      int right = nums.length - 1;
+      while (left < right) {
+        if (nums[left] + nums[right] < temp) {
+          res += right - left;
+          left++;
+        } else {
+          right--;
+        }
+      }
+    }
+    return res;
+  }
+
 }
