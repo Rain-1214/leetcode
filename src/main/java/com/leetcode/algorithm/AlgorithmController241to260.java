@@ -668,4 +668,39 @@ public class AlgorithmController241to260 {
     return res;
   }
 
+  public int[] singleNumber(int[] nums) {
+    Map<Integer, Integer> t = new HashMap<>();
+    for (int n : nums) {
+      t.put(n, t.getOrDefault(n, 0) + 1);
+    }
+    int[] res = new int[2];
+    int index = 0;
+    for (Map.Entry<Integer, Integer> e : t.entrySet()) {
+      if (e.getValue() == 1) {
+        res[index++] = e.getKey();
+      }
+    }
+    return res;
+  }
+
+  public int[] singleNumberII(int[] nums) {
+    int exclusiveOrNum = nums[0];
+    for (int i = 1; i < nums.length; i++) {
+      exclusiveOrNum ^= nums[i];
+    }
+    int oneBin = 1;
+    while ((exclusiveOrNum & oneBin) != oneBin) {
+      oneBin <<= 1;
+    }
+    int a = 0, b = 0;
+    for (int i = 0; i < nums.length; i++) {
+      if ((nums[i] & oneBin) == oneBin) {
+        a ^= nums[i];
+      } else {
+        b ^= nums[i];
+      }
+    }
+    return new int[] { a, b };
+  }
+
 }
