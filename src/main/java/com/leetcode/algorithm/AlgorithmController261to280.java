@@ -1,7 +1,9 @@
 package com.leetcode.algorithm;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
@@ -139,6 +141,45 @@ public class AlgorithmController261to280 {
       min = Math.min(min, dp[dp.length - 1][i]);
     }
     return min;
+  }
+
+  public boolean canPermutePalindrome(String s) {
+    Map<Character, Integer> map = new HashMap<>();
+    char[] sa = s.toCharArray();
+    if (sa.length == 1) {
+      return true;
+    }
+    for (int i = 0; i < sa.length; i++) {
+      int temp = map.getOrDefault(sa[i], 0);
+      map.put(sa[i], temp + 1);
+    }
+    int len = sa.length;
+    int oddNum = 0;
+    for (int i : map.values()) {
+      if (i % 2 != 0) {
+        oddNum++;
+      }
+    }
+    return len % 2 == 0 ? oddNum == 0 : oddNum == 1;
+  }
+
+  public boolean canPermutePalindromeII(String s) {
+    int[] map = new int[26];
+    char[] sa = s.toCharArray();
+    if (sa.length == 1) {
+      return true;
+    }
+    for (int i = 0; i < sa.length; i++) {
+      map[(int) sa[i] - 'a']++;
+    }
+    int len = s.length();
+    int oddNum = 0;
+    for (int i : map) {
+      if (i % 2 != 0) {
+        oddNum++;
+      }
+    }
+    return len % 2 == 0 ? oddNum == 0 : oddNum == 1;
   }
 
 }
