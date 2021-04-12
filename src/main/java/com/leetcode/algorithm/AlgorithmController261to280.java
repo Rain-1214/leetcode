@@ -112,4 +112,33 @@ public class AlgorithmController261to280 {
     return u.nums[n - 1];
   }
 
+  public int minCostII(int[][] costs) {
+    int costLen = costs[0].length;
+    if (costLen == 1) {
+      return costs[0][0];
+    }
+    int[][] dp = new int[costs.length + 1][costLen];
+    for (int i = 0; i < costs.length; i++) {
+      int[] tempCost = costs[i];
+      int[] tempDp = dp[i];
+      int[] currentDp = dp[i + 1];
+      for (int j = 0; j < tempCost.length; j++) {
+        int min = Integer.MAX_VALUE;
+        for (int k = 0; k < tempDp.length; k++) {
+          if (k == j) {
+            continue;
+          }
+          min = Math.min(min, tempDp[k]);
+        }
+        currentDp[j] = min + tempCost[j];
+
+      }
+    }
+    int min = dp[dp.length - 1][0];
+    for (int i = 1; i < costLen; i++) {
+      min = Math.min(min, dp[dp.length - 1][i]);
+    }
+    return min;
+  }
+
 }
