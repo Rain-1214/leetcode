@@ -260,4 +260,14 @@ public class AlgorithmController261to280 {
       res.add(new String(sb));
     }
   }
+
+  public int missingNumber(int[] nums) {
+    int allSum = 0;
+    int sum = 0;
+    for (int i = 0; i < nums.length; i++) {
+      sum+= nums[i];
+      allSum += i;
+    }
+    return allSum + nums.length - sum;
+  }
 }
