@@ -1,8 +1,10 @@
 package com.leetcode.algorithm;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Queue;
@@ -182,4 +184,80 @@ public class AlgorithmController261to280 {
     return len % 2 == 0 ? oddNum == 0 : oddNum == 1;
   }
 
+  public List<String> generatePalindromes(String s) {
+    int len = s.length();
+    List<String> res = new ArrayList<>();
+    if (len == 1) {
+      res.add(s);
+      return res;
+    }
+    int[] charNum = new int[26];
+    for (char c : s.toCharArray()) {
+      charNum[(int) c - 'a']++;
+    }
+    
+    
+    int oddNum = 0;
+    int oddIndex = -1;
+    for (int i = 0;i < charNum.length; i++) {
+      if (charNum[i] % 2 != 0) {
+        oddNum++;
+        oddIndex = i;
+      }
+    }
+    if ((len % 2 == 0 && oddNum != 0) || (len % 2 != 0 && oddNum != 1)) {
+      return res;
+    }
+    // StringBuilder sb = new StringBuilder();
+    // if (oddNum == 1) {
+    //   charNum[oddIndex] -= 1;
+    //   sb.append((char) ('a' + oddIndex));
+    // }
+    // generatePalindromes(charNum, sb, res);
+    char[] sb = new char[len];
+    if (oddNum == 1) {
+      charNum[oddIndex] -= 1;
+      sb[len / 2] = (char) ('a' + oddIndex);
+    }
+    generatePalindromes(charNum, sb, res, 0);
+    return res;
+  }
+
+  public void generatePalindromes(int[] charNum, StringBuilder sb, List<String> res) {
+    int count = 0;
+    for (int i = 0; i < charNum.length; i++) {
+      if (charNum[i] == 0) {
+        count++;
+        continue;
+      }
+      sb.append((char) ('a' + i));
+      sb.insert(0, (char) ('a' + i));
+      charNum[i] = charNum[i] - 2;
+      generatePalindromes(charNum, sb, res);
+      charNum[i] = charNum[i] + 2;
+      sb.delete(0, 1);
+      sb.delete(sb.length() - 1, sb.length());
+    }
+    if (count == 26) {
+      res.add(sb.toString());
+    }
+  }
+
+  public void generatePalindromes(int[] charNum, char[] sb, List<String> res, int index) {
+    int count = 0;
+    for (int i = 0; i < charNum.length; i++) {
+      if (charNum[i] == 0) {
+        count++;
+        continue;
+      }
+      sb[index] = (char) ('a' + i);
+      sb[sb.length - 1 - index] = sb[index];
+      charNum[i] = charNum[i] - 2;
+      generatePalindromes(charNum, sb, res, index + 1);
+      charNum[i] = charNum[i] + 2;
+    }
+    if (count == 26) {
+      res.add(new String(sb));
+    }
+  }
 }
