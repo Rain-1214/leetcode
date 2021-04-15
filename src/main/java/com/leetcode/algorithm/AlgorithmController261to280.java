@@ -1,6 +1,7 @@
 package com.leetcode.algorithm;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -8,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Queue;
+import java.util.Set;
 
 public class AlgorithmController261to280 {
   public boolean validTree(int n, int[][] edges) {
@@ -195,11 +197,10 @@ public class AlgorithmController261to280 {
     for (char c : s.toCharArray()) {
       charNum[(int) c - 'a']++;
     }
-    
-    
+
     int oddNum = 0;
     int oddIndex = -1;
-    for (int i = 0;i < charNum.length; i++) {
+    for (int i = 0; i < charNum.length; i++) {
       if (charNum[i] % 2 != 0) {
         oddNum++;
         oddIndex = i;
@@ -210,8 +211,8 @@ public class AlgorithmController261to280 {
     }
     // StringBuilder sb = new StringBuilder();
     // if (oddNum == 1) {
-    //   charNum[oddIndex] -= 1;
-    //   sb.append((char) ('a' + oddIndex));
+    // charNum[oddIndex] -= 1;
+    // sb.append((char) ('a' + oddIndex));
     // }
     // generatePalindromes(charNum, sb, res);
     char[] sb = new char[len];
@@ -265,9 +266,79 @@ public class AlgorithmController261to280 {
     int allSum = 0;
     int sum = 0;
     for (int i = 0; i < nums.length; i++) {
-      sum+= nums[i];
+      sum += nums[i];
       allSum += i;
     }
     return allSum + nums.length - sum;
+  }
+
+  public String alienOrder(String[] words) {
+    if (words.length == 1) {
+      return words[0];
+    }
+    Map<Character, Set<Character>> map = new HashMap<>();
+    for (int i = 0; i < words.length - 1; i++) {
+      char[] csa = words[i].toCharArray();
+      char[] nexts = words[i + 1].toCharArray();
+      for (int j = 0; j < Math.max(csa.length, nexts.length); j++) {
+        if (j >= csa.length) {
+          break;
+        }
+        if (j >= nexts.length) {
+          return "";
+        }
+        char c = csa[j];
+        char nextsc = nexts[j];
+        if (c == nextsc) {
+          continue;
+        }
+        Set<Character> temp = map.getOrDefault(c, new HashSet<Character>());
+        temp.add(nexts[j]);
+        map.put(c, temp);
+        break;
+      }
+    }
+    int[] degrees = new int[26];
+    Arrays.fill(degrees, -1);
+    for (String s : words) {
+      for (char sa : s.toCharArray()) {
+        degrees[(int) (sa - 'a')] = 0;
+      }
+    }
+    for (Set<Character> cs : map.values()) {
+      for (char targetChar : cs) {
+        degrees[(int) (targetChar - 'a')] += 1;
+      }
+    }
+    Queue<Character> q = new LinkedList<>();
+    int resLen = 0;
+    for (int i = 0; i < degrees.length; i++) {
+      if (degrees[i] != -1) {
+        resLen++;
+      }
+      if (degrees[i] == 0) {
+        q.add((char) (i + 'a'));
+        degrees[i] -= 1;
+      }
+    }
+    StringBuilder sb = new StringBuilder();
+    while (!q.isEmpty()) {
+      Character current = q.poll();
+      sb.append(current);
+      if (map.containsKey(current)) {
+        for (char targetChar : map.get(current)) {
+          int index = targetChar - 'a';
+          degrees[index] -= 1;
+          if (degrees[index] == 0) {
+            q.add(targetChar);
+            degrees[index] = -1;
+          }
+        }
+      }
+    }
+    if (sb.length() != resLen) {
+      return "";
+    }
+    return sb.toString();
   }
 }
