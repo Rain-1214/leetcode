@@ -11,6 +11,8 @@ import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Set;
 
+import com.leetcode.entity.TreeNode;
+
 public class AlgorithmController261to280 {
   public boolean validTree(int n, int[][] edges) {
     int[][] graph = new int[n][n];
@@ -340,5 +342,14 @@ public class AlgorithmController261to280 {
       return "";
     }
     return sb.toString();
+  }
+
+  public int closestValue(TreeNode root, double target) {
+    int res = root.val;
+    while (root != null) {
+      res = Math.abs(res - target) < Math.abs(root.val - target) ? res : root.val;
+      root = target < root.val ? root.left : root.right;
+    }
+    return res;
   }
 }
