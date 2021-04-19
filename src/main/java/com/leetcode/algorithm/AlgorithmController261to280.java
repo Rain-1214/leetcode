@@ -352,4 +352,34 @@ public class AlgorithmController261to280 {
     }
     return res;
   }
+
+  public String hexString(int num) {
+    String res = Integer.toHexString(num);
+    if (res.length() == 1) {
+      return "0" + res;
+    }
+    return res;
+  }
+
+  public String encode(List<String> strs) {
+    StringBuilder sb = new StringBuilder();
+    for (String s : strs) {
+      sb.append(hexString(s.length()));
+      sb.append(s);
+    }
+    return sb.toString();
+  }
+
+  public List<String> decode(String s) {
+    List<String> res = new ArrayList<>();
+    if (s.length() == 0) {
+      return res;
+    }
+    for (int i = 0; i < s.length(); i += 2) {
+      int len = Integer.parseInt(s.substring(i, i + 2), 16);
+      res.add(s.substring(i + 2, i + 2 + len));
+      i += len;
+    }
+    return res;
+  }
 }
