@@ -382,4 +382,50 @@ public class AlgorithmController261to280 {
     }
     return res;
   }
+
+  public List<Integer> closestKValues(TreeNode root, double target, int k) {
+    PriorityQueue<Double[]> pq = new PriorityQueue<>((a, b) -> b[1] - a[1] > 0 ? 1 : -1);
+    closestKValues(root, target, pq);
+    List<Integer> res = new ArrayList<>();
+    for (int i = 0; i < k; i++) {
+      res.add(pq.poll()[0].intValue());
+    }
+    return res;
+  }
+
+  public void closestKValues(TreeNode root, double target, PriorityQueue<Double[]> pq) {
+    if (root == null) {
+      return;
+    }
+    Double[] temp = new Double[] { (double) root.val, Math.abs(root.val - target) };
+    pq.add(temp);
+    closestKValues(root.left, target, pq);
+    closestKValues(root.right, target, pq);
+  }
+
+  public List<Integer> closestKValuesII(TreeNode root, double target, int k) {
+    LinkedList<Integer> res = new LinkedList<>();
+    if (root == null || k <= 0) {
+      return res;
+    }
+    closestKValuesIIInorder(root, target, k, res);
+    return res;
+  }
+
+  public void closestKValuesIIInorder(TreeNode root, double target, int k, LinkedList<Integer> q) {
+    if (root == null) {
+      return;
+    }
+    closestKValuesIIInorder(root.left, target, k, q);
+    if (q.size() == k) {
+      if (Math.abs(root.val - target) < Math.abs(q.peek() - target)) {
+        q.poll();
+      } else {
+        return;
+      }
+    }
+    q.add(root.val);
+    closestKValuesIIInorder(root.right, target, k, q);
+  }
+
 }
