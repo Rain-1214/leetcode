@@ -428,4 +428,64 @@ public class AlgorithmController261to280 {
     closestKValuesIIInorder(root.right, target, k, q);
   }
 
+  public String[] small = new String[] { "Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine",
+      "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen" };
+
+  public String[] mid = new String[] { "Zero", "Ten", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy",
+      "Eighty", "Ninety" };
+
+  public String[] split = new String[] { "Zero", "Thousand", "Million", "Billion" };
+
+  public String numberToWords(int num) {
+    if (num == 0) {
+      return "Zero";
+    }
+    StringBuilder sb = new StringBuilder();
+    int current = 0;
+    int pow = 0;
+    int splitIndex = 0;
+    while (num > 0) {
+      current += num % 10 * Math.pow(10, pow++);
+      num /= 10;
+      if (pow == 3 || num == 0) {
+        String temp = numberToWordsHelp(current);
+        if (temp.length() != 0) {
+          if (splitIndex != 0) {
+            if (sb.length() != 0) {
+              sb.insert(0, " ");
+            }
+            sb.insert(0, split[splitIndex]);
+          }
+          if (sb.length() != 0) {
+            sb.insert(0, " ");
+          }
+          sb.insert(0, temp);
+        }
+        splitIndex++;
+        current = 0;
+        pow = 0;
+      }
+    }
+    return sb.toString();
+  }
+
+  public String numberToWordsHelp(int num) {
+    if (num == 0) {
+      return "";
+    }
+    if (num >= 100) {
+      if (num % 100 != 0) {
+        return this.small[num / 100] + " Hundred " + numberToWordsHelp(num % 100);
+      }
+      return this.small[num / 100] + " Hundred";
+    }
+    if (num < 20) {
+      return this.small[num];
+    }
+    if (num % 10 != 0) {
+      return this.mid[num / 10] + " " + numberToWordsHelp(num % 10);
+    }
+    return this.mid[num / 10];
+  }
+
 }
