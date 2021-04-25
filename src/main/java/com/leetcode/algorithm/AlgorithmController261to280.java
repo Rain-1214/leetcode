@@ -2,6 +2,9 @@ package com.leetcode.algorithm;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -486,6 +489,19 @@ public class AlgorithmController261to280 {
       return this.mid[num / 10] + " " + numberToWordsHelp(num % 10);
     }
     return this.mid[num / 10];
+  }
+
+  public int hIndex(int[] citations) {
+    int n = citations.length;
+    int[] time = new int[n + 1];
+    for (int c : citations) {
+      time[Math.min(n, c)]++;
+    }
+    int h = n;
+    for (int i = time[h]; h > i; i += time[h]) {
+      h--;
+    }
+    return h;
   }
 
 }
