@@ -504,4 +504,22 @@ public class AlgorithmController261to280 {
     return h;
   }
 
+  public int hIndexII(int[] citations) {
+    int start = 0;
+    int end = citations.length - 1;
+    int n = citations.length;
+    int mid = 0;
+    while (start <= end) {
+      mid = (start + end) / 2;
+      if (citations[mid] == n - mid) {
+        return n - mid;
+      } else if (citations[mid] < n - mid) {
+        start = mid + 1;
+      } else {
+        end = mid - 1;
+      }
+    }
+    return n - start;
+  }
+
 }
