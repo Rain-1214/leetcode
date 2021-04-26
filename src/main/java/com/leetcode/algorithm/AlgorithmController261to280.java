@@ -522,4 +522,33 @@ public class AlgorithmController261to280 {
     return n - start;
   }
 
+  public int numWays(int n, int k) {
+    if (k == 1) {
+      return n > 2 ? 0 : 1;
+    }
+    int[][] dp = new int[n][2];
+    dp[0] = new int[] { 0, k };
+    for (int i = 1; i < n; i++) {
+      dp[i][0] = dp[i - 1][i];
+      dp[i][1] = (dp[i - 1][0] + dp[i - 1][1]) * (k - 1);
+    }
+    return dp[n - 1][0] + dp[n - 1][1];
+  }
+
+  public int numWaysII(int n, int k) {
+    if (k == 1) {
+      return n > 2 ? 0 : 1;
+    }
+    if (n <= 2) {
+      return (int) Math.pow(n, k);
+    }
+    int[] dp = new int[n];
+    dp[0] = k;
+    dp[1] = k * k;
+    for (int i = 2; i < n; i++) {
+      dp[i] = dp[i - 1] * (k - 1) + dp[i - 2] * (k - 1);
+    }
+    return dp[n - 1];
+  }
+
 }
