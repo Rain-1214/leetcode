@@ -551,4 +551,67 @@ public class AlgorithmController261to280 {
     return dp[n - 1];
   }
 
+  public boolean knows(int a, int b) {
+    return true;
+  }
+
+  public int findCelebrity(int n) {
+    int[][] graph = new int[n][n];
+    for (int x = 0; x < n; x++) {
+      int res = 0;
+      for (int y = 0; y < n; y++) {
+        if (x == y) {
+          res++;
+          graph[x][y] = 1;
+          continue;
+        }
+        if (this.knows(y, x)) {
+          res++;
+        } else {
+          graph[y][x] = -1;
+          break;
+        }
+      }
+      if (res == n && isCelebrity(graph, x)) {
+        return x;
+      }
+    }
+    return -1;
+  }
+
+  public boolean isCelebrity(int[][] graph, int j) {
+    for (int x = 0; x < graph.length; x++) {
+      if (j == x) {
+        continue;
+      }
+      if (graph[j][x] == 0) {
+        if (this.knows(j, x)) {
+          graph[j][x] = 1;
+          return false;
+        } else {
+          graph[j][x] = -1;
+        }
+      }
+    }
+    return true;
+  }
+
+  public int findCelebrityII(int n) {
+    int res = 0;
+    for (int i = 0; i < n; i++) {
+      if (this.knows(res, i)) {
+        res = i;
+      }
+    }
+    for (int i = 0; i < n; i++) {
+      if (i == res) {
+        continue;
+      }
+      if (knows(res, i) || !knows(i, res)) {
+        return -1;
+      }
+    }
+    return res;
+  }
+
 }
