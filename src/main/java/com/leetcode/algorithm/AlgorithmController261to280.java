@@ -632,4 +632,22 @@ public class AlgorithmController261to280 {
     return start;
   }
 
+  public int numSquares(int n) {
+    int[] dp = new int[n + 1];
+    int[] sqrts = new int[(int) Math.sqrt(n) + 1];
+    for (int i = 0; i < sqrts.length; i++) {
+      sqrts[i] = i * i;
+    }
+    for (int i = 1; i < dp.length; i++) {
+      dp[i] = i;
+      for (int j = 1; j < sqrts.length; j++) {
+        if (i < sqrts[j]) {
+          break;
+        }
+        dp[i] = Math.min(dp[i], dp[i - sqrts[j]] + 1);
+      }
+    }
+    return dp[n];
+  }
+
 }
