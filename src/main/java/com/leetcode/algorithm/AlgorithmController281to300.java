@@ -79,4 +79,37 @@ public class AlgorithmController281to300 {
     }
   }
 
+  public void moveZeroes(int[] nums) {
+    int[] notZero = new int[nums.length];
+    int j = 0;
+    for (int i = 0; i < nums.length; i++) {
+      if (nums[i] != 0) {
+        notZero[j++] = i;
+      }
+    }
+    for (int x = 0; x < nums.length; x++) {
+      if (x >= j) {
+        nums[x] = 0;
+        continue;
+      }
+      nums[x] = nums[notZero[x]];
+    }
+  }
+
+  public void moveZeroesII(int[] nums) {
+    int zeroIndex = 0;
+    for (int i = 0; i < nums.length; i++) {
+      if (nums[i] != 0) {
+        if (i == zeroIndex) {
+          zeroIndex++;
+        } else {
+          nums[zeroIndex++] = nums[i];
+        }
+      }
+    }
+    for (int i = zeroIndex; i < nums.length; i++) {
+      nums[i] = 0;
+    }
+  }
+
 }
