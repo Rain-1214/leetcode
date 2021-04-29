@@ -45,4 +45,38 @@ public class AlgorithmController281to300 {
     }
   }
 
+  public List<String> addOperators(String num, int target) {
+    List<String> res = new ArrayList<>();
+    if (num == null || num.length() == 0) {
+      return res;
+    }
+    addOperators(res, "", num, target, 0, 0, 0);
+    return res;
+  }
+
+  public void addOperators(List<String> res, String path, String num, int target, int index, long current,
+      long prevCurrent) {
+    if (index == num.length()) {
+      if (current == target) {
+        res.add(path);
+      }
+      return;
+    }
+
+    for (int i = index; i < num.length(); i++) {
+      if (i != index && num.charAt(index) == '0') {
+        break;
+      }
+      long temp = Long.parseLong(num.substring(index, i + 1));
+      if (index == 0) {
+        addOperators(res, path + temp, num, target, i + 1, temp, temp);
+        continue;
+      }
+      addOperators(res, path + '+' + temp, num, target, i + 1, current + temp, temp);
+      addOperators(res, path + '-' + temp, num, target, i + 1, current - temp, -temp);
+      addOperators(res, path + '*' + temp, num, target, i + 1, current - prevCurrent + prevCurrent * temp,
+          prevCurrent * temp);
+    }
+  }
+
 }
