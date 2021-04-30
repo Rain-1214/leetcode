@@ -1,7 +1,10 @@
 package com.leetcode.algorithm;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 public class AlgorithmController281to300 {
 
@@ -109,6 +112,43 @@ public class AlgorithmController281to300 {
     }
     for (int i = zeroIndex; i < nums.length; i++) {
       nums[i] = 0;
+    }
+  }
+
+  class PeekingIterator implements Iterator<Integer> {
+
+    Iterator<Integer> iterator;
+    Integer top;
+
+    public PeekingIterator(Iterator<Integer> iterator) {
+      // initialize any member here.
+      this.iterator = iterator;
+      if (this.iterator.hasNext()) {
+        top = this.iterator.next();
+      }
+    }
+
+    // Returns the next element in the iteration without advancing the iterator.
+    public Integer peek() {
+      return top;
+    }
+
+    // hasNext() and next() should behave the same as in the Iterator interface.
+    // Override them if needed.
+    @Override
+    public Integer next() {
+      int temp = top;
+      if (this.iterator.hasNext()) {
+        this.top = this.iterator.next();
+      } else {
+        this.top = null;
+      }
+      return temp;
+    }
+
+    @Override
+    public boolean hasNext() {
+      return top != null;
     }
   }
 
