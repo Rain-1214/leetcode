@@ -5,6 +5,9 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.Stack;
+
+import com.leetcode.entity.TreeNode;
 
 public class AlgorithmController281to300 {
 
@@ -150,6 +153,35 @@ public class AlgorithmController281to300 {
     public boolean hasNext() {
       return top != null;
     }
+  }
+
+  public TreeNode inorderSuccessor(TreeNode root, TreeNode p) {
+    if (p.right != null) {
+      TreeNode temp = p.right;
+      while (temp.left != null) {
+        temp = temp.left;
+      }
+      return temp;
+    }
+
+    Stack<TreeNode> stack = new Stack<>();
+    TreeNode last = null;
+
+    while (!stack.isEmpty() || root != null) {
+      while (root != null) {
+        stack.add(root);
+        root = root.left;
+      }
+
+      TreeNode temp = stack.pop();
+
+      if (p == last) {
+        return temp;
+      }
+      last = temp;
+      root = temp.right;
+    }
+    return null;
   }
 
 }
