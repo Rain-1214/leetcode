@@ -1,6 +1,7 @@
 package com.leetcode.algorithm;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -182,6 +183,41 @@ public class AlgorithmController281to300 {
       root = temp.right;
     }
     return null;
+  }
+
+  private static final int EMPTY = Integer.MAX_VALUE;
+  private static final int GATE = 0;
+  private static final List<int[]> DIRECTIONS = Arrays.asList(new int[] { 1, 0 }, new int[] { -1, 0 },
+      new int[] { 0, 1 }, new int[] { 0, -1 });
+
+  public void wallsAndGates(int[][] rooms) {
+    Queue<int[]> q = new LinkedList<>();
+    int row = rooms.length;
+    int col = rooms[0].length;
+
+    for (int i = 0; i < row; i++) {
+      for (int j = 0; j < col; j++) {
+        if (rooms[i][j] == GATE) {
+          q.add(new int[] { i, j });
+        }
+      }
+    }
+
+    while (!q.isEmpty()) {
+      int[] temp = q.poll();
+      int r = temp[0];
+      int c = temp[1];
+
+      for (int[] direction : DIRECTIONS) {
+        int nr = r + direction[0];
+        int nc = c + direction[1];
+        if (nr < 0 || nc < 0 || nr >= row || nc >= col || rooms[nr][nc] != EMPTY) {
+          continue;
+        }
+        rooms[nr][nc] = rooms[r][c] + 1;
+        q.add(new int[] { nr, nc });
+      }
+    }
   }
 
 }
