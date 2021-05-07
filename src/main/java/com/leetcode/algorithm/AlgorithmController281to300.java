@@ -2,10 +2,12 @@ package com.leetcode.algorithm;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 import java.util.Stack;
@@ -255,6 +257,48 @@ public class AlgorithmController281to300 {
       fast = nums[fast];
     }
     return slow;
+  }
+
+  class ValidWordAbbr {
+
+    public Map<String, String> map;
+
+    public ValidWordAbbr(String[] dictionary) {
+      this.map = new HashMap<>();
+      for (String s : dictionary) {
+        String sort = getSort(s);
+        if (map.containsKey(sort)) {
+          String temp = map.get(sort);
+          if (temp == null || temp.equals(s)) {
+            continue;
+          } else {
+            map.put(sort, null);
+          }
+        } else {
+          map.put(sort, s);
+        }
+      }
+    }
+
+    public String getSort(String s) {
+      if (s.length() <= 2) {
+        return s;
+      } else {
+        return new String(s.charAt(0) + Integer.toString(s.length() - 2) + s.charAt(s.length() - 1));
+      }
+    }
+
+    public boolean isUnique(String word) {
+      String sort = getSort(word);
+      if (!map.containsKey(sort)) {
+        return true;
+      }
+      String temp = map.get(sort);
+      if (temp == null) {
+        return false;
+      }
+      return temp.equals(word);
+    }
   }
 
 }
