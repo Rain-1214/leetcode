@@ -2,10 +2,12 @@ package com.leetcode.algorithm;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.Set;
 import java.util.Stack;
 
 import com.leetcode.entity.TreeNode;
@@ -218,6 +220,41 @@ public class AlgorithmController281to300 {
         q.add(new int[] { nr, nc });
       }
     }
+  }
+
+  public int findDuplicate(int[] nums) {
+    Set<Integer> set = new HashSet<>();
+    for (int n : nums) {
+      if (set.contains(n)) {
+        return n;
+      }
+      set.add(n);
+    }
+    return -1;
+  }
+
+  public int findDuplicateII(int[] nums) {
+    Arrays.sort(nums);
+    for (int i = 0; i < nums.length - 1; i++) {
+      if (nums[i] == nums[i + 1]) {
+        return nums[i];
+      }
+    }
+    return -1;
+  }
+
+  public int findDuplicateIII(int[] nums) {
+    int slow = 0, fast = 0;
+    do {
+      slow = nums[slow];
+      fast = nums[nums[fast]];
+    } while (slow != fast);
+    slow = 0;
+    while (slow != fast) {
+      slow = nums[slow];
+      fast = nums[fast];
+    }
+    return slow;
   }
 
 }
