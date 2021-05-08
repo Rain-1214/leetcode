@@ -301,4 +301,50 @@ public class AlgorithmController281to300 {
     }
   }
 
+  public static final int[][] dir = new int[][] { new int[] { -1, -1 }, new int[] { -1, 0 }, new int[] { -1, 1 },
+      new int[] { 0, 1 }, new int[] { 1, 1 }, new int[] { 1, 0 }, new int[] { 1, -1 }, new int[] { 0, -1 } };
+
+  public void gameOfLife(int[][] board) {
+
+    int[][] newBoard = new int[board.length][board[0].length];
+
+    for (int row = 0; row < board.length; row++) {
+      for (int col = 0; col < board[0].length; col++) {
+        int cell = getCellNum(board, row, col);
+        boolean currentAlive = board[row][col] == 1;
+        if (cell < 2 && currentAlive) {
+          newBoard[row][col] = 0;
+        } else if (cell <= 3 && currentAlive) {
+          newBoard[row][col] = 1;
+        } else if (cell > 3 && currentAlive) {
+          newBoard[row][col] = 0;
+        }
+        if (cell == 3 && !currentAlive) {
+          newBoard[row][col] = 1;
+        }
+      }
+    }
+
+    for (int row = 0; row < board.length; row++) {
+      for (int col = 0; col < board[0].length; col++) {
+        board[row][col] = newBoard[row][col];
+      }
+    }
+  }
+
+  public int getCellNum(int[][] board, int row, int col) {
+    int cell = 0;
+    for (int[] d : dir) {
+      int nextRow = row + d[0];
+      int nextCol = col + d[1];
+      if (nextRow < 0 || nextCol < 0 || nextRow >= board.length || nextCol >= board[0].length) {
+        continue;
+      }
+      if (board[nextRow][nextCol] == 1) {
+        cell++;
+      }
+    }
+    return cell;
+  }
+
 }
