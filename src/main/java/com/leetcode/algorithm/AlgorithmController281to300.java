@@ -347,4 +347,30 @@ public class AlgorithmController281to300 {
     return cell;
   }
 
+  public boolean wordPattern(String pattern, String s) {
+    Map<Character, String> c2s = new HashMap<>();
+    Map<String, Character> s2c = new HashMap<>();
+    String[] sa = s.split(" ");
+    if (sa.length != pattern.length()) {
+      return false;
+    }
+    for (int i = 0; i < pattern.length(); i++) {
+      char temp = pattern.charAt(i);
+      boolean c2sLive = c2s.containsKey(temp);
+      boolean s2cLive = s2c.containsKey(sa[i]);
+      if (c2sLive || s2cLive) {
+        if (!(c2sLive && s2cLive)) {
+          return false;
+        }
+        if (!(c2s.get(temp).equals(sa[i])) || s2c.get(sa[i]) != temp) {
+          return false;
+        }
+        continue;
+      }
+      c2s.put(temp, sa[i]);
+      s2c.put(sa[i], temp);
+    }
+    return true;
+  }
+
 }
