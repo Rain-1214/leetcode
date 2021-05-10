@@ -411,4 +411,8 @@ public class AlgorithmController281to300 {
     return false;
   }
 
+  public boolean canWinNim(int n) {
+    return n % 4 != 0;
+  }
+
 }
