@@ -415,4 +415,22 @@ public class AlgorithmController281to300 {
     return n % 4 != 0;
   }
 
+  public List<String> generatePossibleNextMoves(String currentState) {
+    List<String> res = new ArrayList<>();
+    if (currentState.length() < 2) {
+      return res;
+    }
+    char[] ca = currentState.toCharArray();
+    for (int i = 0; i < ca.length - 1; i++) {
+      if (ca[i] == '+' && ca[i + 1] == '+') {
+        ca[i] = '-';
+        ca[i + 1] = '-';
+        res.add(new String(ca));
+        ca[i] = '+';
+        ca[i + 1] = '+';
+      }
+    }
+    return res;
+  }
+
 }
