@@ -373,4 +373,42 @@ public class AlgorithmController281to300 {
     return true;
   }
 
+  public boolean wordPatternMatch(String pattern, String s) {
+    return wordPatternMatch(pattern, s, 0, new HashMap<>(), new HashMap<>());
+  }
+
+  public boolean wordPatternMatch(String pattern, String s, int patternIndex, Map<Character, String> c2s,
+      Map<String, Character> s2c) {
+
+    if (patternIndex == pattern.length()) {
+      return s.length() == 0;
+    }
+    if (s.length() == 0) {
+      return patternIndex == pattern.length();
+    }
+
+    char c = pattern.charAt(patternIndex);
+    if (c2s.containsKey(c)) {
+      if (s.startsWith(c2s.get(c))) {
+        return wordPatternMatch(pattern, s.substring(c2s.get(c).length()), patternIndex + 1, c2s, s2c);
+      } else {
+        return false;
+      }
+    }
+    for (int i = 0; i < s.length(); i++) {
+      String tempS = s.substring(0, i);
+      if (s2c.containsKey(tempS)) {
+        continue;
+      }
+      s2c.put(tempS, c);
+      c2s.put(c, tempS);
+      if (wordPatternMatch(pattern, s.substring(i + 1), patternIndex + 1, c2s, s2c)) {
+        return true;
+      }
+      s2c.remove(tempS);
+      c2s.remove(c);
+    }
+    return false;
+  }
+
 }
