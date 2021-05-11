@@ -433,4 +433,35 @@ public class AlgorithmController281to300 {
     return res;
   }
 
+  public boolean canWin(String currentState) {
+    if (currentState.length() == 1) {
+      return false;
+    }
+    return canWin(currentState.toCharArray(), new HashMap<>());
+  }
+
+  public boolean canWin(char[] currentState, Map<String, Boolean> cache) {
+    String current = new String(currentState);
+    Boolean visited = cache.get(current);
+    if (visited != null) {
+      return visited;
+    }
+    for (int i = 0; i < currentState.length - 1; i++) {
+      if (currentState[i] == '+' && currentState[i + 1] == '+') {
+        currentState[i] = '-';
+        currentState[i + 1] = '-';
+        if (!canWin(currentState, cache)) {
+          currentState[i] = '+';
+          currentState[i + 1] = '+';
+          cache.put(current, true);
+          return true;
+        }
+        currentState[i] = '+';
+        currentState[i + 1] = '+';
+      }
+    }
+    cache.put(current, false);
+    return false;
+  }
+
 }
