@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Set;
 import java.util.Stack;
@@ -462,6 +463,36 @@ public class AlgorithmController281to300 {
     }
     cache.put(current, false);
     return false;
+  }
+
+  class MedianFinder {
+
+    PriorityQueue<Integer> big;
+    PriorityQueue<Integer> small;
+
+    /** initialize your data structure here. */
+    public MedianFinder() {
+      this.big = new PriorityQueue<>();
+      this.small = new PriorityQueue<>((x, y) -> y - x);
+    }
+
+    public void addNum(int num) {
+      if (small.size() == big.size()) {
+        big.add(num);
+        small.add((big.poll()));
+      } else {
+        small.add(num);
+        big.add(small.poll());
+      }
+    }
+
+    public double findMedian() {
+      if (big.size() == small.size()) {
+        return (double) (big.peek() + small.peek()) / 2;
+      } else {
+        return small.peek();
+      }
+    }
   }
 
 }
