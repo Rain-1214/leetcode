@@ -595,4 +595,21 @@ public class AlgorithmController281to300 {
 
   }
 
+  public int longestConsecutive(TreeNode root) {
+    return Math.max(longestConsecutive(root.left, root.val, 1), longestConsecutive(root.right, root.val, 1));
+  }
+
+  public int longestConsecutive(TreeNode root, int parentNum, int maxLength) {
+    if (root == null) {
+      return maxLength;
+    }
+    int currentMaxLength = 1;
+    if (root.val == parentNum + 1) {
+      currentMaxLength = maxLength + 1;
+    }
+    int left = longestConsecutive(root.left, root.val, currentMaxLength);
+    int right = longestConsecutive(root.right, root.val, currentMaxLength);
+    return Math.max(Math.max(left, right), currentMaxLength);
+  }
+
 }
