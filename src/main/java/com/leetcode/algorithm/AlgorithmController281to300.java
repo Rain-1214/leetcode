@@ -553,4 +553,46 @@ public class AlgorithmController281to300 {
     return res;
   }
 
+  public class Codec {
+
+    // Encodes a tree to a single string.
+    public String serialize(TreeNode root) {
+      StringBuilder sb = new StringBuilder();
+      preorder(root, sb);
+      return sb.toString();
+    }
+
+    // Decodes your encoded data to tree.
+    public TreeNode deserialize(String data) {
+      index = 0;
+      String[] sa = data.split(",");
+      return buildTree(sa);
+    }
+
+    public void preorder(TreeNode root, StringBuilder sb) {
+      if (root == null) {
+        sb.append("x,");
+        return;
+      }
+      sb.append(root.val);
+      sb.append(",");
+      preorder(root.left, sb);
+      preorder(root.right, sb);
+    }
+
+    public int index = 0;
+
+    public TreeNode buildTree(String[] sa) {
+      if (sa[index].equals("x")) {
+        index++;
+        return null;
+      }
+      TreeNode root = new TreeNode(Integer.parseInt(sa[index++]));
+      root.left = buildTree(sa);
+      root.right = buildTree(sa);
+      return root;
+    }
+
+  }
+
 }
