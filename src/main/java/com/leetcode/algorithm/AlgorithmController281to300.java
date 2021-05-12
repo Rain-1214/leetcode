@@ -495,4 +495,62 @@ public class AlgorithmController281to300 {
     }
   }
 
+  public int minTotalDistance(int[][] grid) {
+    List<int[]> persons = new ArrayList<>();
+    for (int row = 0; row < grid.length; row++) {
+      for (int col = 0; col < grid[0].length; col++) {
+        if (grid[row][col] == 1) {
+          persons.add(new int[] { row, col });
+        }
+      }
+    }
+
+    int min = Integer.MAX_VALUE;
+
+    for (int row = 0; row < grid.length; row++) {
+      for (int col = 0; col < grid[0].length; col++) {
+        int temp = 0;
+        for (int[] person : persons) {
+          temp += Math.abs(row - person[0]) + Math.abs(col - person[1]);
+        }
+        min = Math.min(min, temp);
+      }
+    }
+    return min;
+
+  }
+
+  public int minTotalDistanceII(int[][] grid) {
+    List<Integer> rowPoints = new ArrayList<>();
+    List<Integer> colPoints = new ArrayList<>();
+    for (int row = 0; row < grid.length; row++) {
+      for (int col = 0; col < grid[0].length; col++) {
+        if (grid[row][col] == 1) {
+          rowPoints.add(row);
+        }
+      }
+    }
+
+    for (int col = 0; col < grid[0].length; col++) {
+      for (int row = 0; row < grid.length; row++) {
+        if (grid[row][col] == 1) {
+          colPoints.add(col);
+        }
+      }
+    }
+
+    return computeDistance(rowPoints) + computeDistance(colPoints);
+
+  }
+
+  public int computeDistance(List<Integer> potions) {
+    int i = 0, j = potions.size() - 1, res = 0;
+    while (i < j) {
+      res += potions.get(j) - potions.get(i);
+      i++;
+      j--;
+    }
+    return res;
+  }
+
 }
