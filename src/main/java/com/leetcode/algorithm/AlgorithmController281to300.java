@@ -612,4 +612,57 @@ public class AlgorithmController281to300 {
     return Math.max(Math.max(left, right), currentMaxLength);
   }
 
+  public String getHint(String secret, String guess) {
+    char[] sa = secret.toCharArray();
+    char[] ga = guess.toCharArray();
+    int[] sam = new int[10];
+    int a = 0;
+    int b = 0;
+
+    for (int i = 0; i < sa.length; i++) {
+      if (sa[i] == ga[i]) {
+        a++;
+        ga[i] = '#';
+        continue;
+      }
+      sam[sa[i] - '0']++;
+    }
+    for (int i = 0; i < ga.length; i++) {
+      if (ga[i] != '#' && sam[ga[i] - '0'] > 0) {
+        b++;
+        sam[ga[i] - '0']--;
+      }
+    }
+    return a + "A" + b + "B";
+  }
+
+  public String getHintII(String secret, String guess) {
+    StringBuilder sb = new StringBuilder();
+    char[] sa = secret.toCharArray();
+    char[] ga = guess.toCharArray();
+    int[] sam = new int[10];
+    int a = 0;
+    int b = 0;
+
+    for (int i = 0; i < sa.length; i++) {
+      if (sa[i] == ga[i]) {
+        a++;
+        ga[i] = '#';
+        continue;
+      }
+      sam[sa[i] - '0']++;
+    }
+    for (int i = 0; i < ga.length; i++) {
+      if (ga[i] != '#' && sam[ga[i] - '0'] > 0) {
+        b++;
+        sam[ga[i] - '0']--;
+      }
+    }
+    sb.append(Integer.toString(a));
+    sb.append('A');
+    sb.append(Integer.toString(b));
+    sb.append('B');
+    return sb.toString();
+  }
+
 }
