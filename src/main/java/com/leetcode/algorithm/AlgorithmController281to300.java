@@ -665,4 +665,50 @@ public class AlgorithmController281to300 {
     return sb.toString();
   }
 
+  public int lengthOfLIS(int[] nums) {
+    int len = nums.length;
+    int[] dp = new int[len];
+    int max = 0;
+    for (int i = 0; i < len; i++) {
+      dp[i] = 1;
+      for (int j = 0; j < i; j++) {
+        if (nums[j] >= nums[i]) {
+          continue;
+        }
+        dp[i] = Math.max(dp[i], dp[j] + 1);
+      }
+      max = Math.max(dp[i], max);
+    }
+    return max;
+  }
+
+  public int lengthOfLISII(int[] nums) {
+    int len = nums.length;
+    if (len == 0) {
+      return 0;
+    }
+    int[] d = new int[len + 1];
+    int maxLen = 1;
+    d[maxLen] = nums[0];
+    for (int i = 1; i < len; i++) {
+      if (d[maxLen] < nums[i]) {
+        d[++maxLen] = nums[i];
+      } else {
+        int l = 1, r = maxLen, pos = 0;
+        while (r >= l) {
+          int mid = (l + r) / 2;
+          if (d[mid] >= nums[i]) {
+            r = mid - 1;
+          } else {
+            pos = mid;
+            l = mid + 1;
+          }
+        }
+        d[pos + 1] = nums[i];
+      }
+    }
+
+    return maxLen;
+  }
+
 }
