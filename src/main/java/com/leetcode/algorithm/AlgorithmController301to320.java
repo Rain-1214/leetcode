@@ -64,4 +64,32 @@ public class AlgorithmController301to320 {
     sb.deleteCharAt(sb.length() - 1);
   }
 
+  public int minAreaLeft, maxAreaRight, minAreaTop, maxAreaBottom;
+
+  public int minArea(char[][] image, int x, int y) {
+    if (image.length == 0 || image[0].length == 0) {
+      return 0;
+    }
+    minAreaLeft = maxAreaRight = y;
+    minAreaTop = maxAreaBottom = x;
+    minAreaHelp(image, x, y);
+
+    return (maxAreaRight - minAreaLeft + 1) * (maxAreaBottom - minAreaTop + 1);
+  }
+
+  public void minAreaHelp(char[][] image, int x, int y) {
+    if (x < 0 || x >= image.length || y < 0 || y >= image[0].length || image[x][y] == '0') {
+      return;
+    }
+    image[x][y] = '0';
+    minAreaLeft = Math.min(y, minAreaLeft);
+    maxAreaRight = Math.max(y, maxAreaRight);
+    minAreaTop = Math.min(x, minAreaTop);
+    maxAreaBottom = Math.max(x, maxAreaBottom);
+    minAreaHelp(image, x - 1, y);
+    minAreaHelp(image, x + 1, y);
+    minAreaHelp(image, x, y - 1);
+    minAreaHelp(image, x, y + 1);
+
+  }
 }
