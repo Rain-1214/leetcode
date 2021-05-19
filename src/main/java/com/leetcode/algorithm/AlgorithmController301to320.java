@@ -117,4 +117,60 @@ public class AlgorithmController301to320 {
     }
   }
 
+  class NumMatrix {
+
+    int[][] matrix;
+
+    public NumMatrix(int[][] matrix) {
+      int rows = matrix.length;
+      int cols = matrix[0].length;
+
+      this.matrix = new int[rows][cols];
+
+      for (int x = 0; x < rows; x++) {
+        for (int y = 0; y < cols; y++) {
+          if (y == 0) {
+            this.matrix[x][y] = matrix[x][y];
+            continue;
+          }
+          this.matrix[x][y] = this.matrix[x][y - 1] + matrix[x][y];
+        }
+      }
+    }
+
+    public int sumRegion(int row1, int col1, int row2, int col2) {
+      int res = 0;
+      for (int i = row1; i <= row2; i++) {
+        if (col1 == 0) {
+          res += this.matrix[i][col2];
+          continue;
+        }
+        res += this.matrix[i][col2] - this.matrix[i][col1 - 1];
+      }
+      return res;
+    }
+  }
+
+  class NumMatrixII {
+
+    int[][] dp;
+
+    public NumMatrixII(int[][] matrix) {
+      int rows = matrix.length;
+      int cols = matrix[0].length;
+
+      this.dp = new int[rows + 1][cols + 1];
+
+      for (int x = 0; x < rows; x++) {
+        for (int y = 0; y < cols; y++) {
+          dp[x + 1][y + 1] = dp[x + 1][y] + dp[x][y + 1] + matrix[x][y] - dp[x][y];
+        }
+      }
+    }
+
+    public int sumRegion(int row1, int col1, int row2, int col2) {
+      return dp[row2 + 1][col2 + 1] - dp[row2 + 1][col1] - dp[row1][col2 + 1] + dp[row1][col1];
+    }
+  }
+
 }
