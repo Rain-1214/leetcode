@@ -92,4 +92,29 @@ public class AlgorithmController301to320 {
     minAreaHelp(image, x, y + 1);
 
   }
+
+  class NumArray {
+
+    int[] nums;
+
+    public NumArray(int[] nums) {
+      if (nums.length == 0) {
+        this.nums = new int[0];
+        return;
+      }
+      this.nums = new int[nums.length];
+      this.nums[0] = nums[0];
+      for (int i = 1; i < nums.length; i++) {
+        this.nums[i] = this.nums[i - 1] + nums[i];
+      }
+    }
+
+    public int sumRange(int left, int right) {
+      if (left == 0) {
+        return this.nums[right];
+      }
+      return this.nums[right] - this.nums[left - 1];
+    }
+  }
+
 }
