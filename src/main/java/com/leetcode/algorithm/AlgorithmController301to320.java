@@ -173,4 +173,82 @@ public class AlgorithmController301to320 {
     }
   }
 
+  public static final int[][] dirs = new int[][] { new int[] { 0, -1 }, new int[] { 0, 1 }, new int[] { -1, 0 },
+      new int[] { 1, 0 } };
+
+  public List<Integer> numIslands2(int m, int n, int[][] positions) {
+    List<Integer> res = new ArrayList<>();
+    boolean[] visitor = new boolean[m * n];
+    UnionFind unionFind = new UnionFind(m * n);
+
+    for (int[] pos : positions) {
+      int x = pos[0];
+      int y = pos[1];
+      int index = x * n + y;
+      if (!visitor[index]) {
+        unionFind.addCount();
+        visitor[index] = true;
+        for (int[] dir : dirs) {
+          int nextX = x + dir[0];
+          int nextY = y + dir[1];
+
+          int nextIndex = nextX * n + nextY;
+          if (inArea(m, n, nextX, nextY) && visitor[nextIndex] && !unionFind.isConnect(index, nextIndex)) {
+            unionFind.merge(index, nextIndex);
+          }
+        }
+      }
+      res.add(unionFind.getCount());
+    }
+    return res;
+  }
+
+  public boolean inArea(int m, int n, int x, int y) {
+    return x >= 0 && x < m && y >= 0 && y < n;
+  }
+
+  class UnionFind {
+
+    private int[] parent;
+    private int count;
+
+    public void addCount() {
+      this.count++;
+    }
+
+    public int getCount() {
+      return this.count;
+    }
+
+    public UnionFind(int n) {
+      this.parent = new int[n];
+      for (int i = 0; i < n; i++) {
+        this.parent[i] = i;
+      }
+    }
+
+    public boolean isConnect(int x, int y) {
+      return this.find(x) == this.find(y);
+    }
+
+    public int find(int x) {
+      if (this.parent[x] != x) {
+        this.parent[x] = this.find(this.parent[x]);
+        return this.parent[x];
+      }
+      return this.parent[x];
+    }
+
+    public void merge(int x, int y) {
+      int rootX = this.find(x);
+      int rootY = this.find(y);
+      if (rootX == rootY) {
+        return;
+      }
+      this.parent[rootX] = rootY;
+      this.count--;
+    }
+
+  }
+
 }
