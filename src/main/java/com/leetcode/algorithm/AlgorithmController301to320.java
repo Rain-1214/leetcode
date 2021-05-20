@@ -251,4 +251,69 @@ public class AlgorithmController301to320 {
 
   }
 
+  public boolean isAdditiveNumber(String num) {
+    int len = num.length();
+    if (len < 3) {
+      return false;
+    }
+    for (int i = 1; i < num.length(); i++) {
+      String s1 = num.substring(0, i);
+      for (int j = i + 1; j < num.length(); j++) {
+        String s2 = num.substring(i, j);
+        if (s2.length() > 1 && s2.charAt(0) == '0') {
+          break;
+        }
+        if (isAdditiveNumber(num, j, s2, addString(s1, s2))) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  public boolean isAdditiveNumber(String num, int index, String prev, String sum) {
+
+    if (index == num.length()) {
+      return true;
+    }
+
+    for (int i = index; i < num.length(); i++) {
+      String temp = num.substring(index, i + 1);
+      if (i > index && temp.charAt(0) == '0') {
+        break;
+      }
+
+      if (temp.length() > sum.length()) {
+        return false;
+      }
+      if (temp.equals(sum)) {
+        return isAdditiveNumber(num, i + 1, temp, addString(temp, prev));
+      }
+    }
+    return false;
+  }
+
+  public String addString(String s1, String s2) {
+    StringBuilder sb = new StringBuilder();
+    int prev = 0, s1i = s1.length() - 1, s2i = s2.length() - 1;
+    while (s1i >= 0 || s2i >= 0) {
+      int num1 = s1i >= 0 ? s1.charAt(s1i) - '0' : 0;
+      int num2 = s2i >= 0 ? s2.charAt(s2i) - '0' : 0;
+      int sum = num1 + num2 + prev;
+      prev = 0;
+      if (sum >= 10) {
+        prev = sum / 10;
+        sb.append(sum % 10);
+      } else {
+        sb.append(sum);
+      }
+      s1i--;
+      s2i--;
+    }
+    if (prev != 0) {
+      sb.append(prev);
+    }
+    return sb.reverse().toString();
+  }
+
 }
