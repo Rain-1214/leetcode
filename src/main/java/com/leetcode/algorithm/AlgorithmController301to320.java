@@ -414,4 +414,106 @@ public class AlgorithmController301to320 {
     }
   }
 
+  class NumMatrixIII {
+
+    int n;
+    int colMax;
+    int[] nums;
+
+    public NumMatrixIII(int[][] matrix) {
+      int rowMax = matrix.length;
+      colMax = matrix[0].length;
+      n = rowMax * colMax;
+      this.nums = new int[n * 2];
+      for (int i = 0; i < rowMax; i++) {
+        for (int j = 0; j < colMax; j++) {
+          nums[n + colMax * i + j] = matrix[i][j];
+        }
+      }
+      for (int i = n - 1; i > 0; i--) {
+        nums[i] = nums[i * 2] + nums[i * 2 + 1];
+      }
+    }
+
+    public void update(int row, int col, int val) {
+      int i = n + row * colMax + col;
+      nums[i] = val;
+      while (i > 0) {
+        int left = (i % 2) == 0 ? i : i - 1;
+        int right = (i % 2) == 0 ? i + 1 : i;
+        nums[i / 2] = nums[left] + nums[right];
+        i /= 2;
+      }
+    }
+
+    public int sumRegion(int row1, int col1, int row2, int col2) {
+      int res = 0;
+      for (int i = row1; i <= row2; i++) {
+        int left = n + i * colMax + col1;
+        int right = n + i * colMax + col2;
+        int temp = 0;
+        while (right >= left) {
+          if ((left % 2) != 0) {
+            temp += nums[left];
+            left++;
+          }
+          if ((right % 2) == 0) {
+            temp += nums[right];
+            right--;
+          }
+          left /= 2;
+          right /= 2;
+        }
+        res += temp;
+      }
+      return res;
+    }
+  }
+
+  class NumMatrixIV {
+
+    int[][] matrix;
+    int[][] prefixSums;
+
+    public NumMatrixIV(int[][] matrix) {
+      int row = matrix.length;
+      int col = matrix[0].length;
+      this.matrix = matrix;
+      prefixSums = new int[row][col];
+      for (int i = 0; i < row; i++) {
+        for (int j = 0; j < col; j++) {
+          if (j == 0) {
+            prefixSums[i][j] = matrix[i][j];
+            continue;
+          }
+          prefixSums[i][j] = matrix[i][j] + prefixSums[i][j - 1];
+        }
+      }
+    }
+
+    public void update(int row, int col, int val) {
+      int temp = val - matrix[row][col];
+      for (int i = col; i < prefixSums[0].length; i++) {
+        if (i == 0) {
+          prefixSums[row][i] = val;
+          continue;
+        }
+        prefixSums[row][i] += temp;
+      }
+      matrix[row][col] = val;
+    }
+
+    public int sumRegion(int row1, int col1, int row2, int col2) {
+      int res = 0;
+      for (int i = row1; i <= row2; i++) {
+        if (col1 == 0) {
+          res += prefixSums[i][col2];
+          continue;
+        }
+        res += prefixSums[i][col2] - prefixSums[i][col1 - 1];
+      }
+      return res;
+    }
+  }
+
 }
