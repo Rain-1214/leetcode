@@ -316,4 +316,102 @@ public class AlgorithmController301to320 {
     return sb.reverse().toString();
   }
 
+  class NumArrayII {
+
+    int[] prefixSum;
+    int[] nums;
+
+    public NumArrayII(int[] nums) {
+      this.nums = nums;
+      this.prefixSum = new int[nums.length];
+      this.prefixSum[0] = nums[0];
+      for (int i = 1; i < nums.length; i++) {
+        this.prefixSum[i] = this.prefixSum[i - 1] + nums[i];
+      }
+    }
+
+    public void update(int index, int val) {
+      int temp = val - nums[index];
+      nums[index] = val;
+      for (int i = index; i < nums.length; i++) {
+        prefixSum[i] += temp;
+      }
+    }
+
+    public int sumRange(int left, int right) {
+      if (left == 0) {
+        return prefixSum[right];
+      }
+      return prefixSum[right] - prefixSum[left - 1];
+    }
+  }
+
+  class NumArrayII1 {
+
+    int[] nums;
+
+    public NumArrayII1(int[] nums) {
+      this.nums = nums;
+    }
+
+    public void update(int index, int val) {
+      this.nums[index] = val;
+    }
+
+    public int sumRange(int left, int right) {
+      int sum = 0;
+      for (int i = left; i <= right; i++) {
+        sum += this.nums[i];
+      }
+      return sum;
+    }
+  }
+
+  class NumArrayII2 {
+
+    int[] nums;
+    int n;
+
+    public NumArrayII2(int[] nums) {
+      this.n = nums.length;
+      this.nums = new int[nums.length * 2];
+      for (int i = this.n; i < this.n * 2; i++) {
+        this.nums[i] = nums[i - this.n];
+      }
+      for (int i = this.n - 1; i >= 0; i--) {
+        this.nums[i] = this.nums[i * 2] + this.nums[i * 2 + 1];
+      }
+    }
+
+    public void update(int index, int val) {
+      int i = index + this.n;
+      this.nums[i] = val;
+      while (i > 0) {
+        int left = (i % 2) == 0 ? i : i - 1;
+        int right = (i % 2) == 0 ? i + 1 : i;
+        this.nums[i / 2] = this.nums[left] + this.nums[right];
+        i /= 2;
+      }
+    }
+
+    public int sumRange(int left, int right) {
+      int l = left + this.n;
+      int r = right + this.n;
+      int sum = 0;
+      while (r >= l) {
+        if ((l % 2) == 1) {
+          sum += this.nums[l];
+          l++;
+        }
+        if ((r % 2) == 0) {
+          sum += this.nums[r];
+          r--;
+        }
+        r /= 2;
+        l /= 2;
+      }
+      return sum;
+    }
+  }
+
 }
