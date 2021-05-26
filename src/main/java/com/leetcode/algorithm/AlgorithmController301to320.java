@@ -1,9 +1,15 @@
 package com.leetcode.algorithm;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import java.util.Set;
+import java.util.Stack;
 
 public class AlgorithmController301to320 {
 
@@ -534,6 +540,50 @@ public class AlgorithmController301to320 {
       max = Math.max(max, n);
     }
     return max;
+  }
+
+  public List<Integer> findMinHeightTrees(int n, int[][] edges) {
+    List<Integer> res = new ArrayList<>();
+    if (n == 1) {
+      res.add(0);
+      return res;
+    }
+
+    List<List<Integer>> tree = new ArrayList<>(n);
+    for (int i = 0; i < n; i++) {
+      tree.add(new ArrayList<>());
+    }
+    int[] in = new int[n];
+    for (int[] edge : edges) {
+      in[edge[0]]++;
+      in[edge[1]]++;
+      tree.get(edge[0]).add(edge[1]);
+      tree.get(edge[1]).add(edge[0]);
+    }
+
+    Queue<Integer> q = new LinkedList<>();
+    for (int i = 0; i < n; i++) {
+      if (in[i] == 1) {
+        q.offer(i);
+      }
+    }
+    while (n > 2) {
+      int size = q.size();
+      n -= size;
+      for (int i = 0; i < size; i++) {
+        int current = q.poll();
+        for (int next : tree.get(current)) {
+          in[next]--;
+          if (in[next] == 1) {
+            q.add(next);
+          }
+        }
+      }
+    }
+    while (!q.isEmpty()) {
+      res.add(q.poll());
+    }
+    return res;
   }
 
 }
