@@ -586,4 +586,23 @@ public class AlgorithmController301to320 {
     return res;
   }
 
+  public int[][] multiply(int[][] mat1, int[][] mat2) {
+    int rowMax = mat1.length;
+    int colMax = mat2[0].length;
+    int[][] res = new int[rowMax][colMax];
+    for (int row = 0; row < rowMax; row++) {
+      for (int col = 0; col < colMax; col++) {
+        int temp = 0;
+        for (int i = 0; i < mat1[0].length; i++) {
+          if (mat1[row][i] == 0 || mat2[i][col] == 0) {
+            continue;
+          }
+          temp += mat1[row][i] * mat2[i][col];
+        }
+        res[row][col] = temp;
+      }
+    }
+    return res;
+  }
+
 }
