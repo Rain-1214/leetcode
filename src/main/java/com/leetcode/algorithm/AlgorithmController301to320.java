@@ -626,4 +626,27 @@ public class AlgorithmController301to320 {
     return dp[0][n + 1];
   }
 
+  public int nthSuperUglyNumber(int n, int[] primes) {
+    if (n == 1) {
+      return 1;
+    }
+    int[] nums = new int[n];
+    int[] primesIndex = new int[primes.length];
+    nums[0] = 1;
+    for (int i = 1; i < n; i++) {
+      int min = Integer.MAX_VALUE;
+      for (int j = 0; j < primes.length; j++) {
+        min = Math.min(min, primes[j] * nums[primesIndex[j]]);
+      }
+      nums[i] = min;
+      for (int j = 0; j < primes.length; j++) {
+        int temp = primes[j] * nums[primesIndex[j]];
+        if (temp == min) {
+          primesIndex[j]++;
+        }
+      }
+    }
+    return nums[n - 1];
+  }
+
 }
