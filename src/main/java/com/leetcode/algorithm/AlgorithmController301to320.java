@@ -4,12 +4,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 import java.util.Stack;
+import java.util.TreeMap;
+
+import com.leetcode.entity.TreeNode;
 
 public class AlgorithmController301to320 {
 
@@ -647,6 +652,33 @@ public class AlgorithmController301to320 {
       }
     }
     return nums[n - 1];
+  }
+
+  public List<List<Integer>> verticalOrder(TreeNode root) {
+    if (root == null) {
+      return new ArrayList<>();
+    }
+    Map<Integer, List<Integer>> map = new TreeMap<>();
+    Map<TreeNode, Integer> ti = new HashMap<>();
+
+    Queue<TreeNode> q = new LinkedList<>();
+    q.add(root);
+    ti.put(root, 0);
+
+    while (!q.isEmpty()) {
+      TreeNode current = q.poll();
+      int index = ti.get(current);
+      map.computeIfAbsent(index, k -> new ArrayList<>()).add(current.val);
+      if (current.left != null) {
+        q.add(current.left);
+        ti.put(current.left, index - 1);
+      }
+      if (current.right != null) {
+        q.add(current.right);
+        ti.put(current.right, index + 1);
+      }
+    }
+    return new ArrayList<>(map.values());
   }
 
 }
