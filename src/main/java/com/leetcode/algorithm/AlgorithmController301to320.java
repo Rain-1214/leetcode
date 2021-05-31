@@ -681,4 +681,59 @@ public class AlgorithmController301to320 {
     return new ArrayList<>(map.values());
   }
 
+  public int[] countSmallerArray;
+  public int[] countSmallerCount;
+
+  public List<Integer> countSmaller(int[] nums) {
+    List<Integer> res = new ArrayList<>();
+    initCountSmaller(nums);
+    for (int i = nums.length - 1; i >= 0; i--) {
+      int id = countSmallerGetId(nums[i]);
+      res.add(countSmallerQuery(id - 1));
+      countSmallerUpdate(id);
+    }
+    Collections.reverse(res);
+    return res;
+  }
+
+  public void initCountSmaller(int[] nums) {
+    int len = nums.length;
+    Set<Integer> set = new HashSet<>();
+    for (int n : nums) {
+      set.add(n);
+    }
+    int size = set.size();
+    countSmallerArray = new int[size];
+    int index = 0;
+    for (int n : set) {
+      countSmallerArray[index++] = n;
+    }
+    Arrays.sort(countSmallerArray);
+    countSmallerCount = new int[len + 1];
+  }
+
+  public int countSmallerGetId(int num) {
+    return Arrays.binarySearch(countSmallerArray, num) + 1;
+  }
+
+  public int lowbit(int num) {
+    return (num & -num);
+  }
+
+  public void countSmallerUpdate(int id) {
+    while (id < countSmallerCount.length) {
+      countSmallerCount[id] += 1;
+      id += lowbit(id);
+    }
+  }
+
+  public int countSmallerQuery(int id) {
+    int res = 0;
+    while (id > 0) {
+      res += countSmallerCount[id];
+      id -= lowbit(id);
+    }
+    return res;
+  }
+
 }
