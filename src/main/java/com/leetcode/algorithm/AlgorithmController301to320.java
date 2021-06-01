@@ -736,4 +736,34 @@ public class AlgorithmController301to320 {
     return res;
   }
 
+  public String removeDuplicateLetters(String s) {
+    int[] charNum = new int[26];
+    char[] sc = s.toCharArray();
+    boolean[] visitor = new boolean[26];
+    for (char c: sc) {
+      charNum[c - 'a']++;
+    }
+
+    StringBuilder sb = new StringBuilder();
+
+    for (int i = 0; i < sc.length; i++) {
+      int index = sc[i] - 'a';
+      if (!visitor[index]) {
+        while(sb.length() > 0 && sb.charAt(sb.length() - 1) > sc[i]) {
+          if (charNum[sb.charAt(sb.length() - 1) - 'a'] > 0) {
+            visitor[sb.charAt(sb.length() - 1) - 'a'] = false;
+            sb.deleteCharAt(sb.length() - 1);
+          } else {
+            break;
+          }
+        }
+        sb.append(sc[i]);
+        visitor[index] = true;
+      }
+      charNum[index]--;
+    }
+    return sb.toString();
+  }
+
+
 }
