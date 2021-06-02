@@ -823,4 +823,53 @@ public class AlgorithmController301to320 {
     return min == Integer.MAX_VALUE ? -1 : min;
   }
 
+  public int maxProduct(String[] words) {
+    int max = 0;
+    for (int i = 0; i < words.length; i++) {
+      for (int j = i + 1; j < words.length; j++) {
+        if (maxProductDiffString(words[i], words[j])) {
+          max = Math.max(words[i].length() * words[j].length(), max);
+        }
+      }
+    }
+    return max;
+  }
+
+  public boolean maxProductDiffString(String s1, String s2) {
+    int code1 = 0, code2 = 0;
+    for (char c : s1.toCharArray()) {
+      code1 |= 1 << (c - 'a');
+    }
+    for (char c : s2.toCharArray()) {
+      code2 |= 1 << (c - 'a');
+    }
+    return (code1 & code2) == 0;
+  }
+
+  public int maxProductII(String[] words) {
+    int n = words.length;
+    int[] premake = new int[n];
+    int[] lens = new int[n];
+
+    for (int i = 0; i < n; i++) {
+      int temp = 0;
+      char[] tempChars = words[i].toCharArray();
+      for (char c : tempChars) {
+        temp |= 1 << (c - 'a');
+      }
+      premake[i] = temp;
+      lens[i] = tempChars.length;
+    }
+
+    int max = 0;
+    for (int i = 0; i < words.length; i++) {
+      for (int j = i + 1; j < words.length; j++) {
+        if ((premake[i] & premake[j]) == 0) {
+          max = Math.max(lens[i] * lens[j], max);
+        }
+      }
+    }
+    return max;
+  }
+
 }
