@@ -740,7 +740,7 @@ public class AlgorithmController301to320 {
     int[] charNum = new int[26];
     char[] sc = s.toCharArray();
     boolean[] visitor = new boolean[26];
-    for (char c: sc) {
+    for (char c : sc) {
       charNum[c - 'a']++;
     }
 
@@ -749,7 +749,7 @@ public class AlgorithmController301to320 {
     for (int i = 0; i < sc.length; i++) {
       int index = sc[i] - 'a';
       if (!visitor[index]) {
-        while(sb.length() > 0 && sb.charAt(sb.length() - 1) > sc[i]) {
+        while (sb.length() > 0 && sb.charAt(sb.length() - 1) > sc[i]) {
           if (charNum[sb.charAt(sb.length() - 1) - 'a'] > 0) {
             visitor[sb.charAt(sb.length() - 1) - 'a'] = false;
             sb.deleteCharAt(sb.length() - 1);
@@ -765,5 +765,62 @@ public class AlgorithmController301to320 {
     return sb.toString();
   }
 
+  private static final List<int[]> DIRECTIONS = Arrays.asList(new int[] { 1, 0 }, new int[] { -1, 0 },
+      new int[] { 0, 1 }, new int[] { 0, -1 });
+
+  public int shortestDistance(int[][] grid) {
+    int row = grid.length;
+    int col = grid[0].length;
+
+    int[][] total = new int[row][col];
+    int[][] visitor = new int[row][col];
+    int timer = 0;
+    int min = 0;
+    for (int i = 0; i < row; i++) {
+      for (int j = 0; j < col; j++) {
+        if (grid[i][j] == 1) {
+          min = shortestDistance(total, i, j, grid, visitor, timer);
+          timer++;
+          for (int k = 0; k < row; k++) {
+            for (int m = 0; m < col; m++) {
+              System.out.print(visitor[k][m]);
+              System.out.print(",");
+            }
+            System.out.println("");
+          }
+          System.out.println(min);
+        }
+      }
+    }
+    return min;
+  }
+
+  public int shortestDistance(int[][] grid, int row, int col, int[][] sourceGrid, int[][] visitor, int timer) {
+    Queue<int[]> q = new LinkedList<>();
+    int maxRow = grid.length;
+    int maxCol = grid[0].length;
+    int min = Integer.MAX_VALUE;
+    int[][] tempGrid = new int[maxRow][maxCol];
+    q.add(new int[] { row, col });
+    while (!q.isEmpty()) {
+      int[] temp = q.poll();
+      int r = temp[0];
+      int c = temp[1];
+      for (int[] dir : DIRECTIONS) {
+        int nr = r + dir[0];
+        int nc = c + dir[1];
+        if (nr < 0 || nc < 0 || nr >= maxRow || nc >= maxCol || tempGrid[nr][nc] != 0 || sourceGrid[nr][nc] > 0
+            || visitor[nr][nc] < timer) {
+          continue;
+        }
+        tempGrid[nr][nc] = tempGrid[r][c] + 1;
+        grid[nr][nc] = tempGrid[nr][nc] + grid[nr][nc];
+        visitor[nr][nc]++;
+        q.add(new int[] { nr, nc });
+        min = Math.min(min, grid[nr][nc]);
+      }
+    }
+    return min == Integer.MAX_VALUE ? -1 : min;
+  }
 
 }
