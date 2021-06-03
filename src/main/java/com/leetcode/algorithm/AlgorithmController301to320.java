@@ -872,4 +872,8 @@ public class AlgorithmController301to320 {
     return max;
   }
 
+  public int bulbSwitch(int n) {
+    return (int) Math.sqrt(n);
+  }
+
 }
