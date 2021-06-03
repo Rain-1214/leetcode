@@ -876,4 +876,32 @@ public class AlgorithmController301to320 {
     return (int) Math.sqrt(n);
   }
 
+  public List<String> generateAbbreviations(String word) {
+    List<String> res = new ArrayList<>();
+    generateAbbreviationsImpl(word.toCharArray(), 0, 0, new StringBuilder(), res);
+    return res;
+  }
+
+  public void generateAbbreviationsImpl(char[] word, int index, int lastChange, StringBuilder sb, List<String> res) {
+    int len = word.length;
+    if (index == len) {
+      int size = sb.length();
+      if (lastChange != 0) {
+        sb.append(lastChange);
+      }
+      res.add(sb.toString());
+      sb.setLength(size);
+      return;
+    }
+    generateAbbreviationsImpl(word, index + 1, lastChange + 1, sb, res);
+
+    int size = sb.length();
+    if (lastChange != 0) {
+      sb.append(lastChange);
+    }
+    sb.append(word[index]);
+    generateAbbreviationsImpl(word, index + 1, 0, sb, res);
+    sb.setLength(size);
+  }
+
 }
