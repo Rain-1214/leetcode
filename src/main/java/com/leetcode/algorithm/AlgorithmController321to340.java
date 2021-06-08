@@ -134,4 +134,49 @@ public class AlgorithmController321to340 {
     return dp[amount] > amount ? -1 : dp[amount];
   }
 
+  public int countComponents(int n, int[][] edges) {
+    UnionFind unionFind = new UnionFind(n);
+    for (int[] edge : edges) {
+      unionFind.merge(edge[0], edge[1]);
+    }
+    return unionFind.getCount();
+  }
+
+  public class UnionFind {
+
+    private int[] set;
+    private int count;
+
+    public UnionFind(int n) {
+      this.set = new int[n];
+      for (int i = 0; i < n; i++) {
+        this.set[i] = i;
+      }
+      this.count = n;
+    }
+
+    public int find(int n) {
+      if (set[n] == n) {
+        return n;
+      }
+      int root = find(set[n]);
+      set[n] = root;
+      return set[n];
+    }
+
+    public int getCount() {
+      return this.count;
+    }
+
+    public void merge(int n, int m) {
+      int rootA = find(n);
+      int rootB = find(m);
+      if (rootA == rootB) {
+        return;
+      }
+      set[rootA] = rootB;
+      count--;
+    }
+  }
+
 }
