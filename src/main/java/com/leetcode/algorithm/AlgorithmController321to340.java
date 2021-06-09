@@ -3,6 +3,8 @@ package com.leetcode.algorithm;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AlgorithmController321to340 {
 
@@ -233,6 +235,52 @@ public class AlgorithmController321to340 {
       nums[i] = j;
       bucket[j]--;
     }
+  }
+
+  public int maxSubArrayLen(int[] nums, int k) {
+    if (nums.length == 1) {
+      return nums[0] == k ? 1 : 0;
+    }
+    int max = 0;
+    Map<Integer, Integer> cache = new HashMap<>();
+    int sum = 0;
+    cache.put(0, 0);
+    for (int i = 0; i < nums.length; i++) {
+      sum += nums[i];
+      if (!cache.containsKey(sum)) {
+        cache.put(sum, i + 1);
+      }
+    }
+
+    for (int i = nums.length - 1; i >= 0; i--) {
+      if (cache.containsKey(sum - k)) {
+        max = Math.max(max, i - cache.get(sum - k) + 1);
+      }
+      sum -= nums[i];
+    }
+    return max;
+  }
+
+  public int maxSubArrayLenII(int[] nums, int k) {
+    if (nums.length == 1) {
+      return nums[0] == k ? 1 : 0;
+    }
+    int max = 0;
+    Map<Integer, Integer> cache = new HashMap<>();
+    int[] sum = new int[nums.length + 1];
+    cache.put(0, 0);
+    for (int i = 1; i < sum.length; i++) {
+      sum[i] = sum[i - 1] + nums[i - 1];
+      if (!cache.containsKey(sum[i])) {
+        cache.put(sum[i], i);
+      }
+    }
+    for (int i = sum.length - 1; i >= 0; i--) {
+      if (cache.containsKey(sum[i] - k)) {
+        max = Math.max(max, i - cache.get(sum[i] - k));
+      }
+    }
+    return max;
   }
 
 }
