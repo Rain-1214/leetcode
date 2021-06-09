@@ -1,6 +1,8 @@
 package com.leetcode.algorithm;
 
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 
 public class AlgorithmController321to340 {
 
@@ -176,6 +178,60 @@ public class AlgorithmController321to340 {
       }
       set[rootA] = rootB;
       count--;
+    }
+  }
+
+  public void wiggleSort(int[] nums) {
+    int len = nums.length;
+    if (len < 2) {
+      return;
+    }
+    int[] res = new int[len];
+    res = Arrays.copyOf(nums, len);
+    Arrays.sort(res);
+    int left = len % 2 == 0 ? len / 2 - 1 : len / 2;
+    reverseArray(res, 0, left);
+    reverseArray(res, left + 1, len - 1);
+    int leftIndex = 0, rightIndex = left + 1;
+    for (int i = 0; i < len; i++) {
+      if (i % 2 == 0) {
+        nums[i] = res[leftIndex++];
+      } else {
+        nums[i] = res[rightIndex++];
+      }
+    }
+  }
+
+  public void reverseArray(int[] nums, int start, int end) {
+    while (start < end) {
+      int temp = nums[start];
+      nums[start] = nums[end];
+      nums[end] = temp;
+      start++;
+      end--;
+    }
+  }
+
+  public void wiggleSortII(int[] nums) {
+    int[] bucket = new int[5001];
+    for (int i = 0; i < nums.length; i++) {
+      bucket[nums[i]]++;
+    }
+    int j = 5000;
+    for (int i = 1; i < nums.length; i += 2) {
+      while (bucket[j] == 0) {
+        j--;
+      }
+      nums[i] = j;
+      bucket[j]--;
+    }
+
+    for (int i = 0; i < nums.length; i += 2) {
+      while (bucket[j] == 0) {
+        j--;
+      }
+      nums[i] = j;
+      bucket[j]--;
     }
   }
 
