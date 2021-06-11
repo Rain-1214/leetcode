@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class AlgorithmController321to340 {
 
@@ -295,6 +297,63 @@ public class AlgorithmController321to340 {
 
   public boolean isPowerOfThreeII(int n) {
     return n > 0 && 1162261467 % n == 0;
+  }
+
+  public int countRangeSum(int[] nums, int lower, int upper) {
+    int len = nums.length;
+    long[] preSum = new long[len + 1];
+    preSum[0] = 0;
+    for (int i = 1; i <= len; i++) {
+      preSum[i] = preSum[i - 1] + nums[i - 1];
+    }
+    Set<Long> set = new TreeSet<>();
+    for (long n : preSum) {
+      set.add(n);
+      set.add(n - lower);
+      set.add(n - upper);
+    }
+    int size = set.size();
+    Map<Long, Integer> map = new HashMap<>();
+    int id = 0;
+    for (long n : set) {
+      map.put(n, id++);
+    }
+    int[] tree = new int[size * 2];
+    int res = 0;
+    for (int i = 0; i <= len; i++) {
+      int left = map.get(preSum[i] - upper) + size;
+      int right = map.get(preSum[i] - lower) + size;
+      res += treeRangeSum(tree, left, right);
+      treeInsert(tree, map.get(preSum[i]) + size);
+    }
+    return res;
+  }
+
+  public void treeInsert(int[] nums, int index) {
+    nums[index]++;
+    while (index > 0) {
+      int left = index % 2 == 0 ? index : index - 1;
+      int right = index % 2 == 0 ? index + 1 : index;
+      nums[index / 2] = nums[left] + nums[right];
+      index /= 2;
+    }
+  }
+
+  public long treeRangeSum(int[] nums, int left, int right) {
+    int res = 0;
+    while (right >= left) {
+      if (right % 2 == 0) {
+        res += nums[right];
+        right--;
+      }
+      if (left % 2 != 0) {
+        res += nums[left];
+        left++;
+      }
+      left /= 2;
+      right /= 2;
+    }
+    return res;
   }
 
 }
