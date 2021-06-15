@@ -385,4 +385,40 @@ public class AlgorithmController321to340 {
     return head;
   }
 
+  private static final int[][] DIRECTIONS = new int[][] { new int[] { 1, 0 }, new int[] { -1, 0 }, new int[] { 0, 1 },
+      new int[] { 0, -1 } };
+
+  public int longestIncreasingPath(int[][] matrix) {
+    int row = matrix.length;
+    int col = matrix[0].length;
+    int[][] cache = new int[row][col];
+    int max = 0;
+    for (int i = 0; i < row; i++) {
+      for (int j = 0; j < col; j++) {
+        max = Math.max(max, longestIncreasingPath(matrix, i, j, cache));
+      }
+    }
+    return max;
+  }
+
+  public int longestIncreasingPath(int[][] matrix, int row, int col, int[][] cache) {
+    int maxRow = matrix.length;
+    int maxCol = matrix[0].length;
+    if (cache[row][col] != 0) {
+      return cache[row][col];
+    }
+    int temp = matrix[row][col];
+    for (int[] dir : DIRECTIONS) {
+      int nr = row + dir[0];
+      int nc = col + dir[1];
+      if (nr >= 0 && nc >= 0 && nr < maxRow && nc < maxCol && temp < matrix[nr][nc]) {
+        cache[row][col] = Math.max(cache[row][col], longestIncreasingPath(matrix, nr, nc, cache) + 1);
+      }
+    }
+    if (cache[row][col] == 0) {
+      cache[row][col] = 1;
+    }
+    return cache[row][col];
+  }
+
 }
