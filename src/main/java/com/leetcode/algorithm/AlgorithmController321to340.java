@@ -8,6 +8,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import com.leetcode.entity.ListNode;
+
 public class AlgorithmController321to340 {
 
   public int[] maxNumber(int[] nums1, int[] nums2, int k) {
@@ -354,6 +356,33 @@ public class AlgorithmController321to340 {
       right /= 2;
     }
     return res;
+  }
+
+  public ListNode oddEvenList(ListNode head) {
+    if (head == null) {
+      return head;
+    }
+    ListNode even = head.next;
+    if (even == null) {
+      return head;
+    }
+    ListNode temp = head;
+    int index = 1;
+    ListNode lastNode = head;
+    while (temp != null) {
+      if (temp.next == null) {
+        lastNode.next = even;
+        break;
+      }
+      ListNode next = temp.next;
+      temp.next = temp.next.next;
+      temp = next;
+      index++;
+      if (index % 2 != 0) {
+        lastNode = temp;
+      }
+    }
+    return head;
   }
 
 }
