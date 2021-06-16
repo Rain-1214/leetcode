@@ -421,4 +421,19 @@ public class AlgorithmController321to340 {
     return cache[row][col];
   }
 
+  public int minPatches(int[] nums, int n) {
+    long sum = 1;
+    int len = nums.length, index = 0;
+    int res = 0;
+    while (sum <= n) {
+      if (index < len && nums[index] <= sum) {
+        sum += nums[index++];
+      } else {
+        sum *= 2;
+        res++;
+      }
+    }
+    return res;
+  }
+
 }
