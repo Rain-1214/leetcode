@@ -1,10 +1,14 @@
 package com.leetcode.algorithm;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
 import java.util.Set;
 import java.util.Stack;
 import java.util.TreeSet;
@@ -517,6 +521,66 @@ public class AlgorithmController321to340 {
       return false;
     }
     return true;
+  }
+
+  public List<String> findItinerary(List<List<String>> tickets) {
+    Map<String, List<String>> graph = new HashMap<>();
+    for (List<String> ticket : tickets) {
+      List<String> tos = graph.getOrDefault(ticket.get(0), new ArrayList<>());
+      tos.add(ticket.get(1));
+      graph.put(ticket.get(0), tos);
+    }
+    for (List<String> list : graph.values()) {
+      Collections.sort(list);
+    }
+    int resLen = tickets.size() + 1;
+    LinkedList<String> res = new LinkedList<>();
+    res.add("JFK");
+    findItinerary(graph, "JFK", res, resLen);
+    return res;
+  }
+
+  public boolean findItinerary(Map<String, List<String>> graph, String current, LinkedList<String> res, int len) {
+    if (!graph.containsKey(current)) {
+      return false;
+    }
+    List<String> tos = graph.get(current);
+    for (int i = 0; i < tos.size(); i++) {
+      String temp = tos.get(i);
+      if (temp.equals("#")) {
+        continue;
+      }
+      res.addLast(temp);
+      tos.set(i, "#");
+      if (res.size() == len) {
+        return true;
+      }
+      if (findItinerary(graph, temp, res, len)) {
+        return true;
+      }
+      res.removeLast();
+      tos.set(i, temp);
+    }
+    return false;
+  }
+
+  public List<String> findItineraryII(List<List<String>> tickets) {
+    Map<String, PriorityQueue<String>> graph = new HashMap<>();
+    for (List<String> ticket : tickets) {
+      PriorityQueue<String> tos = graph.computeIfAbsent(ticket.get(0), k -> new PriorityQueue<>());
+      tos.add(ticket.get(1));
+    }
+    LinkedList<String> res = new LinkedList<>();
+    findItineraryII(graph, "JFK", res);
+    return res;
+  }
+
+  public void findItineraryII(Map<String, PriorityQueue<String>> graph, String from, LinkedList<String> res) {
+    PriorityQueue<String> tos = graph.get(from);
+    while (tos != null && !tos.isEmpty()) {
+      findItineraryII(graph, tos.remove(), res);
+    }
+    res.addFirst(from);
   }
 
 }
