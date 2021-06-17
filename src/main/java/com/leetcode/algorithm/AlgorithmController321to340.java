@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.Stack;
 import java.util.TreeSet;
 
 import com.leetcode.entity.ListNode;
@@ -434,6 +435,88 @@ public class AlgorithmController321to340 {
       }
     }
     return res;
+  }
+
+  public boolean isValidSerialization(String preorder) {
+    int len = preorder.length();
+    Stack<Integer> stack = new Stack<>();
+    int index = 0;
+    stack.add(1);
+    while (index < len) {
+      if (stack.isEmpty()) {
+        return false;
+      }
+      if (preorder.charAt(index) == ',') {
+        index++;
+      } else if (preorder.charAt(index) == '#') {
+        int temp = stack.pop();
+        if (temp - 1 > 0) {
+          stack.add(temp - 1);
+        }
+        index++;
+      } else {
+        while (index < len && preorder.charAt(index) != ',') {
+          index++;
+        }
+        int temp = stack.pop();
+        if (temp - 1 > 0) {
+          stack.add(temp - 1);
+        }
+        stack.add(2);
+      }
+    }
+    return stack.isEmpty();
+  }
+
+  public boolean isValidSerializationII(String preorder) {
+    int len = preorder.length();
+    int index = 0;
+    int slot = 1;
+    while (index < len) {
+      if (slot == 0) {
+        return false;
+      }
+      if (preorder.charAt(index) == ',') {
+        index++;
+      } else if (preorder.charAt(index) == '#') {
+        slot--;
+        index++;
+      } else {
+        while (index < len && preorder.charAt(index) != ',') {
+          index++;
+        }
+        slot++;
+      }
+    }
+    return slot == 0;
+  }
+
+  public int isValidSerializationIndex = 0;
+
+  public boolean isValidSerializationIII(String preorder) {
+    return isValidSerializationIIIHelp(preorder) && isValidSerializationIndex >= preorder.length();
+  }
+
+  public boolean isValidSerializationIIIHelp(String preorder) {
+    if (isValidSerializationIndex >= preorder.length()) {
+      return false;
+    }
+    if (preorder.charAt(isValidSerializationIndex) == '#') {
+      isValidSerializationIndex += 2;
+      return true;
+    }
+    while (isValidSerializationIndex < preorder.length()
+        && Character.isDigit(preorder.charAt(isValidSerializationIndex))) {
+      isValidSerializationIndex++;
+    }
+    isValidSerializationIndex++;
+    if (!isValidSerializationIIIHelp(preorder)) {
+      return false;
+    }
+    if (!isValidSerializationIIIHelp(preorder)) {
+      return false;
+    }
+    return true;
   }
 
 }
