@@ -14,6 +14,7 @@ import java.util.Stack;
 import java.util.TreeSet;
 
 import com.leetcode.entity.ListNode;
+import com.leetcode.entity.TreeNode;
 
 public class AlgorithmController321to340 {
 
@@ -581,6 +582,53 @@ public class AlgorithmController321to340 {
       findItineraryII(graph, tos.remove(), res);
     }
     res.addFirst(from);
+  }
+
+  int largestBSTSubtreeRes = 0;
+
+  public int largestBSTSubtree(TreeNode root) {
+    if (root == null) {
+      return 0;
+    }
+    largestBSTSubtreeHelp(root);
+    return largestBSTSubtreeRes;
+  }
+
+  public int[] largestBSTSubtreeHelp(TreeNode root) {
+    if (root.left == null && root.right == null) {
+      largestBSTSubtreeRes = Math.max(largestBSTSubtreeRes, 1);
+      return new int[] { root.val, root.val, 1 };
+    }
+
+    int left = root.val, right = root.val, size = 1;
+    boolean valid = true;
+    if (root.left != null) {
+      int[] leftTree = largestBSTSubtreeHelp(root.left);
+      if (leftTree[2] != -1 && left > leftTree[1]) {
+        left = leftTree[0];
+        size += leftTree[2];
+      } else {
+        valid = false;
+      }
+    }
+    if (root.right != null) {
+      int[] rightTree = largestBSTSubtreeHelp(root.right);
+      if (rightTree[2] != -1 && rightTree[0] > root.val) {
+        right = rightTree[1];
+        size += rightTree[2];
+      } else {
+        valid = false;
+      }
+    }
+    if (!valid) {
+      return new int[] { -1, -1, -1 };
+    }
+    int[] res = new int[3];
+    res[0] = left;
+    res[1] = right;
+    res[2] = size;
+    largestBSTSubtreeRes = Math.max(size, largestBSTSubtreeRes);
+    return res;
   }
 
 }
