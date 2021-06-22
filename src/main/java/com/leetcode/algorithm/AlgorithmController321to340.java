@@ -648,4 +648,51 @@ public class AlgorithmController321to340 {
     return false;
   }
 
+  public boolean isSelfCrossing(int[] distance) {
+    if (distance.length <= 3) {
+      return false;
+    }
+    for (int i = 3; i < distance.length; i++) {
+      if (distance[i] >= distance[i - 2] && distance[i - 1] <= distance[i - 3]) {
+        return true;
+      }
+      if (i < 4) {
+        continue;
+      }
+      if (distance[i - 1] == distance[i - 3] && distance[i] >= distance[i - 2] - distance[i - 4]) {
+        return true;
+      }
+      if (i < 5) {
+        continue;
+      }
+      if (distance[i - 1] >= distance[i - 3] - distance[i - 5] && distance[i - 1] <= distance[i - 3]
+          && distance[i] >= distance[i - 2] - distance[i - 4] && distance[i - 2] >= distance[i]
+          && distance[i - 2] >= distance[i - 4]) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public boolean isSelfCrossingII(int[] distance) {
+    if (distance.length <= 3) {
+      return false;
+    }
+    int i = 2, len = distance.length;
+    while (i < len && distance[i] > distance[i - 2]) {
+      i++;
+    }
+    if (i == len) {
+      return false;
+    }
+    if ((i == 3 && distance[i] == distance[i - 2]) || (i >= 4 && distance[i] >= distance[i - 2] - distance[i - 4])) {
+      distance[i - 1] -= distance[i - 3];
+    }
+    i++;
+    while (i < len && distance[i] < distance[i - 2]) {
+      i++;
+    }
+    return i != len;
+  }
+
 }
