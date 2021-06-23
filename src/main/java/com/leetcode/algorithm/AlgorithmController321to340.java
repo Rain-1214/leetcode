@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -693,6 +694,83 @@ public class AlgorithmController321to340 {
       i++;
     }
     return i != len;
+  }
+
+  public class DictionaryNode {
+
+    public int index;
+    public int[] children = new int[26];
+
+    public DictionaryNode() {
+      this.index = -1;
+    }
+  }
+
+  public List<DictionaryNode> dictionaryTree = new ArrayList<>();
+
+  public List<List<Integer>> palindromePairs(String[] words) {
+    List<List<Integer>> res = new ArrayList<>();
+    dictionaryTree.add(new DictionaryNode());
+    for (int i = 0; i < words.length; i++) {
+      insertIntoDictionaryTree(words[i], i);
+    }
+    for (int i = 0; i < words.length; i++) {
+      String word = words[i];
+      int wordLen = word.length();
+      for (int j = 0; j <= wordLen; j++) {
+        if (isPalindrome(word, j, wordLen - 1)) {
+          int temp = findInDictionaryTree(word, 0, j - 1);
+          if (temp != -1 && temp != i) {
+            res.add(Arrays.asList(i, temp));
+          }
+        }
+        if (j > 0 && isPalindrome(word, 0, j - 1)) {
+          int temp = findInDictionaryTree(word, j, wordLen - 1);
+          if (temp != -1 && temp != i) {
+            res.add(Arrays.asList(temp, i));
+          }
+        }
+      }
+    }
+    return res;
+  }
+
+  public void insertIntoDictionaryTree(String s, int index) {
+    int start = 0, len = s.length();
+    for (int i = 0; i < len; i++) {
+      DictionaryNode temp = dictionaryTree.get(start);
+      int tempIndex = s.charAt(i) - 'a';
+      if (temp.children[tempIndex] == 0) {
+        dictionaryTree.add(new DictionaryNode());
+        temp.children[tempIndex] = dictionaryTree.size() - 1;
+      }
+      start = temp.children[tempIndex];
+    }
+    dictionaryTree.get(start).index = index;
+  }
+
+  public int findInDictionaryTree(String s, int left, int right) {
+    int start = 0;
+    for (int i = right; i >= left; i--) {
+      DictionaryNode temp = dictionaryTree.get(start);
+      int tempIndex = s.charAt(i) - 'a';
+      if (temp.children[tempIndex] == 0) {
+        return -1;
+      }
+      start = temp.children[tempIndex];
+    }
+    return dictionaryTree.get(start).index;
+  }
+
+  public boolean isPalindrome(String s, int left, int right) {
+    while (left < right) {
+      if (s.charAt(left) != s.charAt(right)) {
+        return false;
+      }
+      left++;
+      right--;
+    }
+    return true;
   }
 
 }

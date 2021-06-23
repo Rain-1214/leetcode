@@ -15,7 +15,7 @@ public class AlgorithmController241to260Test {
   @Test
   public void getFactors() {
     // System.out.println(this.algorithmController241to260.getFactorsII(32));
-    System.out.println(Integer.parseInt("A0", 16));
+    System.out.println(' ' - 'a');
 
   }
 
