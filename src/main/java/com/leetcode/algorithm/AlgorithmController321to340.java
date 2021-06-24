@@ -15,6 +15,7 @@ import java.util.Stack;
 import java.util.TreeSet;
 
 import com.leetcode.entity.ListNode;
+import com.leetcode.entity.NestedInteger;
 import com.leetcode.entity.TreeNode;
 
 public class AlgorithmController321to340 {
@@ -807,6 +808,22 @@ public class AlgorithmController321to340 {
     int[] res = new int[n + 1];
     for (int i = 0; i <= n; i++) {
       res[i] = res[i >> 1] + (i & 1);
+    }
+    return res;
+  }
+
+  public int depthSum(List<NestedInteger> nestedList) {
+    return depthSum(nestedList, 1);
+  }
+
+  public int depthSum(List<NestedInteger> nestedList, int deep) {
+    int res = 0;
+    for (NestedInteger nested : nestedList) {
+      if (nested.isInteger()) {
+        res += nested.getInteger() * deep;
+      } else {
+        res += depthSum(nested.getList(), deep + 1);
+      }
     }
     return res;
   }
