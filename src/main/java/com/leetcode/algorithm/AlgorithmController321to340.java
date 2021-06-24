@@ -828,4 +828,64 @@ public class AlgorithmController321to340 {
     return res;
   }
 
+  public int lengthOfLongestSubstringKDistinct(String s, int k) {
+    if (k == 0) {
+      return 0;
+    }
+    char[] sc = s.toCharArray();
+    int res = 0, left = 0, len = sc.length, charNum = 0;
+    Map<Character, Integer> map = new HashMap<>();
+    for (int i = 0; i < len; i++) {
+      char c = sc[i];
+      if (!map.containsKey(c) || map.get(c) == 0) {
+        if (charNum == k) {
+          while (charNum == k) {
+            char temp = sc[left++];
+            map.put(temp, map.get(temp) - 1);
+            if (map.get(temp) == 0) {
+              charNum--;
+            }
+          }
+        }
+        map.put(c, map.getOrDefault(c, 0) + 1);
+        charNum++;
+      } else {
+        map.put(c, map.get(c) + 1);
+      }
+      res = Math.max(res, i - left + 1);
+    }
+    return res;
+
+  }
+
+  public int lengthOfLongestSubstringKDistinctII(String s, int k) {
+    if (k == 0) {
+      return 0;
+    }
+    char[] sc = s.toCharArray();
+    int res = 0, left = 0, len = sc.length, charNum = 0;
+    int[] map = new int[126];
+    for (int i = 0; i < len; i++) {
+      char c = sc[i];
+      if (map[c] == 0) {
+        if (charNum == k) {
+          while (charNum == k) {
+            char temp = sc[left++];
+            map[temp] -= 1;
+            if (map[temp] == 0) {
+              charNum--;
+            }
+          }
+        }
+        map[c]++;
+        charNum++;
+      } else {
+        map[c]++;
+      }
+      res = Math.max(res, i - left + 1);
+    }
+    return res;
+
+  }
+
 }
