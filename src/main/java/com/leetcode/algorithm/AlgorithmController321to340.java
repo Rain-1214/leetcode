@@ -773,4 +773,20 @@ public class AlgorithmController321to340 {
     return true;
   }
 
+  public int rob(TreeNode root) {
+    int[] res = robImpl(root);
+    return Math.max(res[0], res[1]);
+  }
+
+  public int[] robImpl(TreeNode root) {
+    if (root == null) {
+      return new int[] { 0, 0 };
+    }
+    int[] left = robImpl(root.left);
+    int[] right = robImpl(root.right);
+    int maxDo = left[1] + right[1] + root.val;
+    int maxNotDo = Math.max(left[0], left[1]) + Math.max(right[0], right[1]);
+    return new int[] { maxDo, maxNotDo };
+  }
+
 }
