@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.Stack;
 
 import com.leetcode.entity.NestedInteger;
 
@@ -135,6 +136,33 @@ public class AlgorithmController341to360 {
   public boolean isVowels(char c) {
     return c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u' || c == 'A' || c == 'E' || c == 'I' || c == 'O'
         || c == 'U';
+  }
+
+  class MovingAverage {
+
+    public int maxSize;
+    public int currentSize;
+    public LinkedList<Integer> q;
+    public int sum;
+
+    /** Initialize your data structure here. */
+    public MovingAverage(int size) {
+      this.maxSize = size;
+      this.currentSize = 0;
+      this.sum = 0;
+      this.q = new LinkedList<>();
+    }
+
+    public double next(int val) {
+      if (currentSize == maxSize) {
+        this.sum -= q.pop();
+      } else {
+        this.currentSize++;
+      }
+      q.add(val);
+      this.sum += val;
+      return (double) this.sum / this.currentSize;
+    }
   }
 
 }
