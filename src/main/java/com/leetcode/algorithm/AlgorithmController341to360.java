@@ -209,4 +209,96 @@ public class AlgorithmController341to360 {
     heap[i] = temp;
   }
 
+  class TicTacToe {
+
+    int[][] board;
+    int n;
+
+    /** Initialize your data structure here. */
+    public TicTacToe(int n) {
+      this.n = n;
+      this.board = new int[n][n];
+    }
+
+    /**
+     * Player {player} makes a move at ({row}, {col}).
+     * 
+     * @param row    The row of the board.
+     * @param col    The column of the board.
+     * @param player The player, can be either 1 or 2.
+     * @return The current winning condition, can be either: 0: No one wins. 1:
+     *         Player 1 wins. 2: Player 2 wins.
+     */
+    public int move(int row, int col, int player) {
+      board[row][col] = player;
+      boolean rowFlag = true, colFlag = true;
+      for (int i = 0; i < n; i++) {
+        if (board[row][i] != player) {
+          rowFlag = false;
+        }
+        if (board[i][col] != player) {
+          colFlag = false;
+        }
+      }
+      if (rowFlag || colFlag) {
+        return player;
+      }
+
+      if (row == col || row == n - 1 - col) {
+        boolean leftFlag = true, rightFlag = true;
+        for (int i = 0; i < n; i++) {
+          if (board[i][i] != player) {
+            leftFlag = false;
+          }
+          if (board[i][n - 1 - i] != player) {
+            rightFlag = false;
+          }
+        }
+        if (leftFlag || rightFlag) {
+          return player;
+        }
+      }
+      return 0;
+    }
+  }
+
+  class TicTacToeII {
+
+    int n;
+    int[][] row, col, diagonal;
+
+    /** Initialize your data structure here. */
+    public TicTacToeII(int n) {
+      this.n = n;
+      this.row = new int[3][n];
+      this.col = new int[3][n];
+      this.diagonal = new int[3][2];
+    }
+
+    /**
+     * Player {player} makes a move at ({row}, {col}).
+     * 
+     * @param row    The row of the board.
+     * @param col    The column of the board.
+     * @param player The player, can be either 1 or 2.
+     * @return The current winning condition, can be either: 0: No one wins. 1:
+     *         Player 1 wins. 2: Player 2 wins.
+     */
+    public int move(int row, int col, int player) {
+      if (++this.row[player][row] == n) {
+        return player;
+      }
+      if (++this.col[player][col] == n) {
+        return player;
+      }
+      if (row == col && ++this.diagonal[player][0] == n) {
+        return player;
+      }
+      if (row == n - 1 - col && ++this.diagonal[player][1] == n) {
+        return player;
+      }
+      return 0;
+    }
+  }
+
 }
