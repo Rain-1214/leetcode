@@ -1,9 +1,11 @@
 package com.leetcode.algorithm;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
@@ -163,6 +165,48 @@ public class AlgorithmController341to360 {
       this.sum += val;
       return (double) this.sum / this.currentSize;
     }
+  }
+
+  public int[] topKFrequent(int[] nums, int k) {
+    Map<Integer, Integer> map = new HashMap<>();
+    for (int num : nums) {
+      map.put(num, map.getOrDefault(num, 0) + 1);
+    }
+    int[][] heap = new int[map.size()][2];
+    int index = 0;
+    for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+      int key = entry.getKey(), value = entry.getValue();
+      heap[index][0] = key;
+      heap[index++][1] = value;
+    }
+    for (int i = heap.length / 2 - 1; i >= 0; i--) {
+      adjustHeap(heap, i, heap.length);
+    }
+    int[] res = new int[k];
+    for (int i = 0; i < k; i++) {
+      res[i] = heap[0][0];
+      int[] temp = heap[0];
+      heap[0] = heap[heap.length - 1 - i];
+      heap[heap.length - 1 - i] = temp;
+      adjustHeap(heap, 0, heap.length - 1 - i);
+    }
+    return res;
+  }
+
+  public void adjustHeap(int[][] heap, int i, int right) {
+    int[] temp = heap[i];
+    for (int j = i * 2 + 1; j < right; j = j * 2 + 1) {
+      if (j + 1 < right && heap[j][1] < heap[j + 1][1]) {
+        j++;
+      }
+      if (heap[j][1] > temp[1]) {
+        heap[i] = heap[j];
+        i = j;
+      } else {
+        break;
+      }
+    }
+    heap[i] = temp;
   }
 
 }
