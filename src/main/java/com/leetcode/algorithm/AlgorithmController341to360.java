@@ -1,5 +1,7 @@
 package com.leetcode.algorithm;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -317,6 +319,38 @@ public class AlgorithmController341to360 {
     int index = 0;
     while(i.hasNext()) {
       res[index++] = i.next();
+    }
+    return res;
+  }
+
+  public int[] intersect(int[] nums1, int[] nums2) {
+    Map<Integer, int[]> map = new HashMap<>();
+    for (int num: nums1) {
+      int[] temp = map.getOrDefault(num, new int[2]);
+      temp[0]++;
+      map.put(num, temp);
+    }
+    for (int num: nums2) {
+      if (map.containsKey(num)) {
+        map.get(num)[1]++;
+      }
+    }
+    List<Integer> list = new ArrayList<>();
+    for (Map.Entry<Integer, int[]> entry: map.entrySet()) {
+      int key = entry.getKey();
+      int[] value = entry.getValue();
+      if (value[1] == 0) {
+        continue;
+      }
+      int len = Math.min(value[0], value[1]);
+      for (int i = 0; i < len; i++) {
+        list.add(key);
+      }
+    }
+    int[] res = new int[list.size()];
+    int i = 0;
+    for (int v: list) {
+      res[i++] = v;
     }
     return res;
   }
