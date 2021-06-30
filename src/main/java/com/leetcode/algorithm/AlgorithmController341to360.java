@@ -1,5 +1,7 @@
 package com.leetcode.algorithm;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -300,5 +302,103 @@ public class AlgorithmController341to360 {
       return 0;
     }
   }
+
+  public int[] intersection(int[] nums1, int[] nums2) {
+    Set<Integer> set1 = new HashSet<>();
+    Set<Integer> newSet = new HashSet<>();
+    for (int num: nums1) {
+      set1.add(num);
+    }
+    for (int num: nums2) {
+      if (set1.contains(num)) {
+        newSet.add(num);
+      }
+    }
+    int[] res = new int[newSet.size()];
+    Iterator<Integer> i = newSet.iterator();
+    int index = 0;
+    while(i.hasNext()) {
+      res[index++] = i.next();
+    }
+    return res;
+  }
+
+  public int[] intersect(int[] nums1, int[] nums2) {
+    Map<Integer, int[]> map = new HashMap<>();
+    for (int num: nums1) {
+      int[] temp = map.getOrDefault(num, new int[2]);
+      temp[0]++;
+      map.put(num, temp);
+    }
+    for (int num: nums2) {
+      if (map.containsKey(num)) {
+        map.get(num)[1]++;
+      }
+    }
+    List<Integer> list = new ArrayList<>();
+    for (Map.Entry<Integer, int[]> entry: map.entrySet()) {
+      int key = entry.getKey();
+      int[] value = entry.getValue();
+      if (value[1] == 0) {
+        continue;
+      }
+      int len = Math.min(value[0], value[1]);
+      for (int i = 0; i < len; i++) {
+        list.add(key);
+      }
+    }
+    int[] res = new int[list.size()];
+    int i = 0;
+    for (int v: list) {
+      res[i++] = v;
+    }
+    return res;
+  }
+
+
+  public boolean[] patterns = new boolean[9];
+  public int numberOfPatterns(int m, int n) {
+    int res = 0;
+    for (int len = m; len <= n; len++) {
+      res += numberOfPatternsHelp(-1, len);
+    }
+    return res;
+  }
+
+  public int numberOfPatternsHelp(int last, int len) {
+    if (len == 0) {
+      return 1;
+    }
+    int sum = 0;
+    for (int i = 0; i < 9; i++) {
+      if (patternIsValid(i, last)) {
+        patterns[i] = true;
+        sum += numberOfPatternsHelp(i, len - 1);
+        patterns[i] = false;
+      }
+    }
+    return sum;
+  }
+
+  public boolean patternIsValid(int value, int last) {
+    if (patterns[value]) {
+      return false;
+    }
+    if (last == -1) {
+      return true;
+    }
+    if (((last + value) % 2) == 1) {
+      return true;
+    }
+    int mid = (last + value) / 2;
+    if (mid == 4) {
+      return patterns[mid];
+    }
+    if ((value % 3 != last % 3) && (value / 3 != last / 3)) {
+      return true;
+    }
+    return patterns[mid];
+  }
+  
 
 }
