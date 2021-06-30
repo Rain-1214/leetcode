@@ -355,4 +355,50 @@ public class AlgorithmController341to360 {
     return res;
   }
 
+
+  public boolean[] patterns = new boolean[9];
+  public int numberOfPatterns(int m, int n) {
+    int res = 0;
+    for (int len = m; len <= n; len++) {
+      res += numberOfPatternsHelp(-1, len);
+    }
+    return res;
+  }
+
+  public int numberOfPatternsHelp(int last, int len) {
+    if (len == 0) {
+      return 1;
+    }
+    int sum = 0;
+    for (int i = 0; i < 9; i++) {
+      if (patternIsValid(i, last)) {
+        patterns[i] = true;
+        sum += numberOfPatternsHelp(i, len - 1);
+        patterns[i] = false;
+      }
+    }
+    return sum;
+  }
+
+  public boolean patternIsValid(int value, int last) {
+    if (patterns[value]) {
+      return false;
+    }
+    if (last == -1) {
+      return true;
+    }
+    if (((last + value) % 2) == 1) {
+      return true;
+    }
+    int mid = (last + value) / 2;
+    if (mid == 4) {
+      return patterns[mid];
+    }
+    if ((value % 3 != last % 3) && (value / 3 != last / 3)) {
+      return true;
+    }
+    return patterns[mid];
+  }
+  
+
 }
