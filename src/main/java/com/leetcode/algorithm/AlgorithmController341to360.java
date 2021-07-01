@@ -399,6 +399,59 @@ public class AlgorithmController341to360 {
     }
     return patterns[mid];
   }
+
+  class SummaryRanges {
+
+    List<int[]> list;
+
+    /** Initialize your data structure here. */
+    public SummaryRanges() {
+      this.list = new ArrayList<>();
+    }
+    
+    public void addNum(int val) {
+      if (list.size() == 0) {
+        list.add(new int[]{val, val});
+        return;
+      }
+      for (int i = 0; i < list.size(); i++) {
+        int[] l = list.get(i);
+        if (val >= l[0] && val <= l[1]) {
+          return;
+        }
+        if (val == l[0] - 1) {
+          l[0] = val;
+          return;
+        } else if (val == l[1] + 1) {
+          l[1] = val;
+          if (i + 1 < list.size() && list.get(i + 1)[0] - 1 == val) {
+            l[1] = list.get(i + 1)[1];
+            list.remove(i + 1);
+          }
+          return;
+        } else if (val > l[1] + 1) {
+          if (i == list.size() - 1) {
+            list.add(new int[]{val, val});
+            return;
+          } else if (val < list.get(i + 1)[0] - 1) {
+            list.add(i + 1, new int[]{val, val});
+            return;
+          }
+        } else if (val < l[0] - 1) {
+          list.add(i, new int[]{val, val});
+          return;
+        }
+      }
+    }
+    
+    public int[][] getIntervals() {
+      int[][] res = new int[list.size()][];
+      for (int i = 0; i < res.length; i++) {
+        res[i] = list.get(i);
+      }
+      return res;
+    }
+}
   
 
 }
