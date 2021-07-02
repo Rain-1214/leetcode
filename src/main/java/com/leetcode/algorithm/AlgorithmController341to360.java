@@ -2,6 +2,7 @@ package com.leetcode.algorithm;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -306,10 +307,10 @@ public class AlgorithmController341to360 {
   public int[] intersection(int[] nums1, int[] nums2) {
     Set<Integer> set1 = new HashSet<>();
     Set<Integer> newSet = new HashSet<>();
-    for (int num: nums1) {
+    for (int num : nums1) {
       set1.add(num);
     }
-    for (int num: nums2) {
+    for (int num : nums2) {
       if (set1.contains(num)) {
         newSet.add(num);
       }
@@ -317,7 +318,7 @@ public class AlgorithmController341to360 {
     int[] res = new int[newSet.size()];
     Iterator<Integer> i = newSet.iterator();
     int index = 0;
-    while(i.hasNext()) {
+    while (i.hasNext()) {
       res[index++] = i.next();
     }
     return res;
@@ -325,18 +326,18 @@ public class AlgorithmController341to360 {
 
   public int[] intersect(int[] nums1, int[] nums2) {
     Map<Integer, int[]> map = new HashMap<>();
-    for (int num: nums1) {
+    for (int num : nums1) {
       int[] temp = map.getOrDefault(num, new int[2]);
       temp[0]++;
       map.put(num, temp);
     }
-    for (int num: nums2) {
+    for (int num : nums2) {
       if (map.containsKey(num)) {
         map.get(num)[1]++;
       }
     }
     List<Integer> list = new ArrayList<>();
-    for (Map.Entry<Integer, int[]> entry: map.entrySet()) {
+    for (Map.Entry<Integer, int[]> entry : map.entrySet()) {
       int key = entry.getKey();
       int[] value = entry.getValue();
       if (value[1] == 0) {
@@ -349,14 +350,14 @@ public class AlgorithmController341to360 {
     }
     int[] res = new int[list.size()];
     int i = 0;
-    for (int v: list) {
+    for (int v : list) {
       res[i++] = v;
     }
     return res;
   }
 
-
   public boolean[] patterns = new boolean[9];
+
   public int numberOfPatterns(int m, int n) {
     int res = 0;
     for (int len = m; len <= n; len++) {
@@ -408,10 +409,10 @@ public class AlgorithmController341to360 {
     public SummaryRanges() {
       this.list = new ArrayList<>();
     }
-    
+
     public void addNum(int val) {
       if (list.size() == 0) {
-        list.add(new int[]{val, val});
+        list.add(new int[] { val, val });
         return;
       }
       for (int i = 0; i < list.size(); i++) {
@@ -431,19 +432,19 @@ public class AlgorithmController341to360 {
           return;
         } else if (val > l[1] + 1) {
           if (i == list.size() - 1) {
-            list.add(new int[]{val, val});
+            list.add(new int[] { val, val });
             return;
           } else if (val < list.get(i + 1)[0] - 1) {
-            list.add(i + 1, new int[]{val, val});
+            list.add(i + 1, new int[] { val, val });
             return;
           }
         } else if (val < l[0] - 1) {
-          list.add(i, new int[]{val, val});
+          list.add(i, new int[] { val, val });
           return;
         }
       }
     }
-    
+
     public int[][] getIntervals() {
       int[][] res = new int[list.size()][];
       for (int i = 0; i < res.length; i++) {
@@ -451,7 +452,159 @@ public class AlgorithmController341to360 {
       }
       return res;
     }
-}
-  
+  }
+
+  class SnakeGame {
+    /**
+     * Initialize your data structure here.
+     * 
+     * @param width  - screen width
+     * @param height - screen height
+     * @param food   - A list of food positions E.g food = [[1,1], [1,0]] means the
+     *               first food is positioned at [1,1], the second is at [1,0].
+     */
+
+    int[][] food;
+    int width, height;
+    int currentFood;
+    Deque<int[]> body;
+    Set<Integer> set;
+    int score;
+
+    public SnakeGame(int width, int height, int[][] food) {
+      this.width = width;
+      this.height = height;
+      currentFood = 0;
+      this.food = food;
+      this.set = new HashSet<>();
+      body = new LinkedList<>();
+      body.add(new int[] { 0, 0 });
+      set.add(0);
+      score = 0;
+    }
+
+    /**
+     * Moves the snake.
+     * 
+     * @param direction - 'U' = Up, 'L' = Left, 'R' = Right, 'D' = Down
+     * @return The game's score after the move. Return -1 if game over. Game over
+     *         when snake crosses the screen boundary or bites its body.
+     */
+    public int move(String direction) {
+      int[] head = body.peekLast();
+      int nextRow = head[0];
+      int nextCol = head[1];
+      switch (direction.charAt(0)) {
+        case 'R':
+          nextCol += 1;
+          break;
+        case 'L':
+          nextCol -= 1;
+          break;
+        case 'U':
+          nextRow -= 1;
+          break;
+        case 'D':
+          nextRow += 1;
+          break;
+      }
+      if (nextRow < 0 || nextCol < 0 || nextRow >= height || nextCol >= width) {
+        return -1;
+      }
+      if (currentFood < food.length && nextRow == food[currentFood][0] && nextCol == food[currentFood][1]) {
+        currentFood++;
+        score++;
+        body.addLast(new int[] { nextRow, nextCol });
+        set.add(nextRow * width + nextCol);
+        return score;
+      }
+      int[] first = body.pollFirst();
+      set.remove(first[0] * width + first[1]);
+      if (set.contains(nextRow * width + nextCol)) {
+        return -1;
+      }
+      set.add(nextRow * width + nextCol);
+      first[0] = nextRow;
+      first[1] = nextCol;
+      body.addLast(first);
+      return score;
+    }
+  }
+
+  class SnakeGameII {
+
+    /**
+     * Initialize your data structure here.
+     * 
+     * @param width  - screen width
+     * @param height - screen height
+     * @param food   - A list of food positions E.g food = [[1,1], [1,0]] means the
+     *               first food is positioned at [1,1], the second is at [1,0].
+     */
+
+    int[][] food;
+    int[] head;
+    int width, height;
+    int currentFood;
+    List<Integer> used;
+    int score;
+
+    public SnakeGameII(int width, int height, int[][] food) {
+      this.width = width;
+      this.height = height;
+      currentFood = 0;
+      this.food = food;
+      this.used = new ArrayList<>();
+      head = new int[] { 0, 0 };
+      used.add(0);
+      score = 0;
+    }
+
+    /**
+     * Moves the snake.
+     * 
+     * @param direction - 'U' = Up, 'L' = Left, 'R' = Right, 'D' = Down
+     * @return The game's score after the move. Return -1 if game over. Game over
+     *         when snake crosses the screen boundary or bites its body.
+     */
+    public int move(String direction) {
+      int nextRow = head[0];
+      int nextCol = head[1];
+      switch (direction.charAt(0)) {
+        case 'R':
+          nextCol += 1;
+          break;
+        case 'L':
+          nextCol -= 1;
+          break;
+        case 'U':
+          nextRow -= 1;
+          break;
+        case 'D':
+          nextRow += 1;
+          break;
+      }
+      if (nextRow < 0 || nextCol < 0 || nextRow >= height || nextCol >= width) {
+        return -1;
+      }
+      if (currentFood < food.length && nextRow == food[currentFood][0] && nextCol == food[currentFood][1]) {
+        currentFood++;
+        score++;
+        head[0] = nextRow;
+        head[1] = nextCol;
+        used.add(nextRow * width + nextCol);
+        return score;
+      }
+      used.remove(0);
+      if (used.contains(nextRow * width + nextCol)) {
+        return -1;
+      }
+      used.add(nextRow * width + nextCol);
+      head[0] = nextRow;
+      head[1] = nextCol;
+      return score;
+    }
+
+  }
 
 }
