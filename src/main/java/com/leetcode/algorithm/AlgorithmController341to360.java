@@ -2,6 +2,8 @@ package com.leetcode.algorithm;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -9,6 +11,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
 import java.util.Stack;
 
@@ -605,6 +608,102 @@ public class AlgorithmController341to360 {
       return score;
     }
 
+  }
+
+  public int maxEnvelopes(int[][] envelopes) {
+    Arrays.sort(envelopes, (a, b) -> {
+      if (a[0] != b[0]) {
+        return a[0] - b[0];
+      } else {
+        return b[1] - a[1];
+      }
+    });
+
+    List<Integer> list = new ArrayList<>();
+    list.add(envelopes[0][1]);
+    for (int i = 1; i < envelopes.length; i++) {
+      if (envelopes[i][1] > list.get(list.size() - 1)) {
+        list.add(envelopes[i][1]);
+      } else {
+        int index = listBinarySearch(list, envelopes[i][1]);
+        list.set(index, envelopes[i][1]);
+      }
+    }
+    return list.size();
+  }
+
+  public int listBinarySearch(List<Integer> list, int val) {
+    int left = 0, right = list.size() - 1;
+    while (left < right) {
+      int mid = (left + right) / 2;
+      if (val > list.get(mid)) {
+        left = mid + 1;
+      } else {
+        right = mid;
+      }
+    }
+    return left;
+  }
+
+  class Twitter {
+
+    class User {
+      int userId;
+      ArrayList<int[]> tweetIds;
+      ArrayList<Integer> follower;
+
+      public User(int userId) {
+        this.userId = userId;
+        this.tweetIds = new ArrayList<>();
+        this.follower = new ArrayList<>();
+      }
+
+      public void addTweetId(int tweetId, int globalId) {
+        this.tweetIds.add(new int[] { tweetId, globalId });
+      }
+    }
+
+    Map<Integer, User> map;
+    Map<Integer, Integer> tweetGlobalId;
+    int globalId = 0;
+
+    /** Initialize your data structure here. */
+    public Twitter() {
+      this.map = new HashMap<>();
+      this.tweetGlobalId = new HashMap<>();
+    }
+
+    /** Compose a new tweet. */
+    public void postTweet(int userId, int tweetId) {
+      User user = this.map.getOrDefault(userId, new User(userId));
+      user.addTweetId(tweetId, globalId++);
+      this.map.put(userId, user);
+    }
+
+    /**
+     * Retrieve the 10 most recent tweet ids in the user's news feed. Each item in
+     * the news feed must be posted by users who the user followed or by the user
+     * herself. Tweets must be ordered from most recent to least recent.
+     */
+    public List<Integer> getNewsFeed(int userId) {
+      return null;
+    }
+
+    /**
+     * Follower follows a followee. If the operation is invalid, it should be a
+     * no-op.
+     */
+    public void follow(int followerId, int followeeId) {
+
+    }
+
+    /**
+     * Follower unfollows a followee. If the operation is invalid, it should be a
+     * no-op.
+     */
+    public void unfollow(int followerId, int followeeId) {
+
+    }
   }
 
 }
