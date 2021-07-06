@@ -650,16 +650,37 @@ public class AlgorithmController341to360 {
     class User {
       int userId;
       ArrayList<int[]> tweetIds;
-      ArrayList<Integer> follower;
+      Set<Integer> follower;
 
       public User(int userId) {
         this.userId = userId;
         this.tweetIds = new ArrayList<>();
-        this.follower = new ArrayList<>();
+        this.follower = new HashSet<>();
       }
 
       public void addTweetId(int tweetId, int globalId) {
-        this.tweetIds.add(new int[] { tweetId, globalId });
+        this.tweetIds.add(0, new int[] { tweetId, globalId });
+      }
+
+      @Override
+      public String toString() {
+        String a = "";
+        a += "userId:";
+        a += this.userId;
+        a += "\n";
+        a += "tweetIds:{";
+        for (int[] b : tweetIds) {
+          a += "[";
+          a += b[0];
+          a += ",";
+          a += b[1];
+          a += "]";
+          a += ",";
+        }
+        a += "}\n";
+        a += "follower:";
+        a += follower.toString();
+        return a;
       }
     }
 
@@ -686,7 +707,42 @@ public class AlgorithmController341to360 {
      * herself. Tweets must be ordered from most recent to least recent.
      */
     public List<Integer> getNewsFeed(int userId) {
-      return null;
+      List<List<int[]>> tweets = new ArrayList<>();
+      List<Integer> res = new ArrayList<>();
+      if (!this.map.containsKey(userId)) {
+        return res;
+      }
+      User user = this.map.get(userId);
+      tweets.add(user.tweetIds);
+      for (int follower : user.follower) {
+        if (this.map.containsKey(follower)) {
+          tweets.add(this.map.get(follower).tweetIds);
+        }
+      }
+
+      int[] indexs = new int[tweets.size()];
+      for (int i = 0; i < 10; i++) {
+        int max = -1;
+        int val = -1;
+        int indexsLoaction = 0;
+        for (int j = 0; j < tweets.size(); j++) {
+          if (indexs[j] >= tweets.get(j).size()) {
+            continue;
+          }
+          int[] temp = tweets.get(j).get(indexs[j]);
+          if (temp[1] > max) {
+            max = temp[1];
+            val = temp[0];
+            indexsLoaction = j;
+          }
+        }
+        if (max != -1) {
+          indexs[indexsLoaction]++;
+          res.add(val);
+        }
+
+      }
+      return res;
     }
 
     /**
@@ -694,7 +750,9 @@ public class AlgorithmController341to360 {
      * no-op.
      */
     public void follow(int followerId, int followeeId) {
-
+      User user = this.map.getOrDefault(followerId, new User(followerId));
+      user.follower.add(followeeId);
+      this.map.put(followerId, user);
     }
 
     /**
@@ -702,7 +760,7 @@ public class AlgorithmController341to360 {
      * no-op.
      */
     public void unfollow(int followerId, int followeeId) {
-
+      this.map.get(followerId).follower.remove(followeeId);
     }
   }
 
