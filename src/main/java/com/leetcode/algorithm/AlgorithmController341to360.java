@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 import java.util.Stack;
+import java.util.TreeSet;
 
 import com.leetcode.entity.NestedInteger;
 
@@ -762,6 +763,75 @@ public class AlgorithmController341to360 {
     public void unfollow(int followerId, int followeeId) {
       this.map.get(followerId).follower.remove(followeeId);
     }
+  }
+
+  public boolean isReflected(int[][] points) {
+    Map<Integer, TreeSet<Integer>> map = new HashMap<>();
+    for (int[] point : points) {
+      int x = point[0], y = point[1];
+      TreeSet<Integer> yLine = map.getOrDefault(y, new TreeSet<>());
+      yLine.add(x);
+      map.put(y, yLine);
+    }
+    int allDx = Integer.MIN_VALUE;
+    int allDy = Integer.MIN_VALUE;
+    for (Map.Entry<Integer, TreeSet<Integer>> entry : map.entrySet()) {
+      TreeSet<Integer> set = entry.getValue();
+      List<Integer> value = new ArrayList<>();
+      for (int n : set) {
+        value.add(n);
+      }
+      int left = 1, right = value.size() - 2;
+      int dx = value.get(0) + value.get(value.size() - 1);
+      int dy = 2;
+      int dc = gdc(dx, dy);
+      dx /= dc;
+      dy /= dc;
+      if (allDx == Integer.MIN_VALUE) {
+        allDx = dx;
+        allDy = dy;
+      } else if (dy != allDy || dx != allDx) {
+        return false;
+      }
+      while (left < right) {
+        int tempDx = value.get(left) + value.get(right);
+        int tempDy = 2;
+        int tempDc = gdc(tempDx, tempDy);
+        tempDx /= tempDc;
+        tempDy /= tempDc;
+        if (tempDx != allDx || tempDy != allDy) {
+          return false;
+        }
+        left++;
+        right--;
+      }
+      if (value.size() > 1 && value.size() % 2 == 1 && value.get(left) != allDx) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  public int gdc(int a, int b) {
+    return b == 0 ? a : gdc(b, a % b);
+  }
+
+  public boolean isReflectedII(int[][] points) {
+    Map<Integer, Integer> map = new HashMap<>();
+    int min = Integer.MAX_VALUE;
+    int max = Integer.MIN_VALUE;
+    for (int[] point : points) {
+      min = Math.min(min, point[0]);
+      max = Math.max(max, point[0]);
+      map.put(point[0], point[1]);
+    }
+    int line = min + max;
+    for (int[] point : points) {
+      if (!map.containsKey(line - point[0]) || !map.get(point[0]).equals(map.get(line - point[0]))) {
+        return false;
+      }
+    }
+    return true;
   }
 
 }
