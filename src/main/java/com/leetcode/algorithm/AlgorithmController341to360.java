@@ -834,4 +834,16 @@ public class AlgorithmController341to360 {
     return true;
   }
 
+  public int countNumbersWithUniqueDigits(int n) {
+    int[] dp = new int[n + 1];
+    for (int i = 2; i <= n; i++) {
+      dp[i] = dp[i - 1] * 10 + (int) (Math.pow(10, i - 1) - Math.pow(10, i - 2) - dp[i - 1]) * (i - 1);
+    }
+    int sum = 0;
+    for (int temp : dp) {
+      sum += temp;
+    }
+    return (int) Math.pow(10, n) - sum;
+  }
+
 }
