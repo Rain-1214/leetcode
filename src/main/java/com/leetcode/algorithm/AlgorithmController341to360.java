@@ -846,4 +846,48 @@ public class AlgorithmController341to360 {
     return (int) Math.pow(10, n) - sum;
   }
 
+  public String rearrangeString(String s, int k) {
+    Map<Character, int[]> map = new HashMap<>();
+    for (int i = 0; i < s.length(); i++) {
+      char c = s.charAt(i);
+      if (map.containsKey(c)) {
+        int[] temp = map.get(c);
+        temp[0]++;
+      } else {
+        int[] temp = new int[3];
+        temp[0]++;
+        temp[1] = -k;
+        temp[2] = c - 'a';
+        map.put(c, temp);
+      }
+    }
+    List<int[]> list = new ArrayList<>();
+    for (int[] val : map.values()) {
+      list.add(val);
+    }
+    Collections.sort(list, (a, b) -> b[0] - a[0]);
+    StringBuilder sb = new StringBuilder();
+    while (!list.isEmpty()) {
+      boolean find = false;
+      for (int i = 0; i < list.size(); i++) {
+        int[] temp = list.get(i);
+        if (sb.length() - temp[1] >= k) {
+          temp[0]--;
+          temp[1] = sb.length();
+          sb.append((char) (temp[2] + 'a'));
+          if (temp[0] == 0) {
+            list.remove(i);
+          }
+          find = true;
+          break;
+        }
+      }
+      if (!find) {
+        return "";
+      }
+      Collections.sort(list, (a, b) -> b[0] - a[0]);
+    }
+    return sb.toString();
+  }
+
 }
