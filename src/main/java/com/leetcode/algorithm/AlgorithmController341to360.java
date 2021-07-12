@@ -11,6 +11,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Set;
 import java.util.Stack;
@@ -888,6 +889,68 @@ public class AlgorithmController341to360 {
       Collections.sort(list, (a, b) -> b[0] - a[0]);
     }
     return sb.toString();
+  }
+
+  public String rearrangeStringII(String s, int k) {
+    if (k > 26) {
+      return "";
+    }
+    if (k <= 1) {
+      return s;
+    }
+    int[] count = new int[126];
+    for (char c : s.toCharArray()) {
+      count[c]++;
+    }
+    PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> b[0] - a[0]);
+    for (int i = 'a'; i <= 'z'; i++) {
+      if (count[i] > 0) {
+        pq.add(new int[] { count[i], i });
+      }
+    }
+    StringBuilder sb = new StringBuilder();
+    Queue<int[]> q = new LinkedList<>();
+    while (!pq.isEmpty()) {
+      int[] temp = pq.poll();
+      temp[0]--;
+      sb.append((char) temp[1]);
+      q.add(temp);
+      if (q.size() == k) {
+        int[] next = q.poll();
+        if (next[0] > 0) {
+          pq.add(next);
+        }
+      }
+    }
+    return sb.length() == s.length() ? sb.toString() : "";
+  }
+
+  class Logger {
+
+    Map<String, Integer> map;
+
+    /** Initialize your data structure here. */
+    public Logger() {
+      this.map = new HashMap<>();
+    }
+
+    /**
+     * Returns true if the message should be printed in the given timestamp,
+     * otherwise returns false. If this method returns false, the message will not
+     * be printed. The timestamp is in seconds granularity.
+     */
+    public boolean shouldPrintMessage(int timestamp, String message) {
+      if (map.containsKey(message)) {
+        int value = map.get(message);
+        if (timestamp >= value + 10) {
+          map.put(message, timestamp);
+          return true;
+        }
+        return false;
+      }
+      map.put(message, timestamp);
+      return true;
+    }
   }
 
 }
