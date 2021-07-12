@@ -953,4 +953,34 @@ public class AlgorithmController341to360 {
     }
   }
 
+  public int[] sortTransformedArray(int[] nums, int a, int b, int c) {
+    int[] res = new int[nums.length];
+    int left = 0, right = nums.length - 1;
+    int index = a >= 0 ? nums.length - 1 : 0;
+    while (left <= right) {
+      int leftVal = sortTransformedArrayHelp(nums[left], a, b, c);
+      int rightVal = sortTransformedArrayHelp(nums[right], a, b, c);
+      if (a >= 0) {
+        res[index--] = Math.max(leftVal, rightVal);
+        if (res[index + 1] == leftVal) {
+          left++;
+        } else {
+          right--;
+        }
+      } else {
+        res[index++] = Math.min(leftVal, rightVal);
+        if (res[index - 1] == leftVal) {
+          left++;
+        } else {
+          right--;
+        }
+      }
+    }
+    return res;
+  }
+
+  public int sortTransformedArrayHelp(int num, int a, int b, int c) {
+    return a * num * num + b * num + c;
+  }
+
 }
