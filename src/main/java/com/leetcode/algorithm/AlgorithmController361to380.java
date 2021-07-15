@@ -202,4 +202,33 @@ public class AlgorithmController361to380 {
     return res;
   }
 
+  public int depthSumInverse(List<NestedInteger> nestedList) {
+    int deep = findNestedIntegerDeep(nestedList, 1);
+    return depthSumInverse(nestedList, deep);
+  }
+
+  public int depthSumInverse(List<NestedInteger> nestedList, int deep) {
+    int sum = 0;
+    for (int i = 0; i < nestedList.size(); i++) {
+      NestedInteger temp = nestedList.get(i);
+      if (temp.isInteger()) {
+        sum += temp.getInteger() * deep;
+      } else {
+        sum += depthSumInverse(temp.getList(), deep - 1);
+      }
+    }
+    return sum;
+  }
+
+  public int findNestedIntegerDeep(List<NestedInteger> nestedList, int deep) {
+    int res = deep;
+    for (int i = 0; i < nestedList.size(); i++) {
+      NestedInteger temp = nestedList.get(i);
+      if (!temp.isInteger()) {
+        res = Math.max(res, findNestedIntegerDeep(temp.getList(), deep + 1));
+      }
+    }
+    return res;
+  }
+
 }
