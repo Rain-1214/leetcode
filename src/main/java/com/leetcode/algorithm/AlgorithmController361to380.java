@@ -3,8 +3,12 @@ package com.leetcode.algorithm;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Queue;
+import java.util.TreeSet;
+
+import com.leetcode.entity.NestedInteger;
 
 public class AlgorithmController361to380 {
 
@@ -171,6 +175,31 @@ public class AlgorithmController361to380 {
       }
       return sum;
     }
+  }
+
+  public int maxSumSubmatrix(int[][] matrix, int k) {
+    int res = Integer.MIN_VALUE;
+    int rowMax = matrix.length, colMax = matrix[0].length;
+    for (int i = 0; i < rowMax; i++) {
+      int[] preSum = new int[colMax];
+      for (int j = i; j < rowMax; j++) {
+        for (int z = 0; z < colMax; z++) {
+          preSum[z] = preSum[z] + matrix[j][z];
+        }
+        TreeSet<Integer> set = new TreeSet<>();
+        set.add(0);
+        int area = 0;
+        for (int n : preSum) {
+          area += n;
+          Integer temp = set.ceiling(area - k);
+          if (temp != null) {
+            res = Math.max(res, area - temp);
+          }
+          set.add(area);
+        }
+      }
+    }
+    return res;
   }
 
 }
