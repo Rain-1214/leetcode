@@ -284,4 +284,33 @@ public class AlgorithmController361to380 {
     }
   }
 
+  public boolean isPerfectSquare(int num) {
+    for (int i = 1; i * i <= num; i++) {
+      if (i * i == num) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public boolean isPerfectSquareII(int num) {
+    if (num < 2) {
+      return true;
+    }
+    long left = 2, right = num / 2, mid, res;
+    while (left <= right) {
+      mid = (left + right) / 2;
+      res = mid * mid;
+      if (res == num) {
+        return true;
+      }
+      if (res < num) {
+        left = mid + 1;
+      } else {
+        right = mid - 1;
+      }
+    }
+    return false;
+  }
+
 }
