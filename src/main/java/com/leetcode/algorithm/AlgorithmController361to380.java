@@ -246,4 +246,42 @@ public class AlgorithmController361to380 {
     return b == 0 ? a : gcd(b, a % b);
   }
 
+  public List<List<Integer>> findLeaves(TreeNode root) {
+    List<List<Integer>> res = new ArrayList<>();
+    if (root == null) {
+      return res;
+    }
+    while (root.left != null || root.right != null) {
+      List<Integer> temp = new ArrayList<>();
+      findLeaves(root, temp);
+      res.add(temp);
+    }
+    List<Integer> rootVal = new ArrayList<>();
+    rootVal.add(root.val);
+    res.add(rootVal);
+    return res;
+  }
+
+  public void findLeaves(TreeNode root, List<Integer> res) {
+    if (root == null) {
+      return;
+    }
+    if (root.left != null) {
+      if (root.left.left == null && root.left.right == null) {
+        res.add(root.left.val);
+        root.left = null;
+      } else {
+        findLeaves(root.left, res);
+      }
+    }
+    if (root.right != null) {
+      if (root.right.left == null && root.right.right == null) {
+        res.add(root.right.val);
+        root.right = null;
+      } else {
+        findLeaves(root.right, res);
+      }
+    }
+  }
+
 }
