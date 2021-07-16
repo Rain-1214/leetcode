@@ -9,6 +9,7 @@ import java.util.Queue;
 import java.util.TreeSet;
 
 import com.leetcode.entity.NestedInteger;
+import com.leetcode.entity.TreeNode;
 
 public class AlgorithmController361to380 {
 
@@ -229,6 +230,87 @@ public class AlgorithmController361to380 {
       }
     }
     return res;
+  }
+
+  public boolean canMeasureWater(int jug1Capacity, int jug2Capacity, int targetCapacity) {
+    if (jug1Capacity + jug2Capacity < targetCapacity) {
+      return false;
+    }
+    if (jug1Capacity == 0 || jug2Capacity == 0) {
+      return targetCapacity == 0 || jug2Capacity + jug1Capacity == targetCapacity;
+    }
+    return targetCapacity % gcd(jug1Capacity, jug2Capacity) == 0;
+  }
+
+  public int gcd(int a, int b) {
+    return b == 0 ? a : gcd(b, a % b);
+  }
+
+  public List<List<Integer>> findLeaves(TreeNode root) {
+    List<List<Integer>> res = new ArrayList<>();
+    if (root == null) {
+      return res;
+    }
+    while (root.left != null || root.right != null) {
+      List<Integer> temp = new ArrayList<>();
+      findLeaves(root, temp);
+      res.add(temp);
+    }
+    List<Integer> rootVal = new ArrayList<>();
+    rootVal.add(root.val);
+    res.add(rootVal);
+    return res;
+  }
+
+  public void findLeaves(TreeNode root, List<Integer> res) {
+    if (root == null) {
+      return;
+    }
+    if (root.left != null) {
+      if (root.left.left == null && root.left.right == null) {
+        res.add(root.left.val);
+        root.left = null;
+      } else {
+        findLeaves(root.left, res);
+      }
+    }
+    if (root.right != null) {
+      if (root.right.left == null && root.right.right == null) {
+        res.add(root.right.val);
+        root.right = null;
+      } else {
+        findLeaves(root.right, res);
+      }
+    }
+  }
+
+  public boolean isPerfectSquare(int num) {
+    for (int i = 1; i * i <= num; i++) {
+      if (i * i == num) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public boolean isPerfectSquareII(int num) {
+    if (num < 2) {
+      return true;
+    }
+    long left = 2, right = num / 2, mid, res;
+    while (left <= right) {
+      mid = (left + right) / 2;
+      res = mid * mid;
+      if (res == num) {
+        return true;
+      }
+      if (res < num) {
+        left = mid + 1;
+      } else {
+        right = mid - 1;
+      }
+    }
+    return false;
   }
 
 }
