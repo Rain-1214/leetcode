@@ -1,6 +1,7 @@
 package com.leetcode.algorithm;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.TreeSet;
 
+import com.leetcode.entity.ListNode;
 import com.leetcode.entity.NestedInteger;
 import com.leetcode.entity.TreeNode;
 
@@ -311,6 +313,140 @@ public class AlgorithmController361to380 {
       }
     }
     return false;
+  }
+
+  public List<Integer> largestDivisibleSubset(int[] nums) {
+    Arrays.sort(nums);
+    int len = nums.length;
+    int[] dp = new int[len];
+    dp[0] = 1;
+    Arrays.fill(dp, 1);
+    int maxSize = 1;
+    int maxVal = nums[0];
+    for (int i = 1; i < len; i++) {
+      for (int j = 0; j < i; j++) {
+        if (nums[i] % nums[j] == 0) {
+          dp[i] = Math.max(dp[i], dp[j] + 1);
+        }
+      }
+      if (dp[i] > maxSize) {
+        maxSize = dp[i];
+        maxVal = nums[i];
+      }
+    }
+
+    List<Integer> res = new ArrayList<>();
+    if (maxSize == 1) {
+      res.add(nums[0]);
+      return res;
+    }
+    for (int i = len - 1; i >= 0; i--) {
+      if (maxVal % nums[i] == 0 && dp[i] == maxSize) {
+        res.add(nums[i]);
+        maxSize--;
+        maxVal = nums[i];
+      }
+    }
+    return res;
+  }
+
+  public ListNode plusOne(ListNode head) {
+    boolean pre = plusOneHelper(head);
+    if (pre) {
+      return new ListNode(1, head);
+    }
+    return head;
+  }
+
+  public boolean plusOneHelper(ListNode head) {
+    if (head == null) {
+      return true;
+    }
+    if (plusOneHelper(head.next)) {
+      if (head.val == 9) {
+        head.val = 0;
+        return true;
+      }
+      head.val += 1;
+      return false;
+    }
+    return false;
+  }
+
+  public int[] getModifiedArray(int length, int[][] updates) {
+    int[] nums = new int[length];
+    for (int[] update : updates) {
+      getModifiedArrayHelper(nums, update[0], update[1], update[2]);
+    }
+    return nums;
+  }
+
+  public void getModifiedArrayHelper(int[] nums, int start, int end, int val) {
+    for (int i = start; i <= end; i++) {
+      nums[i] += val;
+    }
+  }
+
+  public int[] getModifiedArrayII(int length, int[][] updates) {
+    int[] nums = new int[length];
+    for (int[] update : updates) {
+      nums[update[0]] += update[2];
+      if (update[1] + 1 < length) {
+        nums[update[1] + 1] -= update[2];
+      }
+    }
+    for (int i = 1; i < length; i++) {
+      nums[i] += nums[i - 1];
+    }
+    return nums;
+  }
+
+  public int getSum(int a, int b) {
+    return (b == 0) ? a : getSum(a ^ b, (a & b) << 1);
+  }
+
+  public static final int superPowMod = 1337;
+
+  public int power(int a, int k) {
+    if (k == 0) {
+      return 1;
+    }
+    int res = 1;
+    a %= superPowMod;
+    while (k > 0) {
+      res *= a;
+      res %= superPowMod;
+      k--;
+    }
+    return res;
+  }
+
+  public int powerII(int a, int k) {
+    if (k == 0) {
+      return 1;
+    }
+    a %= superPowMod;
+
+    if (k % 2 == 1) {
+      return (a * power(a, k - 1)) % superPowMod;
+    } else {
+      int temp = power(a, k / 2);
+      return (temp * temp) % superPowMod;
+    }
+  }
+
+  public int superPowHelper(int a, int[] b, int index) {
+    if (index < 0) {
+      return 1;
+    }
+    int temp = power(a, b[index]);
+    int temp2 = power(superPowHelper(a, b, index - 1), 10);
+
+    return temp * temp2 % superPowMod;
+  }
+
+  public int superPow(int a, int[] b) {
+    return superPowHelper(a, b, b.length - 1);
   }
 
 }
