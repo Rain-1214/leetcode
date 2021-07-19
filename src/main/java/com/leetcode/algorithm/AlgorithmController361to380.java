@@ -405,4 +405,48 @@ public class AlgorithmController361to380 {
     return (b == 0) ? a : getSum(a ^ b, (a & b) << 1);
   }
 
+  public static final int superPowMod = 1337;
+
+  public int power(int a, int k) {
+    if (k == 0) {
+      return 1;
+    }
+    int res = 1;
+    a %= superPowMod;
+    while (k > 0) {
+      res *= a;
+      res %= superPowMod;
+      k--;
+    }
+    return res;
+  }
+
+  public int powerII(int a, int k) {
+    if (k == 0) {
+      return 1;
+    }
+    a %= superPowMod;
+
+    if (k % 2 == 1) {
+      return (a * power(a, k - 1)) % superPowMod;
+    } else {
+      int temp = power(a, k / 2);
+      return (temp * temp) % superPowMod;
+    }
+  }
+
+  public int superPowHelper(int a, int[] b, int index) {
+    if (index < 0) {
+      return 1;
+    }
+    int temp = power(a, b[index]);
+    int temp2 = power(superPowHelper(a, b, index - 1), 10);
+
+    return temp * temp2 % superPowMod;
+  }
+
+  public int superPow(int a, int[] b) {
+    return superPowHelper(a, b, b.length - 1);
+  }
+
 }
