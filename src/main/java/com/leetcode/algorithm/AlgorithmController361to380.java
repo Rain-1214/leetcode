@@ -373,4 +373,32 @@ public class AlgorithmController361to380 {
     return false;
   }
 
+  public int[] getModifiedArray(int length, int[][] updates) {
+    int[] nums = new int[length];
+    for (int[] update : updates) {
+      getModifiedArrayHelper(nums, update[0], update[1], update[2]);
+    }
+    return nums;
+  }
+
+  public void getModifiedArrayHelper(int[] nums, int start, int end, int val) {
+    for (int i = start; i <= end; i++) {
+      nums[i] += val;
+    }
+  }
+
+  public int[] getModifiedArrayII(int length, int[][] updates) {
+    int[] nums = new int[length];
+    for (int[] update : updates) {
+      nums[update[0]] += update[2];
+      if (update[1] + 1 < length) {
+        nums[update[1] + 1] -= update[2];
+      }
+    }
+    for (int i = 1; i < length; i++) {
+      nums[i] += nums[i - 1];
+    }
+    return nums;
+  }
+
 }
