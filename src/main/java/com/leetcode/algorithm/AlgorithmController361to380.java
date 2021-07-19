@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.TreeSet;
 
+import com.leetcode.entity.ListNode;
 import com.leetcode.entity.NestedInteger;
 import com.leetcode.entity.TreeNode;
 
@@ -347,6 +348,29 @@ public class AlgorithmController361to380 {
       }
     }
     return res;
+  }
+
+  public ListNode plusOne(ListNode head) {
+    boolean pre = plusOneHelper(head);
+    if (pre) {
+      return new ListNode(1, head);
+    }
+    return head;
+  }
+
+  public boolean plusOneHelper(ListNode head) {
+    if (head == null) {
+      return true;
+    }
+    if (plusOneHelper(head.next)) {
+      if (head.val == 9) {
+        head.val = 0;
+        return true;
+      }
+      head.val += 1;
+      return false;
+    }
+    return false;
   }
 
 }
