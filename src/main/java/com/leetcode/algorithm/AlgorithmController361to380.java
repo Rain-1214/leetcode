@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.TreeSet;
 
@@ -447,6 +448,83 @@ public class AlgorithmController361to380 {
 
   public int superPow(int a, int[] b) {
     return superPowHelper(a, b, b.length - 1);
+  }
+
+  public List<List<Integer>> kSmallestPairs(int[] nums1, int[] nums2, int k) {
+    List<List<Integer>> tempRes = new ArrayList<>();
+    List<List<Integer>> res = new ArrayList<>();
+    for (int n1 : nums1) {
+      for (int n2 : nums2) {
+        List<Integer> temp = new ArrayList<>();
+        temp.add(n1);
+        temp.add(n2);
+        tempRes.add(temp);
+      }
+    }
+    if (k >= nums1.length * nums2.length) {
+      return tempRes;
+    }
+
+    int len = tempRes.size();
+    for (int i = len / 2 - 1; i >= 0; i--) {
+      sortHeap(tempRes, i, len);
+    }
+
+    for (int i = 0; i < k; i++) {
+      res.add(tempRes.get(0));
+      swap(tempRes, 0, len - 1 - i);
+      sortHeap(tempRes, 0, len - 1 - i);
+    }
+
+    return res;
+  }
+
+  public void sortHeap(List<List<Integer>> list, int a, int length) {
+    List<Integer> temp = list.get(a);
+    int tempVal = temp.get(0) + temp.get(1);
+    for (int i = a * 2 + 1; i < length; i = i * 2 + 1) {
+      if (i + 1 < length && getListValue(list, i) > getListValue(list, i + 1)) {
+        i++;
+      }
+      if (tempVal > getListValue(list, i)) {
+        list.set(a, list.get(i));
+        a = i;
+      }
+    }
+    list.set(a, temp);
+  }
+
+  public int getListValue(List<List<Integer>> list, int index) {
+    return list.get(index).get(0) + list.get(index).get(1);
+  }
+
+  public void swap(List<List<Integer>> list, int a, int b) {
+    List<Integer> t = list.get(a);
+    list.set(a, list.get(b));
+    list.set(b, t);
+  }
+
+  public List<List<Integer>> kSmallestPairsII(int[] nums1, int[] nums2, int k) {
+    int len1 = nums1.length, len2 = nums2.length;
+    List<List<Integer>> res = new ArrayList<>();
+    if (len1 == 0 || len2 == 0 || k == 0) {
+      return res;
+    }
+    PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> {
+      return (nums1[a[0]] + nums2[a[1]]) - (nums1[b[0]] + nums2[b[1]]);
+    });
+    for (int i = 0; i < len1; i++) {
+      pq.offer(new int[] { i, 0 });
+    }
+    while (!pq.isEmpty() && k > 0) {
+      int[] temp = pq.poll();
+      if (temp[1] + 1 < len2) {
+        pq.offer(new int[] { temp[0], temp[1] + 1 });
+      }
+      res.add(Arrays.asList(nums1[temp[0]], nums2[temp[1]]));
+      k--;
+    }
+    return res;
   }
 
 }
