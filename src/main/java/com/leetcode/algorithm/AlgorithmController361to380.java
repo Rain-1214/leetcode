@@ -13,6 +13,7 @@ import java.util.TreeSet;
 import com.leetcode.entity.ListNode;
 import com.leetcode.entity.NestedInteger;
 import com.leetcode.entity.TreeNode;
+import com.leetcode.tool.GuessGame;
 
 public class AlgorithmController361to380 {
 
@@ -525,6 +526,24 @@ public class AlgorithmController361to380 {
       k--;
     }
     return res;
+  }
+
+  public class Solution extends GuessGame {
+    public int guessNumber(int n) {
+      int left = 1, right = n;
+      while (left <= right) {
+        int mid = left + (right - left) / 2;
+        int temp = this.guess(mid);
+        if (temp == 0) {
+          return mid;
+        } else if (temp == 1) {
+          left = mid + 1;
+        } else if (temp == -1) {
+          right = mid - 1;
+        }
+      }
+      return 1;
+    }
   }
 
 }
