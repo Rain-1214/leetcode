@@ -14,6 +14,7 @@ import com.leetcode.entity.ListNode;
 import com.leetcode.entity.NestedInteger;
 import com.leetcode.entity.TreeNode;
 import com.leetcode.tool.GuessGame;
+import com.leetcode.tool.Print;
 
 public class AlgorithmController361to380 {
 
@@ -544,6 +545,20 @@ public class AlgorithmController361to380 {
       }
       return 1;
     }
+  }
+
+  public int getMoneyAmount(int n) {
+    int[][] dp = new int[n + 1][n + 1];
+    for (int len = 2; len <= n; len++) {
+      for (int start = 1; start <= n - len + 1; start++) {
+        int min = Integer.MAX_VALUE;
+        for (int i = start; i < start + len - 1; i++) {
+          min = Math.min(min, i + Math.max(dp[start][i - 1], dp[i + 1][start + len - 1]));
+        }
+        dp[start][start + len - 1] = min;
+      }
+    }
+    return dp[1][n];
   }
 
 }
