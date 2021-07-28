@@ -3,11 +3,13 @@ package com.leetcode.algorithm;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Queue;
+import java.util.Set;
 import java.util.TreeSet;
 
 import com.leetcode.entity.ListNode;
@@ -663,6 +665,54 @@ public class AlgorithmController361to380 {
       }
     }
     return num >= k;
+  }
+
+  class PhoneDirectory {
+
+    Queue<Integer> directory;
+    Set<Integer> used;
+
+    /**
+     * Initialize your data structure here
+     * 
+     * @param maxNumbers - The maximum numbers that can be stored in the phone
+     *                   directory.
+     */
+    public PhoneDirectory(int maxNumbers) {
+      this.directory = new LinkedList<>();
+      this.used = new HashSet<>();
+      for (int i = 0; i < maxNumbers; i++) {
+        directory.add(i);
+      }
+    }
+
+    /**
+     * Provide a number which is not assigned to anyone.
+     * 
+     * @return - Return an available number. Return -1 if none is available.
+     */
+    public int get() {
+      if (directory.isEmpty()) {
+        return -1;
+      }
+      int temp = directory.poll();
+      used.add(temp);
+      return temp;
+    }
+
+    /** Check if a number is available or not. */
+    public boolean check(int number) {
+      return !used.contains(number);
+    }
+
+    /** Recycle or release a number. */
+    public void release(int number) {
+      if (!used.contains(number)) {
+        return;
+      }
+      used.remove(number);
+      directory.add(number);
+    }
   }
 
 }
