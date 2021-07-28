@@ -601,4 +601,38 @@ public class AlgorithmController361to380 {
     return res;
   }
 
+  public Map<Integer, Integer> combinationSum4Cache = new HashMap<Integer, Integer>();
+
+  public int combinationSum4(int[] nums, int target) {
+    if (target < 0) {
+      return 0;
+    }
+    if (combinationSum4Cache.containsKey(target)) {
+      return combinationSum4Cache.get(target);
+    }
+    int sum = 0;
+    for (int num : nums) {
+      if (target == num) {
+        sum++;
+        continue;
+      }
+      sum += combinationSum4(nums, target - num);
+    }
+    combinationSum4Cache.put(target, sum);
+    return sum;
+  }
+
+  public int combinationSum4II(int[] nums, int target) {
+    int[] dp = new int[target + 1];
+    dp[0] = 1;
+    for (int i = 1; i < dp.length; i++) {
+      for (int num : nums) {
+        if (num <= i) {
+          dp[i] += dp[i - num];
+        }
+      }
+    }
+    return dp[target];
+  }
+
 }
