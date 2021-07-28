@@ -635,4 +635,34 @@ public class AlgorithmController361to380 {
     return dp[target];
   }
 
+  public int kthSmallest(int[][] matrix, int k) {
+    int len = matrix.length;
+    int left = matrix[0][0];
+    int right = matrix[len - 1][len - 1];
+    while (left < right) {
+      int mid = (left + right) / 2;
+      if (kthSmallest(matrix, k, mid)) {
+        right = mid;
+      } else {
+        left = mid + 1;
+      }
+    }
+    return left;
+  }
+
+  public boolean kthSmallest(int[][] matrix, int k, int mid) {
+    int num = 0, len = matrix.length;
+    int row = len - 1;
+    int col = 0;
+    while (col < len && row >= 0) {
+      if (matrix[row][col] <= mid) {
+        col++;
+        num += row + 1;
+      } else {
+        row--;
+      }
+    }
+    return num >= k;
+  }
+
 }
