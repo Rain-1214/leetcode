@@ -9,10 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Queue;
-<<<<<<< HEAD
 import java.util.Random;
-=======
->>>>>>> master
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -20,7 +17,6 @@ import com.leetcode.entity.ListNode;
 import com.leetcode.entity.NestedInteger;
 import com.leetcode.entity.TreeNode;
 import com.leetcode.tool.GuessGame;
-import com.leetcode.tool.Print;
 
 public class AlgorithmController361to380 {
 
