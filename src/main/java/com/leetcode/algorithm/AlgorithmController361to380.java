@@ -9,7 +9,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Queue;
+<<<<<<< HEAD
 import java.util.Random;
+=======
+>>>>>>> master
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -602,6 +605,118 @@ public class AlgorithmController361to380 {
       }
     }
     return res;
+  }
+
+  public Map<Integer, Integer> combinationSum4Cache = new HashMap<Integer, Integer>();
+
+  public int combinationSum4(int[] nums, int target) {
+    if (target < 0) {
+      return 0;
+    }
+    if (combinationSum4Cache.containsKey(target)) {
+      return combinationSum4Cache.get(target);
+    }
+    int sum = 0;
+    for (int num : nums) {
+      if (target == num) {
+        sum++;
+        continue;
+      }
+      sum += combinationSum4(nums, target - num);
+    }
+    combinationSum4Cache.put(target, sum);
+    return sum;
+  }
+
+  public int combinationSum4II(int[] nums, int target) {
+    int[] dp = new int[target + 1];
+    dp[0] = 1;
+    for (int i = 1; i < dp.length; i++) {
+      for (int num : nums) {
+        if (num <= i) {
+          dp[i] += dp[i - num];
+        }
+      }
+    }
+    return dp[target];
+  }
+
+  public int kthSmallest(int[][] matrix, int k) {
+    int len = matrix.length;
+    int left = matrix[0][0];
+    int right = matrix[len - 1][len - 1];
+    while (left < right) {
+      int mid = (left + right) / 2;
+      if (kthSmallest(matrix, k, mid)) {
+        right = mid;
+      } else {
+        left = mid + 1;
+      }
+    }
+    return left;
+  }
+
+  public boolean kthSmallest(int[][] matrix, int k, int mid) {
+    int num = 0, len = matrix.length;
+    int row = len - 1;
+    int col = 0;
+    while (col < len && row >= 0) {
+      if (matrix[row][col] <= mid) {
+        col++;
+        num += row + 1;
+      } else {
+        row--;
+      }
+    }
+    return num >= k;
+  }
+
+  class PhoneDirectory {
+
+    Queue<Integer> directory;
+    Set<Integer> used;
+
+    /**
+     * Initialize your data structure here
+     * 
+     * @param maxNumbers - The maximum numbers that can be stored in the phone
+     *                   directory.
+     */
+    public PhoneDirectory(int maxNumbers) {
+      this.directory = new LinkedList<>();
+      this.used = new HashSet<>();
+      for (int i = 0; i < maxNumbers; i++) {
+        directory.add(i);
+      }
+    }
+
+    /**
+     * Provide a number which is not assigned to anyone.
+     * 
+     * @return - Return an available number. Return -1 if none is available.
+     */
+    public int get() {
+      if (directory.isEmpty()) {
+        return -1;
+      }
+      int temp = directory.poll();
+      used.add(temp);
+      return temp;
+    }
+
+    /** Check if a number is available or not. */
+    public boolean check(int number) {
+      return !used.contains(number);
+    }
+
+    /** Recycle or release a number. */
+    public void release(int number) {
+      if (!used.contains(number)) {
+        return;
+      }
+      used.remove(number);
+      directory.add(number);
+    }
   }
 
   class RandomizedSet {
