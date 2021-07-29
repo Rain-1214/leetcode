@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Queue;
+import java.util.Random;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -16,7 +17,6 @@ import com.leetcode.entity.ListNode;
 import com.leetcode.entity.NestedInteger;
 import com.leetcode.entity.TreeNode;
 import com.leetcode.tool.GuessGame;
-import com.leetcode.tool.Print;
 
 public class AlgorithmController361to380 {
 
@@ -712,6 +712,115 @@ public class AlgorithmController361to380 {
       }
       used.remove(number);
       directory.add(number);
+    }
+  }
+
+  class RandomizedSet {
+
+    public Random random;
+    public Map<Integer, Integer> map;
+    public List<Integer> list;
+
+    /** Initialize your data structure here. */
+    public RandomizedSet() {
+      this.random = new Random();
+      this.map = new HashMap<>();
+      this.list = new ArrayList<>();
+    }
+
+    /**
+     * Inserts a value to the set. Returns true if the set did not already contain
+     * the specified element.
+     */
+    public boolean insert(int val) {
+      if (map.containsKey(val)) {
+        return false;
+      }
+      int size = list.size();
+      map.put(val, size);
+      list.add(val);
+      return true;
+    }
+
+    /**
+     * Removes a value from the set. Returns true if the set contained the specified
+     * element.
+     */
+    public boolean remove(int val) {
+      if (!map.containsKey(val)) {
+        return false;
+      }
+      int index = map.get(val);
+      int lastValue = list.get(list.size() - 1);
+      map.put(lastValue, index);
+      list.set(index, lastValue);
+      list.remove(list.size() - 1);
+      map.remove(val);
+      return true;
+    }
+
+    /** Get a random element from the set. */
+    public int getRandom() {
+      return list.get(random.nextInt(list.size()));
+    }
+  }
+
+  class RandomizedCollection {
+
+    public Random random;
+    public Map<Integer, Set<Integer>> map;
+    public List<Integer> list;
+
+    /** Initialize your data structure here. */
+    public RandomizedCollection() {
+      this.random = new Random();
+      this.map = new HashMap<>();
+      this.list = new ArrayList<>();
+    }
+
+    /**
+     * Inserts a value to the collection. Returns true if the collection did not
+     * already contain the specified element.
+     */
+    public boolean insert(int val) {
+      boolean res = !map.containsKey(val);
+      Set<Integer> q = map.getOrDefault(val, new HashSet<Integer>());
+      q.add(list.size());
+      map.put(val, q);
+      list.add(val);
+      return res;
+    }
+
+    /**
+     * Removes a value from the collection. Returns true if the collection contained
+     * the specified element.
+     */
+    public boolean remove(int val) {
+      boolean res = map.containsKey(val);
+      if (!res) {
+        return res;
+      }
+      int len = list.size();
+      int lastValue = list.get(len - 1);
+
+      Set<Integer> lastValueIndex = map.get(lastValue);
+      Set<Integer> currentValueIndex = map.get(val);
+      int currentIndex = currentValueIndex.iterator().next();
+      currentValueIndex.remove(currentIndex);
+
+      lastValueIndex.add(currentIndex);
+      lastValueIndex.remove(len - 1);
+      list.set(currentIndex, lastValue);
+      if (currentValueIndex.isEmpty()) {
+        map.remove(val);
+      }
+      list.remove(len - 1);
+      return res;
+    }
+
+    /** Get a random element from the collection. */
+    public int getRandom() {
+      return list.get(random.nextInt(list.size()));
     }
   }
 
