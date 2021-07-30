@@ -1,6 +1,7 @@
 package com.leetcode.algorithm;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -74,6 +75,38 @@ public class AlgorithmController382to400 {
       }
     }
     return true;
+  }
+
+  class Solution384 {
+
+    int[] nums;
+    int[] origin;
+    Random random;
+
+    public Solution384(int[] nums) {
+      this.random = new Random();
+      this.nums = nums;
+      this.origin = Arrays.copyOf(nums, nums.length);
+    }
+
+    /** Resets the array to its original configuration and return it. */
+    public int[] reset() {
+      return this.origin;
+    }
+
+    /** Returns a random shuffling of the array. */
+    public int[] shuffle() {
+      for (int i = nums.length; i > 0; i--) {
+        swap(nums, i - 1, random.nextInt(i));
+      }
+      return nums;
+    }
+
+    public void swap(int[] nums, int x, int y) {
+      int temp = nums[x];
+      nums[x] = nums[y];
+      nums[y] = temp;
+    }
   }
 
 }
