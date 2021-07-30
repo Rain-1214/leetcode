@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Random;
 
 import com.leetcode.entity.ListNode;
+import com.leetcode.entity.NestedInteger;
 
 public class AlgorithmController382to400 {
 
@@ -107,6 +108,69 @@ public class AlgorithmController382to400 {
       nums[x] = nums[y];
       nums[y] = temp;
     }
+  }
+
+  public int deserializeIndex = 0;
+
+  public NestedInteger deserialize(String s) {
+    char[] ca = s.toCharArray();
+    return deserialize(ca);
+  }
+
+  public NestedInteger deserialize(char[] ca) {
+    NestedInteger res = new NestedInteger();
+    if (ca[deserializeIndex] == '[') {
+      deserializeIndex++;
+      int val = 0;
+      boolean negative = false, isEmpty = true;
+      while (deserializeIndex < ca.length) {
+        if (ca[deserializeIndex] == '[') {
+          res.add(deserialize(ca));
+          continue;
+        }
+        if (ca[deserializeIndex] == '-') {
+          negative = true;
+          deserializeIndex++;
+          continue;
+        }
+        if (ca[deserializeIndex] == ',') {
+          if (!isEmpty) {
+            res.add(new NestedInteger(negative ? 0 - val : val));
+            val = 0;
+            isEmpty = true;
+            negative = false;
+          }
+          deserializeIndex++;
+          continue;
+        }
+        if (ca[deserializeIndex] == ']') {
+          if (!isEmpty) {
+            res.add(new NestedInteger(negative ? 0 - val : val));
+            isEmpty = true;
+            negative = false;
+          }
+          deserializeIndex++;
+          break;
+        }
+        if (isEmpty) {
+          isEmpty = false;
+        }
+        val = val * 10 + (ca[deserializeIndex++] - '0');
+      }
+      return res;
+    }
+    int val = 0;
+    boolean negative = false;
+    while (deserializeIndex < ca.length) {
+      if (ca[deserializeIndex] == '-') {
+        negative = true;
+        deserializeIndex++;
+        continue;
+      }
+      val = val * 10 + (ca[deserializeIndex++] - '0');
+    }
+    res.setInteger(negative ? 0 - val : val);
+    return res;
   }
 
 }

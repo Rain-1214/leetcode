@@ -1,14 +1,20 @@
 package com.leetcode.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class NestedInteger {
   private int value;
   private List<NestedInteger> list;
 
+  // Constructor initializes an empty nested list.
+  public NestedInteger() {
+  };
+
   // Constructor initializes a single integer.
   public NestedInteger(int value) {
     this.value = value;
+    this.list = new ArrayList<NestedInteger>();
   }
 
   // @return true if this NestedInteger holds a single integer, rather than a
