@@ -173,4 +173,57 @@ public class AlgorithmController382to400 {
     return res;
   }
 
+  public List<Integer> lexicalOrder(int n) {
+    List<Integer> res = new ArrayList<>();
+    for (int i = 1; i < 10; i++) {
+      if (i <= n) {
+        res.add(i);
+        lexicalOrderHelper(n, i, res);
+      }
+    }
+    return res;
+  }
+
+  public void lexicalOrderHelper(int n, int start, List<Integer> res) {
+    if (start > n) {
+      return;
+    }
+    for (int i = 0; i < 10; i++) {
+      int val = start * 10 + i;
+      if (val <= n) {
+        res.add(val);
+        lexicalOrderHelper(n, val, res);
+      }
+    }
+  }
+
+  public int firstUniqChar(String s) {
+    char[] sa = s.toCharArray();
+    int[] nums = new int[26];
+    for (char c : sa) {
+      nums[c - 'a']++;
+    }
+    for (int i = 0; i < sa.length; i++) {
+      if (nums[sa[i] - 'a'] == 1) {
+        return i;
+      }
+    }
+    return -1;
+  }
+
+  public int firstUniqCharII(String s) {
+    int res = s.length() + 1;
+    for (char i = 'a'; i <= 'z'; i++) {
+      int leftIndex = s.indexOf(i);
+      if (leftIndex != -1) {
+        int rightIndex = s.lastIndexOf(i);
+        if (leftIndex == rightIndex && leftIndex < res) {
+          res = leftIndex;
+        }
+      }
+
+    }
+    return res == s.length() + 1 ? -1 : res;
+  }
+
 }
