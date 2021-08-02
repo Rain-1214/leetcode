@@ -197,4 +197,33 @@ public class AlgorithmController382to400 {
     }
   }
 
+  public int firstUniqChar(String s) {
+    char[] sa = s.toCharArray();
+    int[] nums = new int[26];
+    for (char c : sa) {
+      nums[c - 'a']++;
+    }
+    for (int i = 0; i < sa.length; i++) {
+      if (nums[sa[i] - 'a'] == 1) {
+        return i;
+      }
+    }
+    return -1;
+  }
+
+  public int firstUniqCharII(String s) {
+    int res = s.length() + 1;
+    for (char i = 'a'; i <= 'z'; i++) {
+      int leftIndex = s.indexOf(i);
+      if (leftIndex != -1) {
+        int rightIndex = s.lastIndexOf(i);
+        if (leftIndex == rightIndex && leftIndex < res) {
+          res = leftIndex;
+        }
+      }
+
+    }
+    return res == s.length() + 1 ? -1 : res;
+  }
+
 }
