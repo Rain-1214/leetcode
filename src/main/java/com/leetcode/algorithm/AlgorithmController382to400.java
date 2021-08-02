@@ -173,4 +173,28 @@ public class AlgorithmController382to400 {
     return res;
   }
 
+  public List<Integer> lexicalOrder(int n) {
+    List<Integer> res = new ArrayList<>();
+    for (int i = 1; i < 10; i++) {
+      if (i <= n) {
+        res.add(i);
+        lexicalOrderHelper(n, i, res);
+      }
+    }
+    return res;
+  }
+
+  public void lexicalOrderHelper(int n, int start, List<Integer> res) {
+    if (start > n) {
+      return;
+    }
+    for (int i = 0; i < 10; i++) {
+      int val = start * 10 + i;
+      if (val <= n) {
+        res.add(val);
+        lexicalOrderHelper(n, val, res);
+      }
+    }
+  }
+
 }
