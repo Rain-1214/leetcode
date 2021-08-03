@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Stack;
 
 import com.leetcode.entity.ListNode;
 import com.leetcode.entity.NestedInteger;
@@ -224,6 +225,62 @@ public class AlgorithmController382to400 {
 
     }
     return res == s.length() + 1 ? -1 : res;
+  }
+
+  public int lengthLongestPath(String input) {
+    int max = 0, current = 0, index = 0;
+    Stack<Integer> s = new Stack<Integer>();
+    char[] sc = input.toCharArray();
+    while (index < sc.length) {
+      int currentLen = 0;
+      if (sc[index] == '\n') {
+        if (index + 1 < sc.length && sc[index + 1] != '\t' && !s.isEmpty()) {
+          while (!s.isEmpty()) {
+            int val = s.pop();
+            current -= val;
+          }
+        }
+        index++;
+        continue;
+      }
+
+      if (sc[index] == '\t') {
+        int tempLen = 0;
+        while (index < sc.length && sc[index] == '\t') {
+          tempLen++;
+          index++;
+        }
+
+        if (tempLen < s.size()) {
+          while (tempLen != s.size()) {
+            int val = s.pop();
+            current -= val;
+          }
+        }
+      }
+      boolean isFile = false;
+
+      while (index < sc.length) {
+        if (Character.isLetter(sc[index]) || Character.isDigit(sc[index]) || sc[index] == ' ') {
+          currentLen++;
+          index++;
+        } else if (sc[index] == '.') {
+          currentLen++;
+          index++;
+          isFile = true;
+        } else {
+          break;
+        }
+      }
+      if (isFile) {
+        max = Math.max(max, currentLen + current + s.size());
+        isFile = false;
+        continue;
+      }
+      s.add(currentLen);
+      current += currentLen;
+    }
+    return max;
   }
 
 }
