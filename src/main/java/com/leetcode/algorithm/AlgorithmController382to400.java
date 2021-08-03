@@ -317,4 +317,31 @@ public class AlgorithmController382to400 {
     return 'a';
   }
 
+  public int lastRemaining(int n) {
+    Stack<Integer> left = new Stack<>();
+    Stack<Integer> right = new Stack<>();
+    for (int i = n; i >= 1; i--) {
+      left.add(i);
+    }
+    boolean remove = true;
+    while (left.size() > 1) {
+      int size = left.size();
+      int temp = 0;
+      boolean currentRemove = remove;
+      while (temp < size) {
+        if (currentRemove) {
+          left.pop();
+        } else {
+          right.push(left.pop());
+        }
+        currentRemove = !currentRemove;
+        temp++;
+      }
+      Stack<Integer> t = right;
+      right = left;
+      left = t;
+    }
+    return left.pop();
+  }
+
 }
