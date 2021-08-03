@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Stack;
 
 import com.leetcode.entity.ListNode;
 import com.leetcode.entity.NestedInteger;
@@ -224,6 +225,123 @@ public class AlgorithmController382to400 {
 
     }
     return res == s.length() + 1 ? -1 : res;
+  }
+
+  public int lengthLongestPath(String input) {
+    int max = 0, current = 0, index = 0;
+    Stack<Integer> s = new Stack<Integer>();
+    char[] sc = input.toCharArray();
+    while (index < sc.length) {
+      int currentLen = 0;
+      if (sc[index] == '\n') {
+        if (index + 1 < sc.length && sc[index + 1] != '\t' && !s.isEmpty()) {
+          while (!s.isEmpty()) {
+            int val = s.pop();
+            current -= val;
+          }
+        }
+        index++;
+        continue;
+      }
+
+      if (sc[index] == '\t') {
+        int tempLen = 0;
+        while (index < sc.length && sc[index] == '\t') {
+          tempLen++;
+          index++;
+        }
+
+        if (tempLen < s.size()) {
+          while (tempLen != s.size()) {
+            int val = s.pop();
+            current -= val;
+          }
+        }
+      }
+      boolean isFile = false;
+
+      while (index < sc.length) {
+        if (Character.isLetter(sc[index]) || Character.isDigit(sc[index]) || sc[index] == ' ') {
+          currentLen++;
+          index++;
+        } else if (sc[index] == '.') {
+          currentLen++;
+          index++;
+          isFile = true;
+        } else {
+          break;
+        }
+      }
+      if (isFile) {
+        max = Math.max(max, currentLen + current + s.size());
+        isFile = false;
+        continue;
+      }
+      s.add(currentLen);
+      current += currentLen;
+    }
+    return max;
+  }
+
+  public int lengthLongestPathII(String input) {
+    if (input.length() == 0) {
+      return 0;
+    }
+    int res = 0;
+    int[] levelCache = new int[input.length() + 1];
+    for (String s : input.split("\n")) {
+      int level = s.lastIndexOf('\t') + 2;
+      int len = s.length() - level + 1;
+      if (s.contains(".")) {
+        res = Math.max(res, levelCache[level - 1] + len);
+      } else {
+        levelCache[level] = levelCache[level - 1] + len + 1;
+      }
+    }
+    return res;
+  }
+
+  public char findTheDifference(String s, String t) {
+    int[] nums = new int[26];
+    for (char c : s.toCharArray()) {
+      nums[c - 'a']++;
+    }
+    for (char c : t.toCharArray()) {
+      nums[c - 'a']--;
+    }
+    for (int i = 0; i < 26; i++) {
+      if (nums[i] == -1) {
+        return (char) (i + 'a');
+      }
+    }
+    return 'a';
+  }
+
+  public int lastRemaining(int n) {
+    Stack<Integer> left = new Stack<>();
+    Stack<Integer> right = new Stack<>();
+    for (int i = n; i >= 1; i--) {
+      left.add(i);
+    }
+    boolean remove = true;
+    while (left.size() > 1) {
+      int size = left.size();
+      int temp = 0;
+      boolean currentRemove = remove;
+      while (temp < size) {
+        if (currentRemove) {
+          left.pop();
+        } else {
+          right.push(left.pop());
+        }
+        currentRemove = !currentRemove;
+        temp++;
+      }
+      Stack<Integer> t = right;
+      right = left;
+      left = t;
+    }
+    return left.pop();
   }
 
 }
