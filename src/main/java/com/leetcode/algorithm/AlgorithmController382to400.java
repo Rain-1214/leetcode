@@ -301,4 +301,20 @@ public class AlgorithmController382to400 {
     return res;
   }
 
+  public char findTheDifference(String s, String t) {
+    int[] nums = new int[26];
+    for (char c : s.toCharArray()) {
+      nums[c - 'a']++;
+    }
+    for (char c : t.toCharArray()) {
+      nums[c - 'a']--;
+    }
+    for (int i = 0; i < 26; i++) {
+      if (nums[i] == -1) {
+        return (char) (i + 'a');
+      }
+    }
+    return 'a';
+  }
+
 }
