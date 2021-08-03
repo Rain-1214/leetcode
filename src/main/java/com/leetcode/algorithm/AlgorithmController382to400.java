@@ -283,4 +283,22 @@ public class AlgorithmController382to400 {
     return max;
   }
 
+  public int lengthLongestPathII(String input) {
+    if (input.length() == 0) {
+      return 0;
+    }
+    int res = 0;
+    int[] levelCache = new int[input.length() + 1];
+    for (String s : input.split("\n")) {
+      int level = s.lastIndexOf('\t') + 2;
+      int len = s.length() - level + 1;
+      if (s.contains(".")) {
+        res = Math.max(res, levelCache[level - 1] + len);
+      } else {
+        levelCache[level] = levelCache[level - 1] + len + 1;
+      }
+    }
+    return res;
+  }
+
 }
