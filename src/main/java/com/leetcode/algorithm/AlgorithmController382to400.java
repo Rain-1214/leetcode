@@ -3,9 +3,11 @@ package com.leetcode.algorithm;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.Stack;
 
 import com.leetcode.entity.ListNode;
@@ -342,6 +344,44 @@ public class AlgorithmController382to400 {
       left = t;
     }
     return left.pop();
+  }
+
+  public int lastRemainingII(int n) {
+    return n == 1 ? 1 : 2 * (n / 2 + 1 - lastRemainingII(n / 2));
+  }
+
+  public boolean isRectangleCover(int[][] rectangles) {
+    int area = 0;
+    int bottom = Integer.MAX_VALUE;
+    int left = Integer.MAX_VALUE;
+    int right = Integer.MIN_VALUE;
+    int top = Integer.MIN_VALUE;
+    Set<String> set = new HashSet<>();
+    for (int[] reachable : rectangles) {
+      area += (reachable[2] - reachable[0]) * (reachable[3] - reachable[1]);
+      bottom = Math.min(bottom, reachable[1]);
+      left = Math.min(left, reachable[0]);
+      top = Math.max(top, reachable[3]);
+      right = Math.max(right, reachable[2]);
+      String[] points = { reachable[0] + " " + reachable[1], reachable[2] + " " + reachable[3],
+          reachable[0] + " " + reachable[3], reachable[2] + " " + reachable[1] };
+      for (String p : points) {
+        if (set.contains(p)) {
+          set.remove(p);
+        } else {
+          set.add(p);
+        }
+      }
+    }
+    String leftBottom = left + " " + bottom;
+    String leftTop = left + " " + top;
+    String rightBottom = right + " " + bottom;
+    String rightTop = right + " " + top;
+    if (set.size() != 4 || !set.contains(leftBottom) || !set.contains(leftTop) || !set.contains(rightBottom)
+        || !set.contains(rightTop)) {
+      return false;
+    }
+    return area == (right - left) * (top - bottom);
   }
 
 }
