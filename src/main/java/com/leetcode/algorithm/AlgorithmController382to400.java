@@ -384,4 +384,25 @@ public class AlgorithmController382to400 {
     return area == (right - left) * (top - bottom);
   }
 
+  public boolean isSubsequence(String s, String t) {
+    char[] sa = s.toCharArray();
+    char[] ta = t.toCharArray();
+    if (sa.length == 0) {
+      return true;
+    }
+    int si = 0, ti = 0;
+    while (ti < ta.length) {
+      if (ta[ti] == sa[si]) {
+        ti++;
+        si++;
+        if (si >= sa.length) {
+          break;
+        }
+      } else {
+        ti++;
+      }
+    }
+    return si >= sa.length;
+  }
+
 }
