@@ -384,4 +384,92 @@ public class AlgorithmController382to400 {
     return area == (right - left) * (top - bottom);
   }
 
+  public boolean isSubsequence(String s, String t) {
+    char[] sa = s.toCharArray();
+    char[] ta = t.toCharArray();
+    if (sa.length == 0) {
+      return true;
+    }
+    int si = 0, ti = 0;
+    while (ti < ta.length) {
+      if (ta[ti] == sa[si]) {
+        ti++;
+        si++;
+        if (si >= sa.length) {
+          break;
+        }
+      } else {
+        ti++;
+      }
+    }
+    return si >= sa.length;
+  }
+
+  public boolean validUtf8(int[] data) {
+    int base = 1 << 7, base6 = 1 << 6;
+    for (int i = 0; i < data.length; i++) {
+      int num = 0, temp = base, val = data[i];
+      while ((val & temp) == temp && temp > 0) {
+        num++;
+        temp >>= 1;
+      }
+      if (num == 1 || num > 4) {
+        return false;
+      }
+      if (num == 0) {
+        continue;
+      }
+      num--;
+      i++;
+      while (num > 0) {
+        if (i >= data.length) {
+          return false;
+        }
+        int tempVal = data[i];
+        if ((tempVal & base) != base || (tempVal & base6) != 0) {
+          return false;
+        }
+        num--;
+        if (num > 0) {
+          i++;
+        }
+      }
+    }
+    return true;
+  }
+
+  public int decodeStringIndex = 0;
+
+  public String decodeString(String s) {
+    char[] sa = s.toCharArray();
+    return decodeString(sa);
+  }
+
+  public String decodeString(char[] ca) {
+    int time = 0;
+    StringBuilder sb = new StringBuilder();
+    while (decodeStringIndex < ca.length) {
+      char c = ca[decodeStringIndex++];
+      if (Character.isLetter(c)) {
+        sb.append(c);
+        continue;
+      }
+      if (Character.isDigit(c)) {
+        time = time * 10 + (c - '0');
+        continue;
+      }
+      if (c == '[') {
+        String temp = decodeString(ca);
+        for (int j = 0; j < time; j++) {
+          sb.append(temp);
+        }
+        time = 0;
+      }
+      if (c == ']') {
+        return sb.toString();
+      }
+    }
+    return sb.toString();
+  }
+
 }
