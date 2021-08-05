@@ -438,4 +438,38 @@ public class AlgorithmController382to400 {
     return true;
   }
 
+  public int decodeStringIndex = 0;
+
+  public String decodeString(String s) {
+    char[] sa = s.toCharArray();
+    return decodeString(sa);
+  }
+
+  public String decodeString(char[] ca) {
+    int time = 0;
+    StringBuilder sb = new StringBuilder();
+    while (decodeStringIndex < ca.length) {
+      char c = ca[decodeStringIndex++];
+      if (Character.isLetter(c)) {
+        sb.append(c);
+        continue;
+      }
+      if (Character.isDigit(c)) {
+        time = time * 10 + (c - '0');
+        continue;
+      }
+      if (c == '[') {
+        String temp = decodeString(ca);
+        for (int j = 0; j < time; j++) {
+          sb.append(temp);
+        }
+        time = 0;
+      }
+      if (c == ']') {
+        return sb.toString();
+      }
+    }
+    return sb.toString();
+  }
+
 }
