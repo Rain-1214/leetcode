@@ -405,4 +405,37 @@ public class AlgorithmController382to400 {
     return si >= sa.length;
   }
 
+  public boolean validUtf8(int[] data) {
+    int base = 1 << 7, base6 = 1 << 6;
+    for (int i = 0; i < data.length; i++) {
+      int num = 0, temp = base, val = data[i];
+      while ((val & temp) == temp && temp > 0) {
+        num++;
+        temp >>= 1;
+      }
+      if (num == 1 || num > 4) {
+        return false;
+      }
+      if (num == 0) {
+        continue;
+      }
+      num--;
+      i++;
+      while (num > 0) {
+        if (i >= data.length) {
+          return false;
+        }
+        int tempVal = data[i];
+        if ((tempVal & base) != base || (tempVal & base6) != 0) {
+          return false;
+        }
+        num--;
+        if (num > 0) {
+          i++;
+        }
+      }
+    }
+    return true;
+  }
+
 }
