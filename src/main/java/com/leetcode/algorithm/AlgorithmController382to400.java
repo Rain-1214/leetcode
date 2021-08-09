@@ -12,6 +12,7 @@ import java.util.Stack;
 
 import com.leetcode.entity.ListNode;
 import com.leetcode.entity.NestedInteger;
+import com.leetcode.tool.Print;
 
 public class AlgorithmController382to400 {
 
@@ -470,6 +471,85 @@ public class AlgorithmController382to400 {
       }
     }
     return sb.toString();
+  }
+
+  public int longestSubstring(String s, int k) {
+    return longestSubstringHelper(s.toCharArray(), 0, s.length() - 1, k);
+  }
+
+  public int longestSubstringHelper(char[] ca, int l, int r, int k) {
+    int[] nums = new int[26];
+    for (int i = l; i <= r; i++) {
+      nums[ca[i] - 'a']++;
+    }
+    int split = -1;
+    for (int i = 0; i < 26; i++) {
+      if (nums[i] > 0 && nums[i] < k) {
+        split = i;
+        break;
+      }
+    }
+    if (split == -1) {
+      return r - l + 1;
+    }
+
+    int i = l;
+    int res = 0;
+    char splitChar = (char) (split + 'a');
+    while (i <= r) {
+      while (i <= r && ca[i] == splitChar) {
+        i++;
+      }
+      if (i > r) {
+        break;
+      }
+      int start = i;
+      while (i <= r && ca[i] != splitChar) {
+        i++;
+      }
+      int len = longestSubstringHelper(ca, start, i - 1, k);
+
+      res = Math.max(res, len);
+
+    }
+    return res;
+  }
+
+  public int longestSubstringII(String s, int k) {
+    int res = 0, len = s.length();
+    char[] ca = s.toCharArray();
+    int[] letterNum = new int[26];
+    for (int num = 1; num < 26; num++) {
+      Arrays.fill(letterNum, 0);
+      int l = 0, total = 0, sum = 0;
+      for (int r = 0; r < len; r++) {
+        int index = ca[r] - 'a';
+        letterNum[index]++;
+
+        if (letterNum[index] == 1) {
+          total++;
+        }
+
+        if (letterNum[index] == k) {
+          sum++;
+        }
+
+        while (total > num) {
+          letterNum[ca[l] - 'a']--;
+          if (letterNum[ca[l] - 'a'] == 0) {
+            total--;
+          }
+          if (letterNum[ca[l] - 'a'] == k - 1) {
+            sum--;
+          }
+          l++;
+        }
+        if (total == sum) {
+          res = Math.max(res, r - l + 1);
+        }
+      }
+    }
+    return res;
   }
 
 }
