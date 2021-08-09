@@ -17,4 +17,9 @@ public class AlgorithmController382to400Test {
     System.out.println(this.algorithmController361to380.validUtf8(new int[] { 240, 162, 138, 147, 145 }));
   }
 
+  @Test
+  public void longestSubstring() {
+    System.out.println(this.algorithmController361to380.longestSubstring("aaabb", 3));
+  }
+
 }
