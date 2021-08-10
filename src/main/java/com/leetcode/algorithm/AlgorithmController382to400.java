@@ -569,4 +569,38 @@ public class AlgorithmController382to400 {
     return res;
   }
 
+  public int integerReplacement(int n) {
+    if (n == 2147483647) {
+      return 32;
+    }
+    return integerReplacementHelper(n, 0);
+  }
+
+  public int integerReplacementHelper(int n, int deep) {
+    if (n == 1) {
+      return deep;
+    }
+    if (n % 2 == 0) {
+      return integerReplacementHelper(n / 2, deep + 1);
+    }
+    return Math.min(integerReplacementHelper(n - 1, deep + 1), integerReplacementHelper(n + 1, deep + 1));
+  }
+
+  public int integerReplacementII(int n) {
+    int res = 0;
+    while (n != 1) {
+      if ((n & 1) == 0) {
+        n /= 2;
+      } else {
+        if ((n & 3) == 3 && n > 3) {
+          n = n / 2 + 1;
+          res++;
+        } else {
+          n -= 1;
+        }
+      }
+      res++;
+    }
+    return res;
+  }
 }
