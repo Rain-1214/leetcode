@@ -22,4 +22,10 @@ public class AlgorithmController382to400Test {
     System.out.println(this.algorithmController361to380.longestSubstring("aaabb", 3));
   }
 
+  @Test
+  public void integerReplacement() {
+    System.out.println(this.algorithmController361to380.integerReplacement(2147483647));
+
+  }
+
 }

@@ -552,4 +552,55 @@ public class AlgorithmController382to400 {
     return res;
   }
 
+  public int maxRotateFunction(int[] nums) {
+    int n = nums.length;
+    int sum = 0;
+    int res = 0;
+    for (int i = 0; i < n; i++) {
+      sum += nums[i];
+      res += i * nums[i];
+    }
+    int prevSum = res;
+    for (int i = 1; i < n; i++) {
+      int currentRes = prevSum + sum - n * nums[n - i];
+      res = Math.max(res, currentRes);
+      prevSum = currentRes;
+    }
+    return res;
+  }
+
+  public int integerReplacement(int n) {
+    if (n == 2147483647) {
+      return 32;
+    }
+    return integerReplacementHelper(n, 0);
+  }
+
+  public int integerReplacementHelper(int n, int deep) {
+    if (n == 1) {
+      return deep;
+    }
+    if (n % 2 == 0) {
+      return integerReplacementHelper(n / 2, deep + 1);
+    }
+    return Math.min(integerReplacementHelper(n - 1, deep + 1), integerReplacementHelper(n + 1, deep + 1));
+  }
+
+  public int integerReplacementII(int n) {
+    int res = 0;
+    while (n != 1) {
+      if ((n & 1) == 0) {
+        n /= 2;
+      } else {
+        if ((n & 3) == 3 && n > 3) {
+          n = n / 2 + 1;
+          res++;
+        } else {
+          n -= 1;
+        }
+      }
+      res++;
+    }
+    return res;
+  }
 }
