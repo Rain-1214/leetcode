@@ -552,4 +552,21 @@ public class AlgorithmController382to400 {
     return res;
   }
 
+  public int maxRotateFunction(int[] nums) {
+    int n = nums.length;
+    int sum = 0;
+    int res = 0;
+    for (int i = 0; i < n; i++) {
+      sum += nums[i];
+      res += i * nums[i];
+    }
+    int prevSum = res;
+    for (int i = 1; i < n; i++) {
+      int currentRes = prevSum + sum - n * nums[n - i];
+      res = Math.max(res, currentRes);
+      prevSum = currentRes;
+    }
+    return res;
+  }
+
 }
