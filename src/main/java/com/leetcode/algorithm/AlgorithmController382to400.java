@@ -603,4 +603,50 @@ public class AlgorithmController382to400 {
     }
     return res;
   }
+
+  class Solution398 {
+
+    public Map<Integer, ArrayList<Integer>> map;
+    public Random random;
+
+    public Solution398(int[] nums) {
+      this.map = new HashMap<>();
+      this.random = new Random();
+      for (int i = 0; i < nums.length; i++) {
+        ArrayList<Integer> list = map.getOrDefault(nums[i], new ArrayList<>());
+        list.add(i);
+        map.put(nums[i], list);
+      }
+    }
+
+    public int pick(int target) {
+      List<Integer> list = this.map.get(target);
+      return list.get(this.random.nextInt(list.size()));
+    }
+  }
+
+  class Solution398II {
+
+    public int[] nums;
+    public Random random;
+
+    public Solution398II(int[] nums) {
+      this.nums = nums;
+      this.random = new Random();
+    }
+
+    public int pick(int target) {
+      int n = 0, res = 0;
+      for (int i = 0; i < nums.length; i++) {
+        if (nums[i] == target) {
+          n++;
+          int temp = random.nextInt(n);
+          if (temp == 0) {
+            res = i;
+          }
+        }
+      }
+      return res;
+    }
+  }
 }
