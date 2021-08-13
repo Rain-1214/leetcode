@@ -603,4 +603,123 @@ public class AlgorithmController382to400 {
     }
     return res;
   }
+
+  class Solution398 {
+
+    public Map<Integer, ArrayList<Integer>> map;
+    public Random random;
+
+    public Solution398(int[] nums) {
+      this.map = new HashMap<>();
+      this.random = new Random();
+      for (int i = 0; i < nums.length; i++) {
+        ArrayList<Integer> list = map.getOrDefault(nums[i], new ArrayList<>());
+        list.add(i);
+        map.put(nums[i], list);
+      }
+    }
+
+    public int pick(int target) {
+      List<Integer> list = this.map.get(target);
+      return list.get(this.random.nextInt(list.size()));
+    }
+  }
+
+  class Solution398II {
+
+    public int[] nums;
+    public Random random;
+
+    public Solution398II(int[] nums) {
+      this.nums = nums;
+      this.random = new Random();
+    }
+
+    public int pick(int target) {
+      int n = 0, res = 0;
+      for (int i = 0; i < nums.length; i++) {
+        if (nums[i] == target) {
+          n++;
+          int temp = random.nextInt(n);
+          if (temp == 0) {
+            res = i;
+          }
+        }
+      }
+      return res;
+    }
+  }
+
+  public double[] calcEquation(List<List<String>> equations, double[] values, List<List<String>> queries) {
+    double[] res = new double[queries.size()];
+    Map<String, Integer> ids = new HashMap<String, Integer>();
+    UnionFind unionFind = new UnionFind(equations.size() * 2);
+    int id = 0;
+    for (int i = 0; i < values.length; i++) {
+      List<String> list = equations.get(i);
+      String temp1 = list.get(0);
+      String temp2 = list.get(1);
+      if (!ids.containsKey(temp1)) {
+        ids.put(temp1, id++);
+      }
+      if (!ids.containsKey(temp2)) {
+        ids.put(temp2, id++);
+      }
+      unionFind.merge(ids.get(temp1), ids.get(temp2), values[i]);
+    }
+    for (int i = 0; i < res.length; i++) {
+      String temp1 = queries.get(i).get(0);
+      String temp2 = queries.get(i).get(1);
+      if (!ids.containsKey(temp1) || !ids.containsKey(temp2)) {
+        res[i] = -1.0d;
+        continue;
+      }
+      res[i] = unionFind.isConnect(ids.get(temp1), ids.get(temp2));
+    }
+    return res;
+  }
+
+  class UnionFind {
+
+    private int[] union;
+    private double[] weight;
+
+    public UnionFind(int n) {
+      this.union = new int[n];
+      this.weight = new double[n];
+      for (int i = 0; i < n; i++) {
+        this.union[i] = i;
+        this.weight[i] = 1.0d;
+      }
+    }
+
+    public int find(int n) {
+      if (union[n] != n) {
+        int parent = union[n];
+        union[n] = find(union[n]);
+        weight[n] *= weight[parent];
+      }
+      return union[n];
+    }
+
+    public double isConnect(int a, int b) {
+      int rootA = find(a);
+      int rootB = find(b);
+      if (rootA == rootB) {
+        return weight[a] / weight[b];
+      }
+      return -1.0d;
+    }
+
+    public void merge(int a, int b, double value) {
+      int rootA = find(a);
+      int rootB = find(b);
+      if (rootA == rootB) {
+        return;
+      }
+      union[rootA] = rootB;
+      weight[rootA] = weight[b] * value / weight[a];
+    }
+
+  }
 }
