@@ -722,4 +722,33 @@ public class AlgorithmController382to400 {
     }
 
   }
+
+  public int findNthDigit(int n) {
+    if (n < 10) {
+      return n;
+    }
+    long num = 1;
+    int digits = 1;
+    long current = digits * 9 * num;
+    while (current < n) {
+      n -= current;
+      digits++;
+      num *= 10;
+      current = digits * 9 * num;
+    }
+    long temp = (n - 1) / digits;
+    n -= temp * digits;
+    num += temp;
+    int target = digits - (n - 1) - 1;
+    int index = 0;
+    while (num > 0) {
+      int res = (int) num % 10;
+      if (index == target) {
+        return res;
+      }
+      num /= 10;
+      index++;
+    }
+    return 0;
+  }
 }
