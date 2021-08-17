@@ -1,6 +1,8 @@
 package com.leetcode.algorithm;
 
 import java.util.ArrayList;
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.List;
 
 public class AlgorithmController401to420 {
@@ -58,6 +60,42 @@ public class AlgorithmController401to420 {
       sb.append('0');
     }
     sb.append(temp);
+    return sb.toString();
+  }
+
+  public String removeKdigits(String num, int k) {
+    Deque<Integer> dq = new LinkedList<Integer>();
+    char[] ca = num.toCharArray();
+    int i = 1;
+    dq.addLast(ca[0] - '0');
+    while (i < ca.length) {
+      int current = ca[i] - '0';
+      if (!dq.isEmpty() && current < dq.peekLast() && k > 0) {
+        while (!dq.isEmpty() && current < dq.peekLast() && k > 0) {
+          dq.removeLast();
+          k--;
+        }
+      }
+      dq.addLast(current);
+      i++;
+    }
+    while (k > 0) {
+      dq.removeLast();
+      k--;
+    }
+    if (dq.size() == 0) {
+      return "0";
+    }
+    while (!dq.isEmpty() && dq.peek() == 0) {
+      dq.pop();
+    }
+    if (dq.size() == 0) {
+      return "0";
+    }
+    StringBuilder sb = new StringBuilder();
+    while (!dq.isEmpty()) {
+      sb.append(dq.pop());
+    }
     return sb.toString();
   }
 }
