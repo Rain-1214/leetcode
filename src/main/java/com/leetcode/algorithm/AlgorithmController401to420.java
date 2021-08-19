@@ -2,8 +2,10 @@ package com.leetcode.algorithm;
 
 import java.util.ArrayList;
 import java.util.Deque;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class AlgorithmController401to420 {
 
@@ -97,5 +99,62 @@ public class AlgorithmController401to420 {
       sb.append(dq.pop());
     }
     return sb.toString();
+  }
+
+  public boolean canCross(int[] stones) {
+    boolean[][] cache = new boolean[stones.length][stones.length];
+    Map<Integer, Integer> map = new HashMap<>();
+    for (int i = 2; i < stones.length; i++) {
+      map.put(stones[i], i);
+    }
+    int prevDistance = stones[1] - stones[0];
+    if (prevDistance > 1) {
+      return false;
+    }
+    return canCross(stones, 1, prevDistance, map, cache);
+  }
+
+  public boolean canCross(int[] stones, int start, int prevDistance, Map<Integer, Integer> map, boolean[][] cache) {
+    if (start == stones.length - 1) {
+      return true;
+    }
+    for (int i = -1; i <= 1; i++) {
+      int nextDistance = stones[start] + prevDistance + i;
+      if (map.containsKey(nextDistance) && map.get(nextDistance) > start) {
+        int index = map.get(nextDistance);
+        if (cache[start][index]) {
+          continue;
+        }
+        if (canCross(stones, index, stones[index] - stones[start], map, cache)) {
+          return true;
+        }
+        cache[start][index] = true;
+      }
+    }
+    return false;
+  }
+
+  public boolean canCrossII(int[] stones) {
+    int n = stones.length;
+    boolean[][] dp = new boolean[n][n];
+    dp[0][0] = true;
+    for (int i = 1; i < n; i++) {
+      if (stones[i] - stones[i - 1] > i) {
+        return false;
+      }
+    }
+    for (int i = 1; i < n; i++) {
+      for (int j = i - 1; j >= 0; j--) {
+        int k = stones[i] - stones[j];
+        if (k > j + 1) {
+          break;
+        }
+        dp[i][k] = dp[j][k - 1] || dp[j][k] || dp[j][k + 1];
+        if (i == n - 1 && dp[i][k]) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 }
