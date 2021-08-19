@@ -173,4 +173,18 @@ public class AlgorithmController401to420 {
     }
     return sumOfLeftLeaves(root.left, true) + sumOfLeftLeaves(root.right, false);
   }
+
+  public String toHex(int num) {
+    if (num == 0) {
+      return "0";
+    }
+    char[] dic = "0123456789abcdef".toCharArray();
+    StringBuilder sb = new StringBuilder();
+    while (num != 0) {
+      int temp = num & 15;
+      sb.append(dic[temp]);
+      num >>>= 4;
+    }
+    return sb.reverse().toString();
+  }
 }
