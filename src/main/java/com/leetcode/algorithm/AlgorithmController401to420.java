@@ -7,6 +7,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import com.leetcode.entity.TreeNode;
+
 public class AlgorithmController401to420 {
 
   public List<String> readBinaryWatch(int turnedOn) {
@@ -156,5 +158,19 @@ public class AlgorithmController401to420 {
       }
     }
     return false;
+  }
+
+  public int sumOfLeftLeaves(TreeNode root) {
+    return sumOfLeftLeaves(root, false);
+  }
+
+  public int sumOfLeftLeaves(TreeNode root, boolean isLeft) {
+    if (root == null) {
+      return 0;
+    }
+    if (root.left == null && root.right == null) {
+      return isLeft ? root.val : 0;
+    }
+    return sumOfLeftLeaves(root.left, true) + sumOfLeftLeaves(root.right, false);
   }
 }
