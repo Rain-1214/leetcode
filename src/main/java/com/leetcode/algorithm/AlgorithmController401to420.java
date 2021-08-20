@@ -1,6 +1,7 @@
 package com.leetcode.algorithm;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -156,5 +157,25 @@ public class AlgorithmController401to420 {
       }
     }
     return false;
+  }
+
+  public int[][] reconstructQueue(int[][] people) {
+    Arrays.sort(people, (a, b) -> {
+      if (a[0] == b[0]) {
+        return a[1] - b[1];
+      }
+      return b[0] - a[0];
+    });
+    int[][] res = new int[people.length][2];
+    List<Integer> index = new ArrayList<>();
+    for (int i = 0; i < people.length; i++) {
+      index.add(i);
+    }
+    for (int i = 0; i < people.length; i++) {
+      int temp = people[i][1];
+      res[index.get(temp)] = people[i];
+      index.remove(temp);
+    }
+    return res;
   }
 }
