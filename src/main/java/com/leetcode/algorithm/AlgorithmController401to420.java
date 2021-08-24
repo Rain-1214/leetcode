@@ -373,4 +373,17 @@ public class AlgorithmController401to420 {
     return wi == wc.length && ai == ac.length;
   }
 
+  public int longestPalindrome(String s) {
+    char[] sc = s.toCharArray();
+    int res = 0;
+    int[] num = new int[128];
+    for (char c : sc) {
+      num[c]++;
+    }
+    for (int n : num) {
+      res += n % 2;
+    }
+    return res == 0 ? sc.length : sc.length - res + 1;
+  }
+
 }
