@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
 
 import com.leetcode.entity.TreeNode;
 
@@ -208,4 +209,104 @@ public class AlgorithmController401to420 {
     }
     return res;
   }
+
+  public final int[][] dir = new int[][] { new int[] { -1, 0 }, new int[] { 1, 0 }, new int[] { 0, -1 },
+      new int[] { 0, 1 } };
+
+  public int trapRainWater(int[][] heightMap) {
+    int m = heightMap.length, n = heightMap[0].length, currentHeight = 1, res = 0, maxHeight = Integer.MIN_VALUE;
+    int[][] currentGraph = new int[m][n];
+    boolean hasNext = true;
+    for (int i = 0; i < m; i++) {
+      for (int j = 0; j < n; j++) {
+        maxHeight = Math.max(maxHeight, heightMap[i][j]);
+      }
+    }
+    while (hasNext) {
+      for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+          currentGraph[i][j] = 0;
+          if (heightMap[i][j] >= currentHeight) {
+            currentGraph[i][j] = 1;
+          }
+        }
+      }
+      res += rainWaterArea(currentGraph);
+      currentHeight++;
+      if (currentHeight > maxHeight) {
+        break;
+      }
+    }
+    return res;
+  }
+
+  public int rainWaterArea(int[][] graph) {
+    int m = graph.length, n = graph[0].length;
+    for (int i = 0; i < m; i++) {
+      rainWaterMove(graph, i, 0);
+      rainWaterMove(graph, i, n - 1);
+    }
+    for (int i = 0; i < n; i++) {
+      rainWaterMove(graph, 0, i);
+      rainWaterMove(graph, m - 1, i);
+    }
+    int res = 0;
+    for (int i = 0; i < m; i++) {
+      for (int j = 0; j < n; j++) {
+        if (graph[i][j] == 0) {
+          res++;
+        }
+      }
+    }
+    return res;
+  }
+
+  public void rainWaterMove(int[][] graph, int x, int y) {
+    int m = graph.length, n = graph[0].length;
+    if (x < 0 || y < 0 || x >= m || y >= n) {
+      return;
+    }
+    if (graph[x][y] == 1 || graph[x][y] == 2) {
+      return;
+    }
+    graph[x][y] = 2;
+    for (int[] next : dir) {
+      int nextX = x + next[0];
+      int nextY = y + next[1];
+      rainWaterMove(graph, nextX, nextY);
+    }
+  }
+
+  public int trapRainWaterII(int[][] heightMap) {
+    int m = heightMap.length, n = heightMap[0].length, res = 0;
+    boolean[][] visitor = new boolean[m][n];
+    PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[2] - b[2]);
+
+    for (int i = 0; i < m; i++) {
+      for (int j = 0; j < n; j++) {
+        if (i == 0 || j == 0 || i == m - 1 || j == n - 1) {
+          visitor[i][j] = true;
+          pq.add(new int[] { i, j, heightMap[i][j] });
+        }
+      }
+    }
+
+    while (!pq.isEmpty()) {
+      int[] current = pq.poll();
+      for (int[] next : dir) {
+        int nextX = current[0] + next[0];
+        int nextY = current[1] + next[1];
+        if (nextX < 0 || nextY < 0 || nextX >= m || nextY >= n || visitor[nextX][nextY]) {
+          continue;
+        }
+        if (heightMap[nextX][nextY] < current[2]) {
+          res += current[2] - heightMap[nextX][nextY];
+        }
+        pq.add(new int[] { nextX, nextY, Math.max(heightMap[nextX][nextY], current[2]) });
+        visitor[nextX][nextY] = true;
+      }
+    }
+    return res;
+  }
+
 }
