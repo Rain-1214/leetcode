@@ -309,4 +309,68 @@ public class AlgorithmController401to420 {
     return res;
   }
 
+  public boolean validWordAbbreviation(String word, String abbr) {
+    char[] wc = word.toCharArray();
+    char[] ac = abbr.toCharArray();
+    int index = 0;
+    for (int i = 0; i < ac.length; i++) {
+      if (index >= wc.length) {
+        return false;
+      }
+      if (Character.isLetter(ac[i])) {
+        if (ac[i] != wc[index]) {
+          return false;
+        }
+        index++;
+      } else {
+        int temp = 0;
+        while (i < ac.length && Character.isDigit(ac[i])) {
+          if (temp == 0 && ac[i] == '0') {
+            return false;
+          }
+          temp = temp * 10 + (ac[i] - '0');
+          i++;
+        }
+        if (i == ac.length) {
+          return index + temp == wc.length;
+        } else {
+          i--;
+          index += temp;
+        }
+      }
+    }
+    return index == wc.length;
+  }
+
+  public boolean validWordAbbreviationII(String word, String abbr) {
+    char[] wc = word.toCharArray();
+    char[] ac = abbr.toCharArray();
+    int wi = 0, ai = 0;
+    while (wi < wc.length && ai < ac.length) {
+      if (Character.isLetter(ac[ai])) {
+        if (ac[ai] != wc[wi]) {
+          return false;
+        }
+        wi++;
+        ai++;
+
+      } else {
+        int temp = 0;
+        while (ai < ac.length && Character.isDigit(ac[ai])) {
+          if (temp == 0 && ac[ai] == '0') {
+            return false;
+          }
+          temp = temp * 10 + (ac[ai] - '0');
+          ai++;
+        }
+        if (ai == ac.length) {
+          return wi + temp == wc.length;
+        } else {
+          wi += temp;
+        }
+      }
+    }
+    return wi == wc.length && ai == ac.length;
+  }
+
 }
