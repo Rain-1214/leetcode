@@ -386,4 +386,56 @@ public class AlgorithmController401to420 {
     return res == 0 ? sc.length : sc.length - res + 1;
   }
 
+  public int splitArray(int[] nums, int m) {
+    int n = nums.length;
+    int[] preSum = new int[n + 1];
+    for (int i = 1; i <= n; i++) {
+      preSum[i] = preSum[i - 1] + nums[i - 1];
+    }
+    int[][] dp = new int[n + 1][m + 1];
+    for (int i = 0; i <= n; i++) {
+      Arrays.fill(dp[i], Integer.MAX_VALUE);
+    }
+    dp[0][0] = 0;
+    for (int i = 1; i <= n; i++) {
+      for (int j = 1; j <= Math.min(m, i); j++) {
+        for (int z = 0; z < i; z++) {
+          dp[i][j] = Math.min(dp[i][j], Math.max(dp[z][j - 1], preSum[i] - preSum[z]));
+        }
+      }
+    }
+    return dp[n][m];
+  }
+
+  public int splitArrayII(int[] nums, int m) {
+    int left = 0;
+    int right = 0;
+    for (int num : nums) {
+      left = Math.max(left, num);
+      right += num;
+    }
+    while (left < right) {
+      int mid = (left + right) / 2;
+      if (splitArrayCheck(nums, mid, m)) {
+        right = mid;
+      } else {
+        left = mid + 1;
+      }
+    }
+    return left;
+  }
+
+  public boolean splitArrayCheck(int[] nums, int mid, int m) {
+    int sum = 0, count = 1;
+    for (int num : nums) {
+      if (sum + num > mid) {
+        count++;
+        sum = num;
+      } else {
+        sum += num;
+      }
+    }
+    return count <= m;
+  }
+
 }
