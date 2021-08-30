@@ -501,4 +501,22 @@ public class AlgorithmController401to420 {
     allAbbreviation(ca, start + 1, sb, 0, res);
     sb.setLength(len);
   }
+
+  public List<String> fizzBuzz(int n) {
+    List<String> res = new ArrayList<String>();
+    String flag3 = "Fizz", flag5 = "Buzz", flag35 = "FizzBuzz";
+    for (int i = 1; i <= n; i++) {
+      boolean t3 = i % 3 == 0, t5 = i % 5 == 0;
+      if (t3 && t5) {
+        res.add(flag35);
+      } else if (t3) {
+        res.add(flag3);
+      } else if (t5) {
+        res.add(flag5);
+      } else {
+        res.add(Integer.toString(i));
+      }
+    }
+    return res;
+  }
 }
