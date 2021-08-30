@@ -438,4 +438,67 @@ public class AlgorithmController401to420 {
     return count <= m;
   }
 
+  public int abbreviationLen(String str) {
+    int len = 0, index = 0;
+    char[] cs = str.toCharArray();
+    while (index < cs.length) {
+      if (Character.isDigit(cs[index])) {
+        while (index < cs.length && Character.isDigit(cs[index])) {
+          index++;
+        }
+        index--;
+      }
+      len++;
+      index++;
+    }
+    return len;
+  }
+
+  public String minAbbreviation(String target, String[] dictionary) {
+    if (dictionary.length == 0) {
+      return Integer.toString(target.length());
+    }
+    List<String> temp = allAbbreviation(target);
+    temp.sort((a, b) -> {
+      return this.abbreviationLen(a) - this.abbreviationLen(b);
+    });
+    for (String str : temp) {
+      boolean find = true;
+      for (String d : dictionary) {
+        if (this.validWordAbbreviationII(d, str)) {
+          find = false;
+          break;
+        }
+      }
+      if (find) {
+        return str;
+      }
+    }
+    return "";
+  }
+
+  public List<String> allAbbreviation(String target) {
+    List<String> res = new ArrayList<>();
+    allAbbreviation(target.toCharArray(), 0, new StringBuilder(), 0, res);
+    return res;
+  }
+
+  public void allAbbreviation(char[] ca, int start, StringBuilder sb, int k, List<String> res) {
+    int len = sb.length();
+    if (start >= ca.length) {
+      if (k > 0) {
+        sb.append(k);
+      }
+      res.add(sb.toString());
+      sb.setLength(len);
+      return;
+    }
+    allAbbreviation(ca, start + 1, sb, k + 1, res);
+    if (k > 0) {
+      sb.append(k);
+    }
+    sb.append(ca[start]);
+    allAbbreviation(ca, start + 1, sb, 0, res);
+    sb.setLength(len);
+  }
 }

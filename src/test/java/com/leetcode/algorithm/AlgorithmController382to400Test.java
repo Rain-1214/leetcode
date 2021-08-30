@@ -6,6 +6,7 @@ import org.junit.Test;
 public class AlgorithmController382to400Test {
 
   private AlgorithmController382to400 algorithmController361to380 = new AlgorithmController382to400();
+  private AlgorithmController401to420 algorithmController401to420 = new AlgorithmController401to420();
 
   @Test
   public void largestNumber() {
@@ -26,6 +27,11 @@ public class AlgorithmController382to400Test {
   public void integerReplacement() {
     System.out.println(this.algorithmController361to380.integerReplacement(2147483647));
 
+  }
+
+  @Test
+  public void allAbbreviation() {
+    System.out.println(this.algorithmController401to420.minAbbreviation("word", new String[1]));
   }
 
 }
