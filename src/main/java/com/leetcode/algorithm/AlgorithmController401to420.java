@@ -541,4 +541,20 @@ public class AlgorithmController401to420 {
     }
     return res;
   }
+
+  public int thirdMax(int[] nums) {
+    Arrays.sort(nums);
+    int index = 1, res = nums[nums.length - 1], max = nums[nums.length - 1];
+    for (int i = nums.length - 2; i >= 0; i--) {
+      if (nums[i] != nums[i + 1]) {
+        index++;
+        res = nums[i];
+        if (index == 3) {
+          return res;
+        }
+      }
+    }
+    return max;
+  }
+
 }
