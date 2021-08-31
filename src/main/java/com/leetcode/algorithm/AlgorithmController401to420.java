@@ -519,4 +519,26 @@ public class AlgorithmController401to420 {
     }
     return res;
   }
+
+  public int numberOfArithmeticSlices(int[] nums) {
+    if (nums.length < 3) {
+      return 0;
+    }
+    int res = 0, left = 0, right = 1;
+    while (left < nums.length && right < nums.length) {
+      int step = nums[right] - nums[right - 1];
+      while (right < nums.length && nums[right] - nums[right - 1] == step) {
+        right++;
+      }
+      if (right - left >= 3) {
+        int start = 1, end = (right - left) - 3 + 1;
+        res += (end - start + 1) * (end + start) / 2;
+        left = right - 1;
+      } else {
+        right = left + 2;
+        left++;
+      }
+    }
+    return res;
+  }
 }
