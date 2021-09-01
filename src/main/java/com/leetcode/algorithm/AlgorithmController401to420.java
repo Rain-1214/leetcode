@@ -557,4 +557,30 @@ public class AlgorithmController401to420 {
     return max;
   }
 
+  public String addStrings(String num1, String num2) {
+    char[] nc1 = num1.toCharArray();
+    char[] nc2 = num2.toCharArray();
+    int i1 = nc1.length - 1, i2 = nc2.length - 1;
+    int temp = 0;
+    StringBuilder sb = new StringBuilder();
+    while (i1 >= 0 || i2 >= 0) {
+      int n1 = i1 >= 0 ? nc1[i1] - '0' : 0;
+      int n2 = i2 >= 0 ? nc2[i2] - '0' : 0;
+      int sum = n1 + n2 + temp;
+      temp = 0;
+      if (sum >= 10) {
+        temp = 1;
+        sb.append(sum % 10);
+      } else {
+        sb.append(sum);
+      }
+      i1--;
+      i2--;
+    }
+    if (temp != 0) {
+      sb.append(temp);
+    }
+    return sb.reverse().toString();
+  }
+
 }
