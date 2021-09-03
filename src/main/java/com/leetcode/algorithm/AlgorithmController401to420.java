@@ -583,4 +583,69 @@ public class AlgorithmController401to420 {
     return sb.reverse().toString();
   }
 
+  public boolean canPartition(int[] nums) {
+    int n = nums.length;
+    if (n < 2) {
+      return false;
+    }
+    int maxNum = 0;
+    int sum = 0;
+    for (int num : nums) {
+      sum += num;
+      maxNum = Math.max(num, maxNum);
+    }
+    if (sum % 2 == 1) {
+      return false;
+    }
+    int target = sum / 2;
+    if (maxNum > target) {
+      return false;
+    }
+    boolean[][] dp = new boolean[n][target + 1];
+    for (int i = 0; i < n; i++) {
+      dp[i][0] = true;
+    }
+    dp[0][nums[0]] = true;
+    for (int i = 1; i < n; i++) {
+      int num = nums[i];
+      for (int j = 0; j <= target; j++) {
+        if (j >= num) {
+          dp[i][j] = dp[i - 1][j] || dp[i - 1][j - num];
+        } else {
+          dp[i][j] = dp[i - 1][j];
+        }
+      }
+    }
+    return dp[n - 1][target];
+  }
+
+  public boolean canPartitionII(int[] nums) {
+    int sum = 0;
+    for (int num : nums) {
+      sum += num;
+    }
+    if (sum % 2 != 0) {
+      return false;
+    }
+    // 0 is not calc, 1 is can, 2 is can't
+    int[][] cache = new int[nums.length][sum / 2];
+    return canPartitionHelp(nums, 0, 0, sum / 2, cache);
+  }
+
+  public boolean canPartitionHelp(int[] nums, int index, int sum, int res, int[][] cache) {
+    if (sum == res) {
+      return true;
+    }
+    if (index >= nums.length || sum > res) {
+      return false;
+    }
+    if (cache[index][sum] != 0) {
+      return cache[index][sum] == 1;
+    }
+    boolean temp = canPartitionHelp(nums, index + 1, sum + nums[index], res, cache)
+        || canPartitionHelp(nums, index + 1, sum, res, cache);
+    cache[index][sum] = temp ? 1 : 2;
+    return temp;
+  }
+
 }
