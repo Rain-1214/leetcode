@@ -648,4 +648,69 @@ public class AlgorithmController401to420 {
     return temp;
   }
 
+  public static final int[][] dirs = new int[][] { new int[] { 0, 1 }, new int[] { 0, -1 }, new int[] { 1, 0 },
+      new int[] { -1, 0 } };
+
+  public List<List<Integer>> pacificAtlantic(int[][] heights) {
+    List<List<Integer>> list = new ArrayList<>();
+    boolean[][][] cache = new boolean[heights.length][heights[0].length][2];
+    boolean[][] visitor = new boolean[heights.length][heights[0].length];
+    boolean[] current = new boolean[2];
+
+    for (int row = 0; row < heights.length; row++) {
+      for (int col = 0; col < heights[0].length; col++) {
+        current[0] = false;
+        current[1] = false;
+        pacificAtlantic(heights, row, col, cache, visitor, current);
+        visitor[row][col] = true;
+        cache[row][col][0] = current[0];
+        cache[row][col][1] = current[1];
+      }
+    }
+    for (int row = 0; row < heights.length; row++) {
+      for (int col = 0; col < heights[0].length; col++) {
+        if (cache[row][col][0] && cache[row][col][1]) {
+          List<Integer> temp = new ArrayList<>();
+          temp.add(row);
+          temp.add(col);
+          list.add(temp);
+        }
+      }
+    }
+    return list;
+  }
+
+  public void pacificAtlantic(int[][] heights, int row, int col, boolean[][][] cache, boolean[][] visitor,
+      boolean[] current) {
+    if (visitor[row][col]) {
+      if (!current[0]) {
+        current[0] = cache[row][col][0];
+      }
+      if (!current[1]) {
+        current[1] = cache[row][col][1];
+      }
+      return;
+    }
+    if (row == 0 || col == 0) {
+      current[0] = true;
+    }
+    if (row == heights.length - 1 || col == heights[0].length - 1) {
+      current[1] = true;
+    }
+    if (current[0] && current[1]) {
+      return;
+    }
+    int height = heights[row][col];
+    heights[row][col] = -1;
+    for (int[] dir : dirs) {
+      int nr = row + dir[0];
+      int nc = col + dir[1];
+      if (nr < 0 || nc < 0 || nr >= heights.length || nc >= heights[0].length || heights[nr][nc] > height
+          || heights[nr][nc] == -1) {
+        continue;
+      }
+      pacificAtlantic(heights, nr, nc, cache, visitor, current);
+    }
+    heights[row][col] = height;
+  }
 }
