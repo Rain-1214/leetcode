@@ -713,4 +713,40 @@ public class AlgorithmController401to420 {
     }
     heights[row][col] = height;
   }
+
+  public boolean[][] pacificFlow, atlanticFlow;
+
+  public List<List<Integer>> pacificAtlanticII(int[][] heights) {
+    List<List<Integer>> res = new ArrayList<>();
+    int maxRow = heights.length, maxCol = heights[0].length;
+    pacificFlow = new boolean[maxRow][maxCol];
+    atlanticFlow = new boolean[maxRow][maxCol];
+    for (int i = 0; i < maxRow; i++) {
+      pacificAtlanticIIHelp(heights, pacificFlow, i, 0, res);
+      pacificAtlanticIIHelp(heights, atlanticFlow, i, maxCol - 1, res);
+    }
+    for (int i = 0; i < maxCol; i++) {
+      pacificAtlanticIIHelp(heights, pacificFlow, 0, i, res);
+      pacificAtlanticIIHelp(heights, atlanticFlow, maxRow - 1, i, res);
+    }
+    return res;
+  }
+
+  public void pacificAtlanticIIHelp(int[][] heights, boolean[][] flow, int row, int col, List<List<Integer>> res) {
+    if (flow[row][col]) {
+      return;
+    }
+    flow[row][col] = true;
+    if (pacificFlow[row][col] && atlanticFlow[row][col]) {
+      res.add(Arrays.asList(row, col));
+    }
+    for (int[] dir : dirs) {
+      int nr = row + dir[0];
+      int nc = col + dir[1];
+      if (nr < 0 || nc < 0 || nr >= heights.length || nc >= heights[0].length || heights[nr][nc] < heights[row][col]) {
+        continue;
+      }
+      pacificAtlanticIIHelp(heights, flow, nr, nc, res);
+    }
+  }
 }
