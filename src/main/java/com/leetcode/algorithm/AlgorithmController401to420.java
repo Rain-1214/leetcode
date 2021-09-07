@@ -648,4 +648,160 @@ public class AlgorithmController401to420 {
     return temp;
   }
 
+  public static final int[][] dirs = new int[][] { new int[] { 0, 1 }, new int[] { 0, -1 }, new int[] { 1, 0 },
+      new int[] { -1, 0 } };
+
+  public List<List<Integer>> pacificAtlantic(int[][] heights) {
+    List<List<Integer>> list = new ArrayList<>();
+    boolean[][][] cache = new boolean[heights.length][heights[0].length][2];
+    boolean[][] visitor = new boolean[heights.length][heights[0].length];
+    boolean[] current = new boolean[2];
+
+    for (int row = 0; row < heights.length; row++) {
+      for (int col = 0; col < heights[0].length; col++) {
+        current[0] = false;
+        current[1] = false;
+        pacificAtlantic(heights, row, col, cache, visitor, current);
+        visitor[row][col] = true;
+        cache[row][col][0] = current[0];
+        cache[row][col][1] = current[1];
+      }
+    }
+    for (int row = 0; row < heights.length; row++) {
+      for (int col = 0; col < heights[0].length; col++) {
+        if (cache[row][col][0] && cache[row][col][1]) {
+          List<Integer> temp = new ArrayList<>();
+          temp.add(row);
+          temp.add(col);
+          list.add(temp);
+        }
+      }
+    }
+    return list;
+  }
+
+  public void pacificAtlantic(int[][] heights, int row, int col, boolean[][][] cache, boolean[][] visitor,
+      boolean[] current) {
+    if (visitor[row][col]) {
+      if (!current[0]) {
+        current[0] = cache[row][col][0];
+      }
+      if (!current[1]) {
+        current[1] = cache[row][col][1];
+      }
+      return;
+    }
+    if (row == 0 || col == 0) {
+      current[0] = true;
+    }
+    if (row == heights.length - 1 || col == heights[0].length - 1) {
+      current[1] = true;
+    }
+    if (current[0] && current[1]) {
+      return;
+    }
+    int height = heights[row][col];
+    heights[row][col] = -1;
+    for (int[] dir : dirs) {
+      int nr = row + dir[0];
+      int nc = col + dir[1];
+      if (nr < 0 || nc < 0 || nr >= heights.length || nc >= heights[0].length || heights[nr][nc] > height
+          || heights[nr][nc] == -1) {
+        continue;
+      }
+      pacificAtlantic(heights, nr, nc, cache, visitor, current);
+    }
+    heights[row][col] = height;
+  }
+
+  public boolean[][] pacificFlow, atlanticFlow;
+
+  public List<List<Integer>> pacificAtlanticII(int[][] heights) {
+    List<List<Integer>> res = new ArrayList<>();
+    int maxRow = heights.length, maxCol = heights[0].length;
+    pacificFlow = new boolean[maxRow][maxCol];
+    atlanticFlow = new boolean[maxRow][maxCol];
+    for (int i = 0; i < maxRow; i++) {
+      pacificAtlanticIIHelp(heights, pacificFlow, i, 0, res);
+      pacificAtlanticIIHelp(heights, atlanticFlow, i, maxCol - 1, res);
+    }
+    for (int i = 0; i < maxCol; i++) {
+      pacificAtlanticIIHelp(heights, pacificFlow, 0, i, res);
+      pacificAtlanticIIHelp(heights, atlanticFlow, maxRow - 1, i, res);
+    }
+    return res;
+  }
+
+  public void pacificAtlanticIIHelp(int[][] heights, boolean[][] flow, int row, int col, List<List<Integer>> res) {
+    if (flow[row][col]) {
+      return;
+    }
+    flow[row][col] = true;
+    if (pacificFlow[row][col] && atlanticFlow[row][col]) {
+      res.add(Arrays.asList(row, col));
+    }
+    for (int[] dir : dirs) {
+      int nr = row + dir[0];
+      int nc = col + dir[1];
+      if (nr < 0 || nc < 0 || nr >= heights.length || nc >= heights[0].length || heights[nr][nc] < heights[row][col]) {
+        continue;
+      }
+      pacificAtlanticIIHelp(heights, flow, nr, nc, res);
+    }
+  }
+
+  public int wordsTyping(String[] sentence, int rows, int cols) {
+    int[] lens = new int[sentence.length];
+    for (int i = 0; i < sentence.length; i++) {
+      int len = sentence[i].length();
+      if (len > cols) {
+        return 0;
+      }
+      lens[i] = len;
+    }
+    int row = 0, res = 0, col = 0, index = 0;
+    while (row < rows) {
+      while (col < cols) {
+        if (col + lens[index] <= cols) {
+          col += lens[index++] + 1;
+          if (index >= lens.length) {
+            res++;
+            index = 0;
+          }
+        } else {
+          break;
+        }
+      }
+      row++;
+      col = 0;
+    }
+    return res;
+  }
+
+  public int wordsTypingII(String[] sentence, int rows, int cols) {
+    int[] wordSum = new int[sentence.length];
+    int[] points = new int[sentence.length];
+
+    for (int i = 0; i < sentence.length; i++) {
+      int count = 0;
+      int point = i;
+      int col = cols;
+      while (col >= sentence[point].length()) {
+        col -= sentence[point++].length() + 1;
+        if (point >= sentence.length) {
+          count++;
+          point = 0;
+        }
+      }
+      wordSum[i] = count;
+      points[i] = point;
+    }
+
+    int cur = 0, res = 0;
+    for (int i = 0; i < rows; i++) {
+      res += wordSum[cur];
+      cur = points[cur];
+    }
+    return res;
+  }
 }
