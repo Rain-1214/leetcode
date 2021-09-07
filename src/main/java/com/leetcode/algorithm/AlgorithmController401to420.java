@@ -749,4 +749,59 @@ public class AlgorithmController401to420 {
       pacificAtlanticIIHelp(heights, flow, nr, nc, res);
     }
   }
+
+  public int wordsTyping(String[] sentence, int rows, int cols) {
+    int[] lens = new int[sentence.length];
+    for (int i = 0; i < sentence.length; i++) {
+      int len = sentence[i].length();
+      if (len > cols) {
+        return 0;
+      }
+      lens[i] = len;
+    }
+    int row = 0, res = 0, col = 0, index = 0;
+    while (row < rows) {
+      while (col < cols) {
+        if (col + lens[index] <= cols) {
+          col += lens[index++] + 1;
+          if (index >= lens.length) {
+            res++;
+            index = 0;
+          }
+        } else {
+          break;
+        }
+      }
+      row++;
+      col = 0;
+    }
+    return res;
+  }
+
+  public int wordsTypingII(String[] sentence, int rows, int cols) {
+    int[] wordSum = new int[sentence.length];
+    int[] points = new int[sentence.length];
+
+    for (int i = 0; i < sentence.length; i++) {
+      int count = 0;
+      int point = i;
+      int col = cols;
+      while (col >= sentence[point].length()) {
+        col -= sentence[point++].length() + 1;
+        if (point >= sentence.length) {
+          count++;
+          point = 0;
+        }
+      }
+      wordSum[i] = count;
+      points[i] = point;
+    }
+
+    int cur = 0, res = 0;
+    for (int i = 0; i < rows; i++) {
+      res += wordSum[cur];
+      cur = points[cur];
+    }
+    return res;
+  }
 }
