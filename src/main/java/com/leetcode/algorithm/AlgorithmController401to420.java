@@ -804,4 +804,44 @@ public class AlgorithmController401to420 {
     }
     return res;
   }
+
+  public int countBattleships(char[][] board) {
+    int res = 0, rowMax = board.length, colMax = board[0].length;
+    for (int i = 0; i < rowMax; i++) {
+      for (int j = 0; j < colMax; j++) {
+        if (board[i][j] == 'X') {
+          res++;
+          countBattleships(board, i, j);
+        }
+      }
+    }
+    return res;
+  }
+
+  public void countBattleships(char[][] board, int row, int col) {
+    board[row][col] = '.';
+    for (int[] dir : dirs) {
+      int nr = row + dir[0];
+      int nc = col + dir[1];
+      if (nr < 0 || nc < 0 || nr >= board.length || nc >= board[0].length || board[nr][nc] == '.') {
+        continue;
+      }
+      countBattleships(board, nr, nc);
+    }
+  }
+
+  public int countBattleshipsII(char[][] board) {
+    int res = 0, rowMax = board.length, colMax = board[0].length;
+    for (int i = 0; i < rowMax; i++) {
+      for (int j = 0; j < colMax; j++) {
+        if (board[i][j] == 'X') {
+          if ((i > 0 && board[i - 1][j] == 'X') || (j > 0 && board[i][j - 1] == 'X')) {
+            continue;
+          }
+          res++;
+        }
+      }
+    }
+    return res;
+  }
 }
