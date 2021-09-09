@@ -844,4 +844,58 @@ public class AlgorithmController401to420 {
     }
     return res;
   }
+
+  public int strongPasswordChecker(String password) {
+    int len = password.length(), lower = 1, upper = 1, digits = 1;
+    int[] sum = new int[len];
+    char[] passwordChar = password.toCharArray();
+    for (int i = 0; i < passwordChar.length;) {
+      if (Character.isLowerCase(passwordChar[i])) {
+        lower = 0;
+      } else if (Character.isUpperCase(passwordChar[i])) {
+        upper = 0;
+      } else if (Character.isDigit(passwordChar[i])) {
+        digits = 0;
+      }
+      int j = i;
+      while (i < passwordChar.length && passwordChar[j] == passwordChar[i]) {
+        i++;
+      }
+      sum[j] = i - j;
+    }
+    int miss = lower + upper + digits, res = 0;
+    if (len < 6) {
+      int diff = 6 - len;
+      res += diff + Math.max(0, miss - diff);
+    } else {
+      int over = Math.max(0, len - 20), left = 0;
+      res += over;
+      for (int k = 1; k < 3; k++) {
+        for (int i = 0; i < len && over > 0; i++) {
+          if (sum[i] < 3 || sum[i] % 3 != (k - 1)) {
+            continue;
+          }
+          if (k == 2 && over == 1) {
+            sum[i] -= 1;
+            over -= 1;
+          } else {
+            sum[i] -= k;
+            over -= k;
+          }
+        }
+      }
+      for (int i = 0; i < len; i++) {
+        if (sum[i] >= 3 && over > 0) {
+          int need = sum[i] - 2;
+          sum[i] -= over;
+          over -= need;
+        }
+        if (sum[i] >= 3) {
+          left += sum[i] / 3;
+        }
+      }
+      res += Math.max(miss, left);
+    }
+    return res;
+  }
 }
