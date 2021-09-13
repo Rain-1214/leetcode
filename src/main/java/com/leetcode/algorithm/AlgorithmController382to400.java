@@ -12,7 +12,6 @@ import java.util.Stack;
 
 import com.leetcode.entity.ListNode;
 import com.leetcode.entity.NestedInteger;
-import com.leetcode.tool.Print;
 
 public class AlgorithmController382to400 {
 
