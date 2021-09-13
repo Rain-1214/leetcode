@@ -1,6 +1,7 @@
 package com.leetcode.algorithm;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class AlgorithmController421to440 {
@@ -99,4 +100,33 @@ public class AlgorithmController421to440 {
     }
     return res;
   }
+
+  public boolean validWordSquare(List<String> words) {
+    int n = words.size(), index = 0;
+    while (index < n) {
+      int rowR = index, colR = 0;
+      int rowD = 0, colD = index;
+      String right = words.get(rowR);
+      while (colR < right.length()) {
+        if (rowD >= n) {
+          return false;
+        }
+        String temp = words.get(rowD);
+        if (colD >= temp.length()) {
+          return false;
+        }
+        if (right.charAt(colR) != temp.charAt(colD)) {
+          return false;
+        }
+        colR++;
+        rowD++;
+      }
+      if (rowD < n && colD < words.get(rowD).length()) {
+        return false;
+      }
+      index++;
+    }
+    return true;
+  }
+
 }
