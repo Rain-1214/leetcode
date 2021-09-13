@@ -2,7 +2,6 @@ package com.leetcode.algorithm;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -14,7 +13,6 @@ import java.util.Map.Entry;
 
 import com.leetcode.entity.TreeNode;
 import com.leetcode.tool.Node;
-import com.leetcode.tool.Print;
 
 public class AlgorithmController121to140 {
   public int maxProfit(int[] prices) {
