@@ -129,4 +129,115 @@ public class AlgorithmController421to440 {
     return true;
   }
 
+  // -----------------------------a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p,
+  // q, r, s, t, u, v, w, x, y, z
+  // -----------------------------0, 1, 2, 3, 4, 5, 6, 7, 8,
+  // 9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25
+  public int[] zero = new int[] { 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1 };
+  public int[] one = new int[] { 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+  public int[] two = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0 };
+  public int[] three = new int[] { 0, 0, 0, 0, 2, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0 };
+  public int[] four = new int[] { 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0 };
+  public int[] five = new int[] { 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0 };
+  public int[] six = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0 };
+  public int[] seven = new int[] { 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0 };
+  public int[] eight = new int[] { 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0 };
+  public int[] nine = new int[] { 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+
+  public String originalDigits(String s) {
+    int[] letters = new int[26];
+    for (char c : s.toCharArray()) {
+      letters[c - 'a']++;
+    }
+    StringBuilder sb = new StringBuilder();
+    originalDigits(letters, sb);
+    return sb.toString();
+  }
+
+  public boolean originalDigits(int[] letters, StringBuilder sb) {
+    int sum = 0;
+    for (int num : letters) {
+      sum += num;
+    }
+    if (sum == 0) {
+      return true;
+    }
+    int len = sb.length();
+    for (int i = 0; i <= 9; i++) {
+      int[] temp = getLetterNum(i);
+      boolean flag = true;
+      for (int j = 0; j < letters.length; j++) {
+        if (letters[j] < temp[j]) {
+          flag = false;
+        }
+        letters[j] -= temp[j];
+      }
+      if (flag) {
+        sb.append(i);
+        if (originalDigits(letters, sb)) {
+          return true;
+        } else {
+          sb.setLength(len);
+        }
+      }
+      for (int j = 0; j < letters.length; j++) {
+        letters[j] += temp[j];
+      }
+    }
+    return false;
+  }
+
+  public int[] getLetterNum(int letter) {
+    switch (letter) {
+      case 1:
+        return one;
+      case 2:
+        return two;
+      case 3:
+        return three;
+      case 4:
+        return four;
+      case 5:
+        return five;
+      case 6:
+        return six;
+      case 7:
+        return seven;
+      case 8:
+        return eight;
+      case 9:
+        return nine;
+      case 0:
+        return zero;
+      default:
+        return new int[0];
+    }
+  }
+
+  public String originalDigitsII(String s) {
+    int[] letters = new int[26];
+    for (char c : s.toCharArray()) {
+      letters[c - 'a']++;
+    }
+    int[] nums = new int[10];
+    nums[0] = letters[25];
+    nums[2] = letters[22];
+    nums[4] = letters[20];
+    nums[6] = letters[23];
+    nums[8] = letters[6];
+    nums[3] = letters[7] - nums[8];
+    nums[5] = letters[5] - nums[4];
+    nums[7] = letters[18] - nums[6];
+    nums[9] = letters[8] - nums[5] - nums[6] - nums[8];
+    nums[1] = letters[13] - nums[7] - 2 * nums[9];
+
+    StringBuilder sb = new StringBuilder();
+    for (int i = 0; i <= 9; i++) {
+      for (int j = 0; j < nums[i]; j++) {
+        sb.append(i);
+      }
+    }
+    return sb.toString();
+  }
+
 }
