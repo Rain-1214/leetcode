@@ -240,4 +240,61 @@ public class AlgorithmController421to440 {
     return sb.toString();
   }
 
+  public int characterReplacement(String s, int k) {
+    char[] sc = s.toCharArray();
+    int index = 0, res = 0;
+    while (index < sc.length) {
+      int temp = k, start = index, nextIndex = -1;
+      char c = sc[index];
+      while (temp >= 0 && index < sc.length) {
+        if (sc[index] != c) {
+          temp--;
+          if (nextIndex == -1) {
+            nextIndex = index;
+          }
+          if (temp < 0) {
+            break;
+          }
+        }
+        index++;
+      }
+      if (index == sc.length) {
+        if (temp >= 0) {
+          while (temp >= 0 && start > 0) {
+            if (sc[start] != c) {
+              temp--;
+              if (temp < 0) {
+                break;
+              }
+            }
+            start--;
+          }
+        }
+        res = Math.max(res, index - start);
+        break;
+      } else {
+        res = Math.max(res, index - start);
+      }
+      index = nextIndex;
+    }
+
+    return res;
+  }
+
+  public int characterReplacementII(String s, int k) {
+    int[] nums = new int[26];
+    char[] sc = s.toCharArray();
+    int left = 0, right = 0, len = sc.length, maxNum = 0;
+    while (right < len) {
+      nums[sc[right] - 'A']++;
+      maxNum = Math.max(nums[sc[right] - 'A'], maxNum);
+      while (right - left + 1 - maxNum > k) {
+        nums[sc[left] - 'A']--;
+        left++;
+      }
+      right++;
+    }
+    return right - left;
+  }
+
 }
