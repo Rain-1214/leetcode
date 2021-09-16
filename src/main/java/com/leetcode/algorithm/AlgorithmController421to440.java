@@ -1,6 +1,8 @@
 package com.leetcode.algorithm;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -295,6 +297,111 @@ public class AlgorithmController421to440 {
       right++;
     }
     return right - left;
+  }
+
+  public class DictionaryTree {
+    public DictionaryTree[] children;
+    public boolean isEnd;
+
+    public DictionaryTree() {
+      this.children = new DictionaryTree[26];
+    }
+
+    public void add(String str) {
+      char[] ca = str.toCharArray();
+      DictionaryTree current = this;
+      for (int i = 0; i < ca.length; i++) {
+        int index = ca[i] - 'a';
+        if (current.children[index] == null) {
+          current.children[index] = new DictionaryTree();
+        }
+        current = current.children[index];
+      }
+      current.isEnd = true;
+    }
+
+    public List<String> getWordWithPrefix(String str, int maxLength) {
+      DictionaryTree current = this;
+      List<String> res = new ArrayList<>();
+      char[] ca = str.toCharArray();
+      StringBuilder sb = new StringBuilder();
+      sb.append(str);
+      for (int i = 0; i < ca.length; i++) {
+        int index = ca[i] - 'a';
+        if (current.children[index] == null) {
+          return res;
+        }
+        current = current.children[index];
+      }
+      getAllWords(current, sb, res, maxLength);
+      return res;
+    }
+
+    private void getAllWords(DictionaryTree root, StringBuilder sb, List<String> res, int maxLength) {
+      if (sb.length() > maxLength) {
+        return;
+      }
+      if (root.isEnd) {
+        res.add(sb.toString());
+      }
+      int len = sb.length();
+      for (int i = 0; i < root.children.length; i++) {
+        if (root.children[i] != null) {
+          sb.append((char) (i + 'a'));
+          getAllWords(root.children[i], sb, res, maxLength);
+          sb.setLength(len);
+        }
+      }
+    }
+  }
+
+  public List<List<String>> wordSquares(String[] words) {
+    List<List<String>> res = new ArrayList<>();
+    DictionaryTree root = new DictionaryTree();
+    for (String word : words) {
+      root.add(word);
+    }
+    for (int i = 0; i < words.length; i++) {
+      LinkedList<String> current = new LinkedList<>();
+      current.add(words[i]);
+      if (words[i].length() == 1) {
+        res.add(current);
+        continue;
+      }
+      wordSquares(root, current, words[i].length(), res);
+    }
+    return res;
+  }
+
+  public void wordSquares(DictionaryTree root, LinkedList<String> current, int maxRow, List<List<String>> res) {
+    int currentRow = current.size();
+    StringBuilder sb = new StringBuilder();
+    for (int i = 0; i < currentRow; i++) {
+      String temp = current.get(i);
+      if (currentRow >= temp.length()) {
+        break;
+      }
+      sb.append(temp.charAt(currentRow));
+    }
+    int maxLen = current.get(currentRow - 1).length();
+    List<String> strings = root.getWordWithPrefix(sb.toString(), maxLen);
+    if (currentRow == maxRow - 1) {
+      for (String s : strings) {
+        List<String> temp = new ArrayList<>();
+        for (String s1 : current) {
+          temp.add(s1);
+        }
+        temp.add(s);
+        res.add(temp);
+      }
+      return;
+    } else {
+      for (String s : strings) {
+        current.add(s);
+        wordSquares(root, current, maxRow, res);
+        current.removeLast();
+      }
+    }
   }
 
 }

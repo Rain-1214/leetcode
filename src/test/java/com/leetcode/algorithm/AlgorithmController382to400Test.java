@@ -1,5 +1,7 @@
 package com.leetcode.algorithm;
 
+import java.util.LinkedList;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -31,7 +33,13 @@ public class AlgorithmController382to400Test {
 
   @Test
   public void allAbbreviation() {
-    System.out.println(this.algorithmController401to420.minAbbreviation("word", new String[1]));
+    LinkedList<Integer> s = new LinkedList<>();
+    s.add(1);
+    s.addLast(2);
+    s.removeLast();
+    // System.out.println(this.algorithmController401to420.minAbbreviation("word",
+    // new String[1]));
+    System.out.println(s);
   }
 
 }
