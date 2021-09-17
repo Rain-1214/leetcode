@@ -6,6 +6,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import com.leetcode.entity.TreeNode;
+import com.leetcode.tool.Node;
+
 public class AlgorithmController421to440 {
 
   public int findMaximumXOR(int[] nums) {
@@ -402,6 +405,41 @@ public class AlgorithmController421to440 {
         current.removeLast();
       }
     }
+  }
+
+  public TreeNode treeToDoublyListRes = null;
+  public TreeNode treeToDoublyListCurrent = null;
+
+  public TreeNode treeToDoublyList(TreeNode root) {
+    if (root == null) {
+      return root;
+    }
+    treeToDoublyListHelp(root);
+    treeToDoublyListCurrent.right = treeToDoublyListRes;
+    treeToDoublyListRes.left = treeToDoublyListCurrent;
+    TreeNode head = treeToDoublyListRes.right;
+    TreeNode prev = treeToDoublyListRes;
+    while (head != treeToDoublyListRes) {
+      head.left = prev;
+      prev = head;
+      head = head.right;
+    }
+    return treeToDoublyListRes;
+  }
+
+  public void treeToDoublyListHelp(TreeNode root) {
+    if (root == null) {
+      return;
+    }
+    treeToDoublyListHelp(root.left);
+    if (treeToDoublyListRes == null) {
+      treeToDoublyListRes = root;
+      treeToDoublyListCurrent = root;
+    } else {
+      treeToDoublyListCurrent.right = root;
+      treeToDoublyListCurrent = root;
+    }
+    treeToDoublyListHelp(root.right);
   }
 
 }
