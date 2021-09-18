@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import com.leetcode.entity.MatrixNode;
 import com.leetcode.entity.TreeNode;
 import com.leetcode.tool.Node;
 
@@ -440,6 +441,65 @@ public class AlgorithmController421to440 {
       treeToDoublyListCurrent = root;
     }
     treeToDoublyListHelp(root.right);
+  }
+
+  public MatrixNode construct(int[][] grid) {
+    MatrixNode node = new MatrixNode();
+    int len = grid.length;
+    if (len == 1) {
+      node.isLeaf = true;
+      node.val = grid[0][0] == 1;
+      return node;
+    }
+    construct(grid, node, len / 2, len / 2, len / 2);
+    return node;
+  }
+
+  public MatrixNode construct(int[][] grid, MatrixNode node, int row, int col, int radius) {
+    if (radius == 1) {
+      node.topLeft = new MatrixNode(grid[row - 1][col - 1] == 1, true);
+      node.topRight = new MatrixNode(grid[row - 1][col] == 1, true);
+      node.bottomLeft = new MatrixNode(grid[row][col - 1] == 1, true);
+      node.bottomRight = new MatrixNode(grid[row][col] == 1, true);
+      checkMatrixNode(node);
+      return node;
+    }
+    int nextRadius = radius / 2;
+    node.topLeft = construct(grid, new MatrixNode(), row - nextRadius, col - nextRadius, nextRadius);
+    node.topRight = construct(grid, new MatrixNode(), row - nextRadius, col + nextRadius, nextRadius);
+    node.bottomLeft = construct(grid, new MatrixNode(), row + nextRadius, col - nextRadius, nextRadius);
+    node.bottomRight = construct(grid, new MatrixNode(), row + nextRadius, col + nextRadius, nextRadius);
+    checkMatrixNode(node);
+    return node;
+  }
+
+  public void checkMatrixNode(MatrixNode node) {
+    boolean isAllLeaf = node.topLeft.isLeaf && node.topRight.isLeaf && node.bottomLeft.isLeaf
+        && node.bottomRight.isLeaf;
+    boolean isAllValSame = false;
+    boolean val = true;
+    if (node.topLeft.val == node.topRight.val && node.topRight.val == node.bottomLeft.val
+        && node.bottomLeft.val == node.bottomRight.val) {
+      isAllValSame = true;
+      val = node.topLeft.val;
+    }
+    if (isAllValSame) {
+      node.val = val;
+      if (isAllLeaf) {
+        node.isLeaf = true;
+        node.topLeft = null;
+        node.topRight = null;
+        node.bottomLeft = null;
+        node.bottomRight = null;
+      } else {
+        node.isLeaf = false;
+      }
+      return;
+    } else {
+      isAllLeaf = false;
+    }
+    node.isLeaf = isAllLeaf;
+    node.val = val;
   }
 
 }
