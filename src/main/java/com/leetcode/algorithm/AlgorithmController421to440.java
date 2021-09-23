@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import java.util.Set;
 
 import com.leetcode.entity.MatrixNode;
+import com.leetcode.entity.NTreeNode;
 import com.leetcode.entity.TreeNode;
 import com.leetcode.tool.Node;
 
@@ -500,6 +502,146 @@ public class AlgorithmController421to440 {
     }
     node.isLeaf = isAllLeaf;
     node.val = val;
+  }
+
+  class Codec {
+    // Encodes a tree to a single string.
+    public String serialize(NTreeNode root) {
+      if (root == null) {
+        return "#";
+      }
+      StringBuilder sb = new StringBuilder();
+      Queue<NTreeNode> q = new LinkedList<>();
+      q.add(root);
+      q.add(null);
+      while (!q.isEmpty()) {
+        int len = q.size();
+        for (int i = 0; i < len; i++) {
+          if (q.peek() == null) {
+            sb.append("#");
+            q.poll();
+          }
+          while (q.peek() != null) {
+            NTreeNode c = q.poll();
+            sb.append(c.val);
+            if (q.peek() != null) {
+              sb.append(',');
+            }
+            if (c.children.size() > 0) {
+              for (NTreeNode n : c.children) {
+                q.add(n);
+              }
+            } else {
+              q.add(null);
+            }
+            q.add(null);
+          }
+        }
+        if (!q.isEmpty()) {
+          q.poll();
+        }
+        sb.append("#");
+      }
+      return sb.toString();
+    }
+
+    // Decodes your encoded data to tree.
+    public NTreeNode deserialize(String data) {
+      if (data.equals("#")) {
+        return null;
+      }
+      char[] sc = data.toCharArray();
+      int index = 0, val = 0;
+      while (Character.isDigit(sc[index])) {
+        val = val * 10 + (sc[index] - '0');
+        index++;
+      }
+      NTreeNode root = new NTreeNode(val, new ArrayList<>());
+      Queue<NTreeNode> q = new LinkedList<>();
+      q.add(root);
+      index++;
+      while (index < sc.length) {
+        NTreeNode c = q.poll();
+        if (sc[index] == '#') {
+          index += 2;
+          continue;
+        }
+        if (Character.isDigit(sc[index])) {
+          while (sc[index] != '#') {
+            if (sc[index] == ',') {
+              index++;
+              continue;
+            }
+            val = 0;
+            while (Character.isDigit(sc[index])) {
+              val = val * 10 + (sc[index] - '0');
+              index++;
+            }
+            NTreeNode temp = new NTreeNode(val, new ArrayList<>());
+            c.children.add(temp);
+            q.add(temp);
+          }
+        }
+        index++;
+      }
+      return root;
+    }
+  }
+
+  class CodecII {
+    // Encodes a tree to a single string.
+    public String serialize(NTreeNode root) {
+      if (root == null) {
+        return "";
+      }
+      StringBuilder sb = new StringBuilder();
+      inorder(root, sb);
+      return sb.toString();
+    }
+
+    public void inorder(NTreeNode root, StringBuilder sb) {
+      sb.append(root.val);
+      sb.append('(');
+      for (NTreeNode node : root.children) {
+        inorder(node, sb);
+      }
+      sb.append(')');
+    }
+
+    // Decodes your encoded data to tree.
+    public NTreeNode deserialize(String data) {
+      if (data.length() == 0) {
+        return null;
+      }
+      return deserialize(data.toCharArray(), new int[1]);
+    }
+
+    public NTreeNode deserialize(char[] data, int[] idx) {
+      int val = getInt(data, idx);
+
+      ArrayList<NTreeNode> list = new ArrayList<>();
+      while (idx[0] < data.length) {
+        if (data[idx[0]] == '(') {
+          idx[0]++;
+          continue;
+        }
+        if (data[idx[0]] == ')') {
+          idx[0]++;
+          break;
+        }
+        list.add(deserialize(data, idx));
+      }
+      return new NTreeNode(val, list);
+    }
+
+    public int getInt(char[] data, int[] idx) {
+      int val = 0;
+      while (Character.isDigit(data[idx[0]])) {
+        val = val * 10 + (data[idx[0]] - '0');
+        idx[0]++;
+      }
+      return val;
+    }
   }
 
 }
