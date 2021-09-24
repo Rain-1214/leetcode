@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 
+import com.leetcode.entity.ListChilNode;
 import com.leetcode.entity.MatrixNode;
 import com.leetcode.entity.NTreeNode;
 import com.leetcode.entity.TreeNode;
@@ -641,6 +642,115 @@ public class AlgorithmController421to440 {
         idx[0]++;
       }
       return val;
+    }
+  }
+
+  public List<List<Integer>> levelOrder(NTreeNode root) {
+    List<List<Integer>> res = new ArrayList<>();
+    if (root == null) {
+      return res;
+    }
+    Queue<NTreeNode> q = new LinkedList<>();
+    q.add(root);
+    while (!q.isEmpty()) {
+      int len = q.size();
+      List<Integer> list = new ArrayList<>();
+      for (int i = 0; i < len; i++) {
+        NTreeNode c = q.poll();
+        list.add(c.val);
+        for (NTreeNode node : c.children) {
+          q.add(node);
+        }
+      }
+      res.add(list);
+    }
+    return res;
+  }
+
+  public List<List<Integer>> levelOrderII(NTreeNode root) {
+    List<List<Integer>> res = new ArrayList<>();
+    if (root == null) {
+      return res;
+    }
+    levelOrderII(root, 0, res);
+    return res;
+  }
+
+  public void levelOrderII(NTreeNode root, int level, List<List<Integer>> res) {
+    if (res.size() <= level) {
+      res.add(new ArrayList<>());
+    }
+    res.get(level).add(root.val);
+    for (NTreeNode node : root.children) {
+      levelOrderII(node, level + 1, res);
+    }
+  }
+
+  public ListChilNode flatten(ListChilNode head) {
+    ListChilNode current = head;
+    while (current != null) {
+      if (current.child != null) {
+        ListChilNode next = flatten(current.child);
+        ListChilNode end = next;
+        while (end.next != null) {
+          end = end.next;
+        }
+        ListChilNode temp = current.next;
+        current.next = next;
+        current.child = null;
+        next.prev = current;
+        end.next = temp;
+        if (temp != null) {
+          temp.prev = end;
+        }
+        current = temp;
+      } else {
+        current = current.next;
+      }
+    }
+    return head;
+  }
+
+  class Codec431 {
+    // Encodes an n-ary tree to a binary tree.
+    public TreeNode encode(NTreeNode root) {
+      if (root == null) {
+        return null;
+      }
+      return inorder(root);
+    }
+
+    public TreeNode inorder(NTreeNode root) {
+      TreeNode res = new TreeNode(root.val);
+      TreeNode current = res.left;
+      for (NTreeNode node : root.children) {
+        if (current == null) {
+          res.left = inorder(node);
+          current = res.left;
+        } else {
+          current.right = inorder(node);
+          current = current.right;
+        }
+      }
+      return res;
+    }
+
+    // Decodes your binary tree to an n-ary tree.
+    public NTreeNode decode(TreeNode root) {
+      if (root == null) {
+        return null;
+      }
+      return decodeHelp(root);
+    }
+
+    public NTreeNode decodeHelp(TreeNode root) {
+      NTreeNode res = new NTreeNode(root.val, new ArrayList<>());
+      TreeNode current = root.left;
+      while (current != null) {
+        res.children.add(decodeHelp(current));
+        current = current.right;
+      }
+      return res;
     }
   }
 
