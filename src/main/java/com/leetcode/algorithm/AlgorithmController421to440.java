@@ -711,4 +711,47 @@ public class AlgorithmController421to440 {
     return head;
   }
 
+  class Codec431 {
+    // Encodes an n-ary tree to a binary tree.
+    public TreeNode encode(NTreeNode root) {
+      if (root == null) {
+        return null;
+      }
+      return inorder(root);
+    }
+
+    public TreeNode inorder(NTreeNode root) {
+      TreeNode res = new TreeNode(root.val);
+      TreeNode current = res.left;
+      for (NTreeNode node : root.children) {
+        if (current == null) {
+          res.left = inorder(node);
+          current = res.left;
+        } else {
+          current.right = inorder(node);
+          current = current.right;
+        }
+      }
+      return res;
+    }
+
+    // Decodes your binary tree to an n-ary tree.
+    public NTreeNode decode(TreeNode root) {
+      if (root == null) {
+        return null;
+      }
+      return decodeHelp(root);
+    }
+
+    public NTreeNode decodeHelp(TreeNode root) {
+      NTreeNode res = new NTreeNode(root.val, new ArrayList<>());
+      TreeNode current = root.left;
+      while (current != null) {
+        res.children.add(decodeHelp(current));
+        current = current.right;
+      }
+      return res;
+    }
+  }
+
 }
