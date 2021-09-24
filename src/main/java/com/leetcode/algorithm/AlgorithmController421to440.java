@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 
+import com.leetcode.entity.ListChilNode;
 import com.leetcode.entity.MatrixNode;
 import com.leetcode.entity.NTreeNode;
 import com.leetcode.entity.TreeNode;
@@ -683,6 +684,31 @@ public class AlgorithmController421to440 {
     for (NTreeNode node : root.children) {
       levelOrderII(node, level + 1, res);
     }
+  }
+
+  public ListChilNode flatten(ListChilNode head) {
+    ListChilNode current = head;
+    while (current != null) {
+      if (current.child != null) {
+        ListChilNode next = flatten(current.child);
+        ListChilNode end = next;
+        while (end.next != null) {
+          end = end.next;
+        }
+        ListChilNode temp = current.next;
+        current.next = next;
+        current.child = null;
+        next.prev = current;
+        end.next = temp;
+        if (temp != null) {
+          temp.prev = end;
+        }
+        current = temp;
+      } else {
+        current = current.next;
+      }
+    }
+    return head;
   }
 
 }
