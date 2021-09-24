@@ -644,4 +644,45 @@ public class AlgorithmController421to440 {
     }
   }
 
+  public List<List<Integer>> levelOrder(NTreeNode root) {
+    List<List<Integer>> res = new ArrayList<>();
+    if (root == null) {
+      return res;
+    }
+    Queue<NTreeNode> q = new LinkedList<>();
+    q.add(root);
+    while (!q.isEmpty()) {
+      int len = q.size();
+      List<Integer> list = new ArrayList<>();
+      for (int i = 0; i < len; i++) {
+        NTreeNode c = q.poll();
+        list.add(c.val);
+        for (NTreeNode node : c.children) {
+          q.add(node);
+        }
+      }
+      res.add(list);
+    }
+    return res;
+  }
+
+  public List<List<Integer>> levelOrderII(NTreeNode root) {
+    List<List<Integer>> res = new ArrayList<>();
+    if (root == null) {
+      return res;
+    }
+    levelOrderII(root, 0, res);
+    return res;
+  }
+
+  public void levelOrderII(NTreeNode root, int level, List<List<Integer>> res) {
+    if (res.size() <= level) {
+      res.add(new ArrayList<>());
+    }
+    res.get(level).add(root.val);
+    for (NTreeNode node : root.children) {
+      levelOrderII(node, level + 1, res);
+    }
+  }
+
 }
