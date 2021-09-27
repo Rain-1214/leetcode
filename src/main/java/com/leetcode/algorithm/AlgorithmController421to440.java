@@ -1,9 +1,11 @@
 package com.leetcode.algorithm;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 
@@ -11,7 +13,6 @@ import com.leetcode.entity.ListChilNode;
 import com.leetcode.entity.MatrixNode;
 import com.leetcode.entity.NTreeNode;
 import com.leetcode.entity.TreeNode;
-import com.leetcode.tool.Node;
 
 public class AlgorithmController421to440 {
 
@@ -751,6 +752,211 @@ public class AlgorithmController421to440 {
         current = current.right;
       }
       return res;
+    }
+  }
+
+  class AllOne {
+
+    public class DLinkNode {
+      public int val;
+      public String key;
+      public DLinkNode prev;
+      public DLinkNode next;
+
+      public DLinkNode() {
+      }
+
+      public DLinkNode(int val, String key) {
+        this.val = val;
+        this.key = key;
+      }
+
+      @Override
+      public String toString() {
+        DLinkNode c = this;
+        StringBuilder sb = new StringBuilder();
+        while (c != null) {
+          sb.append(c.key);
+          sb.append(c.val);
+          sb.append(',');
+          c = c.next;
+        }
+        return sb.toString();
+      }
+    }
+
+    public Map<String, DLinkNode> map;
+    public Map<Integer, DLinkNode> last;
+    public Map<Integer, DLinkNode> head;
+    public DLinkNode globalHead;
+    public DLinkNode globalLast;
+
+    /** Initialize your data structure here. */
+    public AllOne() {
+      this.map = new HashMap<>();
+      this.last = new HashMap<>();
+      this.head = new HashMap<>();
+      this.globalHead = new DLinkNode();
+      this.globalLast = new DLinkNode();
+      this.globalHead.val = -1;
+      this.globalLast.val = -1;
+    }
+
+    public void removeNodeFromList(DLinkNode node) {
+      if (node.prev != null) {
+        node.prev.next = node.next;
+      }
+      if (node.next != null) {
+        node.next.prev = node.prev;
+      }
+      node.prev = null;
+      node.next = null;
+    }
+
+    /** Inserts a new key <Key> with value 1. Or increments an existing key by 1. */
+    public void inc(String key) {
+      if (this.map.containsKey(key)) {
+        this.moveToLast(this.map.get(key));
+      } else {
+        this.insert(key);
+      }
+    }
+
+    public void moveToLast(DLinkNode node) {
+      DLinkNode last = this.last.get(node.val);
+      DLinkNode head = this.head.get(node.val);
+      if (last == head) {
+        this.last.remove(node.val);
+        this.head.remove(node.val);
+        node.val++;
+        this.head.put(node.val, node);
+        if (!this.last.containsKey(node.val)) {
+          this.last.put(node.val, node);
+        }
+        return;
+      } else if (last == node) {
+        this.last.put(node.val, node.prev);
+        node.val++;
+        this.head.put(node.val, node);
+        if (!this.last.containsKey(node.val)) {
+          this.last.put(node.val, node);
+        }
+        return;
+      } else if (head == node) {
+        this.head.put(node.val, node.next);
+      }
+      removeNodeFromList(node);
+      node.val++;
+      node.next = last.next;
+      last.next.prev = node;
+
+      last.next = node;
+      node.prev = last;
+      this.head.put(node.val, node);
+      if (!this.last.containsKey(node.val)) {
+        this.last.put(node.val, node);
+      }
+    }
+
+    public void insert(String key) {
+      DLinkNode node = new DLinkNode(1, key);
+      DLinkNode currentHead = globalHead.next;
+      if (currentHead != null) {
+        node.next = currentHead;
+        currentHead.prev = node;
+        node.prev = globalHead;
+        globalHead.next = node;
+      } else {
+        globalHead.next = node;
+        node.prev = globalHead;
+
+        node.next = globalLast;
+        globalLast.prev = node;
+      }
+      this.map.put(key, node);
+      this.head.put(1, node);
+      if (!this.last.containsKey(1)) {
+        this.last.put(1, node);
+      }
+    }
+
+    /**
+     * Decrements an existing key by 1. If Key's value is 1, remove it from the data
+     * structure.
+     */
+    public void dec(String key) {
+      DLinkNode node = this.map.get(key);
+      if (node.val == 1) {
+        this.remove(node);
+      } else {
+        this.moveToHead(node);
+      }
+    }
+
+    public void moveToHead(DLinkNode node) {
+      DLinkNode last = this.last.get(node.val);
+      DLinkNode head = this.head.get(node.val);
+      if (last == head) {
+        this.last.remove(node.val);
+        this.head.remove(node.val);
+        node.val--;
+        this.last.put(node.val, node);
+        if (!this.head.containsKey(node.val)) {
+          this.head.put(node.val, node);
+        }
+        return;
+      } else if (head == node) {
+        this.head.put(node.val, node.next);
+        node.val--;
+        this.last.put(node.val, node);
+        if (!this.head.containsKey(node.val)) {
+          this.head.put(node.val, node);
+        }
+        return;
+      } else if (last == node) {
+        this.last.put(node.val, node.prev);
+      }
+      removeNodeFromList(node);
+      node.val--;
+      head.prev.next = node;
+      node.prev = head.prev;
+      node.next = head;
+      head.prev = node;
+      this.last.put(node.val, node);
+      if (!this.head.containsKey(node.val)) {
+        this.head.put(node.val, node);
+      }
+    }
+
+    public void remove(DLinkNode node) {
+      DLinkNode last = this.last.get(node.val);
+      DLinkNode head = this.head.get(node.val);
+      this.map.remove(node.key);
+      if (last == head) {
+        this.last.remove(node.val);
+        this.head.remove(node.val);
+      } else if (last == node) {
+        this.last.put(node.val, node.prev);
+      } else if (head == node) {
+        this.head.put(node.val, node.next);
+      }
+      removeNodeFromList(node);
+    }
+
+    /** Returns one of the keys with maximal value. */
+    public String getMaxKey() {
+      if (globalLast.prev == null || globalLast.prev == globalHead) {
+        return "";
+      }
+      return globalLast.prev.key;
+    }
+
+    /** Returns one of the keys with Minimal value. */
+    public String getMinKey() {
+      if (globalHead.next == null || globalHead.next == globalLast) {
+        return "";
+      }
+      return globalHead.next.key;
     }
   }
 
