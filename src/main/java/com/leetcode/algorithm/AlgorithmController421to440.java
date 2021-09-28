@@ -960,4 +960,56 @@ public class AlgorithmController421to440 {
     }
   }
 
+  public char[] minMutationDic = new char[] { 'A', 'C', 'T', 'G' };
+
+  public int minMutation(String start, String end, String[] bank) {
+    char[] sc = start.toCharArray();
+    char[] ec = end.toCharArray();
+    Set<String> bankSet = new HashSet<>();
+    Set<String> cache = new HashSet<>();
+    for (String s : bank) {
+      bankSet.add(s);
+    }
+    if (!bankSet.contains(end)) {
+      return -1;
+    }
+    return minMutation(sc, ec, bankSet, cache, 0);
+  }
+
+  public int minMutation(char[] start, char[] end, Set<String> bank, Set<String> cache, int level) {
+    int res = Integer.MAX_VALUE;
+    for (int i = 0; i < start.length; i++) {
+      char temp = start[i];
+      for (char c : minMutationDic) {
+        if (temp == c) {
+          continue;
+        }
+        start[i] = c;
+        if (sameCharArr(start, end)) {
+          return 1 + level;
+        }
+        String tempStr = new String(start);
+        if (bank.contains(tempStr) && !cache.contains(tempStr)) {
+          cache.add(tempStr);
+          int tempRes = minMutation(start, end, bank, cache, 1 + level);
+          cache.remove(tempStr);
+          if (tempRes != -1) {
+            res = Math.min(res, tempRes);
+          }
+        }
+      }
+      start[i] = temp;
+    }
+    return res == Integer.MAX_VALUE ? -1 : res;
+  }
+
+  public boolean sameCharArr(char[] a, char[] b) {
+    for (int i = 0; i < a.length; i++) {
+      if (a[i] != b[i]) {
+        return false;
+      }
+    }
+    return true;
+  }
+
 }
