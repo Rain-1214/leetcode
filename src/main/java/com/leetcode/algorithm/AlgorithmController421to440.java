@@ -1,6 +1,7 @@
 package com.leetcode.algorithm;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -1010,6 +1011,44 @@ public class AlgorithmController421to440 {
       }
     }
     return true;
+  }
+
+  public int countSegments(String s) {
+    char[] sc = s.toCharArray();
+    if (sc.length == 0) {
+      return 0;
+    }
+    int index = 0, res = 0;
+    while (index < sc.length) {
+      if (sc[index] == ' ') {
+        index++;
+        continue;
+      }
+      res++;
+      while (index < sc.length && sc[index] != ' ') {
+        index++;
+      }
+    }
+    return res;
+
+  }
+
+  public int eraseOverlapIntervals(int[][] intervals) {
+    if (intervals.length <= 1) {
+      return 0;
+    }
+    Arrays.sort(intervals, (a, b) -> {
+      return a[1] - b[1];
+    });
+    int right = intervals[0][1];
+    int res = 1;
+    for (int i = 1; i < intervals.length; i++) {
+      if (intervals[i][0] >= right) {
+        right = intervals[i][1];
+        res++;
+      }
+    }
+    return intervals.length - res;
   }
 
 }
