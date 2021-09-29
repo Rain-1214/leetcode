@@ -1012,4 +1012,24 @@ public class AlgorithmController421to440 {
     return true;
   }
 
+  public int countSegments(String s) {
+    char[] sc = s.toCharArray();
+    if (sc.length == 0) {
+      return 0;
+    }
+    int index = 0, res = 0;
+    while (index < sc.length) {
+      if (sc[index] == ' ') {
+        index++;
+        continue;
+      }
+      res++;
+      while (index < sc.length && sc[index] != ' ') {
+        index++;
+      }
+    }
+    return res;
+
+  }
+
 }
