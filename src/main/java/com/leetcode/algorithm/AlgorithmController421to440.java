@@ -1113,4 +1113,27 @@ public class AlgorithmController421to440 {
     return res;
   }
 
+  public int pathSumRes = 0;
+  public int pathSumTarget = 0;
+
+  public int pathSum(TreeNode root, int targetSum) {
+    this.pathSumTarget = targetSum;
+    pathSumHelp(root, targetSum);
+    return pathSumRes;
+  }
+
+  public void pathSumHelp(TreeNode root, int targetSum) {
+    if (root == null) {
+      return;
+    }
+    if (targetSum == root.val) {
+      pathSumRes += 1;
+    }
+    pathSumHelp(root.left, this.pathSumTarget);
+    pathSumHelp(root.right, this.pathSumTarget);
+
+    pathSumHelp(root.left, targetSum - root.val);
+    pathSumHelp(root.right, targetSum - root.val);
+  }
+
 }
