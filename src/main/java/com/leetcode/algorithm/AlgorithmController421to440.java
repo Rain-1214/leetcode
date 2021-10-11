@@ -1051,4 +1051,66 @@ public class AlgorithmController421to440 {
     return intervals.length - res;
   }
 
+  public int[] findRightInterval(int[][] intervals) {
+    int len = intervals.length;
+    Map<Integer, Integer> indexMap = new HashMap<>();
+    int[][] copy = new int[len][2];
+    for (int i = 0; i < len; i++) {
+      copy[i] = intervals[i];
+      indexMap.put(intervals[i][0], i);
+    }
+    Arrays.sort(copy, (a, b) -> {
+      return a[0] - b[0];
+    });
+    int[] res = new int[len];
+    for (int i = 0; i < len; i++) {
+      int val = findRightInterval(copy, intervals[i][1]);
+      res[i] = val == -1 ? -1 : indexMap.get(copy[val][0]);
+    }
+    return res;
+  }
+
+  public int findRightInterval(int[][] intervals, int val) {
+    int left = 0, right = intervals.length - 1;
+    while (left < right) {
+      int mid = (left + right) / 2;
+      if (intervals[mid][0] >= val) {
+        right = mid;
+      } else {
+        left = mid + 1;
+      }
+    }
+    if (intervals[left][0] < val) {
+      return -1;
+    }
+    return left;
+  }
+
+  public int[] findRightIntervalII(int[][] intervals) {
+    int len = intervals.length;
+    Map<int[], Integer> indexMap = new HashMap<>();
+    int[][] copy = new int[len][2];
+    for (int i = 0; i < len; i++) {
+      copy[i] = intervals[i];
+      indexMap.put(intervals[i], i);
+    }
+    Arrays.sort(intervals, (a, b) -> {
+      return a[0] - b[0];
+    });
+    Arrays.sort(copy, (a, b) -> {
+      return a[1] - b[1];
+    });
+    int[] res = new int[len];
+    int index = 0, endIndex = 0;
+    while (endIndex < len) {
+      int[] temp = copy[endIndex];
+      while (index < len && intervals[index][0] < temp[1]) {
+        index++;
+      }
+      res[indexMap.get(temp)] = index >= len ? -1 : indexMap.get(intervals[index]);
+      endIndex++;
+    }
+    return res;
+  }
+
 }
