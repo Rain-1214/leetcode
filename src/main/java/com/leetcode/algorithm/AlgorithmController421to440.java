@@ -1113,27 +1113,47 @@ public class AlgorithmController421to440 {
     return res;
   }
 
-  public int pathSumRes = 0;
-  public int pathSumTarget = 0;
-
   public int pathSum(TreeNode root, int targetSum) {
-    this.pathSumTarget = targetSum;
-    pathSumHelp(root, targetSum);
-    return pathSumRes;
+    int res = 0;
+    if (root == null) {
+      return res;
+    }
+    res = pathSumHelp(root, targetSum);
+    res += pathSum(root.left, targetSum);
+    res += pathSum(root.right, targetSum);
+    return res;
   }
 
-  public void pathSumHelp(TreeNode root, int targetSum) {
+  public int pathSumHelp(TreeNode root, int targetSum) {
     if (root == null) {
-      return;
+      return 0;
     }
-    if (targetSum == root.val) {
-      pathSumRes += 1;
+    int res = 0;
+    if (root.val == targetSum) {
+      res++;
     }
-    pathSumHelp(root.left, this.pathSumTarget);
-    pathSumHelp(root.right, this.pathSumTarget);
+    res += pathSumHelp(root.left, targetSum - root.val);
+    res += pathSumHelp(root.right, targetSum - root.val);
+    return res;
+  }
 
-    pathSumHelp(root.left, targetSum - root.val);
-    pathSumHelp(root.right, targetSum - root.val);
+  public int pathSumII(TreeNode root, int targetSum) {
+    Map<Long, Integer> prefix = new HashMap<Long, Integer>();
+    prefix.put(0L, 1);
+    return pathSumIIHelp(root, 0, prefix, targetSum);
+  }
+
+  public int pathSumIIHelp(TreeNode root, long current, Map<Long, Integer> prefixSum, int targetSum) {
+    if (root == null) {
+      return 0;
+    }
+    current += root.val;
+    int res = prefixSum.getOrDefault(current - targetSum, 0);
+    prefixSum.put(current, prefixSum.getOrDefault(current, 0) + 1);
+    res += pathSumIIHelp(root.left, current, prefixSum, targetSum);
+    res += pathSumIIHelp(root.right, current, prefixSum, targetSum);
+    prefixSum.put(current, prefixSum.getOrDefault(current, 0) - 1);
+    return res;
   }
 
 }
