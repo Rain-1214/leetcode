@@ -1156,4 +1156,44 @@ public class AlgorithmController421to440 {
     return res;
   }
 
+  public List<Integer> findAnagrams(String s, String p) {
+    List<Integer> res = new ArrayList<>();
+    if (p.length() > s.length()) {
+      return res;
+    }
+    char[] sa = s.toCharArray();
+    char[] pa = p.toCharArray();
+    int[] nums = new int[26];
+    for (char a : pa) {
+      nums[a - 'a']++;
+    }
+    int[] current = new int[26];
+    int left = 0, right = 0;
+    while (right < pa.length) {
+      current[sa[right++] - 'a']++;
+    }
+    right--;
+    while (right < sa.length) {
+      if (isSameIntArray(nums, current)) {
+        res.add(left);
+      }
+      current[sa[left] - 'a']--;
+      left++;
+      right++;
+      if (right < sa.length) {
+        current[sa[right] - 'a']++;
+      }
+    }
+    return res;
+  }
+
+  public boolean isSameIntArray(int[] a, int[] b) {
+    for (int i = 0; i < a.length; i++) {
+      if (a[i] != b[i]) {
+        return false;
+      }
+    }
+    return true;
+  }
+
 }
