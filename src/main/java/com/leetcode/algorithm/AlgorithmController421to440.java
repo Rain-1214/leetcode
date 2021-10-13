@@ -1196,4 +1196,37 @@ public class AlgorithmController421to440 {
     return true;
   }
 
+  public String parseTernary(String expression) {
+    char[] ea = expression.toCharArray();
+    int index = 0;
+    while (index < ea.length) {
+      char t = ea[index];
+      if (index == ea.length - 1 || ea[index + 1] != '?') {
+        return Character.toString(ea[index]);
+      }
+      if (t == 'T') {
+        index += 2;
+        continue;
+      } else if (t == 'F') {
+        index += 2;
+        int questionMark = 0;
+        while (index < ea.length) {
+          char temp = ea[index];
+          if (temp == '?') {
+            questionMark++;
+          } else if (temp == ':') {
+            if (questionMark == 0) {
+              index++;
+              break;
+            } else {
+              questionMark--;
+            }
+          }
+          index++;
+        }
+      }
+    }
+    return "";
+  }
+
 }
