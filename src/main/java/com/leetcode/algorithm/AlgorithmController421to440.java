@@ -1229,4 +1229,32 @@ public class AlgorithmController421to440 {
     return "";
   }
 
+  public int findKthNumber(int n, int k) {
+    int p = 1;
+    int count = 1;
+    while (count < k) {
+      int currentCount = getNumberNum(p, n);
+      if (count + currentCount > k) {
+        p *= 10;
+        count++;
+      } else {
+        count += currentCount;
+        p++;
+      }
+    }
+    return p;
+  }
+
+  public int getNumberNum(int prefix, int max) {
+    long current = prefix;
+    long next = prefix + 1;
+    int count = 0;
+    while (current <= max) {
+      count += Math.min(max + 1, next) - current;
+      current *= 10;
+      next *= 10;
+    }
+    return count;
+  }
+
 }
