@@ -1,6 +1,7 @@
 package com.leetcode.algorithm;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -50,6 +51,43 @@ public class AlgorithmController441to460 {
       }
     }
     return result;
+  }
+
+  public int compress(char[] chars) {
+    if (chars.length == 1) {
+      return 1;
+    }
+    int left = 0, right = 1, index = 0;
+    while (left < chars.length) {
+      char lt = chars[left];
+      while (right < chars.length && chars[right] == lt) {
+        right++;
+      }
+      int num = right - left;
+      chars[index++] = lt;
+      if (num != 1) {
+        int temp = index;
+        while (num != 0) {
+          int tempNum = num % 10;
+          chars[index++] = (char) (tempNum + '0');
+          num /= 10;
+        }
+        swap(chars, temp, index - 1);
+      }
+      left = right;
+      right = left + 1;
+    }
+    return index;
+  }
+
+  public void swap(char[] a, int left, int right) {
+    while (left < right) {
+      char temp = a[left];
+      a[left] = a[right];
+      a[right] = temp;
+      left++;
+      right--;
+    }
   }
 
 }
