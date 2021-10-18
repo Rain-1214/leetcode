@@ -10,6 +10,8 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 
+import com.leetcode.entity.ListNode;
+
 public class AlgorithmController441to460 {
   public int arrangeCoins(int n) {
     int left = 0, right = n;
@@ -156,6 +158,43 @@ public class AlgorithmController441to460 {
       }
     }
     return true;
+  }
+
+  public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+    l1 = reverse(l1);
+    l2 = reverse(l2);
+    int temp = 0;
+    ListNode res = new ListNode();
+    ListNode head = res;
+    while (l1 != null || l2 != null) {
+      res.next = new ListNode();
+      res = res.next;
+      int val1 = l1 == null ? 0 : l1.val;
+      int val2 = l2 == null ? 0 : l2.val;
+      int val = val1 + val2 + temp;
+      temp = val >= 10 ? 1 : 0;
+      res.val = val >= 10 ? val % 10 : val;
+      l1 = l1 == null ? null : l1.next;
+      l2 = l2 == null ? null : l2.next;
+    }
+    if (temp != 0) {
+      res.next = new ListNode(1);
+    }
+    res = head.next;
+    res = reverse(res);
+    return res;
+  }
+
+  public ListNode reverse(ListNode l) {
+    ListNode h = l;
+    ListNode prev = null;
+    while (h != null) {
+      ListNode next = h.next;
+      h.next = prev;
+      prev = h;
+      h = next;
+    }
+    return prev;
   }
 
 }
