@@ -2,8 +2,12 @@ package com.leetcode.algorithm;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
 
 public class AlgorithmController441to460 {
@@ -88,6 +92,70 @@ public class AlgorithmController441to460 {
       left++;
       right--;
     }
+  }
+
+  public boolean sequenceReconstruction(int[] org, List<List<Integer>> seqs) {
+    if (seqs.size() == 0) {
+      return false;
+    }
+    Map<Integer, Integer> indexMap = new HashMap<Integer, Integer>();
+    List<Integer>[] topological = new List[org.length + 1];
+    for (int i = 0; i < org.length; i++) {
+      indexMap.put(org[i], i);
+      topological[i] = new ArrayList<Integer>();
+    }
+    topological[org.length] = new ArrayList<Integer>();
+    int[] in = new int[org.length + 1];
+    for (List<Integer> list : seqs) {
+      for (int i = 0; i < list.size(); i++) {
+        if (i == 0) {
+          int curr = list.get(i);
+          if (!indexMap.containsKey(curr)) {
+            return false;
+          }
+          continue;
+        }
+        int prev = list.get(i - 1);
+        int curr = list.get(i);
+        if (!indexMap.containsKey(prev) || !indexMap.containsKey(curr)) {
+          return false;
+        }
+        if (indexMap.get(curr) <= indexMap.get(prev)) {
+          return false;
+        }
+        in[curr]++;
+        topological[prev].add(curr);
+      }
+    }
+
+    int q = -1;
+    for (int i = 1; i < in.length; i++) {
+      if (in[i] == 0) {
+        if (q != -1) {
+          return false;
+        }
+        q = i;
+      }
+    }
+    while (q != -1) {
+      List<Integer> list = topological[q];
+      q = -1;
+      for (int temp : list) {
+        in[temp]--;
+        if (in[temp] == 0) {
+          if (q != -1) {
+            return false;
+          }
+          q = temp;
+        }
+      }
+    }
+    for (int i = 1; i < in.length; i++) {
+      if (in[i] != 0) {
+        return false;
+      }
+    }
+    return true;
   }
 
 }
