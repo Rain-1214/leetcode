@@ -197,4 +197,64 @@ public class AlgorithmController441to460 {
     return prev;
   }
 
+  public int numberOfArithmeticSlices(int[] nums) {
+    if (nums.length < 3) {
+      return 0;
+    }
+    int res = 0;
+    Map<Long, Integer>[] cache = new Map[nums.length];
+    for (int i = 0; i < nums.length; i++) {
+      for (int j = i + 1; j < nums.length; j++) {
+        long tolerance = (long) nums[j] - (long) nums[i];
+        res += numberOfArithmeticSlices(nums, j + 1, nums[j], 2, tolerance, cache);
+      }
+    }
+    return res;
+  }
+
+  public int numberOfArithmeticSlices(int[] nums, int start, int prev, int num, long tolerance,
+      Map<Long, Integer>[] cache) {
+    if (start >= nums.length) {
+      return 0;
+    }
+    Map<Long, Integer> map = cache[start];
+    if (map != null && map.containsKey(tolerance)) {
+      return map.get(tolerance);
+    }
+    int res = 0;
+    for (int i = start; i < nums.length; i++) {
+      int temp = nums[i];
+      if ((long) temp - (long) prev == tolerance) {
+        res++;
+        res += numberOfArithmeticSlices(nums, i + 1, temp, num + 1, tolerance, cache);
+      }
+    }
+    if (map == null) {
+      map = new HashMap<Long, Integer>();
+    }
+    map.put(tolerance, res);
+    cache[start] = map;
+    return res;
+  }
+
+  public int numberOfArithmeticSlicesII(int[] nums) {
+    if (nums.length < 3) {
+      return 0;
+    }
+    Map<Long, Integer>[] dp = new Map[nums.length];
+    for (int i = 0; i < nums.length; i++) {
+      dp[i] = new HashMap<Long, Integer>();
+    }
+    int res = 0;
+    for (int i = 0; i < nums.length; i++) {
+      for (int j = 0; j < i; j++) {
+        long diff = (long) nums[i] - (long) nums[j];
+        int temp = dp[j].getOrDefault(diff, 0);
+        res += temp;
+        dp[i].put(diff, dp[i].getOrDefault(diff, 0) + temp + 1);
+      }
+    }
+    return res;
+  }
+
 }
