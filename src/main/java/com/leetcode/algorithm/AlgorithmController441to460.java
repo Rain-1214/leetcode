@@ -1,16 +1,14 @@
 package com.leetcode.algorithm;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
 import java.util.Set;
 
 import com.leetcode.entity.ListNode;
+import com.leetcode.entity.TreeNode;
 
 public class AlgorithmController441to460 {
   public int arrangeCoins(int n) {
@@ -195,6 +193,189 @@ public class AlgorithmController441to460 {
       h = next;
     }
     return prev;
+  }
+
+  public int numberOfArithmeticSlices(int[] nums) {
+    if (nums.length < 3) {
+      return 0;
+    }
+    int res = 0;
+    Map<Long, Integer>[] cache = new Map[nums.length];
+    for (int i = 0; i < nums.length; i++) {
+      for (int j = i + 1; j < nums.length; j++) {
+        long tolerance = (long) nums[j] - (long) nums[i];
+        res += numberOfArithmeticSlices(nums, j + 1, nums[j], 2, tolerance, cache);
+      }
+    }
+    return res;
+  }
+
+  public int numberOfArithmeticSlices(int[] nums, int start, int prev, int num, long tolerance,
+      Map<Long, Integer>[] cache) {
+    if (start >= nums.length) {
+      return 0;
+    }
+    Map<Long, Integer> map = cache[start];
+    if (map != null && map.containsKey(tolerance)) {
+      return map.get(tolerance);
+    }
+    int res = 0;
+    for (int i = start; i < nums.length; i++) {
+      int temp = nums[i];
+      if ((long) temp - (long) prev == tolerance) {
+        res++;
+        res += numberOfArithmeticSlices(nums, i + 1, temp, num + 1, tolerance, cache);
+      }
+    }
+    if (map == null) {
+      map = new HashMap<Long, Integer>();
+    }
+    map.put(tolerance, res);
+    cache[start] = map;
+    return res;
+  }
+
+  public int numberOfArithmeticSlicesII(int[] nums) {
+    if (nums.length < 3) {
+      return 0;
+    }
+    Map<Long, Integer>[] dp = new Map[nums.length];
+    for (int i = 0; i < nums.length; i++) {
+      dp[i] = new HashMap<Long, Integer>();
+    }
+    int res = 0;
+    for (int i = 0; i < nums.length; i++) {
+      for (int j = 0; j < i; j++) {
+        long diff = (long) nums[i] - (long) nums[j];
+        int temp = dp[j].getOrDefault(diff, 0);
+        res += temp;
+        dp[i].put(diff, dp[i].getOrDefault(diff, 0) + temp + 1);
+      }
+    }
+    return res;
+  }
+
+  public int numberOfBoomerangs(int[][] points) {
+    if (points.length < 3) {
+      return 0;
+    }
+    int len = points.length;
+    int[][] data = new int[len][len];
+
+    for (int i = 0; i < len; i++) {
+      for (int j = 0; j < len; j++) {
+        if (i == j) {
+          continue;
+        }
+        int x = Math.abs(points[i][0] - points[j][0]);
+        int y = Math.abs(points[i][1] - points[j][1]);
+        data[i][j] = x * x + y * y;
+      }
+    }
+
+    int res = 0;
+    Map<Integer, Integer> map = new HashMap<>();
+    for (int i = 0; i < len; i++) {
+      map.clear();
+      for (int j = 0; j < len; j++) {
+        if (i == j) {
+          continue;
+        }
+        if (map.containsKey(data[i][j])) {
+          res += 2 * map.get(data[i][j]);
+        }
+        map.put(data[i][j], map.getOrDefault(data[i][j], 0) + 1);
+      }
+    }
+    return res;
+  }
+
+  public List<Integer> findDisappearedNumbers(int[] nums) {
+    int max = 0;
+    List<Integer> res = new ArrayList<>();
+    Set<Integer> set = new HashSet<>();
+    for (int n : nums) {
+      set.add(n);
+      max = Math.max(max, n);
+    }
+    max = Math.max(max, nums.length);
+    for (int i = 1; i <= max; i++) {
+      if (!set.contains(i)) {
+        res.add(i);
+      }
+    }
+    return res;
+  }
+
+  public List<Integer> findDisappearedNumbersII(int[] nums) {
+    List<Integer> res = new ArrayList<>();
+    int len = nums.length;
+    for (int i = 0; i < len; i++) {
+      int temp = (nums[i] - 1) % len;
+      nums[temp] += len;
+    }
+    for (int i = 0; i < len; i++) {
+      if (nums[i] <= len) {
+        res.add(i + 1);
+      }
+    }
+    return res;
+  }
+
+  public class Codec {
+
+    // Encodes a tree to a single string.
+    public String serialize(TreeNode root) {
+      if (root == null) {
+        return "";
+      }
+      StringBuilder sb = new StringBuilder();
+      serialize(root, sb);
+      return sb.toString();
+    }
+
+    public void serialize(TreeNode root, StringBuilder sb) {
+      if (root == null) {
+        sb.append("#");
+        return;
+      }
+      sb.append(root.val);
+      sb.append('(');
+      serialize(root.left, sb);
+      serialize(root.right, sb);
+      sb.append(')');
+    }
+
+    // Decodes your encoded data to tree.
+    public TreeNode deserialize(String data) {
+      if (data.length() == 0) {
+        return null;
+      }
+      return deserialize(data.toCharArray(), new int[] { 0 });
+    }
+
+    public TreeNode deserialize(char[] data, int[] idx) {
+      if (data[idx[0]] == '#') {
+        idx[0]++;
+        return null;
+      }
+      TreeNode root = new TreeNode();
+      int val = 0;
+      while (idx[0] < data.length) {
+        if (Character.isDigit(data[idx[0]])) {
+          val = val * 10 + (data[idx[0]] - '0');
+          idx[0]++;
+        } else {
+          break;
+        }
+      }
+      root.val = val;
+      idx[0]++;
+      root.left = deserialize(data, idx);
+      root.right = deserialize(data, idx);
+      idx[0]++;
+      return root;
+    }
   }
 
 }
