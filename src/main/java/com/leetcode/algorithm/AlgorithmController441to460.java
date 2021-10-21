@@ -1,13 +1,10 @@
 package com.leetcode.algorithm;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
 import java.util.Set;
 
 import com.leetcode.entity.ListNode;
@@ -252,6 +249,41 @@ public class AlgorithmController441to460 {
         int temp = dp[j].getOrDefault(diff, 0);
         res += temp;
         dp[i].put(diff, dp[i].getOrDefault(diff, 0) + temp + 1);
+      }
+    }
+    return res;
+  }
+
+  public int numberOfBoomerangs(int[][] points) {
+    if (points.length < 3) {
+      return 0;
+    }
+    int len = points.length;
+    int[][] data = new int[len][len];
+
+    for (int i = 0; i < len; i++) {
+      for (int j = 0; j < len; j++) {
+        if (i == j) {
+          continue;
+        }
+        int x = Math.abs(points[i][0] - points[j][0]);
+        int y = Math.abs(points[i][1] - points[j][1]);
+        data[i][j] = x * x + y * y;
+      }
+    }
+
+    int res = 0;
+    Map<Integer, Integer> map = new HashMap<>();
+    for (int i = 0; i < len; i++) {
+      map.clear();
+      for (int j = 0; j < len; j++) {
+        if (i == j) {
+          continue;
+        }
+        if (map.containsKey(data[i][j])) {
+          res += 2 * map.get(data[i][j]);
+        }
+        map.put(data[i][j], map.getOrDefault(data[i][j], 0) + 1);
       }
     }
     return res;
