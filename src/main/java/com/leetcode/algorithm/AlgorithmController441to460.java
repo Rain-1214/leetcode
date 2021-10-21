@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.leetcode.entity.ListNode;
+import com.leetcode.entity.TreeNode;
 
 public class AlgorithmController441to460 {
   public int arrangeCoins(int n) {
@@ -319,6 +320,62 @@ public class AlgorithmController441to460 {
       }
     }
     return res;
+  }
+
+  public class Codec {
+
+    // Encodes a tree to a single string.
+    public String serialize(TreeNode root) {
+      if (root == null) {
+        return "";
+      }
+      StringBuilder sb = new StringBuilder();
+      serialize(root, sb);
+      return sb.toString();
+    }
+
+    public void serialize(TreeNode root, StringBuilder sb) {
+      if (root == null) {
+        sb.append("#");
+        return;
+      }
+      sb.append(root.val);
+      sb.append('(');
+      serialize(root.left, sb);
+      serialize(root.right, sb);
+      sb.append(')');
+    }
+
+    // Decodes your encoded data to tree.
+    public TreeNode deserialize(String data) {
+      if (data.length() == 0) {
+        return null;
+      }
+      return deserialize(data.toCharArray(), new int[] { 0 });
+    }
+
+    public TreeNode deserialize(char[] data, int[] idx) {
+      if (data[idx[0]] == '#') {
+        idx[0]++;
+        return null;
+      }
+      TreeNode root = new TreeNode();
+      int val = 0;
+      while (idx[0] < data.length) {
+        if (Character.isDigit(data[idx[0]])) {
+          val = val * 10 + (data[idx[0]] - '0');
+          idx[0]++;
+        } else {
+          break;
+        }
+      }
+      root.val = val;
+      idx[0]++;
+      root.left = deserialize(data, idx);
+      root.right = deserialize(data, idx);
+      idx[0]++;
+      return root;
+    }
   }
 
 }
