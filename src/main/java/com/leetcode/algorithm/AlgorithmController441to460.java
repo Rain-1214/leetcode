@@ -289,4 +289,36 @@ public class AlgorithmController441to460 {
     return res;
   }
 
+  public List<Integer> findDisappearedNumbers(int[] nums) {
+    int max = 0;
+    List<Integer> res = new ArrayList<>();
+    Set<Integer> set = new HashSet<>();
+    for (int n : nums) {
+      set.add(n);
+      max = Math.max(max, n);
+    }
+    max = Math.max(max, nums.length);
+    for (int i = 1; i <= max; i++) {
+      if (!set.contains(i)) {
+        res.add(i);
+      }
+    }
+    return res;
+  }
+
+  public List<Integer> findDisappearedNumbersII(int[] nums) {
+    List<Integer> res = new ArrayList<>();
+    int len = nums.length;
+    for (int i = 0; i < len; i++) {
+      int temp = (nums[i] - 1) % len;
+      nums[temp] += len;
+    }
+    for (int i = 0; i < len; i++) {
+      if (nums[i] <= len) {
+        res.add(i + 1);
+      }
+    }
+    return res;
+  }
+
 }
