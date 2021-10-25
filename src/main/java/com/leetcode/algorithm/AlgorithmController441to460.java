@@ -1,6 +1,7 @@
 package com.leetcode.algorithm;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -427,6 +428,71 @@ public class AlgorithmController441to460 {
       deleteParent = root;
     }
     return temp;
+  }
+
+  public String frequencySort(String s) {
+    char[] sa = s.toCharArray();
+    int[][] nums = new int[62][2];
+    for (int i = 0; i < nums.length; i++) {
+      nums[i] = new int[] { i, 0 };
+    }
+    for (char a : sa) {
+      if (a >= 'a' && a <= 'z') {
+        nums[a - 'a'][1]++;
+      } else if (a >= 'A' && a <= 'Z') {
+        nums[(a - 'A') + 26][1]++;
+      } else {
+        nums[(a - '0') + 52][1]++;
+      }
+    }
+    Arrays.sort(nums, (a, b) -> b[1] - a[1]);
+    int index = 0;
+    for (int i = 0; i < nums.length; i++) {
+      int temp = nums[i][0];
+      int n = 0;
+      if (temp >= 0 && temp < 26) {
+        while (n < nums[i][1]) {
+          sa[index++] = (char) (temp + 'a');
+          n++;
+        }
+      } else if (temp >= 26 && temp < 52) {
+        while (n < nums[i][1]) {
+          sa[index++] = (char) (temp - 26 + 'A');
+          n++;
+        }
+      } else {
+        while (n < nums[i][1]) {
+          sa[index++] = (char) (temp - 52 + '0');
+          n++;
+        }
+      }
+    }
+    return new String(sa);
+  }
+
+  public String frequencySortII(String s) {
+    char[] sa = s.toCharArray();
+    int[] nums = new int[128];
+
+    for (char a : sa) {
+      nums[a]++;
+    }
+    int index = 0;
+    while (index < sa.length) {
+      int maxIndex = 0;
+      for (int j = 0; j < nums.length; j++) {
+        if (nums[j] > nums[maxIndex]) {
+          maxIndex = j;
+        }
+      }
+
+      while (nums[maxIndex] > 0) {
+        sa[index++] = (char) maxIndex;
+        nums[maxIndex]--;
+      }
+    }
+
+    return new String(sa);
   }
 
 }
