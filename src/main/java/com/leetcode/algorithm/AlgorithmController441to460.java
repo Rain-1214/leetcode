@@ -378,4 +378,55 @@ public class AlgorithmController441to460 {
     }
   }
 
+  public TreeNode deleteParent = null;
+
+  public TreeNode deleteNode(TreeNode root, int key) {
+    if (root == null) {
+      return root;
+    }
+    TreeNode target = findNode(root, key);
+    if (target == null) {
+      return root;
+    }
+    if (deleteParent == null) {
+      return mergeTreeNode(root);
+    }
+    boolean isLeft = deleteParent.left != null && deleteParent.left.val == key;
+    if (isLeft) {
+      deleteParent.left = mergeTreeNode(target);
+    } else {
+      deleteParent.right = mergeTreeNode(target);
+    }
+    return root;
+  }
+
+  public TreeNode mergeTreeNode(TreeNode root) {
+    if (root.right == null) {
+      return root.left;
+    }
+    if (root.left == null) {
+      return root.right;
+    }
+    TreeNode target = root.right;
+    while (target.left != null) {
+      target = target.left;
+    }
+    target.left = root.left;
+    return root.right;
+  }
+
+  public TreeNode findNode(TreeNode root, int key) {
+    if (root == null) {
+      return null;
+    }
+    if (root.val == key) {
+      return root;
+    }
+    TreeNode temp = root.val > key ? findNode(root.left, key) : findNode(root.right, key);
+    if (deleteParent == null && temp != null) {
+      deleteParent = root;
+    }
+    return temp;
+  }
+
 }
