@@ -495,4 +495,30 @@ public class AlgorithmController441to460 {
     return new String(sa);
   }
 
+  public int findMinArrowShots(int[][] points) {
+    if (points.length == 0) {
+      return 0;
+    }
+
+    Arrays.sort(points, (a, b) -> {
+      if (a[1] > b[1]) {
+        return 1;
+      } else if (a[1] < b[1]) {
+        return -1;
+      } else {
+        return 0;
+      }
+    });
+
+    int p = points[0][1];
+    int res = 1;
+    for (int[] point: points) {
+      if (point[0] > p) {
+        p = point[1];
+        res ++;
+      }
+    }
+    return res;
+  }
+
 }
