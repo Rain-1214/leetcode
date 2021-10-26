@@ -533,4 +533,54 @@ public class AlgorithmController441to460 {
     return res;
   }
 
+  public int fourSumCount(int[] nums1, int[] nums2, int[] nums3, int[] nums4) {
+    int[][] temp = new int[][]{nums1, nums2, nums3, nums4};
+    Map<Long, Integer>[] cache = new Map[]{new HashMap<>(), new HashMap<>(),new HashMap<>(),new HashMap<>()};
+    return fourSumCount(temp, 0, cache, 0);
+  }
+
+  public int fourSumCount(int[][] nums, int index, Map<Long, Integer>[] caches, long target) {
+    int res = 0;
+    int[] temp = nums[index];
+    Map<Long, Integer> cache = caches[index];
+    if (cache.containsKey(target)) {
+      return cache.get(target);
+    }
+    if (index == nums.length - 1) {
+      for (int n: temp) {
+        if (n + target == 0) {
+          res++;
+        }
+      }
+      cache.put(target, res);
+      return res;
+    }
+    for (int i = 0; i < temp.length; i++) {
+      res += fourSumCount(nums, index + 1, caches, target + temp[i]);
+    }
+    cache.put(target, res);
+    return res;
+  }
+
+  public int fourSumCountII(int[] nums1, int[] nums2, int[] nums3, int[] nums4) {
+    Map<Integer, Integer> map = new HashMap<>();
+
+    for (int i: nums1) {
+      for (int j : nums2) {
+        map.merge(i + j, 1, Integer::sum);
+      }
+    }
+
+    int res = 0;
+    for (int i: nums3) {
+      for (int j: nums4) {
+        int temp = -i - j;
+        if (map.containsKey(temp)) {
+          res += map.get(temp);
+        }
+      }
+    }
+    return res;
+  }
+
 }
