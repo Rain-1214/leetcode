@@ -583,4 +583,32 @@ public class AlgorithmController441to460 {
     return res;
   }
 
+  public int findContentChildren(int[] g, int[] s) {
+    Arrays.sort(g);
+    Arrays.sort(s);
+    int gi = g.length - 1, si = s.length -1;
+    int res = 0;
+    while (gi >= 0 && si >= 0) {
+      int sCurrent = s[si];
+      int gCurrent = g[gi];
+      if (sCurrent >= gCurrent) {
+        gi--;
+        si--;
+        res++;
+      } else {
+        while(gi >= 0 && sCurrent < g[gi]) {
+          gi--;
+        }
+        if (gi < 0) {
+          break;
+        } else {
+          res++;
+          gi--;
+          si--;
+        }
+      }
+    }
+    return res;
+  }
+
 }
