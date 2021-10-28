@@ -2,8 +2,10 @@ package com.leetcode.algorithm;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -609,6 +611,60 @@ public class AlgorithmController441to460 {
       }
     }
     return res;
+  }
+
+  public boolean find132patternError(int[] nums) {
+    if (nums.length < 3) {
+      return false;
+    }
+    int i = 0;
+    int j = 0;
+    int afterMin = 0;
+    for (int k = 0; k < nums.length; k++) {
+      if (j == 0) {
+        if (nums[k] <= nums[i]) {
+          i = k;
+        } else {
+          j = k;
+          afterMin = i;
+        }
+      } else {
+        if (nums[k] >= nums[j]) {
+          j = k;
+          i = afterMin;
+        } else if (nums[k] < nums[afterMin]) {
+          afterMin = k;
+        } else if (nums[k] > nums[i] && nums[k] < nums[j]){
+          return true;
+        } 
+      }
+      
+    }
+    return false;
+  }
+
+  public boolean find132pattern(int[] nums) {
+    if (nums.length < 3) {
+      return false;
+    }
+    int len = nums.length;
+    Deque<Integer> dq = new LinkedList<Integer>();
+    int max2 = Integer.MIN_VALUE;
+    dq.add(nums[len - 1]);
+    int i = len - 2;
+    while (i >= 0) {
+      if (nums[i] < max2) {
+        return true;
+      }
+      while (!dq.isEmpty() && nums[i] > dq.peek()) {
+        max2 = dq.pop();
+      }
+      if (nums[i] > max2) {
+        dq.push(nums[i]);
+      }
+      i--;
+    }
+    return false;
   }
 
 }
