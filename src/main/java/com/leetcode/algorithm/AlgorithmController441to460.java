@@ -667,4 +667,45 @@ public class AlgorithmController441to460 {
     return false;
   }
 
+  public int flag = 1001;
+
+  public boolean circularArrayLoop(int[] nums) {
+    for (int i = 0; i < nums.length; i++) {
+      if (nums[i] > 1000) {
+        continue;
+      }
+      if (circularArrayLoop(nums, i)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public boolean circularArrayLoop(int[] nums, int start) {
+    boolean isPositive = nums[start] > 0;
+    int startFlag = flag; /// ???
+    nums[start] = flag; /// ???
+    while(true) {
+      int next = getNextIndex(start, nums[start], nums.length); // ????
+      if ((isPositive && nums[next] < 0) || (!isPositive && nums[next] > 0)) {
+        if (nums[next] >= startFlag) {
+          return flag - nums[next] > 0;
+        }
+        return false;
+      }
+      if (nums[next] > 1000) {
+        return flag - nums[next] > 0;
+      } else {
+        int temp = nums[next];
+        nums[next] = ++flag;
+        next = getNextIndex(next, temp, nums.length);
+      }
+    }
+  }
+
+  public int getNextIndex(int index, int step, int len) {
+    int temp = index + (step % len);
+    return temp >= 0 ? temp % len : len + temp; 
+  }
+
 }
