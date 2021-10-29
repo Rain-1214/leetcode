@@ -683,22 +683,28 @@ public class AlgorithmController441to460 {
 
   public boolean circularArrayLoop(int[] nums, int start) {
     boolean isPositive = nums[start] > 0;
-    int startFlag = flag; /// ???
-    nums[start] = flag; /// ???
+    int startFlag = flag;
+    int next = getNextIndex(start, nums[start], nums.length);;
+    nums[start] = startFlag;
+    if (next == start) {
+      return false;
+    }
     while(true) {
-      int next = getNextIndex(start, nums[start], nums.length); // ????
-      if ((isPositive && nums[next] < 0) || (!isPositive && nums[next] > 0)) {
+      if (nums[next] >= 1000) {
         if (nums[next] >= startFlag) {
           return flag - nums[next] > 0;
         }
         return false;
       }
-      if (nums[next] > 1000) {
-        return flag - nums[next] > 0;
-      } else {
-        int temp = nums[next];
-        nums[next] = ++flag;
-        next = getNextIndex(next, temp, nums.length);
+      if ((isPositive && nums[next] < 0) || (!isPositive && nums[next] > 0)) {
+        return false;
+      }
+      int temp = nums[next];
+      int tempCurrent = next;
+      nums[next] = ++flag;
+      next = getNextIndex(next, temp, nums.length);
+      if (next == tempCurrent) {
+        return false;
       }
     }
   }
@@ -706,6 +712,34 @@ public class AlgorithmController441to460 {
   public int getNextIndex(int index, int step, int len) {
     int temp = index + (step % len);
     return temp >= 0 ? temp % len : len + temp; 
+  }
+
+  public boolean circularArrayLoopII(int[] nums) {
+    for (int i = 0; i < nums.length; i++) {
+      if (nums[i] == 0) {
+        continue;
+      }
+      int slow = i, fast = getNextIndex(i, nums[i], nums.length);
+      while (nums[slow] * nums[fast] > 0 && nums[slow] * nums[getNextIndex(fast, nums[fast], nums.length)] > 0) {
+        if (slow == fast) {
+          if (slow != getNextIndex(slow, nums[slow], nums.length)) {
+            return true;
+          } else {
+            break;
+          }
+        }
+        slow = getNextIndex(slow, nums[slow], nums.length);
+        fast = getNextIndex(fast, nums[fast], nums.length);
+        fast = getNextIndex(fast, nums[fast], nums.length);
+      }
+      int temp = i;
+      while (nums[temp] * nums[getNextIndex(temp, nums[temp], nums.length)] > 0) {
+        int t = temp;
+        temp = getNextIndex(temp, nums[temp], nums.length);
+        nums[t] = 0;
+      }
+    }
+    return false;
   }
 
 }
