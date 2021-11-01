@@ -747,4 +747,76 @@ public class AlgorithmController441to460 {
     return (int) Math.ceil(Math.log(buckets) / Math.log(base));
   }
 
+  public boolean repeatedSubstringPattern(String s) {
+    char[] sc = s.toCharArray();
+    if (sc.length <= 1) {
+      return false;
+    }
+    int index = 1;
+    char start = sc[0];
+    
+    while (index < sc.length) {
+      if (sc[index] == start) {
+        int left = 0, temp = index;
+        while (index < sc.length) {
+          if (sc[index] == sc[left]) {
+            left++;
+            index++;
+            if (left == temp) {
+              left = 0;
+            }
+          } else {
+            break;
+          }
+        }
+        if (index == sc.length && left == 0) {
+          return true;
+        } else {
+          index = temp;
+        }
+      }
+      index++;
+    }
+    return false;
+  }
+
+  public boolean repeatedSubstringPatternII(String s) {
+    return (s + s).indexOf(s, 1) != s.length();
+  }
+
+  public boolean repeatedSubstringPatternIII(String s) {
+    char[] sc = s.toCharArray();
+    if (sc.length <= 1) {
+      return false;
+    }
+    int len = 1;
+    while (len <= sc.length / 2) {
+      if (sc.length % len != 0) {
+        len++;
+        continue;
+      }
+
+      int j = len;
+      while (j <= sc.length - len && sameArray(sc, 0, j, len)) {
+        j += len;
+      }
+      if (j == sc.length) {
+        return true;
+      }
+      len++;
+    }
+    return false;
+  }
+
+  public boolean sameArray(char[] arr, int start, int start2, int len) {
+    int i = 0;
+    while (i < len) {
+      if (arr[start + i] != arr[start2 + i]) {
+        return false;
+      }
+      i++;
+    }
+    return true;
+  }
+
 }
