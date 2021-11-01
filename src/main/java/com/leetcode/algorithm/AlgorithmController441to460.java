@@ -2,8 +2,10 @@ package com.leetcode.algorithm;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -581,6 +583,240 @@ public class AlgorithmController441to460 {
       }
     }
     return res;
+  }
+
+  public int findContentChildren(int[] g, int[] s) {
+    Arrays.sort(g);
+    Arrays.sort(s);
+    int gi = g.length - 1, si = s.length -1;
+    int res = 0;
+    while (gi >= 0 && si >= 0) {
+      int sCurrent = s[si];
+      int gCurrent = g[gi];
+      if (sCurrent >= gCurrent) {
+        gi--;
+        si--;
+        res++;
+      } else {
+        while(gi >= 0 && sCurrent < g[gi]) {
+          gi--;
+        }
+        if (gi < 0) {
+          break;
+        } else {
+          res++;
+          gi--;
+          si--;
+        }
+      }
+    }
+    return res;
+  }
+
+  public boolean find132patternError(int[] nums) {
+    if (nums.length < 3) {
+      return false;
+    }
+    int i = 0;
+    int j = 0;
+    int afterMin = 0;
+    for (int k = 0; k < nums.length; k++) {
+      if (j == 0) {
+        if (nums[k] <= nums[i]) {
+          i = k;
+        } else {
+          j = k;
+          afterMin = i;
+        }
+      } else {
+        if (nums[k] >= nums[j]) {
+          j = k;
+          i = afterMin;
+        } else if (nums[k] < nums[afterMin]) {
+          afterMin = k;
+        } else if (nums[k] > nums[i] && nums[k] < nums[j]){
+          return true;
+        } 
+      }
+      
+    }
+    return false;
+  }
+
+  public boolean find132pattern(int[] nums) {
+    if (nums.length < 3) {
+      return false;
+    }
+    int len = nums.length;
+    Deque<Integer> dq = new LinkedList<Integer>();
+    int max2 = Integer.MIN_VALUE;
+    dq.add(nums[len - 1]);
+    int i = len - 2;
+    while (i >= 0) {
+      if (nums[i] < max2) {
+        return true;
+      }
+      while (!dq.isEmpty() && nums[i] > dq.peek()) {
+        max2 = dq.pop();
+      }
+      if (nums[i] > max2) {
+        dq.push(nums[i]);
+      }
+      i--;
+    }
+    return false;
+  }
+
+  public int flag = 1001;
+
+  public boolean circularArrayLoop(int[] nums) {
+    for (int i = 0; i < nums.length; i++) {
+      if (nums[i] > 1000) {
+        continue;
+      }
+      if (circularArrayLoop(nums, i)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public boolean circularArrayLoop(int[] nums, int start) {
+    boolean isPositive = nums[start] > 0;
+    int startFlag = flag;
+    int next = getNextIndex(start, nums[start], nums.length);;
+    nums[start] = startFlag;
+    if (next == start) {
+      return false;
+    }
+    while(true) {
+      if (nums[next] >= 1000) {
+        if (nums[next] >= startFlag) {
+          return flag - nums[next] > 0;
+        }
+        return false;
+      }
+      if ((isPositive && nums[next] < 0) || (!isPositive && nums[next] > 0)) {
+        return false;
+      }
+      int temp = nums[next];
+      int tempCurrent = next;
+      nums[next] = ++flag;
+      next = getNextIndex(next, temp, nums.length);
+      if (next == tempCurrent) {
+        return false;
+      }
+    }
+  }
+
+  public int getNextIndex(int index, int step, int len) {
+    int temp = index + (step % len);
+    return temp >= 0 ? temp % len : len + temp; 
+  }
+
+  public boolean circularArrayLoopII(int[] nums) {
+    for (int i = 0; i < nums.length; i++) {
+      if (nums[i] == 0) {
+        continue;
+      }
+      int slow = i, fast = getNextIndex(i, nums[i], nums.length);
+      while (nums[slow] * nums[fast] > 0 && nums[slow] * nums[getNextIndex(fast, nums[fast], nums.length)] > 0) {
+        if (slow == fast) {
+          if (slow != getNextIndex(slow, nums[slow], nums.length)) {
+            return true;
+          } else {
+            break;
+          }
+        }
+        slow = getNextIndex(slow, nums[slow], nums.length);
+        fast = getNextIndex(fast, nums[fast], nums.length);
+        fast = getNextIndex(fast, nums[fast], nums.length);
+      }
+      int temp = i;
+      while (nums[temp] * nums[getNextIndex(temp, nums[temp], nums.length)] > 0) {
+        int t = temp;
+        temp = getNextIndex(temp, nums[temp], nums.length);
+        nums[t] = 0;
+      }
+    }
+    return false;
+  }
+
+  public int poorPigs(int buckets, int minutesToDie, int minutesToTest) {
+    int base = minutesToTest / minutesToDie + 1;
+    return (int) Math.ceil(Math.log(buckets) / Math.log(base));
+  }
+
+  public boolean repeatedSubstringPattern(String s) {
+    char[] sc = s.toCharArray();
+    if (sc.length <= 1) {
+      return false;
+    }
+    int index = 1;
+    char start = sc[0];
+    
+    while (index < sc.length) {
+      if (sc[index] == start) {
+        int left = 0, temp = index;
+        while (index < sc.length) {
+          if (sc[index] == sc[left]) {
+            left++;
+            index++;
+            if (left == temp) {
+              left = 0;
+            }
+          } else {
+            break;
+          }
+        }
+        if (index == sc.length && left == 0) {
+          return true;
+        } else {
+          index = temp;
+        }
+      }
+      index++;
+    }
+    return false;
+  }
+
+  public boolean repeatedSubstringPatternII(String s) {
+    return (s + s).indexOf(s, 1) != s.length();
+  }
+
+  public boolean repeatedSubstringPatternIII(String s) {
+    char[] sc = s.toCharArray();
+    if (sc.length <= 1) {
+      return false;
+    }
+    int len = 1;
+    while (len <= sc.length / 2) {
+      if (sc.length % len != 0) {
+        len++;
+        continue;
+      }
+
+      int j = len;
+      while (j <= sc.length - len && sameArray(sc, 0, j, len)) {
+        j += len;
+      }
+      if (j == sc.length) {
+        return true;
+      }
+      len++;
+    }
+    return false;
+  }
+
+  public boolean sameArray(char[] arr, int start, int start2, int len) {
+    int i = 0;
+    while (i < len) {
+      if (arr[start + i] != arr[start2 + i]) {
+        return false;
+      }
+      i++;
+    }
+    return true;
   }
 
 }
