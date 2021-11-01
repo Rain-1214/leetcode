@@ -742,4 +742,9 @@ public class AlgorithmController441to460 {
     return false;
   }
 
+  public int poorPigs(int buckets, int minutesToDie, int minutesToTest) {
+    int base = minutesToTest / minutesToDie + 1;
+    return (int) Math.ceil(Math.log(buckets) / Math.log(base));
+  }
+
 }
