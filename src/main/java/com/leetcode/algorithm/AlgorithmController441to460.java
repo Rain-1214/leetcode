@@ -514,10 +514,10 @@ public class AlgorithmController441to460 {
 
     int p = points[0][1];
     int res = 1;
-    for (int[] point: points) {
+    for (int[] point : points) {
       if (point[0] > p) {
         p = point[1];
-        res ++;
+        res++;
       }
     }
     return res;
@@ -525,19 +525,19 @@ public class AlgorithmController441to460 {
 
   public int minMoves(int[] nums) {
     int min = Integer.MAX_VALUE;
-    for (int n: nums) {
+    for (int n : nums) {
       min = Math.min(n, min);
     }
     int res = 0;
-    for (int n: nums) {
+    for (int n : nums) {
       res += n - min;
     }
     return res;
   }
 
   public int fourSumCount(int[] nums1, int[] nums2, int[] nums3, int[] nums4) {
-    int[][] temp = new int[][]{nums1, nums2, nums3, nums4};
-    Map<Long, Integer>[] cache = new Map[]{new HashMap<>(), new HashMap<>(),new HashMap<>(),new HashMap<>()};
+    int[][] temp = new int[][] { nums1, nums2, nums3, nums4 };
+    Map<Long, Integer>[] cache = new Map[] { new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>() };
     return fourSumCount(temp, 0, cache, 0);
   }
 
@@ -549,7 +549,7 @@ public class AlgorithmController441to460 {
       return cache.get(target);
     }
     if (index == nums.length - 1) {
-      for (int n: temp) {
+      for (int n : temp) {
         if (n + target == 0) {
           res++;
         }
@@ -567,15 +567,15 @@ public class AlgorithmController441to460 {
   public int fourSumCountII(int[] nums1, int[] nums2, int[] nums3, int[] nums4) {
     Map<Integer, Integer> map = new HashMap<>();
 
-    for (int i: nums1) {
+    for (int i : nums1) {
       for (int j : nums2) {
         map.merge(i + j, 1, Integer::sum);
       }
     }
 
     int res = 0;
-    for (int i: nums3) {
-      for (int j: nums4) {
+    for (int i : nums3) {
+      for (int j : nums4) {
         int temp = -i - j;
         if (map.containsKey(temp)) {
           res += map.get(temp);
@@ -588,7 +588,7 @@ public class AlgorithmController441to460 {
   public int findContentChildren(int[] g, int[] s) {
     Arrays.sort(g);
     Arrays.sort(s);
-    int gi = g.length - 1, si = s.length -1;
+    int gi = g.length - 1, si = s.length - 1;
     int res = 0;
     while (gi >= 0 && si >= 0) {
       int sCurrent = s[si];
@@ -598,7 +598,7 @@ public class AlgorithmController441to460 {
         si--;
         res++;
       } else {
-        while(gi >= 0 && sCurrent < g[gi]) {
+        while (gi >= 0 && sCurrent < g[gi]) {
           gi--;
         }
         if (gi < 0) {
@@ -634,11 +634,11 @@ public class AlgorithmController441to460 {
           i = afterMin;
         } else if (nums[k] < nums[afterMin]) {
           afterMin = k;
-        } else if (nums[k] > nums[i] && nums[k] < nums[j]){
+        } else if (nums[k] > nums[i] && nums[k] < nums[j]) {
           return true;
-        } 
+        }
       }
-      
+
     }
     return false;
   }
@@ -684,12 +684,13 @@ public class AlgorithmController441to460 {
   public boolean circularArrayLoop(int[] nums, int start) {
     boolean isPositive = nums[start] > 0;
     int startFlag = flag;
-    int next = getNextIndex(start, nums[start], nums.length);;
+    int next = getNextIndex(start, nums[start], nums.length);
+    ;
     nums[start] = startFlag;
     if (next == start) {
       return false;
     }
-    while(true) {
+    while (true) {
       if (nums[next] >= 1000) {
         if (nums[next] >= startFlag) {
           return flag - nums[next] > 0;
@@ -711,7 +712,7 @@ public class AlgorithmController441to460 {
 
   public int getNextIndex(int index, int step, int len) {
     int temp = index + (step % len);
-    return temp >= 0 ? temp % len : len + temp; 
+    return temp >= 0 ? temp % len : len + temp;
   }
 
   public boolean circularArrayLoopII(int[] nums) {
@@ -754,7 +755,7 @@ public class AlgorithmController441to460 {
     }
     int index = 1;
     char start = sc[0];
-    
+
     while (index < sc.length) {
       if (sc[index] == start) {
         int left = 0, temp = index;
@@ -817,6 +818,173 @@ public class AlgorithmController441to460 {
       i++;
     }
     return true;
+  }
+
+  class LFUCache {
+
+    public class DLinkNode {
+      public int time;
+      public int val;
+      public int key;
+      public DLinkNode prev;
+      public DLinkNode next;
+
+      public DLinkNode() {
+      }
+
+      public DLinkNode(int val, int key, int time) {
+        this.val = val;
+        this.key = key;
+        this.time = time;
+      }
+
+      @Override
+      public String toString() {
+        DLinkNode c = this;
+        StringBuilder sb = new StringBuilder();
+        while (c != null) {
+          sb.append(c.key);
+          sb.append(c.val);
+          sb.append(',');
+          c = c.next;
+        }
+        return sb.toString();
+      }
+    }
+
+    public int cap;
+    public int currentSize;
+    public Map<Integer, DLinkNode> data;
+    public Map<Integer, DLinkNode> last;
+    public Map<Integer, DLinkNode> head;
+    public DLinkNode globalLast;
+    public DLinkNode globalHead;
+
+    public LFUCache(int capacity) {
+      this.cap = capacity;
+      this.currentSize = 0;
+      this.data = new HashMap<>();
+      this.head = new HashMap<>();
+      this.last = new HashMap<>();
+      this.globalHead = new DLinkNode();
+      this.globalLast = new DLinkNode();
+      this.globalHead.next = this.globalLast;
+      this.globalLast.prev = this.globalHead;
+      this.globalLast.time = -1;
+      this.globalLast.key = -1;
+      this.globalLast.val = -1;
+      this.globalHead.time = -1;
+      this.globalHead.key = -1;
+      this.globalHead.val = -1;
+    }
+
+    public int get(int key) {
+      if (!data.containsKey(key)) {
+        return -1;
+      }
+      inc(key);
+      return data.get(key).val;
+
+    }
+
+    public void insert(int key, int val) {
+      DLinkNode node = new DLinkNode(val, key, 1);
+      this.data.put(key, node);
+      DLinkNode currentHead = this.head.get(1);
+      if (currentHead == null) {
+        this.head.put(1, node);
+        this.last.put(1, node);
+        this.globalLast.prev.next = node;
+        node.prev = this.globalLast.prev;
+        node.next = this.globalLast;
+        this.globalLast.prev = node;
+        return;
+      }
+      currentHead.prev.next = node;
+      node.prev = currentHead.prev;
+      currentHead.prev = node;
+      node.next = currentHead;
+      this.head.put(1, node);
+    }
+
+    public void inc(int key) {
+      DLinkNode node = this.data.get(key);
+      DLinkNode currentHead = this.head.get(node.time);
+      DLinkNode currentLast = this.last.get(node.time);
+      DLinkNode nextHead = this.head.get(node.time + 1);
+      if (currentHead == currentLast) {
+        this.head.remove(node.time);
+        this.last.remove(node.time);
+        if (nextHead == null) {
+          node.time++;
+          this.head.put(node.time, node);
+          this.last.put(node.time, node);
+          return;
+        }
+      } else if (currentHead == node) {
+        this.head.put(node.time, node.next);
+        if (nextHead == null) {
+          node.time++;
+          this.head.put(node.time, node);
+          return;
+        }
+      } else if (currentLast == node) {
+        this.last.put(node.time, node.prev);
+      }
+
+      node.time++;
+      this.head.put(node.time, node);
+      node.prev.next = node.next;
+      node.next.prev = node.prev;
+      if (nextHead == null) {
+        this.last.put(node.time, node);
+        node.prev = currentHead.prev;
+        currentHead.prev.next = node;
+        node.next = currentHead;
+        currentHead.prev = node;
+        return;
+      } else {
+        nextHead.prev.next = node;
+        node.prev = nextHead.prev;
+        node.next = nextHead;
+        nextHead.prev = node;
+      }
+
+    }
+
+    public void delete() {
+      DLinkNode willDelete = this.globalLast.prev;
+      DLinkNode currentHead = this.head.get(willDelete.time);
+      DLinkNode currentLast = this.last.get(willDelete.time);
+      if (currentHead == currentLast) {
+        this.head.remove(willDelete.time);
+        this.last.remove(willDelete.time);
+      } else if (currentHead == willDelete) {
+        this.head.put(willDelete.time, willDelete.next);
+      } else if (currentLast == willDelete) {
+        this.last.put(willDelete.time, willDelete.prev);
+      }
+      this.data.remove(willDelete.key);
+      willDelete.prev.next = willDelete.next;
+      willDelete.next.prev = willDelete.prev;
+    }
+
+    public void put(int key, int value) {
+      if (this.cap <= 0) {
+        return;
+      }
+      if (data.containsKey(key)) {
+        inc(key);
+        this.data.get(key).val = value;
+      } else {
+        if (currentSize == cap) {
+          delete();
+        } else {
+          currentSize++;
+        }
+        insert(key, value);
+      }
+    }
   }
 
 }
