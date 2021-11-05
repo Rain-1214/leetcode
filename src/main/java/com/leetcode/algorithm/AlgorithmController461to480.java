@@ -58,4 +58,55 @@ public class AlgorithmController461to480 {
       return minMovesHelp(nums, i + 1, right, target);
     }
   }
+
+  public static final int[][] dirs = new int[][] { new int[] { 0, 1 }, new int[] { 0, -1 }, new int[] { 1, 0 },
+      new int[] { -1, 0 } };
+
+  public int islandPerimeter(int[][] grid) {
+    int rowMax = grid.length;
+    int colMax = grid[0].length;
+    for (int i = 0; i < rowMax; i++) {
+      for (int j = 0; j < colMax; j++) {
+        if (grid[i][j] == 1) {
+          return islandPerimeterHelp(grid, i, j, rowMax, colMax);
+        }
+      }
+    }
+    return 0;
+  }
+
+  public int islandPerimeterHelp(int[][] grid, int i, int j, int rowMax, int colMax) {
+    int res = 0;
+    grid[i][j] = -1;
+    for (int[] dir : dirs) {
+      int x = i + dir[0], y = j + dir[1];
+      if (x < 0 || x >= rowMax || y < 0 || y >= colMax || grid[x][y] == 0) {
+        res++;
+      } else if (grid[x][y] == 1) {
+        res += islandPerimeterHelp(grid, x, y, rowMax, colMax);
+      }
+    }
+    return res;
+  }
+
+  public int islandPerimeterII(int[][] grid) {
+    int rowMax = grid.length;
+    int colMax = grid[0].length;
+    int res = 0;
+    for (int i = 0; i < rowMax; i++) {
+      for (int j = 0; j < colMax; j++) {
+        if (grid[i][j] == 1) {
+          res += 4;
+          if (i > 0 && grid[i - 1][j] == 1) {
+            res -= 2;
+          }
+          if (j > 0 && grid[i][j - 1] == 1) {
+            res -= 2;
+          }
+        }
+      }
+    }
+    return res;
+  }
+
 }
