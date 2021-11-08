@@ -109,4 +109,34 @@ public class AlgorithmController461to480 {
     return res;
   }
 
+  public boolean canIWin(int maxChoosableInteger, int desiredTotal) {
+    if (maxChoosableInteger >= desiredTotal) {
+      return true;
+    }
+    if (maxChoosableInteger * (maxChoosableInteger + 1) / 2 < desiredTotal) {
+      return false;
+    }
+    Boolean[] used = new Boolean[1 << maxChoosableInteger];
+
+    return canIWinHelp(used, desiredTotal, 0, maxChoosableInteger);
+  }
+
+  public boolean canIWinHelp(Boolean[] used, int desiredTotal, int cur, int maxChoosableInteger) {
+    if (used[cur] != null) {
+      return used[cur];
+    }
+    for (int i = 1; i <= maxChoosableInteger; i++) {
+      int temp = 1 << (i - 1);
+      if ((temp & cur) != 0) {
+        continue;
+      }
+      if (i >= desiredTotal || !canIWinHelp(used, desiredTotal - i, cur | temp, maxChoosableInteger)) {
+        used[cur] = true;
+        return true;
+      }
+    }
+    used[cur] = false;
+    return false;
+  }
+
 }
