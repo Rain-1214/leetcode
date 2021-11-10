@@ -1,6 +1,12 @@
 package com.leetcode.algorithm;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Queue;
 
 public class AlgorithmController461to480 {
   public int hammingDistance(int x, int y) {
@@ -137,6 +143,42 @@ public class AlgorithmController461to480 {
     }
     used[cur] = false;
     return false;
+  }
+
+  public int minTransferRes = Integer.MAX_VALUE;
+
+  public int minTransfers(int[][] transactions) {
+    Map<Integer, Integer> map = new HashMap<>();
+    for (int[] transaction : transactions) {
+      int from = transaction[0], to = transaction[1], amount = transaction[2];
+      map.put(from, map.getOrDefault(from, 0) - amount);
+      map.put(to, map.getOrDefault(to, 0) + amount);
+    }
+    List<Integer> list = new ArrayList<>(map.values());
+    minTransfersHelp(0, 0, list);
+    return minTransferRes;
+  }
+
+  public void minTransfersHelp(int start, int current, List<Integer> amounts) {
+    if (start > minTransferRes) {
+      return;
+    }
+    while (start < amounts.size() && amounts.get(start) == 0) {
+      start++;
+    }
+    if (start == amounts.size()) {
+      minTransferRes = Math.min(minTransferRes, current);
+      return;
+    }
+
+    for (int i = start + 1; i < amounts.size(); i++) {
+      if (amounts.get(start) * amounts.get(i) < 0) {
+        int temp = amounts.get(start);
+        amounts.set(i, amounts.get(i) + temp);
+        minTransfersHelp(start + 1, current + 1, amounts);
+        amounts.set(i, amounts.get(i) - temp);
+      }
+    }
   }
 
 }
