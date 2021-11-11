@@ -181,4 +181,53 @@ public class AlgorithmController461to480 {
     }
   }
 
+  public int getMaxRepetitions(String s1, int n1, String s2, int n2) {
+    if (n1 == 0) {
+      return 0;
+    }
+    int s1Count = 0, s2Count = 0, index = 0;
+    Map<Integer, int[]> map = new HashMap<>();
+    int[] prefix = new int[2];
+    int[] loop = new int[2];
+    while (true) {
+      ++s1Count;
+      for (int i = 0; i < s1.length(); i++) {
+        if (s1.charAt(i) == s2.charAt(index)) {
+          index++;
+        }
+        if (index == s2.length()) {
+          index = 0;
+          ++s2Count;
+        }
+      }
+      if (s1Count == n1) {
+        return s2Count / n2;
+      }
+      if (map.containsKey(index)) {
+        int[] temp = map.get(index);
+        int preS1Count = temp[0];
+        int preS2Count = temp[1];
+        prefix = new int[] { preS1Count, preS2Count };
+        loop = new int[] { s1Count - preS1Count, s2Count - preS2Count };
+        break;
+      } else {
+        map.put(index, new int[] { s1Count, s2Count });
+      }
+    }
+    int ans = prefix[1] + (n1 - prefix[0]) / loop[0] * loop[1];
+    int suffix = (n1 - prefix[0]) % loop[0];
+    for (int i = 0; i < suffix; i++) {
+      for (int j = 0; j < s1.length(); j++) {
+        if (s1.charAt(j) == s2.charAt(index)) {
+          index++;
+        }
+        if (index == s2.length()) {
+          index = 0;
+          ans++;
+        }
+      }
+    }
+    return ans / n2;
+  }
+
 }
