@@ -251,4 +251,75 @@ public class AlgorithmController461to480 {
     return res;
   }
 
+  public final String ipv4 = "IPv4";
+  public final String ipv6 = "IPv6";
+  public final String invalid = "Neither";
+
+  public String validIPAddress(String queryIP) {
+    if (queryIP.contains(":")) {
+      if (validIPv6Address(queryIP)) {
+        return ipv6;
+      } else {
+        return invalid;
+      }
+    } else if (queryIP.contains(".")) {
+      if (validIPv4Address(queryIP)) {
+        return ipv4;
+      } else {
+        return invalid;
+      }
+    }
+    return invalid;
+  }
+
+  public boolean validIPv4Address(String queryIP) {
+    if (queryIP.startsWith(".") || queryIP.endsWith(".")) {
+      return false;
+    }
+    String[] parts = queryIP.split("\\.");
+    if (parts.length != 4) {
+      return false;
+    }
+    for (String part : parts) {
+      if (part.length() == 0 || part.length() > 3) {
+        return false;
+      }
+      if (part.charAt(0) == '0' && part.length() > 1) {
+        return false;
+      }
+      for (int i = 0; i < part.length(); i++) {
+        if (!Character.isDigit(part.charAt(i))) {
+          return false;
+        }
+      }
+      int num = Integer.parseInt(part);
+      if (num < 0 || num > 255) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  public boolean validIPv6Address(String queryIP) {
+    if (queryIP.startsWith(":") || queryIP.endsWith(":")) {
+      return false;
+    }
+    String[] parts = queryIP.split(":");
+    if (parts.length != 8) {
+      return false;
+    }
+    for (String part : parts) {
+      if (part.length() == 0 || part.length() > 4) {
+        return false;
+      }
+      for (int i = 0; i < part.length(); i++) {
+        if (!Character.isDigit(part.charAt(i)) && !(part.charAt(i) >= 'a' && part.charAt(i) <= 'f')
+            && !(part.charAt(i) >= 'A' && part.charAt(i) <= 'F')) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
 }
