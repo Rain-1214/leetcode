@@ -3,10 +3,12 @@ package com.leetcode.algorithm;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
+import java.util.Set;
 
 public class AlgorithmController461to480 {
   public int hammingDistance(int x, int y) {
@@ -228,6 +230,25 @@ public class AlgorithmController461to480 {
       }
     }
     return ans / n2;
+  }
+
+  public int findSubstringInWraproundString(String p) {
+    char[] chars = p.toCharArray();
+    int[] count = new int[26];
+    int max = 1;
+    for (int i = 0; i < chars.length; i++) {
+      if (i > 0 && (chars[i] - chars[i - 1] == 1 || chars[i] - chars[i - 1] == -25)) {
+        max++;
+      } else {
+        max = 1;
+      }
+      count[chars[i] - 'a'] = Math.max(count[chars[i] - 'a'], max);
+    }
+    int res = 0;
+    for (int i = 0; i < 26; i++) {
+      res += count[i];
+    }
+    return res;
   }
 
 }
