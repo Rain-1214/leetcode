@@ -3,10 +3,12 @@ package com.leetcode.algorithm;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
+import java.util.Set;
 
 public class AlgorithmController461to480 {
   public int hammingDistance(int x, int y) {
@@ -228,6 +230,96 @@ public class AlgorithmController461to480 {
       }
     }
     return ans / n2;
+  }
+
+  public int findSubstringInWraproundString(String p) {
+    char[] chars = p.toCharArray();
+    int[] count = new int[26];
+    int max = 1;
+    for (int i = 0; i < chars.length; i++) {
+      if (i > 0 && (chars[i] - chars[i - 1] == 1 || chars[i] - chars[i - 1] == -25)) {
+        max++;
+      } else {
+        max = 1;
+      }
+      count[chars[i] - 'a'] = Math.max(count[chars[i] - 'a'], max);
+    }
+    int res = 0;
+    for (int i = 0; i < 26; i++) {
+      res += count[i];
+    }
+    return res;
+  }
+
+  public final String ipv4 = "IPv4";
+  public final String ipv6 = "IPv6";
+  public final String invalid = "Neither";
+
+  public String validIPAddress(String queryIP) {
+    if (queryIP.contains(":")) {
+      if (validIPv6Address(queryIP)) {
+        return ipv6;
+      } else {
+        return invalid;
+      }
+    } else if (queryIP.contains(".")) {
+      if (validIPv4Address(queryIP)) {
+        return ipv4;
+      } else {
+        return invalid;
+      }
+    }
+    return invalid;
+  }
+
+  public boolean validIPv4Address(String queryIP) {
+    if (queryIP.startsWith(".") || queryIP.endsWith(".")) {
+      return false;
+    }
+    String[] parts = queryIP.split("\\.");
+    if (parts.length != 4) {
+      return false;
+    }
+    for (String part : parts) {
+      if (part.length() == 0 || part.length() > 3) {
+        return false;
+      }
+      if (part.charAt(0) == '0' && part.length() > 1) {
+        return false;
+      }
+      for (int i = 0; i < part.length(); i++) {
+        if (!Character.isDigit(part.charAt(i))) {
+          return false;
+        }
+      }
+      int num = Integer.parseInt(part);
+      if (num < 0 || num > 255) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  public boolean validIPv6Address(String queryIP) {
+    if (queryIP.startsWith(":") || queryIP.endsWith(":")) {
+      return false;
+    }
+    String[] parts = queryIP.split(":");
+    if (parts.length != 8) {
+      return false;
+    }
+    for (String part : parts) {
+      if (part.length() == 0 || part.length() > 4) {
+        return false;
+      }
+      for (int i = 0; i < part.length(); i++) {
+        if (!Character.isDigit(part.charAt(i)) && !(part.charAt(i) >= 'a' && part.charAt(i) <= 'f')
+            && !(part.charAt(i) >= 'A' && part.charAt(i) <= 'F')) {
+          return false;
+        }
+      }
+    }
+    return true;
   }
 
 }
