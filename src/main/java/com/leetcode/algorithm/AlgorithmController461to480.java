@@ -342,4 +342,23 @@ public class AlgorithmController461to480 {
     return true;
   }
 
+  class Rand10Base {
+    int rand7() {
+      return 1;
+    }
+  }
+
+  class Solution extends Rand10Base {
+    public int rand10() {
+      int first = rand7(), second = rand7();
+      while (first > 6) {
+        first = rand7();
+      }
+      while (second > 5) {
+        second = rand7();
+      }
+      return first % 2 == 0 ? second + 5 : second;
+    }
+}
+
 }
