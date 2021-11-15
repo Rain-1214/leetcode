@@ -322,4 +322,24 @@ public class AlgorithmController461to480 {
     return true;
   }
 
+  public boolean isConvex(List<List<Integer>> points) {
+    int len = points.size(), temp = 0;
+    for (int i = 0; i < len; i++) {
+      int x1 = points.get((i + 1) % len).get(0) - points.get(i).get(0);
+      int y1 = points.get((i + 1) % len).get(1) - points.get(i).get(1);
+
+      int x2 = points.get((i + 2) % len).get(0) - points.get((i + 1) % len).get(0);
+      int y2 = points.get((i + 2) % len).get(1) - points.get((i + 1) % len).get(1);
+
+      int t = x1 * y2 - x2 * y1;
+      if (t != 0) {
+        if (t * 1l * temp < 0) {
+          return false;
+        }
+        temp = t;
+      }
+    }
+    return true;
+  }
+
 }
