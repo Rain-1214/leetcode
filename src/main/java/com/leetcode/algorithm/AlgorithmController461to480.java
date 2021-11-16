@@ -359,6 +359,40 @@ public class AlgorithmController461to480 {
       }
       return first % 2 == 0 ? second + 5 : second;
     }
-}
+  }
 
+  public String encode(String s) {
+    int len = s.length();
+    String[][] dp = new String[len][len];
+    StringBuilder sb = new StringBuilder();
+    for (int currentLen = 1; currentLen <= len; currentLen++) {
+      for (int i = 0; i + currentLen - 1 < len; i++) {
+        int j = i + currentLen - 1;
+        dp[i][j] = repeatedSubstringPattern(s, i, j, dp);
+        if (currentLen > 4) {
+          for (int k = i; k < j; k++) {
+            sb.append(dp[i][k]).append(dp[k + 1][j]);
+            if (sb.length() < dp[i][j].length()) {
+              dp[i][j] = sb.toString();
+            }
+            sb.setLength(0);
+          }
+        }
+      }
+    }
+    return dp[0][len - 1];
+  }
+
+  public String repeatedSubstringPattern(String s, int left, int right, String[][] dp) {
+    String temp = s.substring(left, right + 1);
+    if (temp.length() <= 4) {
+      return temp;
+    }
+    int index = (temp + temp).indexOf(temp, 1);
+    if (index != temp.length()) {
+      int num = temp.length() / index;
+      return num + "[" + dp[left][left + index - 1] + "]";
+    }
+    return temp;
+  }
 }
