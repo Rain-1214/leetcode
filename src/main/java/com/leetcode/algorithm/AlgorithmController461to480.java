@@ -395,4 +395,76 @@ public class AlgorithmController461to480 {
     }
     return temp;
   }
+
+  class DictionaryTree {
+    boolean isEnd = false;
+    DictionaryTree[] children = new DictionaryTree[26];
+
+    public void insert(String word) {
+      DictionaryTree node = this;
+      for (int i = 0; i < word.length(); i++) {
+        int index = word.charAt(i) - 'a';
+        if (node.children[index] == null) {
+          node.children[index] = new DictionaryTree();
+        }
+        node = node.children[index];
+      }
+      node.isEnd = true;
+    }
+  }
+
+  public int level = 0;
+
+  public List<String> findAllConcatenatedWordsInADict(String[] words) {
+    DictionaryTree root = new DictionaryTree();
+    for (String word : words) {
+      if (word.length() > 0) {
+        root.insert(word);
+      }
+    }
+    List<String> res = new ArrayList<>();
+    Map<String, Boolean> map = new HashMap<>();
+    for (String word : words) {
+      level = 0;
+      if (word.length() > 0 && isConcatenated(word, root, 0, map) && level > 0) {
+        res.add(word);
+      }
+    }
+    return res;
+  }
+
+  public boolean isConcatenated(String word, DictionaryTree root, int start, Map<String, Boolean> cache) {
+    String temp = word.substring(start);
+    if (cache.containsKey(temp)) {
+      if (level == 0) {
+        level = 1;
+      }
+      return cache.get(temp);
+    }
+    int len = word.length();
+    level++;
+    DictionaryTree node = root;
+    for (int i = start; i < len; i++) {
+      int index = word.charAt(i) - 'a';
+      if (node.children[index] == null) {
+        level--;
+        cache.put(temp, false);
+        return false;
+      }
+      node = node.children[index];
+      if (node.isEnd) {
+        if (i == len - 1) {
+          level--;
+          return true;
+        } else if (isConcatenated(word, root, i + 1, cache)) {
+          cache.put(temp, true);
+          return true;
+        }
+      }
+    }
+    level--;
+    cache.put(temp, false);
+    return false;
+  }
+
 }
