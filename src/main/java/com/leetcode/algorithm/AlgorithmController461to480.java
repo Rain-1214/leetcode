@@ -467,4 +467,66 @@ public class AlgorithmController461to480 {
     return false;
   }
 
+  public boolean makesquare(int[] matchsticks) {
+    int sum = 0;
+    for (int i : matchsticks) {
+      sum += i;
+    }
+    if (sum % 4 != 0) {
+      return false;
+    }
+    Arrays.sort(matchsticks);
+    int[] set = new int[4];
+    int slide = sum / 4;
+    reverse(matchsticks);
+    return makesquareHelp(set, slide, matchsticks, 0);
+  }
+
+  public void reverse(int[] nums) {
+    int len = nums.length;
+    for (int i = 0; i < len / 2; i++) {
+      int temp = nums[i];
+      nums[i] = nums[len - 1 - i];
+      nums[len - 1 - i] = temp;
+    }
+  }
+
+  public boolean makesquareHelp(int[] set, int slide, int[] matchsticks, int matIndex) {
+    if (matIndex == matchsticks.length) {
+      return set[0] == slide && set[1] == slide && set[2] == slide;
+    }
+    for (int i = 0; i < 4; i++) {
+      if (set[i] + matchsticks[matIndex] <= slide) {
+        set[i] += matchsticks[matIndex];
+        if (makesquareHelp(set, slide, matchsticks, matIndex + 1)) {
+          return true;
+        }
+        set[i] -= matchsticks[matIndex];
+      }
+    }
+    return false;
+  }
+
+  public int findMaxForm(String[] strs, int m, int n) {
+    int len = strs.length;
+    int[][] dp = new int[m + 1][n + 1];
+    for (int i = 0; i < len; i++) {
+      String str = strs[i];
+      int zeros = 0, ones = 0;
+      for (char c : str.toCharArray()) {
+        if (c == '0') {
+          zeros++;
+        } else {
+          ones++;
+        }
+      }
+      for (int j = m; j >= zeros; j--) {
+        for (int k = n; k >= ones; k--) {
+          dp[j][k] = Math.max(dp[j][k], dp[j - zeros][k - ones] + 1);
+        }
+      }
+    }
+    return dp[m][n];
+  }
+
 }
