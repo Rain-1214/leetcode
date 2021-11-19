@@ -582,4 +582,14 @@ public class AlgorithmController461to480 {
     }
     return right;
   }
+
+  public int findComplement(int num) {
+    int res = 0;
+    int temp = num;
+    while (temp > 0) {
+      res = (res << 1) + 1;
+      temp = temp >> 1;
+    }
+    return res ^ num;
+  }
 }
