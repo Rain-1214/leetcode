@@ -529,4 +529,57 @@ public class AlgorithmController461to480 {
     return dp[m][n];
   }
 
+  public int findRadius(int[] houses, int[] heaters) {
+    Arrays.sort(houses);
+    Arrays.sort(heaters);
+    int res = 0;
+    for (int i = 0; i < houses.length; i++) {
+      int bigger = binarySearchBigger(heaters, houses[i]);
+      int small = binarySearchSmall(heaters, houses[i]);
+      if (bigger == -1) {
+        res = Math.max(res, Math.abs(heaters[small] - houses[i]));
+      } else if (small == -1) {
+        res = Math.max(res, Math.abs(houses[i] - heaters[bigger]));
+      } else {
+        res = Math.max(res, Math.min(Math.abs(houses[i] - heaters[bigger]), Math.abs(houses[i] - heaters[small])));
+      }
+    }
+    return res;
+  }
+
+  public int binarySearchBigger(int[] nums, int target) {
+    int left = 0, right = nums.length - 1;
+    while (left <= right) {
+      int mid = left + (right - left) / 2;
+      if (nums[mid] < target) {
+        left = mid + 1;
+      } else if (nums[mid] > target) {
+        right = mid - 1;
+      } else {
+        return mid;
+      }
+    }
+    if (left >= nums.length || nums[left] < target) {
+      return -1;
+    }
+    return left;
+  }
+
+  public int binarySearchSmall(int[] nums, int target) {
+    int left = 0, right = nums.length - 1;
+    while (left <= right) {
+      int mid = left + (right - left) / 2;
+      if (nums[mid] > target) {
+        right = mid - 1;
+      } else if (nums[mid] < target) {
+        left = mid + 1;
+      } else {
+        return mid;
+      }
+    }
+    if (right < 0 || nums[right] > target) {
+      return -1;
+    }
+    return right;
+  }
 }
