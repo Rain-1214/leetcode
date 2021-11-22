@@ -592,4 +592,27 @@ public class AlgorithmController461to480 {
     }
     return res ^ num;
   }
+
+  public int totalHammingDistance(int[] nums) {
+    int res = 0;
+    for (int i = 0; i < nums.length; i++) {
+      for (int j = i + 1; j < nums.length; j++) {
+        res += hammingDistance(nums[i], nums[j]);
+      }
+    }
+    return res;
+  }
+
+  public int totalHammingDistanceII(int[] nums) {
+    int res = 0, len = nums.length;
+    for (int i = 0; i < 30; i++) {
+      int temp = 0;
+      for (int n : nums) {
+        temp += (n >> i) & 1;
+      }
+      res += temp * (len - temp);
+    }
+    return res;
+  }
+
 }
