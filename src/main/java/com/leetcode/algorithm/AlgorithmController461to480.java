@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
+import java.util.Random;
 import java.util.Set;
 
 public class AlgorithmController461to480 {
@@ -613,6 +614,64 @@ public class AlgorithmController461to480 {
       res += temp * (len - temp);
     }
     return res;
+  }
+
+  class Solution478 {
+
+    public double x;
+    public double y;
+    public double r;
+
+    public Random rand;
+
+    public Solution478(double radius, double x_center, double y_center) {
+      this.x = x_center;
+      this.y = y_center;
+      this.r = radius;
+      this.rand = new Random();
+    }
+
+    public double randomDouble(double min, double max) {
+      return rand.nextDouble() * (max - min) + min;
+    }
+
+    public double[] randPoint() {
+      double currentX = randomDouble(x - r, x + r);
+      double maxY = r * r - (currentX - x) * (currentX - x);
+      maxY = Math.sqrt(maxY);
+      double currentY = randomDouble(y - maxY, y + maxY);
+      return new double[] { currentX, currentY };
+    }
+  }
+
+  class Solution478II {
+
+    public double x;
+    public double y;
+    public double r;
+
+    public Random rand;
+
+    public Solution478II(double radius, double x_center, double y_center) {
+      this.x = x_center;
+      this.y = y_center;
+      this.r = radius;
+      this.rand = new Random();
+    }
+
+    public double randomDouble(double min, double max) {
+      return rand.nextDouble() * (max - min) + min;
+    }
+
+    public double[] randPoint() {
+      while (true) {
+        double currentX = randomDouble(x - r, x + r);
+        double currentY = randomDouble(y - r, y + r);
+        if (Math.pow(currentX - x, 2) + Math.pow(currentY - y, 2) <= Math.pow(r, 2)) {
+          return new double[] { currentX, currentY };
+        }
+      }
+    }
   }
 
 }
