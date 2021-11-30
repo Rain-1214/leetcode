@@ -699,4 +699,46 @@ public class AlgorithmController461to480 {
     }
     return res;
   }
+
+  public double[] medianSlidingWindow(int[] nums, int k) {
+    int[] temp = new int[k];
+    for (int i = 0; i < k; i++) {
+      temp[i] = nums[i];
+    }
+    Arrays.sort(temp);
+    double[] res = new double[nums.length - k + 1];
+    for (int i = k; i < nums.length; i++) {
+      res[i - k] = temp[k / 2];
+      if (k % 2 == 0) {
+        res[i - k] = (res[i - k] + temp[k / 2 - 1]) / 2.0;
+      }
+      int index = Arrays.binarySearch(temp, nums[i - k]);
+      int target = k;
+      for (int j = 0; j < k; j++) {
+        if (temp[j] >= nums[i]) {
+          target = j;
+          break;
+        }
+      }
+      if (target == index) {
+        temp[target] = nums[i];
+      } else if (target < index) {
+        for (int j = index; j > target; j--) {
+          temp[j] = temp[j - 1];
+        }
+        temp[target] = nums[i];
+      } else {
+        for (int j = index; j < target - 1; j++) {
+          temp[j] = temp[j + 1];
+        }
+        temp[target - 1] = nums[i];
+      }
+    }
+    int last = res.length - 1;
+    res[last] = temp[k / 2];
+    if (k % 2 == 0) {
+      res[last] = (res[last] + temp[k / 2 - 1]) / 2.0;
+    }
+    return res;
+  }
 }
