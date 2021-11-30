@@ -674,4 +674,29 @@ public class AlgorithmController461to480 {
     }
   }
 
+  public int largestPalindrome(int n) {
+    if (n == 1) {
+      return 9;
+    }
+    int upper = (int) Math.pow(10, n) - 1;
+    int lower = (int) Math.pow(10, n - 1);
+    for (int i = upper; i >= lower; i--) {
+      long target = buildPalindrome(i);
+      for (long j = upper; j * j >= target; j--) {
+        if (target % j == 0) {
+          return (int) (target % 1337);
+        }
+      }
+    }
+    return 0;
+  }
+
+  public long buildPalindrome(int n) {
+    long res = n;
+    while (n > 0) {
+      res = res * 10 + n % 10;
+      n /= 10;
+    }
+    return res;
+  }
 }
