@@ -769,4 +769,29 @@ public class AlgorithmController461to480 {
     }
     return count;
   }
+
+  public String licenseKeyFormatting(String s, int k) {
+    char[] chars = s.toCharArray();
+    StringBuilder sb = new StringBuilder();
+    int temp = 0;
+    for (int i = chars.length - 1; i >= 0; i--) {
+      if (chars[i] == '-') {
+        continue;
+      }
+      char c = chars[i];
+      if (c >= 'a' && c <= 'z') {
+        c -= 32;
+      }
+      sb.append(c);
+      temp++;
+      if (temp == k) {
+        sb.append('-');
+        temp = 0;
+      }
+    }
+    if (sb.length() > 0 && sb.charAt(sb.length() - 1) == '-') {
+      sb.deleteCharAt(sb.length() - 1);
+    }
+    return sb.reverse().toString();
+  }
 }
