@@ -794,4 +794,22 @@ public class AlgorithmController461to480 {
     }
     return sb.reverse().toString();
   }
+
+  public String smallestGoodBase(String n) {
+    long num = Long.parseLong(n);
+    int mMax = (int) (Math.log(num) / Math.log(2));
+    for (int m = mMax; m >= 2; m--) {
+      int k = (int) Math.pow(num, 1.0 / m);
+      long temp = 1, sum = 1;
+      for (int i = 0; i < m; i++) {
+        temp *= k;
+        sum += temp;
+      }
+      if (sum == num) {
+        return String.valueOf(k);
+      }
+    }
+    return String.valueOf(num - 1);
+  }
+
 }
