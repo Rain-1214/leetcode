@@ -742,31 +742,4 @@ public class AlgorithmController461to480 {
     return res;
   }
 
-  public int magicalString(int n) {
-    if (n <= 3) {
-      return 1;
-    }
-    int[] temp = new int[n];
-    temp[0] = 1;
-    temp[1] = 2;
-    temp[2] = 2;
-    int left = 2, right = 3, count = 1;
-    while (right < n) {
-      if (temp[left] == 1) {
-        temp[right] = temp[right - 1] == 1 ? 2 : 1;
-        count += temp[right] == 1 ? 1 : 0;
-      } else if (temp[left] == 2) {
-        temp[right] = temp[right - 1] == 1 ? 2 : 1;
-        count += temp[right] == 1 ? 1 : 0;
-        if (right + 1 < n) {
-          temp[right + 1] = temp[right];
-          count += temp[right + 1] == 1 ? 1 : 0;
-        }
-        right++;
-      }
-      right++;
-      left++;
-    }
-    return count;
-  }
 }
