@@ -105,4 +105,17 @@ public class AlgorithmController481to500 {
     nums[j] = temp;
   }
 
+  public int findMaxConsecutiveOnes(int[] nums) {
+    int res = 0, count = 0;
+    for (int n : nums) {
+      if (n == 1) {
+        count++;
+      } else {
+        res = Math.max(res, count);
+        count = 0;
+      }
+    }
+    return Math.max(res, count);
+  }
+
 }
