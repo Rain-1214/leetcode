@@ -72,4 +72,37 @@ public class AlgorithmController481to500 {
     return String.valueOf(num - 1);
   }
 
+  public int[] findPermutation(String s) {
+    char[] sc = s.toCharArray();
+    int[] res = new int[sc.length + 1];
+    for (int i = 0; i <= sc.length; i++) {
+      res[i] = i + 1;
+    }
+    int left = 0, right = 0;
+    while (left < sc.length) {
+      if (sc[left] == 'I') {
+        left++;
+        continue;
+      }
+      while (right < sc.length && sc[right] == 'D') {
+        right++;
+      }
+      int l = left, r = right;
+      while (l < r) {
+        swap(res, l, r);
+        l++;
+        r--;
+      }
+      left = right + 1;
+      right = left;
+    }
+    return res;
+  }
+
+  public void swap(int[] nums, int i, int j) {
+    int temp = nums[i];
+    nums[i] = nums[j];
+    nums[j] = temp;
+  }
+
 }
