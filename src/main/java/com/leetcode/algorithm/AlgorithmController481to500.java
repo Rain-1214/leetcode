@@ -148,4 +148,54 @@ public class AlgorithmController481to500 {
     return dp[0][nums.length - 1] >= 0;
   }
 
+  public int findMaxConsecutiveOnes487(int[] nums) {
+    if (nums.length == 1) {
+      return 1;
+    }
+    int end = 0;
+    int[] oneNums = new int[nums.length];
+    int index = 0;
+    while (index < nums.length) {
+      if (nums[index] == 0) {
+        oneNums[end++] = 0;
+        index++;
+        continue;
+      }
+      int n = 0;
+      while(index < nums.length && nums[index] == 1) {
+        index++;
+        n++;
+      }
+      oneNums[end++] = n;
+    }
+    int res = 0;
+    for (int i = 0; i < end; i++) {
+      int current = oneNums[i];
+      if (current == 0) {
+        res = Math.max(res, 1);
+        continue;
+      }
+      int left = i - 2 >= 0 ? current + 1 + oneNums[i - 2] : i - 1 >= 0 ? current + 1 : current;
+      int right = i + 2 < end ? current + 1 + oneNums[i + 2] : i + 1 < end ? current + 1 : current;
+      res = Math.max(res, Math.max(left, right));
+    }
+    return res;
+  }
+
+  public int findMaxConsecutiveOnes487II(int[] nums) {
+    int res = 0, zeroPosition = 0, zeroCount = 0;
+    for (int l = 0, r = 0; r < nums.length; r++) {
+      if (nums[r] == 0) {
+        zeroCount++;
+        if (zeroCount > 1) {
+          l = zeroPosition + 1;
+          zeroCount--;
+        }
+        zeroPosition = r;
+      }
+      res = Math.max(res, r - l + 1);
+    }
+    return res;
+  }
+
 }
