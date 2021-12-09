@@ -8,9 +8,11 @@ public class AlgorithmController461to480Test {
 
   @Test
   public void binarySearchBigger() {
-    int[] nums = new int[] { 1, 3, 4, 5 };
-    int target = 2;
-    System.out.println(this.algorithmController461to480.binarySearchSmall(nums, target));
+    StringBuilder sb = new StringBuilder();
+    sb.append("123456789");
+    sb.insert(1, "a");
+    System.out.println(sb.toString());
+    System.out.println(sb.toString().charAt(1));
   }
 
 }
