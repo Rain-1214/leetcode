@@ -1,5 +1,10 @@
 package com.leetcode.algorithm;
 
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Set;
+
 public class AlgorithmController481to500 {
 
   public int magicalString(int n) {
@@ -162,7 +167,7 @@ public class AlgorithmController481to500 {
         continue;
       }
       int n = 0;
-      while(index < nums.length && nums[index] == 1) {
+      while (index < nums.length && nums[index] == 1) {
         index++;
         n++;
       }
@@ -198,4 +203,122 @@ public class AlgorithmController481to500 {
     return res;
   }
 
+  public int findMinStep(String board, String hand) {
+    char[] hands = new char[5];
+    for (char c : hand.toCharArray()) {
+      hands[getIndex(c)]++;
+    }
+    Queue<String[]> q = new LinkedList<>();
+    q.add(new String[] { board, new String(hands) });
+
+    int step = 0;
+    Set<String> visited = new HashSet<>();
+    while (!q.isEmpty()) {
+      int size = q.size();
+      step++;
+      for (int i = 0; i < size; i++) {
+        String[] cur = q.poll();
+        String curBoard = cur[0];
+        String curHand = cur[1];
+        if (addBall(curBoard, curHand, visited, q)) {
+          return step;
+        }
+      }
+    }
+    return -1;
+  }
+
+  public boolean addBall(String board, String hand, Set<String> cache, Queue<String[]> q) {
+    char[] hands = hand.toCharArray();
+    StringBuilder sb = new StringBuilder(board);
+    for (int i = 0; i < board.length(); i++) {
+      for (int j = 0; j < hands.length; j++) {
+        char currentInsertChar = getChar(j);
+        if (i > 0 && board.charAt(i - 1) == currentInsertChar) {
+          continue;
+        }
+        if (hands[j] == 0) {
+          continue;
+        }
+        boolean shouldInsert = false;
+        if (board.charAt(i) == currentInsertChar) {
+          shouldInsert = true;
+        }
+        if (i > 0 && board.charAt(i - 1) != currentInsertChar && board.charAt(i) == board.charAt(i - 1)) {
+          shouldInsert = true;
+        }
+        if (!shouldInsert) {
+          continue;
+        }
+        sb.insert(i, currentInsertChar);
+        String newBoard = checkBall(sb.toString(), i);
+        if (cache.contains(newBoard)) {
+          sb.deleteCharAt(i);
+          continue;
+        }
+        if (newBoard.equals("")) {
+          return true;
+        }
+        cache.add(newBoard);
+        hands[j]--;
+        q.add(new String[] { newBoard, new String(hands) });
+        sb.deleteCharAt(i);
+        hands[j]++;
+      }
+    }
+    return false;
+  }
+
+  public String checkBall(String board, int i) {
+    StringBuilder sb = new StringBuilder(board);
+    while (i >= 0 && i < sb.length()) {
+      int left = i, right = i;
+      char current = sb.charAt(i);
+      while (left >= 0 && sb.charAt(left) == current) {
+        left--;
+      }
+      while (right < sb.length() && sb.charAt(right) == current) {
+        right++;
+      }
+      if (right - left > 3) {
+        sb.delete(left + 1, right).toString();
+        i = left >= 0 ? left : right;
+      } else {
+        break;
+      }
+    }
+    return sb.toString();
+  }
+
+  public int getIndex(char c) {
+    switch (c) {
+      case 'R':
+        return 0;
+      case 'Y':
+        return 1;
+      case 'B':
+        return 2;
+      case 'G':
+        return 3;
+      case 'W':
+        return 4;
+    }
+    return -1;
+  }
+
+  public char getChar(int i) {
+    switch (i) {
+      case 0:
+        return 'R';
+      case 1:
+        return 'Y';
+      case 2:
+        return 'B';
+      case 3:
+        return 'G';
+      case 4:
+        return 'W';
+    }
+    return ' ';
+  }
 }
