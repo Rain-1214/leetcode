@@ -5,6 +5,8 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Set;
 
+import com.leetcode.entity.Robot;
+
 public class AlgorithmController481to500 {
 
   public int magicalString(int n) {
@@ -320,5 +322,33 @@ public class AlgorithmController481to500 {
         return 'W';
     }
     return ' ';
+  }
+
+  // going clockwise : 0: 'up', 1: 'left', 2: 'down', 3: 'right'
+  public final int[][] DIRECTIONS = new int[][] { { -1, 0 }, { 0, -1 }, { 1, 0 }, { 0, 1 } };
+
+  public void cleanRoom(Robot robot) {
+    Set<Integer> visited = new HashSet<>();
+    visited.add(0);
+    cleanRoom(robot, 0, 0, 0, visited);
+  }
+
+  public void cleanRoom(Robot robot, int x, int y, int direction, Set<Integer> visited) {
+    robot.clean();
+    for (int i = 0; i < 4; i++) {
+      int newDirection = (direction + i) % 4;
+      int newX = x + DIRECTIONS[newDirection][0];
+      int newY = y + DIRECTIONS[newDirection][1];
+      if (!visited.contains(newX + newY * 200) && robot.move()) {
+        visited.add(newX + newY * 200);
+        cleanRoom(robot, newX, newY, newDirection, visited);
+        robot.turnLeft();
+        robot.turnLeft();
+        robot.move();
+        robot.turnLeft();
+        robot.turnLeft();
+      }
+      robot.turnLeft();
+    }
   }
 }
