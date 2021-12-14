@@ -1,7 +1,9 @@
 package com.leetcode.algorithm;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 
@@ -412,6 +414,31 @@ public class AlgorithmController481to500 {
       }
     }
     return false;
+  }
+
+  public List<List<Integer>> findSubsequences(int[] nums) {
+    List<List<Integer>> res = new ArrayList<>();
+    findSubsequences(nums, 0, Integer.MIN_VALUE, new ArrayList<>(), res);
+    return res;
+  }
+
+  public void findSubsequences(int[] nums, int index, int last, List<Integer> curr, List<List<Integer>> res) {
+    if (index >= nums.length) {
+      if (curr.size() >= 2) {
+        res.add(new ArrayList<>(curr));
+      }
+      return;
+    }
+
+    if (nums[index] >= last) {
+      curr.add(nums[index]);
+      findSubsequences(nums, index + 1, nums[index], curr, res);
+      curr.remove(curr.size() - 1);
+    }
+
+    if (nums[index] != last) {
+      findSubsequences(nums, index + 1, last, curr, res);
+    }
   }
 
 }
