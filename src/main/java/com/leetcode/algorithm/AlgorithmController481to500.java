@@ -351,4 +351,67 @@ public class AlgorithmController481to500 {
       robot.turnLeft();
     }
   }
+
+  public boolean hasPath(int[][] maze, int[] start, int[] destination) {
+    Set<Integer> cache = new HashSet<>();
+    return hasPath(maze, start[0], start[1], destination, cache);
+  }
+
+  public boolean hasPath(int[][] maze, int x, int y, int[] target, Set<Integer> cache) {
+    int index = x + y * maze[0].length;
+    cache.add(index);
+    for (int i = 0; i < 4; i++) {
+      int newX = x;
+      int newY = y;
+      switch (i) {
+        case 0:
+          for (int j = x; j >= 0; j--) {
+            if (maze[j][y] != 1) {
+              newX = j;
+            } else {
+              break;
+            }
+          }
+          break;
+        case 1:
+          for (int j = y; j < maze[0].length; j++) {
+            if (maze[x][j] != 1) {
+              newY = j;
+            } else {
+              break;
+            }
+          }
+          break;
+        case 2:
+          for (int j = x; j < maze.length; j++) {
+            if (maze[j][y] != 1) {
+              newX = j;
+            } else {
+              break;
+            }
+          }
+          break;
+        case 3:
+          for (int j = y; j >= 0; j--) {
+            if (maze[x][j] != 1) {
+              newY = j;
+            } else {
+              break;
+            }
+          }
+          break;
+      }
+      if (newX == target[0] && newY == target[1]) {
+        return true;
+      }
+      if (cache.contains(newX + newY * maze[0].length)) {
+        continue;
+      }
+      if (hasPath(maze, newX, newY, target, cache)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
 }
