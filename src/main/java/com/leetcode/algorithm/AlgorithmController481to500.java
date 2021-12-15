@@ -441,4 +441,44 @@ public class AlgorithmController481to500 {
     }
   }
 
+  public int[] constructRectangle(int area) {
+    int min = 1, max = area;
+    int diff = Integer.MAX_VALUE;
+    for (int i = min; i <= area / 2; i++) {
+      if (area % i == 0 && diff > Math.abs(area / i - i)) {
+        diff = Math.abs(area / i - i);
+        min = i;
+        max = area / i;
+      }
+    }
+    return new int[] { Math.max(min, max), Math.min(min, max) };
+  }
+
+  public int[] constructRectangleII(int area) {
+    int mid = (int) Math.sqrt(area);
+    if (mid * mid == area) {
+      return new int[] { mid, mid };
+    }
+    int left = mid, right = mid + 1;
+    while (left > 0 || right <= area / 2) {
+      if (left > 0 && area % left == 0) {
+        return new int[] { Math.max(left, area / left), Math.min(left, area / left) };
+      } else if (right <= area / 2 && area % right == 0) {
+        return new int[] { Math.max(right, area / right), Math.min(right, area / right) };
+      }
+      left--;
+      right++;
+    }
+    return new int[] {};
+  }
+
+  public int[] constructRectangleIII(int area) {
+    int mid = (int) Math.sqrt(area);
+    int left = mid;
+    while (area % left != 0) {
+      left--;
+    }
+    return new int[] { area / left, left };
+  }
+
 }
