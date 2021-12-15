@@ -1,5 +1,8 @@
 package com.leetcode.algorithm;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.junit.Test;
 
 public class AlgorithmController461to480Test {
@@ -8,11 +11,9 @@ public class AlgorithmController461to480Test {
 
   @Test
   public void binarySearchBigger() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("123456789");
-    sb.insert(1, "a");
-    System.out.println(sb.toString());
-    System.out.println(sb.toString().charAt(1));
+    Set<int[]> set = new HashSet<>();
+    set.add(new int[] { 1, 2 });
+    System.out.println(set.contains(new int[] { 1, 2 }));
   }
 
 }

@@ -1,7 +1,9 @@
 package com.leetcode.algorithm;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 
@@ -351,4 +353,132 @@ public class AlgorithmController481to500 {
       robot.turnLeft();
     }
   }
+
+  public boolean hasPath(int[][] maze, int[] start, int[] destination) {
+    Set<Integer> cache = new HashSet<>();
+    return hasPath(maze, start[0], start[1], destination, cache);
+  }
+
+  public boolean hasPath(int[][] maze, int x, int y, int[] target, Set<Integer> cache) {
+    int index = x + y * maze[0].length;
+    cache.add(index);
+    for (int i = 0; i < 4; i++) {
+      int newX = x;
+      int newY = y;
+      switch (i) {
+        case 0:
+          for (int j = x; j >= 0; j--) {
+            if (maze[j][y] != 1) {
+              newX = j;
+            } else {
+              break;
+            }
+          }
+          break;
+        case 1:
+          for (int j = y; j < maze[0].length; j++) {
+            if (maze[x][j] != 1) {
+              newY = j;
+            } else {
+              break;
+            }
+          }
+          break;
+        case 2:
+          for (int j = x; j < maze.length; j++) {
+            if (maze[j][y] != 1) {
+              newX = j;
+            } else {
+              break;
+            }
+          }
+          break;
+        case 3:
+          for (int j = y; j >= 0; j--) {
+            if (maze[x][j] != 1) {
+              newY = j;
+            } else {
+              break;
+            }
+          }
+          break;
+      }
+      if (newX == target[0] && newY == target[1]) {
+        return true;
+      }
+      if (cache.contains(newX + newY * maze[0].length)) {
+        continue;
+      }
+      if (hasPath(maze, newX, newY, target, cache)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public List<List<Integer>> findSubsequences(int[] nums) {
+    List<List<Integer>> res = new ArrayList<>();
+    findSubsequences(nums, 0, Integer.MIN_VALUE, new ArrayList<>(), res);
+    return res;
+  }
+
+  public void findSubsequences(int[] nums, int index, int last, List<Integer> curr, List<List<Integer>> res) {
+    if (index >= nums.length) {
+      if (curr.size() >= 2) {
+        res.add(new ArrayList<>(curr));
+      }
+      return;
+    }
+
+    if (nums[index] >= last) {
+      curr.add(nums[index]);
+      findSubsequences(nums, index + 1, nums[index], curr, res);
+      curr.remove(curr.size() - 1);
+    }
+
+    if (nums[index] != last) {
+      findSubsequences(nums, index + 1, last, curr, res);
+    }
+  }
+
+  public int[] constructRectangle(int area) {
+    int min = 1, max = area;
+    int diff = Integer.MAX_VALUE;
+    for (int i = min; i <= area / 2; i++) {
+      if (area % i == 0 && diff > Math.abs(area / i - i)) {
+        diff = Math.abs(area / i - i);
+        min = i;
+        max = area / i;
+      }
+    }
+    return new int[] { Math.max(min, max), Math.min(min, max) };
+  }
+
+  public int[] constructRectangleII(int area) {
+    int mid = (int) Math.sqrt(area);
+    if (mid * mid == area) {
+      return new int[] { mid, mid };
+    }
+    int left = mid, right = mid + 1;
+    while (left > 0 || right <= area / 2) {
+      if (left > 0 && area % left == 0) {
+        return new int[] { Math.max(left, area / left), Math.min(left, area / left) };
+      } else if (right <= area / 2 && area % right == 0) {
+        return new int[] { Math.max(right, area / right), Math.min(right, area / right) };
+      }
+      left--;
+      right++;
+    }
+    return new int[] {};
+  }
+
+  public int[] constructRectangleIII(int area) {
+    int mid = (int) Math.sqrt(area);
+    int left = mid;
+    while (area % left != 0) {
+      left--;
+    }
+    return new int[] { area / left, left };
+  }
+
 }
