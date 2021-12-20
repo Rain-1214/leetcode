@@ -1,11 +1,14 @@
 package com.leetcode.algorithm;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
+import java.util.TreeSet;
 
 import com.leetcode.entity.Robot;
 
@@ -479,6 +482,110 @@ public class AlgorithmController481to500 {
       left--;
     }
     return new int[] { area / left, left };
+  }
+
+  public int reversePairs(int[] nums) {
+    Set<Long> set = new TreeSet<>();
+    for (int num : nums) {
+      set.add((long) num);
+      set.add((long) num * 2);
+    }
+
+    Map<Long, Integer> values = new HashMap<>();
+    int index = 0;
+    for (long num : set) {
+      values.put(num, index++);
+    }
+
+    SegTree tree = new SegTree(values.size());
+    int res = 0;
+    for (int i = 0; i < nums.length; i++) {
+      res += tree.query(values.get((long) nums[i] * 2) + 1, values.size() - 1);
+      tree.update(values.get((long) nums[i]), 1);
+    }
+    return res;
+  }
+
+  class SegTree {
+
+    int[] tree;
+    int n;
+
+    public SegTree(int n) {
+      this.n = n;
+      this.tree = new int[n * 2];
+    }
+
+    public int query(int l, int r) {
+      int res = 0;
+      int left = l + n;
+      int right = r + n;
+      while (right >= left) {
+        if (right % 2 == 0) {
+          res += tree[right--];
+        }
+        if (left % 2 == 1) {
+          res += tree[left++];
+        }
+        right /= 2;
+        left /= 2;
+      }
+      return res;
+    }
+
+    public void update(int x, int val) {
+      int cur = x + n;
+      tree[cur] += val;
+      while (cur > 0) {
+        cur /= 2;
+        tree[cur] += val;
+      }
+    }
+
+  }
+
+  public int reversePairsII(int[] nums) {
+    if (nums.length <= 1) {
+      return 0;
+    }
+    return reversePairsII(nums, 0, nums.length - 1);
+  }
+
+  public int reversePairsII(int[] nums, int left, int right) {
+    if (left == right) {
+      return 0;
+    }
+    int mid = (left + right) / 2;
+    int ln = reversePairsII(nums, left, mid);
+    int rn = reversePairsII(nums, mid + 1, right);
+    int res = 0;
+    int leftIndex = left, rightIndex = mid + 1;
+    while (leftIndex <= mid) {
+      while (rightIndex <= right && (long) nums[leftIndex] > 2 * (long) nums[rightIndex]) {
+        rightIndex++;
+      }
+      res += rightIndex - mid - 1;
+      leftIndex++;
+    }
+
+    int[] temp = new int[right - left + 1];
+    int lp = left, rp = mid + 1;
+    int p = 0;
+    while (p < temp.length) {
+      if (lp > mid) {
+        temp[p++] = nums[rp++];
+      } else if (rp > right) {
+        temp[p++] = nums[lp++];
+      } else {
+        if (nums[lp] <= nums[rp]) {
+          temp[p++] = nums[lp++];
+        } else {
+          temp[p++] = nums[rp++];
+        }
+      }
+    }
+    System.arraycopy(temp, 0, nums, left, temp.length);
+    return ln + rn + res;
   }
 
 }
