@@ -588,4 +588,23 @@ public class AlgorithmController481to500 {
     return ln + rn + res;
   }
 
+  public int findTargetSumWays(int[] nums, int target) {
+    Map<Integer, Integer> map = new HashMap<>();
+    map.put(nums[0], 1);
+    if (map.containsKey(-nums[0])) {
+      map.put(-nums[0], 2);
+    } else {
+      map.put(-nums[0], 1);
+    }
+    for (int i = 1; i < nums.length; i++) {
+      Map<Integer, Integer> temp = new HashMap<>();
+      for (int key : map.keySet()) {
+        temp.put(key + nums[i], temp.getOrDefault(key + nums[i], 0) + map.get(key));
+        temp.put(key - nums[i], temp.getOrDefault(key - nums[i], 0) + map.get(key));
+      }
+      map = temp;
+    }
+    return map.getOrDefault(target, 0);
+  }
+
 }
