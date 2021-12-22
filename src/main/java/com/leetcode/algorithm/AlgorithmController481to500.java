@@ -607,4 +607,23 @@ public class AlgorithmController481to500 {
     return map.getOrDefault(target, 0);
   }
 
+  public int findPoisonedDuration(int[] timeSeries, int duration) {
+    if (duration == 0) {
+      return 0;
+    }
+    int start = timeSeries[0], end = timeSeries[0] + duration;
+    int res = 0;
+    for (int i = 1; i < timeSeries.length; i++) {
+      if (timeSeries[i] > end) {
+        res += end - start;
+        start = timeSeries[i];
+        end = timeSeries[i] + duration;
+        continue;
+      }
+      end = timeSeries[i] + duration;
+    }
+    res += end - start;
+    return res;
+  }
+
 }
