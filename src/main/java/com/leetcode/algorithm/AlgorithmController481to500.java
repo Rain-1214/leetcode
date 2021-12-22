@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
+import java.util.Stack;
 import java.util.TreeSet;
 
 import com.leetcode.entity.Robot;
@@ -586,6 +587,84 @@ public class AlgorithmController481to500 {
     }
     System.arraycopy(temp, 0, nums, left, temp.length);
     return ln + rn + res;
+  }
+
+  public int findTargetSumWays(int[] nums, int target) {
+    Map<Integer, Integer> map = new HashMap<>();
+    map.put(nums[0], 1);
+    if (map.containsKey(-nums[0])) {
+      map.put(-nums[0], 2);
+    } else {
+      map.put(-nums[0], 1);
+    }
+    for (int i = 1; i < nums.length; i++) {
+      Map<Integer, Integer> temp = new HashMap<>();
+      for (int key : map.keySet()) {
+        temp.put(key + nums[i], temp.getOrDefault(key + nums[i], 0) + map.get(key));
+        temp.put(key - nums[i], temp.getOrDefault(key - nums[i], 0) + map.get(key));
+      }
+      map = temp;
+    }
+    return map.getOrDefault(target, 0);
+  }
+
+  public int findPoisonedDuration(int[] timeSeries, int duration) {
+    if (duration == 0) {
+      return 0;
+    }
+    int start = timeSeries[0], end = timeSeries[0] + duration;
+    int res = 0;
+    for (int i = 1; i < timeSeries.length; i++) {
+      if (timeSeries[i] > end) {
+        res += end - start;
+        start = timeSeries[i];
+        end = timeSeries[i] + duration;
+        continue;
+      }
+      end = timeSeries[i] + duration;
+    }
+    res += end - start;
+    return res;
+  }
+
+  public int[] nextGreaterElement(int[] nums1, int[] nums2) {
+    Map<Integer, Integer> map = new HashMap<>();
+    for (int i = 0; i < nums2.length; i++) {
+      int cur = nums2[i];
+      map.put(cur, i);
+    }
+    int[] res = new int[nums1.length];
+    for (int i = 0; i < nums1.length; i++) {
+      int cur = nums1[i];
+      int index = map.get(cur);
+      while (index < nums2.length - 1 && nums2[index + 1] <= cur) {
+        index++;
+      }
+      res[i] = index == nums2.length - 1 ? -1 : nums2[index + 1];
+    }
+    return res;
+  }
+
+  public int[] nextGreaterElementII(int[] nums1, int[] nums2) {
+    Map<Integer, Integer> map = new HashMap<>();
+    Stack<Integer> s = new Stack<>();
+    for (int i = nums2.length - 1; i >= 0; i--) {
+      int cur = nums2[i];
+      while (!s.isEmpty() && s.peek() < cur) {
+        s.pop();
+      }
+      if (s.isEmpty()) {
+        map.put(cur, -1);
+      } else {
+        map.put(cur, s.peek());
+      }
+      s.push(cur);
+    }
+    int[] res = new int[nums1.length];
+    for (int i = 0; i < nums1.length; i++) {
+      res[i] = map.get(nums1[i]);
+    }
+    return res;
   }
 
 }
