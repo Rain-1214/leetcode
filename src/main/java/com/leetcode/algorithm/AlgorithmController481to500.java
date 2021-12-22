@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
+import java.util.Stack;
 import java.util.TreeSet;
 
 import com.leetcode.entity.Robot;
@@ -623,6 +624,46 @@ public class AlgorithmController481to500 {
       end = timeSeries[i] + duration;
     }
     res += end - start;
+    return res;
+  }
+
+  public int[] nextGreaterElement(int[] nums1, int[] nums2) {
+    Map<Integer, Integer> map = new HashMap<>();
+    for (int i = 0; i < nums2.length; i++) {
+      int cur = nums2[i];
+      map.put(cur, i);
+    }
+    int[] res = new int[nums1.length];
+    for (int i = 0; i < nums1.length; i++) {
+      int cur = nums1[i];
+      int index = map.get(cur);
+      while (index < nums2.length - 1 && nums2[index + 1] <= cur) {
+        index++;
+      }
+      res[i] = index == nums2.length - 1 ? -1 : nums2[index + 1];
+    }
+    return res;
+  }
+
+  public int[] nextGreaterElementII(int[] nums1, int[] nums2) {
+    Map<Integer, Integer> map = new HashMap<>();
+    Stack<Integer> s = new Stack<>();
+    for (int i = nums2.length - 1; i >= 0; i--) {
+      int cur = nums2[i];
+      while (!s.isEmpty() && s.peek() < cur) {
+        s.pop();
+      }
+      if (s.isEmpty()) {
+        map.put(cur, -1);
+      } else {
+        map.put(cur, s.peek());
+      }
+      s.push(cur);
+    }
+    int[] res = new int[nums1.length];
+    for (int i = 0; i < nums1.length; i++) {
+      res[i] = map.get(nums1[i]);
+    }
     return res;
   }
 
