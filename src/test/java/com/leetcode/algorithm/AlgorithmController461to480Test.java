@@ -11,9 +11,7 @@ public class AlgorithmController461to480Test {
 
   @Test
   public void binarySearchBigger() {
-    Set<int[]> set = new HashSet<>();
-    set.add(new int[] { 1, 2 });
-    System.out.println(set.contains(new int[] { 1, 2 }));
+    System.out.println(-1 % 4);
   }
 
 }

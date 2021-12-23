@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
+import java.util.Random;
 import java.util.Set;
 import java.util.Stack;
 import java.util.TreeSet;
@@ -665,6 +666,47 @@ public class AlgorithmController481to500 {
       res[i] = map.get(nums1[i]);
     }
     return res;
+  }
+
+  class Solution497 {
+
+    int[][] rects;
+    int[] sums;
+    Random random = new Random();
+
+    public Solution497(int[][] rects) {
+      this.rects = rects;
+      this.sums = new int[rects.length];
+      sums[0] = (rects[0][2] - rects[0][0] + 1) * (rects[0][3] - rects[0][1] + 1);
+      for (int i = 1; i < rects.length; i++) {
+        sums[i] = sums[i - 1] + (rects[i][2] - rects[i][0] + 1) * (rects[i][3] - rects[i][1] + 1);
+      }
+    }
+
+    public int[] pick() {
+      int sum = sums[sums.length - 1];
+      int index = random.nextInt(sum) + 1;
+      int left = 0, right = sums.length - 1;
+      while (left <= right) {
+        int mid = left + (right - left) / 2;
+        if (sums[mid] >= index) {
+          if (mid == 0 || sums[mid - 1] < index) {
+            left = mid;
+            break;
+          } else {
+            right = mid - 1;
+          }
+        } else {
+          left = mid + 1;
+        }
+      }
+
+      int num = index - (left == 0 ? 0 : sums[left - 1]);
+      int width = rects[left][2] - rects[left][0] + 1;
+      int row = (num - 1) / width;
+      int col = (num - 1) % width;
+      return new int[] { rects[left][0] + col, rects[left][1] + row };
+    }
   }
 
 }
