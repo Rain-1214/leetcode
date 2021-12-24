@@ -709,4 +709,45 @@ public class AlgorithmController481to500 {
     }
   }
 
+  public int[] findDiagonalOrder(int[][] mat) {
+    int rowMax = mat.length;
+    int colMax = mat[0].length;
+    int[] res = new int[rowMax * colMax];
+    int index = 0, dir = 1, row = 0, col = 0;
+    while (index < res.length) {
+      if (dir > 0) {
+        while (row >= 0 && col < colMax) {
+          res[index++] = mat[row][col];
+          row--;
+          col++;
+        }
+        if (row == -1 && col == colMax) {
+          row = 1 >= rowMax ? 0 : 1;
+          col = colMax - 1;
+        } else if (row == -1) {
+          row = 0;
+        } else {
+          col = colMax - 1;
+          row += 2;
+        }
+      } else {
+        while (row < rowMax && col >= 0) {
+          res[index++] = mat[row][col];
+          row++;
+          col--;
+        }
+        if (row == rowMax && col == -1) {
+          row = rowMax - 1;
+          col = 1 >= colMax ? 0 : 1;
+        } else if (col == -1) {
+          col = 0;
+        } else {
+          row = rowMax - 1;
+          col += 2;
+        }
+      }
+      dir *= -1;
+    }
+    return res;
+  }
 }
