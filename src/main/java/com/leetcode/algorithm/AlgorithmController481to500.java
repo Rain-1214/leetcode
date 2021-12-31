@@ -945,4 +945,68 @@ public class AlgorithmController481to500 {
     return strs[hole[0]][hole[1]] == null ? "impossible" : strs[hole[0]][hole[1]];
   }
 
+  public String[] findWords(String[] words) {
+    int[] indexs = new int[26];
+    for (int i = 'a'; i <= 'z'; i++) {
+      int index = i - 'a';
+      switch (i) {
+        case 'a':
+        case 's':
+        case 'd':
+        case 'f':
+        case 'g':
+        case 'h':
+        case 'j':
+        case 'k':
+        case 'l':
+          indexs[index] = 1;
+          break;
+        case 'q':
+        case 'w':
+        case 'e':
+        case 'r':
+        case 't':
+        case 'y':
+        case 'u':
+        case 'i':
+        case 'o':
+        case 'p':
+          indexs[index] = 2;
+          break;
+        case 'z':
+        case 'x':
+        case 'c':
+        case 'v':
+        case 'b':
+        case 'n':
+        case 'm':
+          indexs[index] = 3;
+          break;
+      }
+    }
+    List<String> res = new ArrayList<>();
+    for (String s : words) {
+      char[] cs = s.toCharArray();
+      char firstChar = cs[0];
+      if (firstChar >= 'A' && firstChar <= 'Z') {
+        firstChar = (char) (firstChar + 32);
+      }
+      int index = indexs[firstChar - 'a'];
+      for (int i = 1; i < cs.length; i++) {
+        char c = cs[i];
+        if (c >= 'A' && c <= 'Z') {
+          c = (char) (c + 32);
+        }
+        if (indexs[c - 'a'] != index) {
+          index = -1;
+          break;
+        }
+      }
+      if (index != -1) {
+        res.add(s);
+      }
+    }
+    return res.toArray(new String[0]);
+  }
+
 }
