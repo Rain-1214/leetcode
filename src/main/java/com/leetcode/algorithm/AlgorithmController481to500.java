@@ -7,11 +7,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
+import java.util.Random;
 import java.util.Set;
 import java.util.Stack;
 import java.util.TreeSet;
 
 import com.leetcode.entity.Robot;
+import com.leetcode.entity.TreeNode;
 
 public class AlgorithmController481to500 {
 
@@ -665,6 +667,387 @@ public class AlgorithmController481to500 {
       res[i] = map.get(nums1[i]);
     }
     return res;
+  }
+
+  class Solution497 {
+
+    int[][] rects;
+    int[] sums;
+    Random random = new Random();
+
+    public Solution497(int[][] rects) {
+      this.rects = rects;
+      this.sums = new int[rects.length];
+      sums[0] = (rects[0][2] - rects[0][0] + 1) * (rects[0][3] - rects[0][1] + 1);
+      for (int i = 1; i < rects.length; i++) {
+        sums[i] = sums[i - 1] + (rects[i][2] - rects[i][0] + 1) * (rects[i][3] - rects[i][1] + 1);
+      }
+    }
+
+    public int[] pick() {
+      int sum = sums[sums.length - 1];
+      int index = random.nextInt(sum) + 1;
+      int left = 0, right = sums.length - 1;
+      while (left <= right) {
+        int mid = left + (right - left) / 2;
+        if (sums[mid] >= index) {
+          if (mid == 0 || sums[mid - 1] < index) {
+            left = mid;
+            break;
+          } else {
+            right = mid - 1;
+          }
+        } else {
+          left = mid + 1;
+        }
+      }
+
+      int num = index - (left == 0 ? 0 : sums[left - 1]);
+      int width = rects[left][2] - rects[left][0] + 1;
+      int row = (num - 1) / width;
+      int col = (num - 1) % width;
+      return new int[] { rects[left][0] + col, rects[left][1] + row };
+    }
+  }
+
+  public int[] findDiagonalOrder(int[][] mat) {
+    int rowMax = mat.length;
+    int colMax = mat[0].length;
+    int[] res = new int[rowMax * colMax];
+    int index = 0, dir = 1, row = 0, col = 0;
+    while (index < res.length) {
+      if (dir > 0) {
+        while (row >= 0 && col < colMax) {
+          res[index++] = mat[row][col];
+          row--;
+          col++;
+        }
+        if (row == -1 && col == colMax) {
+          row = 1 >= rowMax ? 0 : 1;
+          col = colMax - 1;
+        } else if (row == -1) {
+          row = 0;
+        } else {
+          col = colMax - 1;
+          row += 2;
+        }
+      } else {
+        while (row < rowMax && col >= 0) {
+          res[index++] = mat[row][col];
+          row++;
+          col--;
+        }
+        if (row == rowMax && col == -1) {
+          row = rowMax - 1;
+          col = 1 >= colMax ? 0 : 1;
+        } else if (col == -1) {
+          col = 0;
+        } else {
+          row = rowMax - 1;
+          col += 2;
+        }
+      }
+      dir *= -1;
+    }
+    return res;
+  }
+
+  public String findShortestWayRes = null;
+  public int findShortestWayResLen = Integer.MAX_VALUE;
+
+  public String findShortestWay(int[][] maze, int[] ball, int[] hole) {
+    StringBuilder sb = new StringBuilder();
+    findShortestWayBfs(maze, ball[0], ball[1], hole, 0, sb, new HashSet<>());
+    return findShortestWayRes == null ? "impossible" : findShortestWayRes;
+  }
+
+  public boolean findShortestWayBfs(int[][] maze, int x, int y, int[] hole, int dis, StringBuilder sb,
+      Set<Integer> cache) {
+    int index = x * maze[0].length + y;
+    if (cache.contains(index)) {
+      return false;
+    }
+    cache.add(index);
+    boolean find = false;
+    for (int i = 0; i < 4; i++) {
+      int newX = x;
+      int newY = y;
+      int tempDis = 0;
+      switch (i) {
+        case 3:
+          for (int j = x; j >= 0; j--) {
+            if (maze[j][y] != 1) {
+              newX = j;
+              if (j == hole[0] && y == hole[1]) {
+                break;
+              }
+            } else {
+              break;
+            }
+          }
+          tempDis = Math.abs(newX - x);
+          sb.append("u");
+          break;
+        case 2:
+          for (int j = y; j < maze[0].length; j++) {
+            if (maze[x][j] != 1) {
+              newY = j;
+              if (x == hole[0] && j == hole[1]) {
+                break;
+              }
+            } else {
+              break;
+            }
+          }
+          tempDis = Math.abs(newY - y);
+          sb.append("r");
+          break;
+        case 0:
+          for (int j = x; j < maze.length; j++) {
+            if (maze[j][y] != 1) {
+              newX = j;
+              if (j == hole[0] && y == hole[1]) {
+                break;
+              }
+            } else {
+              break;
+            }
+          }
+          tempDis = Math.abs(newX - x);
+          sb.append("d");
+          break;
+        case 1:
+          for (int j = y; j >= 0; j--) {
+            if (maze[x][j] != 1) {
+              newY = j;
+              if (x == hole[0] && j == hole[1]) {
+                break;
+              }
+            } else {
+              break;
+            }
+          }
+          tempDis = Math.abs(newY - y);
+          sb.append("l");
+          break;
+      }
+      dis += tempDis;
+
+      if (newX == hole[0] && newY == hole[1]) {
+        if (dis < findShortestWayResLen) {
+          findShortestWayResLen = dis;
+          findShortestWayRes = sb.toString();
+        }
+        sb.deleteCharAt(sb.length() - 1);
+        dis -= tempDis;
+        find = true;
+        continue;
+      }
+      if (findShortestWayBfs(maze, newX, newY, hole, dis, sb, cache)) {
+        find = true;
+      }
+      sb.deleteCharAt(sb.length() - 1);
+      dis -= tempDis;
+    }
+    cache.remove(index);
+    return find;
+  }
+
+  public String findShortestWayII(int[][] maze, int[] ball, int[] hole) {
+    Queue<int[]> q = new LinkedList<>();
+    q.add(ball);
+    String[][] strs = new String[maze.length][maze[0].length];
+    strs[ball[0]][ball[1]] = "";
+    int[][] dis = new int[maze.length][maze[0].length];
+    for (int i = 0; i < maze.length; i++) {
+      for (int j = 0; j < maze[0].length; j++) {
+        dis[i][j] = Integer.MAX_VALUE;
+      }
+    }
+    dis[ball[0]][ball[1]] = 0;
+    while (!q.isEmpty()) {
+      int[] cur = q.poll();
+      int x = cur[0];
+      int y = cur[1];
+      int disCur = dis[x][y];
+      for (int i = 0; i < 4; i++) {
+        int newX = x;
+        int newY = y;
+        int tempDis = 0;
+        switch (i) {
+          case 3:
+            for (int j = x; j >= 0; j--) {
+              if (maze[j][y] != 1) {
+                newX = j;
+                if (j == hole[0] && y == hole[1]) {
+                  break;
+                }
+              } else {
+                break;
+              }
+            }
+            tempDis = Math.abs(newX - x);
+            break;
+          case 2:
+            for (int j = y; j < maze[0].length; j++) {
+              if (maze[x][j] != 1) {
+                newY = j;
+                if (x == hole[0] && j == hole[1]) {
+                  break;
+                }
+              } else {
+                break;
+              }
+            }
+            tempDis = Math.abs(newY - y);
+            break;
+          case 0:
+            for (int j = x; j < maze.length; j++) {
+              if (maze[j][y] != 1) {
+                newX = j;
+                if (j == hole[0] && y == hole[1]) {
+                  break;
+                }
+              } else {
+                break;
+              }
+            }
+            tempDis = Math.abs(newX - x);
+            break;
+          case 1:
+            for (int j = y; j >= 0; j--) {
+              if (maze[x][j] != 1) {
+                newY = j;
+                if (x == hole[0] && j == hole[1]) {
+                  break;
+                }
+              } else {
+                break;
+              }
+            }
+            tempDis = Math.abs(newY - y);
+            break;
+        }
+        String nextStr = strs[x][y] + (i == 3 ? "u" : i == 2 ? "r" : i == 0 ? "d" : "l");
+        if (disCur + tempDis < dis[newX][newY]) {
+          dis[newX][newY] = disCur + tempDis;
+          strs[newX][newY] = nextStr;
+          q.add(new int[] { newX, newY });
+        } else if (disCur + tempDis == dis[newX][newY]) {
+          if (strs[newX][newY].compareTo(nextStr) > 0) {
+            dis[newX][newY] = disCur + tempDis;
+            strs[newX][newY] = nextStr;
+            q.add(new int[] { newX, newY });
+          }
+        }
+
+      }
+    }
+    return strs[hole[0]][hole[1]] == null ? "impossible" : strs[hole[0]][hole[1]];
+  }
+
+  public String[] findWords(String[] words) {
+    int[] indexs = new int[26];
+    for (int i = 'a'; i <= 'z'; i++) {
+      int index = i - 'a';
+      switch (i) {
+        case 'a':
+        case 's':
+        case 'd':
+        case 'f':
+        case 'g':
+        case 'h':
+        case 'j':
+        case 'k':
+        case 'l':
+          indexs[index] = 1;
+          break;
+        case 'q':
+        case 'w':
+        case 'e':
+        case 'r':
+        case 't':
+        case 'y':
+        case 'u':
+        case 'i':
+        case 'o':
+        case 'p':
+          indexs[index] = 2;
+          break;
+        case 'z':
+        case 'x':
+        case 'c':
+        case 'v':
+        case 'b':
+        case 'n':
+        case 'm':
+          indexs[index] = 3;
+          break;
+      }
+    }
+    List<String> res = new ArrayList<>();
+    for (String s : words) {
+      char[] cs = s.toCharArray();
+      char firstChar = cs[0];
+      if (firstChar >= 'A' && firstChar <= 'Z') {
+        firstChar = (char) (firstChar + 32);
+      }
+      int index = indexs[firstChar - 'a'];
+      for (int i = 1; i < cs.length; i++) {
+        char c = cs[i];
+        if (c >= 'A' && c <= 'Z') {
+          c = (char) (c + 32);
+        }
+        if (indexs[c - 'a'] != index) {
+          index = -1;
+          break;
+        }
+      }
+      if (index != -1) {
+        res.add(s);
+      }
+    }
+    return res.toArray(new String[0]);
+  }
+
+  public int curNum = Integer.MAX_VALUE;
+  public int curSum = 0;
+  public int prevSum = 0;
+
+  public int[] findMode(TreeNode root) {
+    List<Integer> res = new ArrayList<>();
+    findMode(root, res);
+    if (curSum > prevSum) {
+      return new int[] { curNum };
+    } else if (curNum == prevSum) {
+      res.add(curNum);
+    }
+    int[] resInt = new int[res.size()];
+    for (int i = 0; i < res.size(); i++) {
+      resInt[i] = res.get(i);
+    }
+    return resInt;
+  }
+
+  public void findMode(TreeNode root, List<Integer> res) {
+    if (root == null) {
+      return;
+    }
+    findMode(root.left, res);
+    if (root.val != curNum) {
+      if (curSum > prevSum) {
+        res.clear();
+        res.add(curNum);
+        prevSum = curSum;
+      } else if (curSum == prevSum) {
+        res.add(curNum);
+      }
+      curSum = 1;
+      curNum = root.val;
+    } else {
+      curSum++;
+    }
+    findMode(root.right, res);
   }
 
 }
