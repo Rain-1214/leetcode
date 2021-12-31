@@ -13,6 +13,7 @@ import java.util.Stack;
 import java.util.TreeSet;
 
 import com.leetcode.entity.Robot;
+import com.leetcode.entity.TreeNode;
 
 public class AlgorithmController481to500 {
 
@@ -1007,6 +1008,46 @@ public class AlgorithmController481to500 {
       }
     }
     return res.toArray(new String[0]);
+  }
+
+  public int curNum = Integer.MAX_VALUE;
+  public int curSum = 0;
+  public int prevSum = 0;
+
+  public int[] findMode(TreeNode root) {
+    List<Integer> res = new ArrayList<>();
+    findMode(root, res);
+    if (curSum > prevSum) {
+      return new int[] { curNum };
+    } else if (curNum == prevSum) {
+      res.add(curNum);
+    }
+    int[] resInt = new int[res.size()];
+    for (int i = 0; i < res.size(); i++) {
+      resInt[i] = res.get(i);
+    }
+    return resInt;
+  }
+
+  public void findMode(TreeNode root, List<Integer> res) {
+    if (root == null) {
+      return;
+    }
+    findMode(root.left, res);
+    if (root.val != curNum) {
+      if (curSum > prevSum) {
+        res.clear();
+        res.add(curNum);
+        prevSum = curSum;
+      } else if (curSum == prevSum) {
+        res.add(curNum);
+      }
+      curSum = 1;
+      curNum = root.val;
+    } else {
+      curSum++;
+    }
+    findMode(root.right, res);
   }
 
 }
