@@ -750,4 +750,199 @@ public class AlgorithmController481to500 {
     }
     return res;
   }
+
+  public String findShortestWayRes = null;
+  public int findShortestWayResLen = Integer.MAX_VALUE;
+
+  public String findShortestWay(int[][] maze, int[] ball, int[] hole) {
+    StringBuilder sb = new StringBuilder();
+    findShortestWayBfs(maze, ball[0], ball[1], hole, 0, sb, new HashSet<>());
+    return findShortestWayRes == null ? "impossible" : findShortestWayRes;
+  }
+
+  public boolean findShortestWayBfs(int[][] maze, int x, int y, int[] hole, int dis, StringBuilder sb,
+      Set<Integer> cache) {
+    int index = x * maze[0].length + y;
+    if (cache.contains(index)) {
+      return false;
+    }
+    cache.add(index);
+    boolean find = false;
+    for (int i = 0; i < 4; i++) {
+      int newX = x;
+      int newY = y;
+      int tempDis = 0;
+      switch (i) {
+        case 3:
+          for (int j = x; j >= 0; j--) {
+            if (maze[j][y] != 1) {
+              newX = j;
+              if (j == hole[0] && y == hole[1]) {
+                break;
+              }
+            } else {
+              break;
+            }
+          }
+          tempDis = Math.abs(newX - x);
+          sb.append("u");
+          break;
+        case 2:
+          for (int j = y; j < maze[0].length; j++) {
+            if (maze[x][j] != 1) {
+              newY = j;
+              if (x == hole[0] && j == hole[1]) {
+                break;
+              }
+            } else {
+              break;
+            }
+          }
+          tempDis = Math.abs(newY - y);
+          sb.append("r");
+          break;
+        case 0:
+          for (int j = x; j < maze.length; j++) {
+            if (maze[j][y] != 1) {
+              newX = j;
+              if (j == hole[0] && y == hole[1]) {
+                break;
+              }
+            } else {
+              break;
+            }
+          }
+          tempDis = Math.abs(newX - x);
+          sb.append("d");
+          break;
+        case 1:
+          for (int j = y; j >= 0; j--) {
+            if (maze[x][j] != 1) {
+              newY = j;
+              if (x == hole[0] && j == hole[1]) {
+                break;
+              }
+            } else {
+              break;
+            }
+          }
+          tempDis = Math.abs(newY - y);
+          sb.append("l");
+          break;
+      }
+      dis += tempDis;
+
+      if (newX == hole[0] && newY == hole[1]) {
+        if (dis < findShortestWayResLen) {
+          findShortestWayResLen = dis;
+          findShortestWayRes = sb.toString();
+        }
+        sb.deleteCharAt(sb.length() - 1);
+        dis -= tempDis;
+        find = true;
+        continue;
+      }
+      if (findShortestWayBfs(maze, newX, newY, hole, dis, sb, cache)) {
+        find = true;
+      }
+      sb.deleteCharAt(sb.length() - 1);
+      dis -= tempDis;
+    }
+    cache.remove(index);
+    return find;
+  }
+
+  public String findShortestWayII(int[][] maze, int[] ball, int[] hole) {
+    Queue<int[]> q = new LinkedList<>();
+    q.add(ball);
+    String[][] strs = new String[maze.length][maze[0].length];
+    strs[ball[0]][ball[1]] = "";
+    int[][] dis = new int[maze.length][maze[0].length];
+    for (int i = 0; i < maze.length; i++) {
+      for (int j = 0; j < maze[0].length; j++) {
+        dis[i][j] = Integer.MAX_VALUE;
+      }
+    }
+    dis[ball[0]][ball[1]] = 0;
+    while (!q.isEmpty()) {
+      int[] cur = q.poll();
+      int x = cur[0];
+      int y = cur[1];
+      int disCur = dis[x][y];
+      for (int i = 0; i < 4; i++) {
+        int newX = x;
+        int newY = y;
+        int tempDis = 0;
+        switch (i) {
+          case 3:
+            for (int j = x; j >= 0; j--) {
+              if (maze[j][y] != 1) {
+                newX = j;
+                if (j == hole[0] && y == hole[1]) {
+                  break;
+                }
+              } else {
+                break;
+              }
+            }
+            tempDis = Math.abs(newX - x);
+            break;
+          case 2:
+            for (int j = y; j < maze[0].length; j++) {
+              if (maze[x][j] != 1) {
+                newY = j;
+                if (x == hole[0] && j == hole[1]) {
+                  break;
+                }
+              } else {
+                break;
+              }
+            }
+            tempDis = Math.abs(newY - y);
+            break;
+          case 0:
+            for (int j = x; j < maze.length; j++) {
+              if (maze[j][y] != 1) {
+                newX = j;
+                if (j == hole[0] && y == hole[1]) {
+                  break;
+                }
+              } else {
+                break;
+              }
+            }
+            tempDis = Math.abs(newX - x);
+            break;
+          case 1:
+            for (int j = y; j >= 0; j--) {
+              if (maze[x][j] != 1) {
+                newY = j;
+                if (x == hole[0] && j == hole[1]) {
+                  break;
+                }
+              } else {
+                break;
+              }
+            }
+            tempDis = Math.abs(newY - y);
+            break;
+        }
+        String nextStr = strs[x][y] + (i == 3 ? "u" : i == 2 ? "r" : i == 0 ? "d" : "l");
+        if (disCur + tempDis < dis[newX][newY]) {
+          dis[newX][newY] = disCur + tempDis;
+          strs[newX][newY] = nextStr;
+          q.add(new int[] { newX, newY });
+        } else if (disCur + tempDis == dis[newX][newY]) {
+          if (strs[newX][newY].compareTo(nextStr) > 0) {
+            dis[newX][newY] = disCur + tempDis;
+            strs[newX][newY] = nextStr;
+            q.add(new int[] { newX, newY });
+          }
+        }
+
+      }
+    }
+    return strs[hole[0]][hole[1]] == null ? "impossible" : strs[hole[0]][hole[1]];
+  }
+
 }
