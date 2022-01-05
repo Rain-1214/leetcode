@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
+import java.util.Queue;
 import java.util.Stack;
 
 public class AlgorithmController501to520 {
@@ -101,4 +102,72 @@ public class AlgorithmController501to520 {
     }
     return sb.reverse().toString();
   }
+
+  public int shortestDistance(int[][] maze, int[] start, int[] destination) {
+    int rowMax = maze.length;
+    int colMax = maze[0].length;
+    int[][] dp = new int[rowMax][colMax];
+
+    Queue<int[]> q = new LinkedList<>();
+    q.add(start);
+
+    while (!q.isEmpty()) {
+      int[] current = q.poll();
+      int row = current[0];
+      int col = current[1];
+      for (int i = 0; i < 4; i++) {
+        int newRow = row;
+        int newCol = col;
+        int tempDis = 0;
+        switch (i) {
+          case 3:
+            for (int j = newRow; j >= 0; j--) {
+              if (maze[j][newCol] != 1) {
+                newRow = j;
+              } else {
+                break;
+              }
+            }
+            tempDis = Math.abs(newRow - row);
+            break;
+          case 2:
+            for (int j = newCol; j < colMax; j++) {
+              if (maze[newRow][j] != 1) {
+                newCol = j;
+              } else {
+                break;
+              }
+            }
+            tempDis = Math.abs(newCol - col);
+            break;
+          case 1:
+            for (int j = newRow; j < rowMax; j++) {
+              if (maze[j][newCol] != 1) {
+                newRow = j;
+              } else {
+                break;
+              }
+            }
+            tempDis = Math.abs(newRow - row);
+            break;
+          case 0:
+            for (int j = newCol; j >= 0; j--) {
+              if (maze[newRow][j] != 1) {
+                newCol = j;
+              } else {
+                break;
+              }
+            }
+            tempDis = Math.abs(newCol - col);
+            break;
+        }
+        if (dp[newRow][newCol] == 0 || dp[newRow][newCol] > tempDis + dp[row][col]) {
+          dp[newRow][newCol] = tempDis + dp[row][col];
+          q.add(new int[] { newRow, newCol });
+        }
+      }
+    }
+    return dp[destination[0]][destination[1]] == 0 ? -1 : dp[destination[0]][destination[1]];
+  }
+
 }
