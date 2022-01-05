@@ -1,7 +1,10 @@
 package com.leetcode.algorithm;
 
 import java.util.Arrays;
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.PriorityQueue;
+import java.util.Stack;
 
 public class AlgorithmController501to520 {
 
@@ -29,5 +32,53 @@ public class AlgorithmController501to520 {
     }
 
     return w;
+  }
+
+  public int[] nextGreaterElements(int[] nums) {
+    int[] newArr = new int[nums.length * 2];
+    for (int i = 0; i < nums.length; i++) {
+      newArr[i] = nums[i];
+      newArr[nums.length + i] = nums[i];
+    }
+    int[] res = new int[nums.length];
+    for (int i = 0; i < nums.length; i++) {
+      int j = i + 1;
+      boolean find = false;
+      while (j < nums.length + i) {
+        if (newArr[j] > newArr[i]) {
+          find = true;
+          res[i] = newArr[j];
+          break;
+        }
+        j++;
+      }
+      if (!find) {
+        res[i] = -1;
+      }
+    }
+    return res;
+  }
+
+  public int[] nextGreaterElementsII(int[] nums) {
+    int[] res = new int[nums.length];
+    Deque<Integer> dq = new LinkedList<>();
+    for (int i = 0; i < nums.length - 1; i++) {
+      dq.addLast(i);
+    }
+    for (int i = nums.length - 1; i >= 0; i--) {
+      if (!dq.isEmpty() && dq.peekLast() == i) {
+        dq.pollLast();
+      }
+      while (!dq.isEmpty() && nums[dq.peekFirst()] <= nums[i]) {
+        dq.removeFirst();
+      }
+      if (dq.isEmpty()) {
+        res[i] = -1;
+      } else {
+        res[i] = nums[dq.peekFirst()];
+      }
+      dq.addFirst(i);
+    }
+    return res;
   }
 }
