@@ -107,6 +107,10 @@ public class AlgorithmController501to520 {
     int rowMax = maze.length;
     int colMax = maze[0].length;
     int[][] dp = new int[rowMax][colMax];
+    for (int[] row : dp) {
+      Arrays.fill(row, Integer.MAX_VALUE);
+    }
+    dp[start[0]][start[1]] = 0;
 
     Queue<int[]> q = new LinkedList<>();
     q.add(start);
@@ -161,13 +165,89 @@ public class AlgorithmController501to520 {
             tempDis = Math.abs(newCol - col);
             break;
         }
-        if (dp[newRow][newCol] == 0 || dp[newRow][newCol] > tempDis + dp[row][col]) {
+        if (dp[newRow][newCol] > tempDis + dp[row][col]) {
           dp[newRow][newCol] = tempDis + dp[row][col];
           q.add(new int[] { newRow, newCol });
         }
       }
     }
+    return dp[destination[0]][destination[1]] == Integer.MAX_VALUE ? -1 : dp[destination[0]][destination[1]];
+  }
+
+  public int shortestDistanceII(int[][] maze, int[] start, int[] destination) {
+    int rowMax = maze.length;
+    int colMax = maze[0].length;
+    int[][] dp = new int[rowMax][colMax];
+    shortestDistance(maze, start[0], start[1], destination, dp);
     return dp[destination[0]][destination[1]] == 0 ? -1 : dp[destination[0]][destination[1]];
+  }
+
+  public void shortestDistance(int[][] maze, int row, int col, int[] destination, int[][] dp) {
+    int rowMax = maze.length;
+    int colMax = maze[0].length;
+    int currentStep = dp[row][col];
+    for (int i = 0; i < 4; i++) {
+      int newRow = row;
+      int newCol = col;
+      int tempDis = 0;
+      switch (i) {
+        case 3:
+          for (int j = newRow; j >= 0; j--) {
+            if (maze[j][newCol] != 1) {
+              newRow = j;
+            } else {
+              break;
+            }
+          }
+          tempDis = Math.abs(newRow - row);
+          break;
+        case 2:
+          for (int j = newCol; j < colMax; j++) {
+            if (maze[newRow][j] != 1) {
+              newCol = j;
+            } else {
+              break;
+            }
+          }
+          tempDis = Math.abs(newCol - col);
+          break;
+        case 1:
+          for (int j = newRow; j < rowMax; j++) {
+            if (maze[j][newCol] != 1) {
+              newRow = j;
+            } else {
+              break;
+            }
+          }
+          tempDis = Math.abs(newRow - row);
+          break;
+        case 0:
+          for (int j = newCol; j >= 0; j--) {
+            if (maze[newRow][j] != 1) {
+              newCol = j;
+            } else {
+              break;
+            }
+          }
+          tempDis = Math.abs(newCol - col);
+          break;
+      }
+      if (newRow == row && newCol == col) {
+        continue;
+      }
+      if (newRow == destination[0] && newCol == destination[1]
+          && (dp[newRow][newCol] == 0 || dp[newRow][newCol] > tempDis + currentStep)) {
+        dp[newRow][newCol] = tempDis + currentStep;
+        continue;
+      }
+      if (dp[destination[0]][destination[1]] != 0 && dp[destination[0]][destination[1]] < tempDis + currentStep) {
+        continue;
+      }
+      if (dp[newRow][newCol] == 0 || dp[newRow][newCol] > tempDis + currentStep) {
+        dp[newRow][newCol] = tempDis + dp[row][col];
+        shortestDistance(maze, newRow, newCol, destination, dp);
+      }
+    }
   }
 
 }
