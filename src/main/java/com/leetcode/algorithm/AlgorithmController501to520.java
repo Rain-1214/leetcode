@@ -2,7 +2,9 @@ package com.leetcode.algorithm;
 
 import java.util.Arrays;
 import java.util.Deque;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Stack;
@@ -248,6 +250,54 @@ public class AlgorithmController501to520 {
         shortestDistance(maze, newRow, newCol, destination, dp);
       }
     }
+  }
+
+  public String[] findRelativeRanks(int[] score) {
+    int[] copy = Arrays.copyOf(score, score.length);
+    Arrays.sort(copy);
+    Map<Integer, Integer> map = new HashMap<>();
+    for (int i = 0; i < copy.length; i++) {
+      map.put(copy[i], score.length - i);
+    }
+    String[] res = new String[score.length];
+    for (int i = 0; i < score.length; i++) {
+      res[i] = map.get(score[i]) == 1 ? "Gold Medal"
+          : map.get(score[i]) == 2 ? "Silver Medal"
+              : map.get(score[i]) == 3
+                  ? "Bronze Medal"
+                  : Integer.toString(map.get(score[i]));
+    }
+    return res;
+  }
+
+  public String[] findRelativeRanksII(int[] score) {
+    int max = score[0];
+    for (int s : score) {
+      max = Math.max(max, s);
+    }
+    int[] bucket = new int[max + 1];
+    for (int i = 0; i < score.length; i++) {
+      bucket[score[i]] = i + 1;
+    }
+
+    int index = 0;
+    String[] res = new String[score.length];
+    for (int i = bucket.length - 1; i >= 0; i--) {
+      if (bucket[i] == 0) {
+        continue;
+      }
+      if (index == 0) {
+        res[bucket[i] - 1] = "Gold Medal";
+      } else if (index == 1) {
+        res[bucket[i] - 1] = "Silver Medal";
+      } else if (index == 2) {
+        res[bucket[i] - 1] = "Bronze Medal";
+      } else {
+        res[bucket[i] - 1] = Integer.toString(index + 1);
+      }
+      index++;
+    }
+    return res;
   }
 
 }
