@@ -2,7 +2,9 @@ package com.leetcode.algorithm;
 
 import java.util.Arrays;
 import java.util.Deque;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Stack;
@@ -107,6 +109,10 @@ public class AlgorithmController501to520 {
     int rowMax = maze.length;
     int colMax = maze[0].length;
     int[][] dp = new int[rowMax][colMax];
+    for (int[] row : dp) {
+      Arrays.fill(row, Integer.MAX_VALUE);
+    }
+    dp[start[0]][start[1]] = 0;
 
     Queue<int[]> q = new LinkedList<>();
     q.add(start);
@@ -161,13 +167,153 @@ public class AlgorithmController501to520 {
             tempDis = Math.abs(newCol - col);
             break;
         }
-        if (dp[newRow][newCol] == 0 || dp[newRow][newCol] > tempDis + dp[row][col]) {
+        if (dp[newRow][newCol] > tempDis + dp[row][col]) {
           dp[newRow][newCol] = tempDis + dp[row][col];
           q.add(new int[] { newRow, newCol });
         }
       }
     }
+    return dp[destination[0]][destination[1]] == Integer.MAX_VALUE ? -1 : dp[destination[0]][destination[1]];
+  }
+
+  public int shortestDistanceII(int[][] maze, int[] start, int[] destination) {
+    int rowMax = maze.length;
+    int colMax = maze[0].length;
+    int[][] dp = new int[rowMax][colMax];
+    shortestDistance(maze, start[0], start[1], destination, dp);
     return dp[destination[0]][destination[1]] == 0 ? -1 : dp[destination[0]][destination[1]];
+  }
+
+  public void shortestDistance(int[][] maze, int row, int col, int[] destination, int[][] dp) {
+    int rowMax = maze.length;
+    int colMax = maze[0].length;
+    int currentStep = dp[row][col];
+    for (int i = 0; i < 4; i++) {
+      int newRow = row;
+      int newCol = col;
+      int tempDis = 0;
+      switch (i) {
+        case 3:
+          for (int j = newRow; j >= 0; j--) {
+            if (maze[j][newCol] != 1) {
+              newRow = j;
+            } else {
+              break;
+            }
+          }
+          tempDis = Math.abs(newRow - row);
+          break;
+        case 2:
+          for (int j = newCol; j < colMax; j++) {
+            if (maze[newRow][j] != 1) {
+              newCol = j;
+            } else {
+              break;
+            }
+          }
+          tempDis = Math.abs(newCol - col);
+          break;
+        case 1:
+          for (int j = newRow; j < rowMax; j++) {
+            if (maze[j][newCol] != 1) {
+              newRow = j;
+            } else {
+              break;
+            }
+          }
+          tempDis = Math.abs(newRow - row);
+          break;
+        case 0:
+          for (int j = newCol; j >= 0; j--) {
+            if (maze[newRow][j] != 1) {
+              newCol = j;
+            } else {
+              break;
+            }
+          }
+          tempDis = Math.abs(newCol - col);
+          break;
+      }
+      if (newRow == row && newCol == col) {
+        continue;
+      }
+      if (newRow == destination[0] && newCol == destination[1]
+          && (dp[newRow][newCol] == 0 || dp[newRow][newCol] > tempDis + currentStep)) {
+        dp[newRow][newCol] = tempDis + currentStep;
+        continue;
+      }
+      if (dp[destination[0]][destination[1]] != 0 && dp[destination[0]][destination[1]] < tempDis + currentStep) {
+        continue;
+      }
+      if (dp[newRow][newCol] == 0 || dp[newRow][newCol] > tempDis + currentStep) {
+        dp[newRow][newCol] = tempDis + dp[row][col];
+        shortestDistance(maze, newRow, newCol, destination, dp);
+      }
+    }
+  }
+
+  public String[] findRelativeRanks(int[] score) {
+    int[] copy = Arrays.copyOf(score, score.length);
+    Arrays.sort(copy);
+    Map<Integer, Integer> map = new HashMap<>();
+    for (int i = 0; i < copy.length; i++) {
+      map.put(copy[i], score.length - i);
+    }
+    String[] res = new String[score.length];
+    for (int i = 0; i < score.length; i++) {
+      res[i] = map.get(score[i]) == 1 ? "Gold Medal"
+          : map.get(score[i]) == 2 ? "Silver Medal"
+              : map.get(score[i]) == 3
+                  ? "Bronze Medal"
+                  : Integer.toString(map.get(score[i]));
+    }
+    return res;
+  }
+
+  public String[] findRelativeRanksII(int[] score) {
+    int max = score[0];
+    for (int s : score) {
+      max = Math.max(max, s);
+    }
+    int[] bucket = new int[max + 1];
+    for (int i = 0; i < score.length; i++) {
+      bucket[score[i]] = i + 1;
+    }
+
+    int index = 0;
+    String[] res = new String[score.length];
+    for (int i = bucket.length - 1; i >= 0; i--) {
+      if (bucket[i] == 0) {
+        continue;
+      }
+      if (index == 0) {
+        res[bucket[i] - 1] = "Gold Medal";
+      } else if (index == 1) {
+        res[bucket[i] - 1] = "Silver Medal";
+      } else if (index == 2) {
+        res[bucket[i] - 1] = "Bronze Medal";
+      } else {
+        res[bucket[i] - 1] = Integer.toString(index + 1);
+      }
+      index++;
+    }
+    return res;
+  }
+
+  public boolean checkPerfectNumber(int num) {
+    if (num == 1) {
+      return false;
+    }
+    int sum = 1;
+    for (int i = 2; i * i <= num; i++) {
+      if (num % i == 0) {
+        sum += i;
+        if (i * i != num) {
+          sum += num / i;
+        }
+      }
+    }
+    return sum == num;
   }
 
 }
