@@ -12,6 +12,7 @@ import java.util.Queue;
 import java.util.Stack;
 
 import com.leetcode.entity.TreeNode;
+import com.leetcode.entity.BSTNodeWithParent.Node;
 
 public class AlgorithmController501to520 {
 
@@ -369,6 +370,29 @@ public class AlgorithmController501to520 {
       temp[i] = temp[i - 1] + temp[i - 2];
     }
     return temp[n];
+  }
+
+  public Node inorderSuccessor(Node node) {
+    if (node.right == null) {
+      if (node.parent == null) {
+        return null;
+      }
+      if (node == node.parent.left) {
+        return node.parent;
+      }
+      Node temp = node.parent;
+      while (temp != null && temp.right == node) {
+        node = temp;
+        temp = temp.parent;
+      }
+      return temp;
+    } else {
+      Node temp = node.right;
+      while (temp.left != null) {
+        temp = temp.left;
+      }
+      return temp;
+    }
   }
 
 }
