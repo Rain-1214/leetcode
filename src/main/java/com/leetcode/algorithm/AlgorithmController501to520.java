@@ -1,13 +1,17 @@
 package com.leetcode.algorithm;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Stack;
+
+import com.leetcode.entity.TreeNode;
 
 public class AlgorithmController501to520 {
 
@@ -314,6 +318,40 @@ public class AlgorithmController501to520 {
       }
     }
     return sum == num;
+  }
+
+  public int[] findFrequentTreeSum(TreeNode root) {
+    if (root == null) {
+      return new int[0];
+    }
+    Map<Integer, Integer> map = new HashMap<>();
+    findFrequentTreeSum(root, map);
+    int max = 0;
+    for (int i : map.values()) {
+      max = Math.max(max, i);
+    }
+    List<Integer> res = new ArrayList<>();
+    for (int i : map.keySet()) {
+      if (map.get(i) == max) {
+        res.add(i);
+      }
+    }
+    int[] result = new int[res.size()];
+    for (int i = 0; i < res.size(); i++) {
+      result[i] = res.get(i);
+    }
+    return result;
+  }
+
+  public int findFrequentTreeSum(TreeNode root, Map<Integer, Integer> map) {
+    if (root == null) {
+      return 0;
+    }
+    int left = findFrequentTreeSum(root.left, map);
+    int right = findFrequentTreeSum(root.right, map);
+    int sum = left + right + root.val;
+    map.put(sum, map.getOrDefault(sum, 0) + 1);
+    return sum;
   }
 
 }
