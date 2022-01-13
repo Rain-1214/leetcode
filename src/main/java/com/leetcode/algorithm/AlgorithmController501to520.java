@@ -354,4 +354,21 @@ public class AlgorithmController501to520 {
     return sum;
   }
 
+  public int fib(int n) {
+    if (n == 0 || n == 1) {
+      return n;
+    }
+    return fib(n - 1) + fib(n - 2);
+  }
+
+  public int fibII(int n) {
+    int[] temp = new int[100];
+    temp[0] = 0;
+    temp[1] = 1;
+    for (int i = 2; i <= n; i++) {
+      temp[i] = temp[i - 1] + temp[i - 2];
+    }
+    return temp[n];
+  }
+
 }
