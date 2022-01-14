@@ -417,4 +417,50 @@ public class AlgorithmController501to520 {
     findBottomLeftValue(root.right, deep + 1);
   }
 
+  public int findRotateSteps(String ring, String key) {
+    char[] ringChars = ring.toCharArray();
+    char[] keyChars = key.toCharArray();
+    int[][] dp = new int[keyChars.length][ringChars.length];
+    Map<Character, ArrayList<Integer>> map = new HashMap<>();
+    for (int i = 0; i < ringChars.length; i++) {
+      if (map.containsKey(ringChars[i])) {
+        map.get(ringChars[i]).add(i);
+      } else {
+        ArrayList<Integer> list = new ArrayList<>();
+        list.add(i);
+        map.put(ringChars[i], list);
+      }
+    }
+    char first = keyChars[0];
+    for (int i : map.get(first)) {
+      int temp = Math.abs(i - 0);
+      int revers = ringChars.length - temp;
+      dp[0][i] = Math.min(temp, revers) + 1;
+    }
+    for (int i = 1; i < keyChars.length; i++) {
+      char cur = keyChars[i];
+      ArrayList<Integer> list = map.get(cur);
+      int[] prev = dp[i - 1];
+      for (int k = 0; k < prev.length; k++) {
+        if (prev[k] == 0) {
+          continue;
+        }
+        for (int j : list) {
+          int temp = Math.abs(j - k);
+          int revers = ringChars.length - temp;
+          if (dp[i][j] == 0) {
+            dp[i][j] = Math.min(temp, revers) + 1 + prev[k];
+          } else {
+            dp[i][j] = Math.min(dp[i][j], Math.min(temp, revers) + 1 + prev[k]);
+          }
+        }
+      }
+    }
+    int res = Integer.MAX_VALUE;
+    for (int i : map.get(keyChars[keyChars.length - 1])) {
+      res = Math.min(res, dp[keyChars.length - 1][i]);
+    }
+    return res;
+  }
+
 }
