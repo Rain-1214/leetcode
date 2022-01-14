@@ -395,4 +395,26 @@ public class AlgorithmController501to520 {
     }
   }
 
+  public int findBottomLeftValueDeep = 0;
+  public int findBottomLeftValueRes = 0;
+
+  public int findBottomLeftValue(TreeNode root) {
+    this.findBottomLeftValueDeep = 0;
+    this.findBottomLeftValueRes = root.val;
+    findBottomLeftValue(root, 0);
+    return this.findBottomLeftValueRes;
+  }
+
+  public void findBottomLeftValue(TreeNode root, int deep) {
+    if (root == null) {
+      return;
+    }
+    findBottomLeftValue(root.left, deep + 1);
+    if (deep > this.findBottomLeftValueDeep) {
+      this.findBottomLeftValueDeep = deep;
+      this.findBottomLeftValueRes = root.val;
+    }
+    findBottomLeftValue(root.right, deep + 1);
+  }
+
 }
