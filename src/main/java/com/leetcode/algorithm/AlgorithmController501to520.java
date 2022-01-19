@@ -1,5 +1,6 @@
 package com.leetcode.algorithm;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Deque;
@@ -504,6 +505,24 @@ public class AlgorithmController501to520 {
       }
     }
     return dp[0][sc.length - 1];
+  }
+
+  public int findMinMoves(int[] machines) {
+    int tol = 0;
+    for (int i : machines) {
+      tol += i;
+    }
+    if (tol % machines.length != 0) {
+      return -1;
+    }
+    int avg = tol / machines.length;
+    int sum = 0, res = 0;
+    for (int num : machines) {
+      num = num - avg;
+      sum += num;
+      res = Math.max(res, Math.max(Math.abs(sum), num));
+    }
+    return res;
   }
 
 }
