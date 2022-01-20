@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Queue;
+import java.util.Random;
 import java.util.Stack;
 
 import com.leetcode.entity.TreeNode;
@@ -560,6 +561,70 @@ public class AlgorithmController501to520 {
       }
     }
     return dp[amount];
+  }
+
+  class Solution519 {
+
+    public int[] list;
+    public int m;
+    public int n;
+    public Random random = new Random();
+    public int count = 0;
+
+    public Solution519(int m, int n) {
+      int max = m * n;
+      this.list = new int[max];
+      this.m = m;
+      this.n = n;
+      for (int i = 0; i < max; i++) {
+        list[i] = i;
+      }
+    }
+
+    public int[] flip() {
+      int index = random.nextInt(list.length - count);
+      int[] res = new int[2];
+      int cur = list[index];
+      res[0] = cur / n;
+      res[1] = cur % n;
+      list[index] = list[list.length - 1 - count];
+      list[list.length - 1 - count] = cur;
+      count++;
+      return res;
+    }
+
+    public void reset() {
+      this.count = 0;
+    }
+  }
+
+  class Solution519II {
+
+    public HashMap<Integer, Integer> map;
+    public int m;
+    public int n;
+    public Random random = new Random();
+    public int total = 0;
+
+    public Solution519II(int m, int n) {
+      this.map = new HashMap<>();
+      this.m = m;
+      this.n = n;
+      this.total = m * n;
+    }
+
+    public int[] flip() {
+      int x = random.nextInt(total);
+      total--;
+      int res = map.getOrDefault(x, x);
+      map.put(x, map.getOrDefault(total, total));
+      return new int[] { res / n, res % n };
+    }
+
+    public void reset() {
+      map.clear();
+      total = m * n;
+    }
   }
 
 }
