@@ -525,4 +525,41 @@ public class AlgorithmController501to520 {
     return res;
   }
 
+  public int changeRes = 0;
+
+  public int change(int amount, int[] coins) {
+    if (amount == 0) {
+      return 0;
+    }
+    Arrays.sort(coins);
+    change(amount, coins, 0);
+    return changeRes;
+  }
+
+  public void change(int amount, int[] coins, int index) {
+    if (amount == 0) {
+      changeRes++;
+      return;
+    }
+    for (int i = index; i < coins.length; i++) {
+      if (amount - coins[i] >= 0) {
+        change(amount - coins[i], coins, i);
+      }
+    }
+  }
+
+  public int changeII(int amount, int[] coins) {
+    if (amount == 0) {
+      return 1;
+    }
+    int[] dp = new int[amount + 1];
+    dp[0] = 1;
+    for (int coin : coins) {
+      for (int i = coin; i <= amount; i++) {
+        dp[i] += dp[i - coin];
+      }
+    }
+    return dp[amount];
+  }
+
 }
