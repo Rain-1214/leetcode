@@ -627,4 +627,36 @@ public class AlgorithmController501to520 {
     }
   }
 
+  public boolean detectCapitalUse(String word) {
+    char[] wc = word.toCharArray();
+    boolean isFirstUpper = Character.isUpperCase(wc[0]);
+    int count = 0;
+    for (int i = 1; i < wc.length; i++) {
+      if (Character.isUpperCase(wc[i])) {
+        count++;
+      }
+    }
+    if (isFirstUpper) {
+      return count == 0 || count == wc.length - 1;
+    } else {
+      return count == 0;
+    }
+  }
+
+  public int findLUSlength(String a, String b) {
+    char[] ac = a.toCharArray();
+    char[] bc = b.toCharArray();
+    if (ac.length != bc.length) {
+      return Math.max(ac.length, bc.length);
+    }
+    int i = 0;
+    while (i < ac.length) {
+      if (ac[i] != bc[i]) {
+        return Math.max(ac.length, bc.length);
+      }
+      i++;
+    }
+    return -1;
+  }
+
 }
