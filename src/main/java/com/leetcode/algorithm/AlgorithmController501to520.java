@@ -627,4 +627,20 @@ public class AlgorithmController501to520 {
     }
   }
 
+  public boolean detectCapitalUse(String word) {
+    char[] wc = word.toCharArray();
+    boolean isFirstUpper = Character.isUpperCase(wc[0]);
+    int count = 0;
+    for (int i = 1; i < wc.length; i++) {
+      if (Character.isUpperCase(wc[i])) {
+        count++;
+      }
+    }
+    if (isFirstUpper) {
+      return count == 0 || count == wc.length - 1;
+    } else {
+      return count == 0;
+    }
+  }
+
 }
