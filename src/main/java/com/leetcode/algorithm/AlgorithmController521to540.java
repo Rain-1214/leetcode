@@ -1,7 +1,9 @@
 package com.leetcode.algorithm;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class AlgorithmController521to540 {
@@ -54,6 +56,28 @@ public class AlgorithmController521to540 {
       }
     }
     return si == source.length();
+  }
+
+  public boolean checkSubarraySum(int[] nums, int k) {
+    int len = nums.length;
+    if (len < 2) {
+      return false;
+    }
+    Map<Integer, Integer> map = new HashMap<>();
+    map.put(0, -1);
+    int sum = 0;
+    for (int i = 0; i < len; i++) {
+      sum = sum + nums[i];
+      int temp = sum % k;
+      if (map.containsKey(temp)) {
+        if (i - map.get(temp) > 1) {
+          return true;
+        }
+      } else {
+        map.put(temp, i);
+      }
+    }
+    return false;
   }
 
 }
