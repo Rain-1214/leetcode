@@ -3,6 +3,7 @@ package com.leetcode.algorithm;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -78,6 +79,28 @@ public class AlgorithmController521to540 {
       }
     }
     return false;
+  }
+
+  public String findLongestWord(String s, List<String> dictionary) {
+    dictionary.sort((a, b) -> {
+      if (a.length() == b.length()) {
+        return a.compareTo(b);
+      }
+      return b.length() - a.length();
+    });
+    char[] sc = s.toCharArray();
+    for (String word : dictionary) {
+      int i = 0;
+      for (int j = 0; j < sc.length; j++) {
+        if (i < word.length() && sc[j] == word.charAt(i)) {
+          i++;
+        }
+      }
+      if (i == word.length()) {
+        return word;
+      }
+    }
+    return "";
   }
 
 }
