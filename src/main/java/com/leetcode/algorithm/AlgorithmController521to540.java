@@ -103,4 +103,60 @@ public class AlgorithmController521to540 {
     return "";
   }
 
+  public int findMaxLength(int[] nums) {
+    if (nums.length < 2) {
+      return 0;
+    }
+    int[] preZero = new int[nums.length];
+    int[] preOne = new int[nums.length];
+    int max = 0;
+    preZero[0] = nums[0] == 0 ? 1 : 0;
+    preOne[0] = nums[0] == 1 ? 1 : 0;
+    for (int i = 1; i < nums.length; i++) {
+      preZero[i] = nums[i] == 0 ? preZero[i - 1] + 1 : preZero[i - 1];
+      preOne[i] = nums[i] == 1 ? preOne[i - 1] + 1 : preOne[i - 1];
+    }
+    for (int i = 1; i < nums.length; i++) {
+      int current = nums[i];
+      for (int j = 0; j < i; j++) {
+        int zeros = preZero[i - 1] - preZero[j];
+        int ones = preOne[i - 1] - preOne[j];
+        if (j == 0) {
+          zeros = preZero[i - 1];
+          ones = preOne[i - 1];
+        }
+        zeros += current == 0 ? 1 : 0;
+        ones += current == 1 ? 1 : 0;
+        if (zeros == 0 || ones == 0) {
+          break;
+        }
+        if (zeros + ones < max) {
+          break;
+        }
+        if (zeros == ones) {
+          max = Math.max(max, zeros + ones);
+        }
+      }
+    }
+    return max;
+  }
+
+  public int findMaxLengthII(int[] nums) {
+    if (nums.length < 2) {
+      return 0;
+    }
+    int max = 0, counter = 0;
+    Map<Integer, Integer> map = new HashMap<>();
+    map.put(0, -1);
+    for (int i = 0; i < nums.length; i++) {
+      counter += nums[i] == 0 ? -1 : 1;
+      if (map.containsKey(counter)) {
+        max = Math.max(max, i - map.get(counter));
+      } else {
+        map.put(counter, i);
+      }
+    }
+    return max;
+  }
+
 }
