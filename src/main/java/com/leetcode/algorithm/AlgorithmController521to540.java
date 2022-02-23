@@ -1,5 +1,6 @@
 package com.leetcode.algorithm;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -157,6 +158,41 @@ public class AlgorithmController521to540 {
       }
     }
     return max;
+  }
+
+  int countArrangementRes = 0;
+  List<Integer>[] countArrangementList;
+  boolean[] countArrangementVisited;
+
+  public int countArrangement(int n) {
+    countArrangementList = new List[n + 1];
+    countArrangementVisited = new boolean[n + 1];
+    for (int i = 0; i <= n; i++) {
+      countArrangementList[i] = new ArrayList<>();
+    }
+    for (int i = 1; i < n + 1; i++) {
+      for (int j = 1; j < n + 1; j++) {
+        if (i % j == 0 || j % i == 0) {
+          countArrangementList[i].add(j);
+        }
+      }
+    }
+    countArrangement(n, 1);
+    return countArrangementRes;
+  }
+
+  public void countArrangement(int n, int index) {
+    if (index == n + 1) {
+      countArrangementRes++;
+      return;
+    }
+    for (int num : countArrangementList[index]) {
+      if (!countArrangementVisited[num]) {
+        countArrangementVisited[num] = true;
+        countArrangement(n, index + 1);
+        countArrangementVisited[num] = false;
+      }
+    }
   }
 
 }
