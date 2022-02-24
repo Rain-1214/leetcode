@@ -195,4 +195,63 @@ public class AlgorithmController521to540 {
     }
   }
 
+  public List<String> wordsAbbreviation(List<String> words) {
+    String[] sa = new String[words.size()];
+    for (int i = 0; i < words.size(); i++) {
+      sa[i] = words.get(i);
+    }
+    List<String> res = new ArrayList<>();
+    for (int i = 0; i < words.size(); i++) {
+      res.add(null);
+    }
+    int preLen = 0;
+    Map<String, Integer> map = new HashMap<>();
+    while (true) {
+      boolean flag = true;
+      for (int i = 0; i < sa.length; i++) {
+        String s = sa[i];
+        if (s == null) {
+          continue;
+        }
+        flag = false;
+        String abbr = minimalString(s, preLen);
+        if (map.containsKey(abbr)) {
+          if (sa[map.get(abbr)] == null) {
+            int index = map.get(abbr);
+            sa[index] = words.get(index);
+          }
+        } else {
+          map.put(abbr, i);
+          res.set(i, abbr);
+          sa[i] = null;
+        }
+      }
+      if (flag) {
+        break;
+      }
+      preLen++;
+      map.clear();
+    }
+    return res;
+  }
+
+  public String minimalString(String str, int preLen) {
+    int len = str.length();
+    if (len <= 2 || preLen >= len - 2) {
+      return str;
+    }
+    StringBuilder sb = new StringBuilder();
+    sb.append(str.charAt(0));
+    int preEnd = Math.min(len - 1, preLen + 1);
+    for (int i = 1; i < preEnd; i++) {
+      sb.append(str.charAt(i));
+    }
+    sb.append(len - 2 - (preEnd - 1));
+    sb.append(str.charAt(len - 1));
+    if (sb.length() == len) {
+      return str;
+    }
+    return sb.toString();
+  }
+
 }
