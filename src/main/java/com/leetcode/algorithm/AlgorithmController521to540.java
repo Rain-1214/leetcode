@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 
 public class AlgorithmController521to540 {
@@ -252,6 +253,65 @@ public class AlgorithmController521to540 {
       return str;
     }
     return sb.toString();
+  }
+
+  class Solution528 {
+
+    int[] sum;
+    Random random;
+
+    public Solution528(int[] w) {
+      int count = 0;
+      for (int i = 0; i < w.length; i++) {
+        count += w[i];
+      }
+      int index = 0;
+      this.sum = new int[count];
+      for (int i = 0; i < w.length; i++) {
+        for (int j = 0; j < w[i]; j++) {
+          sum[index++] = i;
+        }
+      }
+      random = new Random();
+    }
+
+    public int pickIndex() {
+      return sum[random.nextInt(sum.length)];
+    }
+  }
+
+  class Solution528II {
+
+    int[] sum;
+    int count;
+    Random random;
+
+    public Solution528II(int[] w) {
+      this.random = new Random();
+      this.sum = new int[w.length];
+      this.sum[0] = w[0];
+      for (int i = 1; i < w.length; i++) {
+        this.sum[i] = w[i] + sum[i - 1];
+      }
+    }
+
+    public int pickIndex() {
+      int index = random.nextInt(sum[sum.length - 1]) + 1;
+      int left = 0, right = sum.length - 1;
+      while (left <= right) {
+        int mid = left + (right - left) / 2;
+        if (sum[mid] >= index) {
+          if (mid == 0 || sum[mid - 1] < index) {
+            return mid;
+          } else {
+            right = mid - 1;
+          }
+        } else {
+          left = mid + 1;
+        }
+      }
+      return left;
+    }
   }
 
 }
