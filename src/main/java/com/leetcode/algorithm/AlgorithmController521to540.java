@@ -9,6 +9,8 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
+import com.leetcode.entity.TreeNode;
+
 public class AlgorithmController521to540 {
 
   public int findLUSlength(String a, String b) {
@@ -359,6 +361,20 @@ public class AlgorithmController521to540 {
       }
     }
     return count;
+  }
+
+  public int getMinimumDifferencePrev = Integer.MAX_VALUE;
+  public int getMinimumDifferenceMin = Integer.MAX_VALUE;
+
+  public int getMinimumDifference(TreeNode root) {
+    if (root == null) {
+      return 0;
+    }
+    getMinimumDifference(root.left);
+    getMinimumDifferenceMin = Math.min(getMinimumDifferenceMin, Math.abs(root.val - getMinimumDifferencePrev));
+    getMinimumDifferencePrev = root.val;
+    getMinimumDifference(root.right);
+    return getMinimumDifferenceMin;
   }
 
 }
