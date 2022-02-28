@@ -377,4 +377,28 @@ public class AlgorithmController521to540 {
     return getMinimumDifferenceMin;
   }
 
+  public int findLonelyPixel(char[][] picture) {
+    int rowMax = picture.length;
+    int colMax = picture[0].length;
+    int[] rowDp = new int[rowMax];
+    int[] colDp = new int[colMax];
+    for (int i = 0; i < rowMax; i++) {
+      for (int j = 0; j < colMax; j++) {
+        if (picture[i][j] == 'B') {
+          rowDp[i]++;
+          colDp[j]++;
+        }
+      }
+    }
+    int sum = 0;
+    for (int i = 0; i < rowMax; i++) {
+      for (int j = 0; j < colMax; j++) {
+        if (picture[i][j] == 'B' && rowDp[i] == 1 && colDp[j] == 1) {
+          sum++;
+        }
+      }
+    }
+    return sum;
+  }
+
 }
