@@ -9,6 +9,8 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
+import com.leetcode.entity.TreeNode;
+
 public class AlgorithmController521to540 {
 
   public int findLUSlength(String a, String b) {
@@ -312,6 +314,91 @@ public class AlgorithmController521to540 {
       }
       return left;
     }
+  }
+
+  public char[][] updateBoard(char[][] board, int[] click) {
+    int row = click[0], col = click[1];
+    if (row < 0 || row >= board.length || col < 0 || col >= board[0].length) {
+      return board;
+    }
+    if (board[row][col] != 'M' && board[row][col] != 'E') {
+      return board;
+    }
+    if (board[row][col] == 'M') {
+      board[row][col] = 'X';
+      return board;
+    }
+    int mineNum = findMineNum(board, row, col);
+    if (mineNum > 0) {
+      board[row][col] = (char) (mineNum + '0');
+      return board;
+    }
+    board[row][col] = 'B';
+    updateBoard(board, new int[] { row - 1, col });
+    updateBoard(board, new int[] { row + 1, col });
+    updateBoard(board, new int[] { row, col - 1 });
+    updateBoard(board, new int[] { row, col + 1 });
+    updateBoard(board, new int[] { row - 1, col - 1 });
+    updateBoard(board, new int[] { row - 1, col + 1 });
+    updateBoard(board, new int[] { row + 1, col - 1 });
+    updateBoard(board, new int[] { row + 1, col + 1 });
+    return board;
+  }
+
+  public int findMineNum(char[][] board, int row, int col) {
+    int rowMax = board.length;
+    int colMax = board[0].length;
+    int startRow = Math.max(0, row - 1);
+    int endRow = Math.min(rowMax - 1, row + 1);
+    int startCol = Math.max(0, col - 1);
+    int endCol = Math.min(colMax - 1, col + 1);
+    int count = 0;
+    for (int i = startRow; i <= endRow; i++) {
+      for (int j = startCol; j <= endCol; j++) {
+        if (board[i][j] == 'M') {
+          count++;
+        }
+      }
+    }
+    return count;
+  }
+
+  public int getMinimumDifferencePrev = Integer.MAX_VALUE;
+  public int getMinimumDifferenceMin = Integer.MAX_VALUE;
+
+  public int getMinimumDifference(TreeNode root) {
+    if (root == null) {
+      return 0;
+    }
+    getMinimumDifference(root.left);
+    getMinimumDifferenceMin = Math.min(getMinimumDifferenceMin, Math.abs(root.val - getMinimumDifferencePrev));
+    getMinimumDifferencePrev = root.val;
+    getMinimumDifference(root.right);
+    return getMinimumDifferenceMin;
+  }
+
+  public int findLonelyPixel(char[][] picture) {
+    int rowMax = picture.length;
+    int colMax = picture[0].length;
+    int[] rowDp = new int[rowMax];
+    int[] colDp = new int[colMax];
+    for (int i = 0; i < rowMax; i++) {
+      for (int j = 0; j < colMax; j++) {
+        if (picture[i][j] == 'B') {
+          rowDp[i]++;
+          colDp[j]++;
+        }
+      }
+    }
+    int sum = 0;
+    for (int i = 0; i < rowMax; i++) {
+      for (int j = 0; j < colMax; j++) {
+        if (picture[i][j] == 'B' && rowDp[i] == 1 && colDp[j] == 1) {
+          sum++;
+        }
+      }
+    }
+    return sum;
   }
 
 }
