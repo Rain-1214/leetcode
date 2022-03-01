@@ -401,4 +401,26 @@ public class AlgorithmController521to540 {
     return sum;
   }
 
+  public int findPairs(int[] nums, int k) {
+    Set<Integer> alreadyAddSmall = new HashSet<>();
+    Set<Integer> alreadyAddBig = new HashSet<>();
+    Set<Integer> prev = new HashSet<>();
+    int sum = 0;
+    for (int n : nums) {
+      if (alreadyAddBig.contains(n) || alreadyAddSmall.contains(n)) {
+        continue;
+      }
+      if (prev.contains(n - k) && !alreadyAddBig.contains(n - k)) {
+        alreadyAddSmall.add(n);
+        sum++;
+      }
+      if (k != 0 && prev.contains(n + k) && !alreadyAddSmall.contains(n + k)) {
+        alreadyAddBig.add(n);
+        sum++;
+      }
+      prev.add(n);
+    }
+    return sum;
+  }
+
 }
