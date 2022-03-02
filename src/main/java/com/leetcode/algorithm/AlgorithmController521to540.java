@@ -401,4 +401,72 @@ public class AlgorithmController521to540 {
     return sum;
   }
 
+  public int findPairs(int[] nums, int k) {
+    Set<Integer> alreadyAddSmall = new HashSet<>();
+    Set<Integer> alreadyAddBig = new HashSet<>();
+    Set<Integer> prev = new HashSet<>();
+    int sum = 0;
+    for (int n : nums) {
+      if (alreadyAddBig.contains(n) || alreadyAddSmall.contains(n)) {
+        continue;
+      }
+      if (prev.contains(n - k) && !alreadyAddBig.contains(n - k)) {
+        alreadyAddSmall.add(n);
+        sum++;
+      }
+      if (k != 0 && prev.contains(n + k) && !alreadyAddSmall.contains(n + k)) {
+        alreadyAddBig.add(n);
+        sum++;
+      }
+      prev.add(n);
+    }
+    return sum;
+  }
+
+  public int findBlackPixel(char[][] picture, int target) {
+    int rowMax = picture.length;
+    int colMax = picture[0].length;
+    int[] rowDp = new int[rowMax];
+    int[] colDp = new int[colMax];
+    for (int i = 0; i < rowMax; i++) {
+      for (int j = 0; j < colMax; j++) {
+        if (picture[i][j] == 'B') {
+          rowDp[i]++;
+          colDp[j]++;
+        }
+      }
+    }
+    int sum = 0;
+    for (int i = 0; i < colMax; i++) {
+      if (colDp[i] == target && checkSame(picture, i, rowDp, target)) {
+        sum += target;
+      }
+    }
+    return sum;
+  }
+
+  public boolean checkSame(char[][] picture, int col, int[] rowDp, int target) {
+    char[] first = null;
+    int colMax = picture[0].length;
+    int rowMax = picture.length;
+    for (int i = 0; i < rowMax; i++) {
+      if (picture[i][col] != 'B') {
+        continue;
+      }
+      if (rowDp[i] != target) {
+        return false;
+      }
+      if (first == null) {
+        first = picture[i];
+      } else {
+        for (int j = 0; j < colMax; j++) {
+          if (first[j] != picture[i][j]) {
+            return false;
+          }
+        }
+      }
+    }
+    return true;
+  }
+
 }
