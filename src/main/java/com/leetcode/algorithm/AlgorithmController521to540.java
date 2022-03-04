@@ -499,4 +499,50 @@ public class AlgorithmController521to540 {
     }
   }
 
+  public int index = 0;
+
+  public TreeNode str2tree(String s) {
+    if (s.length() == 0) {
+      return null;
+    }
+    TreeNode t = new TreeNode();
+    boolean isNeg = false;
+    if (s.charAt(index) == '-') {
+      isNeg = true;
+      index++;
+    }
+    int num = 0;
+    while (index < s.length()) {
+      char c = s.charAt(index);
+      if (c >= '0' && c <= '9') {
+        num = num * 10 + (c - '0');
+      } else {
+        break;
+      }
+      index++;
+    }
+    if (isNeg) {
+      num = -num;
+    }
+    t.val = num;
+    if (index < s.length()) {
+      if (s.charAt(index) == ')') {
+        index++;
+        return t;
+      }
+      if (index < s.length() && s.charAt(index) == '(') {
+        index++;
+        t.left = str2tree(s);
+      }
+      if (index < s.length() && s.charAt(index) == '(') {
+        index++;
+        t.right = str2tree(s);
+      }
+      if (index < s.length() && s.charAt(index) == ')') {
+        index++;
+      }
+    }
+    return t;
+  }
+
 }
