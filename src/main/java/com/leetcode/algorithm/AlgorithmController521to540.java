@@ -469,4 +469,80 @@ public class AlgorithmController521to540 {
     return true;
   }
 
+  public class Codec {
+
+    public String dic = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    public HashMap<String, String> map = new HashMap<>();
+    public Random random = new Random();
+
+    public String getStr() {
+      StringBuilder sb = new StringBuilder();
+      for (int i = 0; i < 6; i++) {
+        sb.append(dic.charAt(random.nextInt(dic.length())));
+      }
+      return sb.toString();
+    }
+
+    // Encodes a URL to a shortened URL.
+    public String encode(String longUrl) {
+      String shortUrl = getStr();
+      while (map.containsKey(shortUrl)) {
+        shortUrl = getStr();
+      }
+      map.put(shortUrl, longUrl);
+      return "http://tinyurl.com/" + shortUrl;
+    }
+
+    // Decodes a shortened URL to its original URL.
+    public String decode(String shortUrl) {
+      return map.get(shortUrl.replace("http://tinyurl.com/", ""));
+    }
+  }
+
+  public int index = 0;
+
+  public TreeNode str2tree(String s) {
+    if (s.length() == 0) {
+      return null;
+    }
+    TreeNode t = new TreeNode();
+    boolean isNeg = false;
+    if (s.charAt(index) == '-') {
+      isNeg = true;
+      index++;
+    }
+    int num = 0;
+    while (index < s.length()) {
+      char c = s.charAt(index);
+      if (c >= '0' && c <= '9') {
+        num = num * 10 + (c - '0');
+      } else {
+        break;
+      }
+      index++;
+    }
+    if (isNeg) {
+      num = -num;
+    }
+    t.val = num;
+    if (index < s.length()) {
+      if (s.charAt(index) == ')') {
+        index++;
+        return t;
+      }
+      if (index < s.length() && s.charAt(index) == '(') {
+        index++;
+        t.left = str2tree(s);
+      }
+      if (index < s.length() && s.charAt(index) == '(') {
+        index++;
+        t.right = str2tree(s);
+      }
+      if (index < s.length() && s.charAt(index) == ')') {
+        index++;
+      }
+    }
+    return t;
+  }
+
 }
