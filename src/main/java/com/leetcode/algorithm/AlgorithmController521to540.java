@@ -469,4 +469,34 @@ public class AlgorithmController521to540 {
     return true;
   }
 
+  public class Codec {
+
+    public String dic = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    public HashMap<String, String> map = new HashMap<>();
+    public Random random = new Random();
+
+    public String getStr() {
+      StringBuilder sb = new StringBuilder();
+      for (int i = 0; i < 6; i++) {
+        sb.append(dic.charAt(random.nextInt(dic.length())));
+      }
+      return sb.toString();
+    }
+
+    // Encodes a URL to a shortened URL.
+    public String encode(String longUrl) {
+      String shortUrl = getStr();
+      while (map.containsKey(shortUrl)) {
+        shortUrl = getStr();
+      }
+      map.put(shortUrl, longUrl);
+      return "http://tinyurl.com/" + shortUrl;
+    }
+
+    // Decodes a shortened URL to its original URL.
+    public String decode(String shortUrl) {
+      return map.get(shortUrl.replace("http://tinyurl.com/", ""));
+    }
+  }
+
 }
