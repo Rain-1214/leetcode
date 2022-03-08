@@ -589,4 +589,16 @@ public class AlgorithmController521to540 {
     return res;
   }
 
+  public int convertBSTSum = 0;
+  public TreeNode convertBST(TreeNode root) {
+    if (root == null) {
+      return root;
+    }
+    convertBST(root.right);
+    root.val += convertBSTSum;
+    convertBSTSum = root.val;
+    convertBST(root.left);
+    return root;
+  }
+
 }
