@@ -545,4 +545,48 @@ public class AlgorithmController521to540 {
     return t;
   }
 
+  public String complexNumberMultiply(String num1, String num2) {
+    int[] f = getNumberFormComplexNumber(num1);
+    int[] s = getNumberFormComplexNumber(num2);
+    StringBuilder sb = new StringBuilder();
+    sb.append(f[0] * s[0] - f[1] * s[1]).append("+").append(f[0] * s[1] + f[1] * s[0]).append("i");
+    return sb.toString()
+  }
+
+  public int[] getNumberFormComplexNumber(String num1) {
+    int[] res = new int[2];
+    char[] nc = num1.toCharArray();
+    boolean isNeg = false;
+    int index = 0;
+    if (nc[index] == '-') {
+      isNeg = true;
+      index++;
+    }
+    int first = 0;
+    while(Character.isDigit(nc[index])) {
+      first = first * 10 + (nc[index] - '0');
+      index++;
+    }
+    if (isNeg) {
+      first = -first;
+    }
+    index++;
+    int second = 0;
+    isNeg = false;
+    if (nc[index] == '-') {
+      isNeg = true;
+      index++;
+    }
+    while(Character.isDigit(nc[index])) {
+      second = second * 10 + (nc[index] - '0');
+      index++;
+    }
+    if (isNeg) {
+      second = -second;
+    }
+    res[0] = first;
+    res[1] = second;
+    return res;
+  }
+
 }
