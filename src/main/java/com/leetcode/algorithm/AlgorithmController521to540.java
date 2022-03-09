@@ -550,7 +550,7 @@ public class AlgorithmController521to540 {
     int[] s = getNumberFormComplexNumber(num2);
     StringBuilder sb = new StringBuilder();
     sb.append(f[0] * s[0] - f[1] * s[1]).append("+").append(f[0] * s[1] + f[1] * s[0]).append("i");
-    return sb.toString()
+    return sb.toString();
   }
 
   public int[] getNumberFormComplexNumber(String num1) {
@@ -563,7 +563,7 @@ public class AlgorithmController521to540 {
       index++;
     }
     int first = 0;
-    while(Character.isDigit(nc[index])) {
+    while (Character.isDigit(nc[index])) {
       first = first * 10 + (nc[index] - '0');
       index++;
     }
@@ -577,7 +577,7 @@ public class AlgorithmController521to540 {
       isNeg = true;
       index++;
     }
-    while(Character.isDigit(nc[index])) {
+    while (Character.isDigit(nc[index])) {
       second = second * 10 + (nc[index] - '0');
       index++;
     }
@@ -590,6 +590,7 @@ public class AlgorithmController521to540 {
   }
 
   public int convertBSTSum = 0;
+
   public TreeNode convertBST(TreeNode root) {
     if (root == null) {
       return root;
@@ -599,6 +600,33 @@ public class AlgorithmController521to540 {
     convertBSTSum = root.val;
     convertBST(root.left);
     return root;
+  }
+
+  public int findMinDifference(List<String> timePoints) {
+    int[] l = new int[timePoints.size()];
+    for (int i = 0; i < timePoints.size(); i++) {
+      l[i] = getMinFromStr(timePoints.get(i));
+    }
+    Arrays.sort(l);
+    int min = Integer.MAX_VALUE;
+    for (int i = 1; i < l.length; i++) {
+      min = Math.min(min, l[i] - l[i - 1]);
+    }
+    min = Math.min(min, l[0] + 24 * 60 - l[l.length - 1]);
+    return min;
+  }
+
+  public int getMinFromStr(String str) {
+    int sum = 0, cur = 0;
+    for (char c : str.toCharArray()) {
+      if (c == ':') {
+        sum += cur * 60;
+        cur = 0;
+        continue;
+      }
+      cur = cur * 10 + (c - '0');
+    }
+    return sum + cur;
   }
 
 }
