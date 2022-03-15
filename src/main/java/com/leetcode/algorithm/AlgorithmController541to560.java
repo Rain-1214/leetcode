@@ -1,5 +1,7 @@
 package com.leetcode.algorithm;
 
+import com.leetcode.entity.TreeNode;
+
 public class AlgorithmController541to560 {
 
   public String reverseStr(String s, int k) {
@@ -67,6 +69,22 @@ public class AlgorithmController541to560 {
       }
     }
     return dp;
+  }
+
+  public int diameterOfBinaryTreeRes = 0;
+
+  public int diameterOfBinaryTree(TreeNode root) {
+    return Math.max(diameterOfBinaryTreeHelp(root) - 1, diameterOfBinaryTreeRes);
+  }
+
+  public int diameterOfBinaryTreeHelp(TreeNode root) {
+    if (root == null) {
+      return 0;
+    }
+    int left = diameterOfBinaryTreeHelp(root.left);
+    int right = diameterOfBinaryTreeHelp(root.right);
+    diameterOfBinaryTreeRes = Math.max(diameterOfBinaryTreeRes, left + right);
+    return Math.max(left, right) + 1;
   }
 
 }
