@@ -87,4 +87,24 @@ public class AlgorithmController541to560 {
     return Math.max(left, right) + 1;
   }
 
+  public String findContestMatch(int n) {
+    String[] teams = new String[n];
+    for (int i = 0; i < n; i++) {
+      teams[i] = Integer.toString(i + 1);
+    }
+    for (; n > 1; n /= 2) {
+      for (int i = 0; i < n; i++) {
+        StringBuilder sb = new StringBuilder();
+        sb.append('(');
+        sb.append(teams[i]);
+        sb.append(',');
+        sb.append(teams[n - 1 - i]);
+        sb.append(')');
+        teams[i] = sb.toString();
+      }
+    }
+    return teams[0];
+  }
+
+
 }
