@@ -1,5 +1,8 @@
 package com.leetcode.algorithm;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.leetcode.entity.TreeNode;
 
 public class AlgorithmController541to560 {
@@ -85,6 +88,81 @@ public class AlgorithmController541to560 {
     int right = diameterOfBinaryTreeHelp(root.right);
     diameterOfBinaryTreeRes = Math.max(diameterOfBinaryTreeRes, left + right);
     return Math.max(left, right) + 1;
+  }
+
+  public String findContestMatch(int n) {
+    String[] teams = new String[n];
+    for (int i = 0; i < n; i++) {
+      teams[i] = Integer.toString(i + 1);
+    }
+    for (; n > 1; n /= 2) {
+      for (int i = 0; i < n; i++) {
+        StringBuilder sb = new StringBuilder();
+        sb.append('(');
+        sb.append(teams[i]);
+        sb.append(',');
+        sb.append(teams[n - 1 - i]);
+        sb.append(')');
+        teams[i] = sb.toString();
+      }
+    }
+    return teams[0];
+  }
+
+  public List<Integer> boundaryOfBinaryTreeRes;
+
+  public List<Integer> boundaryOfBinaryTree(TreeNode root) {
+    boundaryOfBinaryTreeRes = new ArrayList<>();
+    boundaryOfBinaryTreeRes.add(root.val);
+    boundaryOfBinaryTreeLeft(root.left);
+    if (root.left != null || root.right != null) {
+      boundaryOfBinaryTreeBottom(root);
+    }
+    boundaryOfBinaryTreeRight(root.right);
+    return boundaryOfBinaryTreeRes;
+  }
+
+  public void boundaryOfBinaryTreeLeft(TreeNode root) {
+    if (root == null) {
+      return;
+    }
+    if (root.left == null && root.right == null) {
+      return;
+    }
+    if (root.left != null) {
+      boundaryOfBinaryTreeRes.add(root.val);
+      boundaryOfBinaryTreeLeft(root.left);
+    } else {
+      boundaryOfBinaryTreeRes.add(root.val);
+      boundaryOfBinaryTreeLeft(root.right);
+    }
+  }
+
+  public void boundaryOfBinaryTreeBottom(TreeNode root) {
+    if (root == null) {
+      return;
+    }
+    boundaryOfBinaryTreeBottom(root.left);
+    if (root.left == null && root.right == null) {
+      boundaryOfBinaryTreeRes.add(root.val);
+    }
+    boundaryOfBinaryTreeBottom(root.right);
+  }
+
+  public void boundaryOfBinaryTreeRight(TreeNode root) {
+    if (root == null) {
+      return;
+    }
+    if (root.left == null && root.right == null) {
+      return;
+    }
+    if (root.right != null) {
+      boundaryOfBinaryTreeRight(root.right);
+      boundaryOfBinaryTreeRes.add(root.val);
+    } else {
+      boundaryOfBinaryTreeRight(root.left);
+      boundaryOfBinaryTreeRes.add(root.val);
+    }
   }
 
 }
