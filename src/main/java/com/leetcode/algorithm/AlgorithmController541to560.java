@@ -1,5 +1,8 @@
 package com.leetcode.algorithm;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.leetcode.entity.TreeNode;
 
 public class AlgorithmController541to560 {
@@ -106,5 +109,60 @@ public class AlgorithmController541to560 {
     return teams[0];
   }
 
+  public List<Integer> boundaryOfBinaryTreeRes;
+
+  public List<Integer> boundaryOfBinaryTree(TreeNode root) {
+    boundaryOfBinaryTreeRes = new ArrayList<>();
+    boundaryOfBinaryTreeRes.add(root.val);
+    boundaryOfBinaryTreeLeft(root.left);
+    if (root.left != null || root.right != null) {
+      boundaryOfBinaryTreeBottom(root);
+    }
+    boundaryOfBinaryTreeRight(root.right);
+    return boundaryOfBinaryTreeRes;
+  }
+
+  public void boundaryOfBinaryTreeLeft(TreeNode root) {
+    if (root == null) {
+      return;
+    }
+    if (root.left == null && root.right == null) {
+      return;
+    }
+    if (root.left != null) {
+      boundaryOfBinaryTreeRes.add(root.val);
+      boundaryOfBinaryTreeLeft(root.left);
+    } else {
+      boundaryOfBinaryTreeRes.add(root.val);
+      boundaryOfBinaryTreeLeft(root.right);
+    }
+  }
+
+  public void boundaryOfBinaryTreeBottom(TreeNode root) {
+    if (root == null) {
+      return;
+    }
+    boundaryOfBinaryTreeBottom(root.left);
+    if (root.left == null && root.right == null) {
+      boundaryOfBinaryTreeRes.add(root.val);
+    }
+    boundaryOfBinaryTreeBottom(root.right);
+  }
+
+  public void boundaryOfBinaryTreeRight(TreeNode root) {
+    if (root == null) {
+      return;
+    }
+    if (root.left == null && root.right == null) {
+      return;
+    }
+    if (root.right != null) {
+      boundaryOfBinaryTreeRight(root.right);
+      boundaryOfBinaryTreeRes.add(root.val);
+    } else {
+      boundaryOfBinaryTreeRight(root.left);
+      boundaryOfBinaryTreeRes.add(root.val);
+    }
+  }
 
 }
