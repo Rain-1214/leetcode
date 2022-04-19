@@ -1,7 +1,9 @@
 package com.leetcode.algorithm;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.leetcode.entity.TreeNode;
 
@@ -163,6 +165,81 @@ public class AlgorithmController541to560 {
       boundaryOfBinaryTreeRight(root.left);
       boundaryOfBinaryTreeRes.add(root.val);
     }
+  }
+
+  public Map<String, Integer> removeBoxesMap;
+
+  public String turnIntArrayToString(int[] boxes) {
+    StringBuilder sb = new StringBuilder();
+    for (int n : boxes) {
+      sb.append(n);
+      sb.append(',');
+    }
+    return sb.toString();
+  }
+
+  public int removeBoxes(int[] boxes) {
+    removeBoxesMap = new HashMap<>();
+    return removeBoxesHelp(boxes);
+  }
+
+  public int removeBoxesHelp(int[] boxes) {
+    if (boxes.length == 0) {
+      return 0;
+    }
+    String key = turnIntArrayToString(boxes);
+    if (removeBoxesMap.containsKey(key)) {
+      return removeBoxesMap.get(key);
+    }
+    int max = 0;
+    for (int i = 0; i < boxes.length; i++) {
+      int index = i;
+      while (i < boxes.length && boxes[index] == boxes[i]) {
+        i++;
+      }
+      int count = i - index;
+      int temp = count * count;
+      int[] newBoxes = new int[boxes.length - count];
+      for (int j = 0; j < boxes.length; j++) {
+        if (j < index) {
+          newBoxes[j] = boxes[j];
+        } else if (j >= i) {
+          newBoxes[j - count] = boxes[j];
+        }
+      }
+      max = Math.max(max, removeBoxesHelp(newBoxes) + temp);
+      i--;
+    }
+    removeBoxesMap.put(key, max);
+    return max;
+  }
+
+  public int removeBoxes2(int[] boxes) {
+    int len = boxes.length;
+    int[][][] dp = new int[len][len][len];
+    return removeBoxesHelp2(boxes, dp, 0, len - 1, 0);
+  }
+
+  public int removeBoxesHelp2(int[] boxes, int[][][] dp, int l, int r, int k) {
+    if (l > r) {
+      return 0;
+    }
+    if (dp[l][r][k] == 0) {
+      int realR = r, realK = k;
+      while (realR > l && boxes[realR] == boxes[realR - 1]) {
+        realR--;
+        realK++;
+      }
+      dp[l][r][k] = removeBoxesHelp2(boxes, dp, l, realR - 1, 0) + (realK + 1) * (realK + 1);
+      for (int i = l; i < r; i++) {
+        if (boxes[i] == boxes[r]) {
+          dp[l][r][k] = Math.max(dp[l][r][k],
+              removeBoxesHelp2(boxes, dp, l, i, k + 1) + removeBoxesHelp2(boxes, dp, i + 1, r - 1, 0));
+        }
+      }
+    }
+
+    return dp[l][r][k];
   }
 
 }
