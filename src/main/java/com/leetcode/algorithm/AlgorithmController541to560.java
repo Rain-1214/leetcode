@@ -242,4 +242,109 @@ public class AlgorithmController541to560 {
     return dp[l][r][k];
   }
 
+  public int findCircleNum(int[][] isConnected) {
+    int len = isConnected.length, res = 0;
+    for (int i = 0; i < len; i++) {
+      for (int j = 0; j < len; j++) {
+        if (isConnected[i][j] == 1) {
+          res++;
+          findCircleNumDfs(isConnected, i);
+        }
+      }
+    }
+    return res;
+  }
+
+  public void findCircleNumDfs(int[][] isConnected, int target) {
+    int len = isConnected.length;
+    for (int i = 0; i < len; i++) {
+      if (isConnected[target][i] == 1) {
+        isConnected[target][i] = 0;
+        isConnected[i][target] = 0;
+        if (target != i) {
+          findCircleNumDfs(isConnected, i);
+        }
+      }
+    }
+  }
+
+  public int findCircleNum2(int[][] isConnected) {
+    UnionFind uf = new UnionFind(isConnected.length);
+    int len = isConnected.length;
+    for (int i = 0; i < len; i++) {
+      for (int j = i + 1; j < len; j++) {
+        if (isConnected[i][j] == 1) {
+          uf.merge(i, j);
+        }
+      }
+    }
+    return uf.findRootNum();
+  }
+
+  public class UnionFind {
+
+    public int[] parent;
+
+    public UnionFind(int n) {
+      parent = new int[n];
+      for (int i = 0; i < n; i++) {
+        parent[i] = i;
+      }
+    }
+
+    public void merge(int x, int y) {
+      int rootX = find(x);
+      int rootY = find(y);
+      if (rootX != rootY) {
+        parent[rootX] = rootY;
+      }
+    }
+
+    public int find(int x) {
+      if (parent[x] == x) {
+        return x;
+      }
+      int temp = find(parent[x]);
+      parent[x] = temp;
+      return temp;
+    }
+
+    public int findRootNum() {
+      int res = 0;
+      for (int i = 0; i < parent.length; i++) {
+        if (parent[i] == i) {
+          res++;
+        }
+      }
+      return res;
+    }
+
+  }
+
+  public int findCircleNum3(int[][] isConnected) {
+    int len = isConnected.length, res = 0;
+    boolean[] visited = new boolean[len];
+    for (int i = 0; i < len; i++) {
+      if (!visited[i]) {
+        res++;
+        findCircleNum3dfs(isConnected, i, visited);
+      }
+    }
+
+    return res;
+  }
+
+  public void findCircleNum3dfs(int[][] isConnected, int target, boolean[] visited) {
+    int len = isConnected.length;
+    if (visited[target]) {
+      return;
+    }
+    visited[target] = true;
+    for (int i = 0; i < len; i++) {
+      if (isConnected[target][i] == 1) {
+        findCircleNum3dfs(isConnected, i, visited);
+      }
+    }
+  }
+
 }
