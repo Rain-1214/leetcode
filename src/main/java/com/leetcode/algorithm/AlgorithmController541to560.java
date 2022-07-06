@@ -2,6 +2,7 @@ package com.leetcode.algorithm;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -345,6 +346,33 @@ public class AlgorithmController541to560 {
         findCircleNum3dfs(isConnected, i, visited);
       }
     }
+  }
+
+  public boolean splitArray(int[] nums) {
+    int len = nums.length;
+    if (len <= 6) {
+      return false;
+    }
+    int[] preSum = new int[len];
+    preSum[0] = nums[0];
+    for (int i = 1; i < len; i++) {
+      preSum[i] = nums[i] + preSum[i - 1];
+    }
+    for (int i = 3; i < nums.length - 3; i++) {
+      HashSet<Integer> set = new HashSet<>();
+      for (int j = 1; j < i - 1; j++) {
+        if (preSum[j - 1] == preSum[i - 1] - preSum[j]) {
+          set.add(preSum[j - 1]);
+        }
+      }
+      for (int j = i + 2; j < nums.length - 1; j++) {
+        if (preSum[nums.length - 1] - preSum[j] == preSum[j - 1] - preSum[i]
+            && set.contains(preSum[j - 1] - preSum[i])) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
 }
