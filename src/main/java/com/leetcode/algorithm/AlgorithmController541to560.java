@@ -438,4 +438,24 @@ public class AlgorithmController541to560 {
     return new int[] { big, small };
   }
 
+  public boolean checkRecord(String s) {
+    char[] ac = s.toCharArray();
+    int aNum = 0, lNum = 0;
+    for (int i = 0; i < ac.length; i++) {
+      if (ac[i] == 'A') {
+        aNum++;
+      }
+      if (ac[i] == 'L') {
+        lNum++;
+      } else {
+        lNum = 0;
+      }
+      if (aNum >= 2 || lNum >= 3) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
 }
