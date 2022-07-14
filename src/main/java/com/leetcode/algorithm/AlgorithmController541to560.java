@@ -375,4 +375,67 @@ public class AlgorithmController541to560 {
     return false;
   }
 
+  public int longestConsecutiveRes = 0;
+
+  public int longestConsecutive(TreeNode root) {
+    if (root == null) {
+      return longestConsecutiveRes;
+    }
+    int leftBig = longestConsecutive(root.left, root.val, 0, true);
+    int leftSmall = longestConsecutive(root.left, root.val, 0, false);
+
+    int rightBig = longestConsecutive(root.right, root.val, 0, true);
+    int rightSmall = longestConsecutive(root.right, root.val, 0, false);
+
+    int temp1 = leftBig + rightSmall + 1;
+    int temp2 = leftSmall + rightBig + 1;
+    longestConsecutiveRes = Math.max(Math.max(temp1, temp2), longestConsecutiveRes);
+    longestConsecutive(root.left);
+    longestConsecutive(root.right);
+    return longestConsecutiveRes;
+  }
+
+  public int longestConsecutive(TreeNode root, int parentNum, int currentMax, boolean isBig) {
+    if (root == null) {
+      return currentMax;
+    }
+    int target = parentNum + (isBig ? 1 : -1);
+    if (root.val == target) {
+      currentMax += 1;
+      return Math.max(longestConsecutive(root.left, root.val, currentMax, isBig),
+          longestConsecutive(root.right, root.val, currentMax, isBig));
+    }
+    return currentMax;
+  }
+
+  public int longestConsecutiveII(TreeNode root) {
+    longestConsecutiveIIHelp(root);
+    return longestConsecutiveRes;
+  }
+
+  public int[] longestConsecutiveIIHelp(TreeNode root) {
+    if (root == null) {
+      return new int[] { 0, 0 };
+    }
+    int big = 1, small = 1;
+    if (root.left != null) {
+      int[] leftArr = longestConsecutiveIIHelp(root.left);
+      if (root.val == root.left.val + 1) {
+        big = leftArr[0] + 1;
+      } else if (root.val == root.left.val - 1) {
+        small = leftArr[1] + 1;
+      }
+    }
+    if (root.right != null) {
+      int[] rightArr = longestConsecutiveIIHelp(root.right);
+      if (root.val == root.right.val + 1) {
+        big = Math.max(big, rightArr[0] + 1);
+      } else if (root.val == root.right.val - 1) {
+        small = Math.max(small, rightArr[1] + 1);
+      }
+    }
+    longestConsecutiveRes = Math.max(longestConsecutiveRes, big + small - 1);
+    return new int[] { big, small };
+  }
+
 }
