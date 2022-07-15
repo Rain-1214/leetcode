@@ -2,6 +2,7 @@ package com.leetcode.algorithm;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -345,6 +346,199 @@ public class AlgorithmController541to560 {
         findCircleNum3dfs(isConnected, i, visited);
       }
     }
+  }
+
+  public boolean splitArray(int[] nums) {
+    int len = nums.length;
+    if (len <= 6) {
+      return false;
+    }
+    int[] preSum = new int[len];
+    preSum[0] = nums[0];
+    for (int i = 1; i < len; i++) {
+      preSum[i] = nums[i] + preSum[i - 1];
+    }
+    for (int i = 3; i < nums.length - 3; i++) {
+      HashSet<Integer> set = new HashSet<>();
+      for (int j = 1; j < i - 1; j++) {
+        if (preSum[j - 1] == preSum[i - 1] - preSum[j]) {
+          set.add(preSum[j - 1]);
+        }
+      }
+      for (int j = i + 2; j < nums.length - 1; j++) {
+        if (preSum[nums.length - 1] - preSum[j] == preSum[j - 1] - preSum[i]
+            && set.contains(preSum[j - 1] - preSum[i])) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  public int longestConsecutiveRes = 0;
+
+  public int longestConsecutive(TreeNode root) {
+    if (root == null) {
+      return longestConsecutiveRes;
+    }
+    int leftBig = longestConsecutive(root.left, root.val, 0, true);
+    int leftSmall = longestConsecutive(root.left, root.val, 0, false);
+
+    int rightBig = longestConsecutive(root.right, root.val, 0, true);
+    int rightSmall = longestConsecutive(root.right, root.val, 0, false);
+
+    int temp1 = leftBig + rightSmall + 1;
+    int temp2 = leftSmall + rightBig + 1;
+    longestConsecutiveRes = Math.max(Math.max(temp1, temp2), longestConsecutiveRes);
+    longestConsecutive(root.left);
+    longestConsecutive(root.right);
+    return longestConsecutiveRes;
+  }
+
+  public int longestConsecutive(TreeNode root, int parentNum, int currentMax, boolean isBig) {
+    if (root == null) {
+      return currentMax;
+    }
+    int target = parentNum + (isBig ? 1 : -1);
+    if (root.val == target) {
+      currentMax += 1;
+      return Math.max(longestConsecutive(root.left, root.val, currentMax, isBig),
+          longestConsecutive(root.right, root.val, currentMax, isBig));
+    }
+    return currentMax;
+  }
+
+  public int longestConsecutiveII(TreeNode root) {
+    longestConsecutiveIIHelp(root);
+    return longestConsecutiveRes;
+  }
+
+  public int[] longestConsecutiveIIHelp(TreeNode root) {
+    if (root == null) {
+      return new int[] { 0, 0 };
+    }
+    int big = 1, small = 1;
+    if (root.left != null) {
+      int[] leftArr = longestConsecutiveIIHelp(root.left);
+      if (root.val == root.left.val + 1) {
+        big = leftArr[0] + 1;
+      } else if (root.val == root.left.val - 1) {
+        small = leftArr[1] + 1;
+      }
+    }
+    if (root.right != null) {
+      int[] rightArr = longestConsecutiveIIHelp(root.right);
+      if (root.val == root.right.val + 1) {
+        big = Math.max(big, rightArr[0] + 1);
+      } else if (root.val == root.right.val - 1) {
+        small = Math.max(small, rightArr[1] + 1);
+      }
+    }
+    longestConsecutiveRes = Math.max(longestConsecutiveRes, big + small - 1);
+    return new int[] { big, small };
+  }
+
+  public boolean checkRecord(String s) {
+    char[] ac = s.toCharArray();
+    int aNum = 0, lNum = 0;
+    for (int i = 0; i < ac.length; i++) {
+      if (ac[i] == 'A') {
+        aNum++;
+      }
+      if (ac[i] == 'L') {
+        lNum++;
+      } else {
+        lNum = 0;
+      }
+      if (aNum >= 2 || lNum >= 3) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  public int checkRecord(int n) {
+    int[][][] dp = new int[n + 1][2][3];
+    dp[0][0][0] = 1;
+    int mod = (int) Math.pow(10, 9) + 7;
+    for (int i = 1; i <= n; i++) {
+      for (int j = 0; j <= 1; j++) {
+        for (int k = 0; k <= 2; k++) {
+          dp[i][j][0] = (dp[i - 1][j][k] + dp[i][j][0]) % mod;
+        }
+      }
+
+      for (int k = 0; k <= 2; k++) {
+        dp[i][1][0] = (dp[i][1][0] + dp[i - 1][0][k]) % mod;
+      }
+
+      for (int j = 0; j <= 1; j++) {
+        for (int k = 1; k <= 2; k++) {
+          dp[i][j][k] = (dp[i][j][k] + dp[i - 1][j][k - 1]) % mod;
+        }
+      }
+    }
+
+    int sum = 0;
+    for (int i = 0; i <= 1; i++) {
+      for (int j = 0; j <= 2; j++) {
+        sum = (sum + dp[n][i][j]) % mod;
+      }
+    }
+    return sum;
+  }
+
+  public int checkRecordII(int n) {
+    long[][] dp = new long[2][3];
+    dp[0][0] = 1;
+    dp[1][0] = 1;
+    dp[0][1] = 1;
+    int mod = (int) Math.pow(10, 9) + 7;
+    for (int i = 1; i < n; i++) {
+      long old00 = dp[0][0];
+      long old01 = dp[0][1];
+      long old02 = dp[0][2];
+      long old10 = dp[1][0];
+      long old11 = dp[1][1];
+      long old12 = dp[1][2];
+
+      dp[0][0] = (old00 + old01 + old02) % mod;
+      dp[0][1] = old00;
+      dp[0][2] = old01;
+      dp[1][0] = (old00 + old01 + old02 + old10 + old11 + old12) % mod;
+      dp[1][1] = old10;
+      dp[1][2] = old11;
+    }
+
+    long sum = 0;
+    for (int i = 0; i <= 1; i++) {
+      for (int j = 0; j <= 2; j++) {
+        sum = (sum + dp[i][j]) % mod;
+      }
+    }
+    return (int) sum;
+  }
+
+  public String optimalDivision(int[] nums) {
+    StringBuilder sb = new StringBuilder();
+    sb.append(nums[0]);
+    if (nums.length > 1) {
+      sb.append('/');
+    }
+    if (nums.length > 2) {
+      sb.append('(');
+    }
+    for (int i = 1; i < nums.length; i++) {
+      sb.append(Integer.toString(nums[i]));
+      if (i < nums.length - 1) {
+        sb.append('/');
+      }
+    }
+    if (nums.length > 2) {
+      sb.append(')');
+    }
+    return sb.toString();
   }
 
 }
