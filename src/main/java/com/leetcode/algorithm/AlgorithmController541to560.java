@@ -458,4 +458,66 @@ public class AlgorithmController541to560 {
     return true;
   }
 
+  public int checkRecord(int n) {
+    int[][][] dp = new int[n + 1][2][3];
+    dp[0][0][0] = 1;
+    int mod = (int) Math.pow(10, 9) + 7;
+    for (int i = 1; i <= n; i++) {
+      for (int j = 0; j <= 1; j++) {
+        for (int k = 0; k <= 2; k++) {
+          dp[i][j][0] = (dp[i - 1][j][k] + dp[i][j][0]) % mod;
+        }
+      }
+
+      for (int k = 0; k <= 2; k++) {
+        dp[i][1][0] = (dp[i][1][0] + dp[i - 1][0][k]) % mod;
+      }
+
+      for (int j = 0; j <= 1; j++) {
+        for (int k = 1; k <= 2; k++) {
+          dp[i][j][k] = (dp[i][j][k] + dp[i - 1][j][k - 1]) % mod;
+        }
+      }
+    }
+
+    int sum = 0;
+    for (int i = 0; i <= 1; i++) {
+      for (int j = 0; j <= 2; j++) {
+        sum = (sum + dp[n][i][j]) % mod;
+      }
+    }
+    return sum;
+  }
+
+  public int checkRecordII(int n) {
+    long[][] dp = new long[2][3];
+    dp[0][0] = 1;
+    dp[1][0] = 1;
+    dp[0][1] = 1;
+    int mod = (int) Math.pow(10, 9) + 7;
+    for (int i = 1; i < n; i++) {
+      long old00 = dp[0][0];
+      long old01 = dp[0][1];
+      long old02 = dp[0][2];
+      long old10 = dp[1][0];
+      long old11 = dp[1][1];
+      long old12 = dp[1][2];
+
+      dp[0][0] = (old00 + old01 + old02) % mod;
+      dp[0][1] = old00;
+      dp[0][2] = old01;
+      dp[1][0] = (old00 + old01 + old02 + old10 + old11 + old12) % mod;
+      dp[1][1] = old10;
+      dp[1][2] = old11;
+    }
+
+    long sum = 0;
+    for (int i = 0; i <= 1; i++) {
+      for (int j = 0; j <= 2; j++) {
+        sum = (sum + dp[i][j]) % mod;
+      }
+    }
+    return (int) sum;
+  }
+
 }
