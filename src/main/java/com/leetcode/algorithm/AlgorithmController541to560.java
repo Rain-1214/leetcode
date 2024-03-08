@@ -687,4 +687,19 @@ public class AlgorithmController541to560 {
     return (int) result;
   }
 
+  public String reverseWords(String s) {
+    char[] chars = s.toCharArray();
+    int start = 0;
+    int end = 0;
+    for (int i = 0; i < chars.length; i++) {
+      if (chars[i] == ' ') {
+        end = i - 1;
+        reverse(chars, start, end);
+        start = i + 1;
+      }
+    }
+    reverse(chars, start, chars.length - 1);
+    return new String(chars);
+  }
+
 }
