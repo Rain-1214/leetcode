@@ -17,4 +17,9 @@ public class AlgorithmController541to560Test {
     wall.add(Arrays.asList(100000000, 100000000));
     System.out.println(this.algorithmController461to480.leastBricks3(wall));
   }
+
+  @Test
+  public void nextGreaterElement() {
+    System.out.println(this.algorithmController461to480.nextGreaterElement(12222333));
+  }
 }

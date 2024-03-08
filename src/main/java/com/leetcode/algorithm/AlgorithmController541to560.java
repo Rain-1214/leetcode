@@ -625,4 +625,66 @@ public class AlgorithmController541to560 {
     return x - max;
   }
 
+  public int nextGreaterElement(int n) {
+    int length = 0;
+    int temp = n;
+    while (temp != 0) {
+      length++;
+      temp /= 10;
+    }
+    int[] arr = new int[length];
+    for (int i = 0; i < length; i++) {
+      arr[i] = n % 10;
+      n /= 10;
+    }
+    int targetIndex = length + 1;
+    int sourceIndex = length + 1;
+    for (int i = 0; i < length; i++) {
+      if (i > targetIndex) {
+        break;
+      }
+      for (int j = i + 1; j < length; j++) {
+        if (j > targetIndex) {
+          break;
+        }
+        if (arr[i] > arr[j]) {
+          if (targetIndex == j && arr[sourceIndex] < arr[i]) {
+            break;
+          }
+          targetIndex = j;
+          sourceIndex = i;
+          break;
+        }
+      }
+    }
+    if (targetIndex == length + 1) {
+      return -1;
+    }
+    int[] nums = new int[10];
+    int t = arr[targetIndex];
+    arr[targetIndex] = arr[sourceIndex];
+    arr[sourceIndex] = t;
+    for (int i = 0; i < targetIndex; i++) {
+      nums[arr[i]] += 1;
+    }
+    int index = 0;
+    for (int i = nums.length - 1; i >= 0; i--) {
+      if (nums[i] == 0) {
+        continue;
+      }
+      while (nums[i] != 0) {
+        arr[index++] = i;
+        nums[i]--;
+      }
+    }
+    long result = 0;
+    for (int i = length - 1; i >= 0; i--) {
+      result = result * 10 + arr[i];
+    }
+    if (result > Integer.MAX_VALUE) {
+      return -1;
+    }
+    return (int) result;
+  }
+
 }
