@@ -5,8 +5,10 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.leetcode.entity.TreeNode;
+import com.leetcode.tool.Print;
 
 public class AlgorithmController541to560 {
 
@@ -539,6 +541,88 @@ public class AlgorithmController541to560 {
       sb.append(')');
     }
     return sb.toString();
+  }
+
+  public int leastBricks(List<List<Integer>> wall) {
+    int x = wall.size();
+    int y = 0;
+    for (int i = 0; i < wall.get(0).size(); i++) {
+      y += wall.get(0).get(i);
+    }
+    if (y == 1) {
+      return x;
+    }
+    int[] preWidth = new int[x];
+    int[] preWidthIndex = new int[x];
+    int min = Integer.MAX_VALUE;
+    for (int i = 0; i < x; i++) {
+      preWidth[i] = wall.get(i).get(0);
+    }
+    for (int i = 1; i < y; i++) {
+      int currentMin = 0;
+      for (int j = 0; j < x; j++) {
+        if (i < preWidth[j]) {
+          currentMin += 1;
+        } else if (i == preWidth[j] && preWidthIndex[j] < wall.get(j).size() - 1) {
+          preWidthIndex[j] += 1;
+          preWidth[j] += wall.get(j).get(preWidthIndex[j]);
+        }
+      }
+      min = Math.min(min, currentMin);
+    }
+    return min;
+
+  }
+
+  public int leastBricks2(List<List<Integer>> wall) {
+    int x = wall.size();
+    List<Set<Integer>> list = new ArrayList<>();
+    Set<Integer> shouldTry = new HashSet<>();
+    int wallWidth = 0;
+    for (int i = 0; i < x; i++) {
+      Set<Integer> set = new HashSet<>();
+      int preWidth = 0;
+      for (int j = 0; j < wall.get(i).size(); j++) {
+        int current = wall.get(i).get(j);
+        preWidth += current;
+        shouldTry.add(preWidth);
+        set.add(preWidth);
+      }
+      wallWidth = preWidth;
+      list.add(set);
+    }
+    int min = x;
+    for (int i : shouldTry) {
+      if (i == wallWidth) {
+        continue;
+      }
+      int current = 0;
+      for (Set<Integer> set : list) {
+        if (set.contains(i)) {
+          continue;
+        }
+        current++;
+      }
+      min = Math.min(min, current);
+    }
+    return min;
+  }
+
+  public int leastBricks3(List<List<Integer>> wall) {
+    Map<Integer, Integer> map = new HashMap<>();
+    int x = wall.size();
+    int max = 0;
+    for (int i = 0; i < x; i++) {
+      int preWidth = 0;
+      for (int j = 0; j < wall.get(i).size() - 1; j++) {
+        int current = wall.get(i).get(j);
+        preWidth += current;
+        int temp = map.getOrDefault(preWidth, 0) + 1;
+        max = Math.max(max, temp);
+        map.put(preWidth, temp);
+      }
+    }
+    return x - max;
   }
 
 }
