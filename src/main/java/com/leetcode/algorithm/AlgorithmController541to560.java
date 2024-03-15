@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.leetcode.entity.TreeNode;
+import com.leetcode.entity.QuadTreeNode.Node;
 import com.leetcode.tool.Print;
 
 public class AlgorithmController541to560 {
@@ -700,6 +701,63 @@ public class AlgorithmController541to560 {
     }
     reverse(chars, start, chars.length - 1);
     return new String(chars);
+  }
+
+  public Node intersect(Node quadTree1, Node quadTree2) {
+    Node result = new Node();
+    if (quadTree1.isLeaf && quadTree2.isLeaf) {
+      result.val = quadTree1.val || quadTree2.val;
+      result.isLeaf = true;
+      return result;
+    }
+    result.isLeaf = false;
+    Node topLeft1 = quadTree1.topLeft;
+    if (topLeft1 == null) {
+      topLeft1 = quadTree1;
+    }
+    Node topLeft2 = quadTree2.topLeft;
+    if (topLeft2 == null) {
+      topLeft2 = quadTree2;
+    }
+    result.topLeft = intersect(topLeft1, topLeft2);
+    Node topRight1 = quadTree1.topRight;
+    if (topRight1 == null) {
+      topRight1 = quadTree1;
+    }
+    Node topRight2 = quadTree2.topRight;
+    if (topRight2 == null) {
+      topRight2 = quadTree2;
+    }
+    result.topRight = intersect(topRight1, topRight2);
+    Node bottomLeft1 = quadTree1.bottomLeft;
+    if (bottomLeft1 == null) {
+      bottomLeft1 = quadTree1;
+    }
+    Node bottomLeft2 = quadTree2.bottomLeft;
+    if (bottomLeft2 == null) {
+      bottomLeft2 = quadTree2;
+    }
+    result.bottomLeft = intersect(bottomLeft1, bottomLeft2);
+    Node bottomRight1 = quadTree1.bottomRight;
+    if (bottomRight1 == null) {
+      bottomRight1 = quadTree1;
+    }
+    Node bottomRight2 = quadTree2.bottomRight;
+    if (bottomRight2 == null) {
+      bottomRight2 = quadTree2;
+    }
+    result.bottomRight = intersect(bottomRight1, bottomRight2);
+    if (result.topLeft.isLeaf && result.topRight.isLeaf && result.bottomLeft.isLeaf && result.bottomRight.isLeaf
+        && result.topLeft.val == result.topRight.val && result.topLeft.val == result.bottomLeft.val
+        && result.topLeft.val == result.bottomRight.val) {
+      result.val = result.topLeft.val;
+      result.isLeaf = true;
+      result.topLeft = null;
+      result.topRight = null;
+      result.bottomLeft = null;
+      result.bottomRight = null;
+    }
+    return result;
   }
 
 }
