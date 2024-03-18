@@ -12,7 +12,7 @@ import java.util.Set;
 
 import com.leetcode.entity.ListChilNode;
 import com.leetcode.entity.MatrixNode;
-import com.leetcode.entity.NTreeNode;
+import com.leetcode.entity.NTreeNode.Node;
 import com.leetcode.entity.TreeNode;
 
 public class AlgorithmController421to440 {
@@ -509,12 +509,12 @@ public class AlgorithmController421to440 {
 
   class Codec {
     // Encodes a tree to a single string.
-    public String serialize(NTreeNode root) {
+    public String serialize(Node root) {
       if (root == null) {
         return "#";
       }
       StringBuilder sb = new StringBuilder();
-      Queue<NTreeNode> q = new LinkedList<>();
+      Queue<Node> q = new LinkedList<>();
       q.add(root);
       q.add(null);
       while (!q.isEmpty()) {
@@ -525,13 +525,13 @@ public class AlgorithmController421to440 {
             q.poll();
           }
           while (q.peek() != null) {
-            NTreeNode c = q.poll();
+            Node c = q.poll();
             sb.append(c.val);
             if (q.peek() != null) {
               sb.append(',');
             }
             if (c.children.size() > 0) {
-              for (NTreeNode n : c.children) {
+              for (Node n : c.children) {
                 q.add(n);
               }
             } else {
@@ -549,7 +549,7 @@ public class AlgorithmController421to440 {
     }
 
     // Decodes your encoded data to tree.
-    public NTreeNode deserialize(String data) {
+    public Node deserialize(String data) {
       if (data.equals("#")) {
         return null;
       }
@@ -559,12 +559,12 @@ public class AlgorithmController421to440 {
         val = val * 10 + (sc[index] - '0');
         index++;
       }
-      NTreeNode root = new NTreeNode(val, new ArrayList<>());
-      Queue<NTreeNode> q = new LinkedList<>();
+      Node root = new Node(val, new ArrayList<>());
+      Queue<Node> q = new LinkedList<>();
       q.add(root);
       index++;
       while (index < sc.length) {
-        NTreeNode c = q.poll();
+        Node c = q.poll();
         if (sc[index] == '#') {
           index += 2;
           continue;
@@ -580,7 +580,7 @@ public class AlgorithmController421to440 {
               val = val * 10 + (sc[index] - '0');
               index++;
             }
-            NTreeNode temp = new NTreeNode(val, new ArrayList<>());
+            Node temp = new Node(val, new ArrayList<>());
             c.children.add(temp);
             q.add(temp);
           }
@@ -593,7 +593,7 @@ public class AlgorithmController421to440 {
 
   class CodecII {
     // Encodes a tree to a single string.
-    public String serialize(NTreeNode root) {
+    public String serialize(Node root) {
       if (root == null) {
         return "";
       }
@@ -602,27 +602,27 @@ public class AlgorithmController421to440 {
       return sb.toString();
     }
 
-    public void inorder(NTreeNode root, StringBuilder sb) {
+    public void inorder(Node root, StringBuilder sb) {
       sb.append(root.val);
       sb.append('(');
-      for (NTreeNode node : root.children) {
+      for (Node node : root.children) {
         inorder(node, sb);
       }
       sb.append(')');
     }
 
     // Decodes your encoded data to tree.
-    public NTreeNode deserialize(String data) {
+    public Node deserialize(String data) {
       if (data.length() == 0) {
         return null;
       }
       return deserialize(data.toCharArray(), new int[1]);
     }
 
-    public NTreeNode deserialize(char[] data, int[] idx) {
+    public Node deserialize(char[] data, int[] idx) {
       int val = getInt(data, idx);
 
-      ArrayList<NTreeNode> list = new ArrayList<>();
+      ArrayList<Node> list = new ArrayList<>();
       while (idx[0] < data.length) {
         if (data[idx[0]] == '(') {
           idx[0]++;
@@ -634,7 +634,7 @@ public class AlgorithmController421to440 {
         }
         list.add(deserialize(data, idx));
       }
-      return new NTreeNode(val, list);
+      return new Node(val, list);
     }
 
     public int getInt(char[] data, int[] idx) {
@@ -647,20 +647,20 @@ public class AlgorithmController421to440 {
     }
   }
 
-  public List<List<Integer>> levelOrder(NTreeNode root) {
+  public List<List<Integer>> levelOrder(Node root) {
     List<List<Integer>> res = new ArrayList<>();
     if (root == null) {
       return res;
     }
-    Queue<NTreeNode> q = new LinkedList<>();
+    Queue<Node> q = new LinkedList<>();
     q.add(root);
     while (!q.isEmpty()) {
       int len = q.size();
       List<Integer> list = new ArrayList<>();
       for (int i = 0; i < len; i++) {
-        NTreeNode c = q.poll();
+        Node c = q.poll();
         list.add(c.val);
-        for (NTreeNode node : c.children) {
+        for (Node node : c.children) {
           q.add(node);
         }
       }
@@ -669,7 +669,7 @@ public class AlgorithmController421to440 {
     return res;
   }
 
-  public List<List<Integer>> levelOrderII(NTreeNode root) {
+  public List<List<Integer>> levelOrderII(Node root) {
     List<List<Integer>> res = new ArrayList<>();
     if (root == null) {
       return res;
@@ -678,12 +678,12 @@ public class AlgorithmController421to440 {
     return res;
   }
 
-  public void levelOrderII(NTreeNode root, int level, List<List<Integer>> res) {
+  public void levelOrderII(Node root, int level, List<List<Integer>> res) {
     if (res.size() <= level) {
       res.add(new ArrayList<>());
     }
     res.get(level).add(root.val);
-    for (NTreeNode node : root.children) {
+    for (Node node : root.children) {
       levelOrderII(node, level + 1, res);
     }
   }
@@ -715,17 +715,17 @@ public class AlgorithmController421to440 {
 
   class Codec431 {
     // Encodes an n-ary tree to a binary tree.
-    public TreeNode encode(NTreeNode root) {
+    public TreeNode encode(Node root) {
       if (root == null) {
         return null;
       }
       return inorder(root);
     }
 
-    public TreeNode inorder(NTreeNode root) {
+    public TreeNode inorder(Node root) {
       TreeNode res = new TreeNode(root.val);
       TreeNode current = res.left;
-      for (NTreeNode node : root.children) {
+      for (Node node : root.children) {
         if (current == null) {
           res.left = inorder(node);
           current = res.left;
@@ -738,15 +738,15 @@ public class AlgorithmController421to440 {
     }
 
     // Decodes your binary tree to an n-ary tree.
-    public NTreeNode decode(TreeNode root) {
+    public Node decode(TreeNode root) {
       if (root == null) {
         return null;
       }
       return decodeHelp(root);
     }
 
-    public NTreeNode decodeHelp(TreeNode root) {
-      NTreeNode res = new NTreeNode(root.val, new ArrayList<>());
+    public Node decodeHelp(TreeNode root) {
+      Node res = new Node(root.val, new ArrayList<>());
       TreeNode current = root.left;
       while (current != null) {
         res.children.add(decodeHelp(current));
