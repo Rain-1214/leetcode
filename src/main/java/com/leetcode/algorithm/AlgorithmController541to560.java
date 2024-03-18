@@ -8,7 +8,8 @@ import java.util.Map;
 import java.util.Set;
 
 import com.leetcode.entity.TreeNode;
-import com.leetcode.entity.QuadTreeNode.Node;
+// import com.leetcode.entity.QuadTreeNode.Node;
+import com.leetcode.entity.NTreeNode.Node;
 import com.leetcode.tool.Print;
 
 public class AlgorithmController541to560 {
@@ -703,61 +704,140 @@ public class AlgorithmController541to560 {
     return new String(chars);
   }
 
-  public Node intersect(Node quadTree1, Node quadTree2) {
-    Node result = new Node();
-    if (quadTree1.isLeaf && quadTree2.isLeaf) {
-      result.val = quadTree1.val || quadTree2.val;
-      result.isLeaf = true;
-      return result;
+  // public Node intersect(Node quadTree1, Node quadTree2) {
+  // Node result = new Node();
+  // if (quadTree1.isLeaf && quadTree2.isLeaf) {
+  // result.val = quadTree1.val || quadTree2.val;
+  // result.isLeaf = true;
+  // return result;
+  // }
+  // result.isLeaf = false;
+  // Node topLeft1 = quadTree1.topLeft;
+  // if (topLeft1 == null) {
+  // topLeft1 = quadTree1;
+  // }
+  // Node topLeft2 = quadTree2.topLeft;
+  // if (topLeft2 == null) {
+  // topLeft2 = quadTree2;
+  // }
+  // result.topLeft = intersect(topLeft1, topLeft2);
+  // Node topRight1 = quadTree1.topRight;
+  // if (topRight1 == null) {
+  // topRight1 = quadTree1;
+  // }
+  // Node topRight2 = quadTree2.topRight;
+  // if (topRight2 == null) {
+  // topRight2 = quadTree2;
+  // }
+  // result.topRight = intersect(topRight1, topRight2);
+  // Node bottomLeft1 = quadTree1.bottomLeft;
+  // if (bottomLeft1 == null) {
+  // bottomLeft1 = quadTree1;
+  // }
+  // Node bottomLeft2 = quadTree2.bottomLeft;
+  // if (bottomLeft2 == null) {
+  // bottomLeft2 = quadTree2;
+  // }
+  // result.bottomLeft = intersect(bottomLeft1, bottomLeft2);
+  // Node bottomRight1 = quadTree1.bottomRight;
+  // if (bottomRight1 == null) {
+  // bottomRight1 = quadTree1;
+  // }
+  // Node bottomRight2 = quadTree2.bottomRight;
+  // if (bottomRight2 == null) {
+  // bottomRight2 = quadTree2;
+  // }
+  // result.bottomRight = intersect(bottomRight1, bottomRight2);
+  // if (result.topLeft.isLeaf && result.topRight.isLeaf &&
+  // result.bottomLeft.isLeaf && result.bottomRight.isLeaf
+  // && result.topLeft.val == result.topRight.val && result.topLeft.val ==
+  // result.bottomLeft.val
+  // && result.topLeft.val == result.bottomRight.val) {
+  // result.val = result.topLeft.val;
+  // result.isLeaf = true;
+  // result.topLeft = null;
+  // result.topRight = null;
+  // result.bottomLeft = null;
+  // result.bottomRight = null;
+  // }
+  // return result;
+  // }
+
+  int max = 0;
+
+  public void maxDepth(Node root, int current) {
+    if (root == null) {
+      return;
     }
-    result.isLeaf = false;
-    Node topLeft1 = quadTree1.topLeft;
-    if (topLeft1 == null) {
-      topLeft1 = quadTree1;
+    if (current > max) {
+      max = current;
     }
-    Node topLeft2 = quadTree2.topLeft;
-    if (topLeft2 == null) {
-      topLeft2 = quadTree2;
+    for (Node node : root.children) {
+      maxDepth(node, current + 1);
     }
-    result.topLeft = intersect(topLeft1, topLeft2);
-    Node topRight1 = quadTree1.topRight;
-    if (topRight1 == null) {
-      topRight1 = quadTree1;
+  }
+
+  public int maxDepth(Node root) {
+    maxDepth(root, 1);
+    return this.max;
+  }
+
+  public int subarraySum(int[] nums, int k) {
+    int n = nums.length;
+    int[][] sums = new int[n][n];
+    for (int i = 0; i < n; i++) {
+      sums[i][i] = nums[i];
     }
-    Node topRight2 = quadTree2.topRight;
-    if (topRight2 == null) {
-      topRight2 = quadTree2;
+    for (int l = 0; l < n; l++) {
+      for (int r = l + 1; r < n; r++) {
+        sums[l][r] = sums[l][r - 1] + nums[r];
+      }
     }
-    result.topRight = intersect(topRight1, topRight2);
-    Node bottomLeft1 = quadTree1.bottomLeft;
-    if (bottomLeft1 == null) {
-      bottomLeft1 = quadTree1;
+    int count = 0;
+    for (int i = 0; i < n; i++) {
+      for (int j = i; j < n; j++) {
+        if (sums[i][j] == k) {
+          count++;
+        }
+      }
     }
-    Node bottomLeft2 = quadTree2.bottomLeft;
-    if (bottomLeft2 == null) {
-      bottomLeft2 = quadTree2;
+    return count;
+  }
+
+  public int subarraySum2(int[] nums, int k) {
+    int n = nums.length;
+    int[] sums = new int[n];
+    int count = 0;
+    for (int l = 0; l < n; l++) {
+      sums[l] = nums[l];
+      if (nums[l] == k) {
+        count++;
+      }
+      for (int r = l + 1; r < n; r++) {
+        sums[r] = sums[r - 1] + nums[r];
+        if (sums[r] == k) {
+          count++;
+        }
+      }
     }
-    result.bottomLeft = intersect(bottomLeft1, bottomLeft2);
-    Node bottomRight1 = quadTree1.bottomRight;
-    if (bottomRight1 == null) {
-      bottomRight1 = quadTree1;
+    return count;
+  }
+
+  public int subarraySum3(int[] nums, int k) {
+    int count = 0;
+    Map<Integer, Integer> map = new HashMap<>();
+    int preSum = 0;
+    for (int i = 0; i < nums.length; i++) {
+      preSum += nums[i];
+      if (preSum == k) {
+        count++;
+      }
+      if (map.containsKey(preSum - k)) {
+        count += map.get(preSum - k);
+      }
+      map.put(preSum, map.getOrDefault(preSum, 0) + 1);
     }
-    Node bottomRight2 = quadTree2.bottomRight;
-    if (bottomRight2 == null) {
-      bottomRight2 = quadTree2;
-    }
-    result.bottomRight = intersect(bottomRight1, bottomRight2);
-    if (result.topLeft.isLeaf && result.topRight.isLeaf && result.bottomLeft.isLeaf && result.bottomRight.isLeaf
-        && result.topLeft.val == result.topRight.val && result.topLeft.val == result.bottomLeft.val
-        && result.topLeft.val == result.bottomRight.val) {
-      result.val = result.topLeft.val;
-      result.isLeaf = true;
-      result.topLeft = null;
-      result.topRight = null;
-      result.bottomLeft = null;
-      result.bottomRight = null;
-    }
-    return result;
+    return count;
   }
 
 }
