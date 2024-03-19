@@ -33,4 +33,38 @@ public class AlgorithmController561to580 {
 
   }
 
+  public String nearestPalindromic(String n) {
+    long[] numbers = new long[5];
+    int len = n.length();
+    long numVal = Long.parseLong(n);
+    numbers[0] = (long) Math.pow(10, len - 1) - 1;
+    numbers[1] = (long) Math.pow(10, len) + 1;
+
+    long prefixLong = Long.parseLong(n.substring(0, (len + 1) / 2));
+    for (long i = prefixLong - 1; i <= prefixLong + 1; i++) {
+      StringBuilder result = new StringBuilder();
+      StringBuilder prefix = new StringBuilder(Long.toString(i));
+      result.append(prefix);
+      result.append(prefix.reverse().substring(len & 1));
+      try {
+        numbers[(int) (prefixLong + 1 - i + 2)] = Long.parseLong(result.toString());
+      } catch (NumberFormatException ex) {
+        continue;
+      }
+    }
+    long result = -1;
+    for (int i = 0; i < numbers.length; i++) {
+      if (numbers[i] == numVal) {
+        continue;
+      }
+      if (result == -1 || (Math.abs(numbers[i] - numVal) < Math.abs(result - numVal))
+          || (Math.abs(numbers[i] - numVal) == Math.abs(result - numVal) && numbers[i] < result)) {
+        result = numbers[i];
+      }
+    }
+
+    return Long.toString(result);
+
+  }
+
 }
