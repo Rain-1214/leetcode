@@ -124,4 +124,36 @@ public class AlgorithmController561to580 {
     return res;
   }
 
+  public boolean checkInclusion(String s1, String s2) {
+    char[] s1char = s1.toCharArray();
+    char[] s2char = s2.toCharArray();
+    if (s1char.length > s2char.length) {
+      return false;
+    }
+    int[] s1target = new int[26];
+    for (int i = 0; i < s1char.length; i++) {
+      s1target[s1char[i] - 'a']++;
+    }
+    int[] s2sub = new int[26];
+    int end = s1char.length - 1;
+    int start = 0;
+    for (int i = 0; i <= end; i++) {
+      s2sub[s2char[i] - 'a']++;
+    }
+    if (Arrays.equals(s1target, s2sub)) {
+      return true;
+    }
+    end++;
+    while (end < s2char.length) {
+      s2sub[s2char[start] - 'a']--;
+      s2sub[s2char[end] - 'a']++;
+      if (Arrays.equals(s1target, s2sub)) {
+        return true;
+      }
+      start++;
+      end++;
+    }
+    return false;
+  }
+
 }
