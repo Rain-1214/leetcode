@@ -67,4 +67,40 @@ public class AlgorithmController561to580 {
 
   }
 
+  public int arrayNesting(int[] nums) {
+    int[] status = new int[nums.length];
+    int max = -1;
+    for (int i = 0; i < nums.length; i++) {
+      if (status[i] != 0) {
+        continue;
+      }
+      int count = 0, index = i;
+      while (status[i] == 0) {
+        index = nums[index];
+        status[index] = 1;
+        count++;
+      }
+      max = Math.max(max, count);
+    }
+    return max;
+  }
+
+  public int arrayNesting2(int[] nums) {
+    int max = -1;
+    for (int i = 0; i < nums.length; i++) {
+      if (nums[i] == -1) {
+        continue;
+      }
+      int count = 0, index = i;
+      while (nums[index] != -1) {
+        int t = nums[index];
+        nums[index] = -1;
+        index = t;
+        count++;
+      }
+      max = Math.max(max, count);
+    }
+    return max;
+  }
+
 }
