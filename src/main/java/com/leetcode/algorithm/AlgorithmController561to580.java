@@ -156,4 +156,27 @@ public class AlgorithmController561to580 {
     return false;
   }
 
+  public boolean isSubtree(TreeNode root, TreeNode subRoot) {
+    if (isSame(root, subRoot)) {
+      return true;
+    }
+    if (root.left != null && this.isSubtree(root.left, subRoot)) {
+      return true;
+    }
+    if (root.right != null && this.isSubtree(root.right, subRoot)) {
+      return true;
+    }
+    return false;
+  }
+
+  public boolean isSame(TreeNode a, TreeNode b) {
+    if (a == null && b == null) {
+      return true;
+    }
+    if (a == null || b == null) {
+      return false;
+    }
+    return a.val == b.val && this.isSame(a.left, b.left) && this.isSame(a.right, b.right);
+  }
+
 }
