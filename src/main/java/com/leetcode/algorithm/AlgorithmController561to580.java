@@ -179,4 +179,66 @@ public class AlgorithmController561to580 {
     return a.val == b.val && this.isSame(a.left, b.left) && this.isSame(a.right, b.right);
   }
 
+  public int longestLine(int[][] mat) {
+    int row = mat.length;
+    int col = mat[0].length;
+    // 0 left 1 top left 2 top 3 top right
+    int max = 0;
+    int[][][] dp = new int[row][col][4];
+    for (int i = 0; i < row; i++) {
+      for (int j = 0; j < col; j++) {
+        if (i == 0) {
+          if (j == 0) {
+            dp[i][j][0] = mat[i][j];
+            dp[i][j][1] = mat[i][j];
+            dp[i][j][2] = mat[i][j];
+            max = Math.max(max, dp[i][j][0]);
+          } else {
+            dp[i][j][0] = mat[i][j] == 1 ? dp[i][j - 1][0] + 1 : 0;
+            dp[i][j][1] = mat[i][j];
+            dp[i][j][2] = mat[i][j];
+            dp[i][j][3] = mat[i][j];
+            max = Math.max(max, dp[i][j][0]);
+          }
+          continue;
+        }
+        if (j == 0) {
+          if (mat[i][j] == 1) {
+            dp[i][j][0] = 1;
+            dp[i][j][2] = dp[i - 1][j][2] + 1;
+            if (j + 1 < col) {
+              dp[i][j][3] = dp[i - 1][j + 1][3] + 1;
+            }
+            max = Math.max(max, Math.max(dp[i][j][2], dp[i][j][3]));
+            max = Math.max(max, dp[i][j][0]);
+          }
+          continue;
+        }
+        if (j == col - 1) {
+          if (mat[i][j] == 1) {
+            dp[i][j][0] = dp[i][j - 1][0] + 1;
+            if (j - 1 >= 0) {
+              dp[i][j][1] = dp[i - 1][j - 1][1] + 1;
+            }
+            dp[i][j][2] = dp[i - 1][j][2] + 1;
+            max = Math.max(max, Math.max(dp[i][j][0], Math.max(dp[i][j][1], dp[i][j][2])));
+          }
+          continue;
+        }
+        if (mat[i][j] == 1) {
+          dp[i][j][0] = dp[i][j - 1][0] + 1;
+          if (j - 1 >= 0) {
+            dp[i][j][1] = dp[i - 1][j - 1][1] + 1;
+          }
+          dp[i][j][2] = dp[i - 1][j][2] + 1;
+          if (j + 1 < col) {
+            dp[i][j][3] = dp[i - 1][j + 1][3] + 1;
+          }
+          max = Math.max(max, Math.max(dp[i][j][0], Math.max(dp[i][j][1], Math.max(dp[i][j][2], dp[i][j][3]))));
+        }
+      }
+    }
+    return max;
+  }
+
 }
