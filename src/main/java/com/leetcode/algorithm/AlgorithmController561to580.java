@@ -241,4 +241,31 @@ public class AlgorithmController561to580 {
     return max;
   }
 
+  // days[i][j] 代表您在第j个星期在城市i能休假的最长天数。
+  // flights[i][j] 代表城市 i 到城市 j 的航空状态
+  public int maxVacationDays(int[][] flights, int[][] days) {
+    int n = flights.length;
+    int k = days[0].length;
+    int[][] dp = new int[n][k];
+    for (int i = 0; i < n; i++) {
+      if (i == 0 || flights[0][i] == 1) {
+        dp[i][0] = days[i][0] + 1;
+      }
+    }
+    for (int i = 1; i < k; i++) {
+      for (int j = 0; j < n; j++) {
+        for (int z = 0; z < n; z++) {
+          if ((j == z || flights[z][j] == 1) && dp[z][i - 1] > 0) {
+            dp[j][i] = Math.max(dp[z][i - 1] + days[j][i], dp[j][i]);
+          }
+        }
+      }
+    }
+    int max = 0;
+    for (int i = 0; i < n; i++) {
+      max = Math.max(dp[i][k - 1], max);
+    }
+    return max - 1;
+  }
+
 }
