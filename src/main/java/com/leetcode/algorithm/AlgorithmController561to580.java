@@ -268,4 +268,33 @@ public class AlgorithmController561to580 {
     return max - 1;
   }
 
+  public int minDistance(int height, int width, int[] tree, int[] squirrel, int[][] nuts) {
+    int result = 0;
+    for (int i = 0; i < nuts.length; i++) {
+      result += (Math.abs(nuts[i][0] - tree[0]) + Math.abs(nuts[i][1] - tree[1])) * 2;
+    }
+    int min = Integer.MAX_VALUE;
+    for (int i = 0; i < nuts.length; i++) {
+      int distance_tree = Math.abs(nuts[i][0] - tree[0]) + Math.abs(nuts[i][1] - tree[1]);
+      int distance_squirrel = Math.abs(nuts[i][0] - squirrel[0]) + Math.abs(nuts[i][1] - squirrel[1]);
+      int yes = distance_squirrel + distance_tree;
+      int no = distance_tree * 2;
+      min = Math.min(min, result - no + yes);
+    }
+    return min;
+  }
+
+  public int minDistance2(int height, int width, int[] tree, int[] squirrel, int[][] nuts) {
+    int min = Integer.MAX_VALUE;
+    int result = 0;
+    for (int i = 0; i < nuts.length; i++) {
+      int distance_tree = Math.abs(nuts[i][0] - tree[0]) + Math.abs(nuts[i][1] - tree[1]);
+      result += distance_tree * 2;
+      int distance_squirrel = Math.abs(nuts[i][0] - squirrel[0]) + Math.abs(nuts[i][1] - squirrel[1]);
+      int t = distance_squirrel - distance_tree;
+      min = Math.min(min, t);
+    }
+    return result + min;
+  }
+
 }
