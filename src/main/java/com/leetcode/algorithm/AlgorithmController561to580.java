@@ -1,6 +1,8 @@
 package com.leetcode.algorithm;
 
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.leetcode.entity.TreeNode;
 
@@ -295,6 +297,14 @@ public class AlgorithmController561to580 {
       min = Math.min(min, t);
     }
     return result + min;
+  }
+
+  public int distributeCandies(int[] candyType) {
+    Set<Integer> set = new HashSet<>();
+    for (int i = 0; i < candyType.length; i++) {
+      set.add(candyType[i]);
+    }
+    return Math.min(set.size(), candyType.length / 2);
   }
 
 }
