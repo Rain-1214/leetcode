@@ -307,4 +307,53 @@ public class AlgorithmController561to580 {
     return Math.min(set.size(), candyType.length / 2);
   }
 
+  public int findPaths(int m, int n, int maxMove, int startRow, int startColumn) {
+    int[][] dp = new int[m][n];
+    dp[startRow][startColumn] = 1;
+    int result = 0;
+    int MOD = 1000000007;
+    for (int i = 0; i < maxMove; i++) {
+      int[][] temp = new int[m][n];
+      for (int j = 0; j < m; j++) {
+        for (int k = 0; k < n; k++) {
+          if (dp[j][k] > 0) {
+            int upRow = j - 1;
+            int upCol = k;
+            if (upRow >= 0) {
+              temp[upRow][upCol] = ((temp[upRow][upCol] + dp[j][k]) % MOD + dp[upRow][upCol]) % MOD;
+            } else {
+              result = (result + dp[j][k]) % MOD;
+            }
+            int downRow = j + 1;
+            int downCol = k;
+            if (downRow < m) {
+              temp[downRow][downCol] = ((temp[downRow][downCol] + dp[j][k]) % MOD + dp[downRow][downCol]) % MOD;
+            } else {
+              result = (result + dp[j][k]) % MOD;
+            }
+            int leftRow = j;
+            int leftCol = k - 1;
+            if (leftCol >= 0) {
+              temp[leftRow][leftCol] = ((temp[leftRow][leftCol] + dp[j][k]) % MOD + dp[leftRow][leftCol]) % MOD;
+            } else {
+              result = (result + dp[j][k]) % MOD;
+            }
+
+            int rightRow = j;
+            int rightCol = k + 1;
+            if (rightCol < n) {
+              temp[rightRow][rightCol] = ((temp[rightRow][rightCol] + dp[j][k]) % MOD + dp[rightRow][rightCol]) % MOD;
+            } else {
+              result = (result + dp[j][k]) % MOD;
+            }
+            dp[j][k] = 0;
+          }
+        }
+      }
+      dp = temp;
+    }
+
+    return result;
+  }
+
 }
