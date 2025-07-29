@@ -28,4 +28,9 @@ public class AlgorithmController581to600Test {
   public void testMinDistance() {
     System.out.println(this.algorithController581to600.minDistance("sea", "eat"));
   }
+
+  @Test
+  public void testLongestCommonSubsequence() {
+    System.out.println(this.algorithController581to600.longestCommonSubsequence("abcde", "ace"));
+  }
 }
