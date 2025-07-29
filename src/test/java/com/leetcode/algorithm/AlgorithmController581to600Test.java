@@ -23,4 +23,9 @@ public class AlgorithmController581to600Test {
     ppid.add(3);
     System.out.println(this.algorithController581to600.killProcess(pid, ppid, 5));
   }
+
+  @Test
+  public void testMinDistance() {
+    System.out.println(this.algorithController581to600.minDistance("sea", "eat"));
+  }
 }
