@@ -95,4 +95,47 @@ public class AlgorithmController581to600 {
     return dp[m][n];
   }
 
+  public int[][] outerTrees(int[][] trees) {
+    int n = trees.length;
+    if (n < 4) {
+      return trees;
+    }
+    int leftMost = 0;
+    for (int i = 0; i < n; i++) {
+      if (trees[i][0] < trees[leftMost][0] || (trees[i][0] == trees[leftMost][0] && trees[i][1] < trees[leftMost][1])) {
+        leftMost = i;
+      }
+    }
+    int p = leftMost;
+    List<int[]> res = new ArrayList<>();
+    boolean[] used = new boolean[n];
+    do {
+      int q = (p + 1) % n;
+      for (int r = 0; r < n; r++) {
+        if (cross(trees[p], trees[r], trees[q]) < 0) {
+          q = r;
+        }
+      }
+      for (int i = 0; i < n; i++) {
+        if (used[i] || i == p || i == q) {
+          continue;
+        }
+        if (cross(trees[p], trees[i], trees[q]) == 0) {
+          res.add(trees[i]);
+          used[i] = true;
+        }
+      }
+      if (!used[q]) {
+        res.add(trees[q]);
+        used[q] = true;
+      }
+      p = q;
+    } while (p != leftMost);
+    return res.toArray(new int[res.size()][]);
+  }
+
+  public int cross(int[] p1, int[] p2, int[] p3) {
+    return (p2[0] - p1[0]) * (p3[1] - p1[1]) - (p2[1] - p1[1]) * (p3[0] - p1[0]);
+  }
+
 }

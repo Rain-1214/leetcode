@@ -1,6 +1,7 @@
 package com.leetcode.algorithm;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Test;
@@ -32,5 +33,11 @@ public class AlgorithmController581to600Test {
   @Test
   public void testLongestCommonSubsequence() {
     System.out.println(this.algorithController581to600.longestCommonSubsequence("abcde", "ace"));
+  }
+
+  @Test
+  public void testOuterTrees() {
+    int[][] trees = new int[][] { { 1, 1 }, { 2, 2 }, { 2, 0 }, { 2, 4 }, { 3, 3 }, { 4, 2 } };
+    System.out.println(Arrays.deepToString(this.algorithController581to600.outerTrees(trees)));
   }
 }
