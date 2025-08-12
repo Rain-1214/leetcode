@@ -1,11 +1,13 @@
 package com.leetcode.algorithm;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 import java.util.Queue;
 import java.util.LinkedList;
+import java.util.stream.Collectors;
 
 public class AlgorithmController581to600 {
 
@@ -136,6 +138,80 @@ public class AlgorithmController581to600 {
 
   public int cross(int[] p1, int[] p2, int[] p3) {
     return (p2[0] - p1[0]) * (p3[1] - p1[1]) - (p2[1] - p1[1]) * (p3[0] - p1[0]);
+  }
+
+  public class FileSystem {
+
+    private File root;
+
+    public class File {
+      public String name;
+      public boolean isDirectory;
+      public String content;
+      public Map<String, File> children;
+
+      public File(String name, boolean isDirectory) {
+        this.name = name;
+        this.isDirectory = isDirectory;
+        this.children = new HashMap<>();
+        this.content = "";
+      }
+    }
+
+    public FileSystem() {
+      this.root = new File("/", true);
+    }
+
+    public List<String> ls(String path) {
+      File current = this.root;
+      String[] paths = path.split("/");
+      for (int i = 1; i < paths.length; i++) {
+        String name = paths[i];
+        current = current.children.get(name);
+        if (current == null) {
+          return new ArrayList<>();
+        }
+      }
+      if (current.isDirectory) {
+        return new ArrayList<>(current.children.keySet()).stream().sorted().collect(Collectors.toList());
+      }
+      return new ArrayList<>(Arrays.asList(current.name));
+    }
+
+    public void mkdir(String path) {
+      File current = this.root;
+      String[] paths = path.split("/");
+      for (int i = 1; i < paths.length; i++) {
+        String name = paths[i];
+        if (!current.children.containsKey(name)) {
+          current.children.put(name, new File(name, true));
+        }
+        current = current.children.get(name);
+      }
+    }
+
+    public void addContentToFile(String filePath, String content) {
+      File current = this.root;
+      String[] paths = filePath.split("/");
+      for (int i = 1; i < paths.length; i++) {
+        String name = paths[i];
+        if (!current.children.containsKey(name)) {
+          current.children.put(name, new File(name, false));
+        }
+        current = current.children.get(name);
+      }
+      current.content += content;
+    }
+
+    public String readContentFromFile(String filePath) {
+      File current = this.root;
+      String[] paths = filePath.split("/");
+      for (int i = 1; i < paths.length; i++) {
+        String name = paths[i];
+        current = current.children.get(name);
+      }
+      return current.content;
+    }
   }
 
 }
