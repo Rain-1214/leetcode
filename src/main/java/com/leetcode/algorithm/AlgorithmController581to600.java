@@ -265,4 +265,20 @@ public class AlgorithmController581to600 {
     }
   }
 
+  public List<Integer> postorder(Node root) {
+    List<Integer> res = new ArrayList<>();
+    postorderHelper(root, res);
+    return res;
+  }
+
+  public void postorderHelper(Node root, List<Integer> res) {
+    if (root == null) {
+      return;
+    }
+    for (Node node : root.children) {
+      postorderHelper(node, res);
+    }
+    res.add(root.val);
+  }
+
 }
