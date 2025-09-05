@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 import java.util.Queue;
+import java.util.Stack;
 import java.util.LinkedList;
 import java.util.stream.Collectors;
 
@@ -211,6 +212,56 @@ public class AlgorithmController581to600 {
         current = current.children.get(name);
       }
       return current.content;
+    }
+  }
+
+  class Node {
+    public int val;
+    public List<Node> children;
+
+    public Node() {
+    }
+
+    public Node(int _val) {
+      val = _val;
+    }
+
+    public Node(int _val, List<Node> _children) {
+      val = _val;
+      children = _children;
+    }
+  };
+
+  public List<Integer> preorder(Node root) {
+    Stack<Node> q = new Stack<>();
+    if (root == null) {
+      return new ArrayList<>();
+    }
+    q.add(root);
+    List<Integer> res = new ArrayList<>();
+    while (!q.isEmpty()) {
+      Node current = q.pop();
+      res.add(current.val);
+      for (int i = current.children.size() - 1; i >= 0; i--) {
+        q.add(current.children.get(i));
+      }
+    }
+    return res;
+  }
+
+  public List<Integer> preorder2(Node root) {
+    List<Integer> res = new ArrayList<>();
+    preorderHelper(root, res);
+    return res;
+  }
+
+  public void preorderHelper(Node root, List<Integer> res) {
+    if (root == null) {
+      return;
+    }
+    res.add(root.val);
+    for (Node node : root.children) {
+      preorderHelper(node, res);
     }
   }
 
