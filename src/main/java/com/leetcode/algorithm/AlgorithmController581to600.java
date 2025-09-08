@@ -281,4 +281,107 @@ public class AlgorithmController581to600 {
     res.add(root.val);
   }
 
+  public boolean isValid(String code) {
+    char[] codeChar = code.toCharArray();
+    if (codeChar[0] != '<' || codeChar[codeChar.length - 1] != '>') {
+      return false;
+    }
+    Stack<String> stack = new Stack<>();
+    boolean isStart = true;
+    boolean hasSuffix = false;
+    for (int i = 0; i < codeChar.length; i++) {
+      char c = codeChar[i];
+      if (c == '<') {
+        if (isCdata(codeChar, i)) {
+          int nextCdata = findNextCdata(codeChar, i);
+          if (nextCdata == -1) {
+            return false;
+          }
+          i = nextCdata;
+          if (stack.isEmpty()) {
+            return false;
+          }
+          hasSuffix = false;
+          continue;
+        }
+        int nextCloseFlag = findNextCloseFlag(codeChar, i);
+        if (nextCloseFlag == -1) {
+          return false;
+        }
+        int startIndex = i + 1;
+        boolean isClose = false;
+        if (startIndex < codeChar.length && codeChar[startIndex] == '/') {
+          startIndex++;
+          isClose = true;
+        }
+        String tag = code.substring(startIndex, nextCloseFlag);
+        if (!isValidTag(tag)) {
+          return false;
+        }
+        i = nextCloseFlag;
+        if (isClose) {
+          if (stack.isEmpty() || !stack.pop().equals(tag)) {
+            return false;
+          }
+        } else {
+          if (isStart) {
+            isStart = false;
+          } else {
+            if (stack.isEmpty()) {
+              return false;
+            }
+          }
+          stack.add(tag);
+        }
+        hasSuffix = false;
+      } else {
+        hasSuffix = true;
+      }
+    }
+    if (hasSuffix) {
+      return false;
+    }
+    return stack.isEmpty();
+  }
+
+  public boolean isValidTag(String tag) {
+    if (tag.length() < 1 || tag.length() > 9) {
+      return false;
+    }
+    for (int i = 0; i < tag.length(); i++) {
+      if (!Character.isUpperCase(tag.charAt(i))) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  public boolean isCdata(char[] codeChar, int index) {
+    char[] cdata = new char[] { '<', '!', '[', 'C', 'D', 'A', 'T', 'A', '[' };
+    for (int i = 0; i < cdata.length; i++) {
+      if (codeChar[index + i] != cdata[i]) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  public int findNextCdata(char[] codeChar, int index) {
+    for (int i = index; i < codeChar.length - 2; i++) {
+      if (codeChar[i] == ']' && codeChar[i + 1] == ']' && codeChar[i + 2] == '>') {
+        return i + 2;
+      }
+    }
+    return -1;
+  }
+
+  public int findNextCloseFlag(char[] codeChar, int index) {
+    for (int i = index; i < codeChar.length; i++) {
+      if (codeChar[i] == '>') {
+        return i;
+      }
+    }
+    return -1;
+  }
+
 }
