@@ -384,4 +384,71 @@ public class AlgorithmController581to600 {
     return -1;
   }
 
+  public int gcd(int a, int b) {
+    if (b == 0) {
+      return a; // 余数为0时，a就是最大公约数
+    }
+    return gcd(b, a % b);
+  }
+
+  public String fractionAddition(String expression) {
+    char[] expressionChar = expression.toCharArray();
+    int[] num = getNumerator(expressionChar, 0);
+    int index = num[2];
+    while (index < expressionChar.length) {
+      int[] num1 = getNumerator(expressionChar, index);
+      index = num1[2];
+      if (num1[1] == num[1]) {
+        num[0] = num1[0] + num[0];
+        num[1] = num1[1];
+      } else {
+        num[0] = num1[0] * num[1] + num[0] * num1[1];
+        num[1] = num1[1] * num[1];
+      }
+    }
+    if (num[0] == 0 || num[1] == 0) {
+      return "0/1";
+    }
+    int isNegative = num[0] < 0 ? -1 : 1;
+    num[0] = Math.abs(num[0]);
+    num[1] = Math.abs(num[1]);
+    int gcd = gcd(num[0], num[1]);
+    num[0] /= gcd;
+    num[1] /= gcd;
+    return isNegative * num[0] + "/" + num[1];
+  }
+
+  public int[] getNumerator(char[] expressionChar, int index) {
+    if (index >= expressionChar.length) {
+      return null;
+    }
+    int[] res = new int[3];
+    int startIndex = index;
+    boolean isNegative = false;
+    int temp = 0;
+    while (index < expressionChar.length) {
+      if (expressionChar[index] == '-' || expressionChar[index] == '+') {
+        if (index == startIndex) {
+          isNegative = expressionChar[index] == '-';
+          index++;
+          continue;
+        } else {
+          break;
+        }
+      }
+      if (expressionChar[index] == '/') {
+        res[0] = temp;
+        temp = 0;
+        index++;
+        continue;
+      }
+      temp = temp * 10 + (expressionChar[index] - '0');
+      index++;
+    }
+    res[0] = isNegative ? 0 - res[0] : res[0];
+    res[1] = temp;
+    res[2] = index;
+    return res;
+  }
+
 }
