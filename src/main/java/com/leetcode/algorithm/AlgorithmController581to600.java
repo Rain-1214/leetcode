@@ -3,7 +3,9 @@ package com.leetcode.algorithm;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.List;
 import java.util.Queue;
 import java.util.Stack;
@@ -448,6 +450,87 @@ public class AlgorithmController581to600 {
     res[0] = isNegative ? 0 - res[0] : res[0];
     res[1] = temp;
     res[2] = index;
+    return res;
+  }
+
+  public boolean validSquare(int[] p1, int[] p2, int[] p3, int[] p4) {
+    int d1 = getDistance(p1, p2);
+    int d2 = getDistance(p1, p3);
+    int d3 = getDistance(p1, p4);
+    int d4 = getDistance(p2, p3);
+    int d5 = getDistance(p2, p4);
+    int d6 = getDistance(p3, p4);
+    Map<Integer, Integer> map = new HashMap<>();
+    map.put(d1, map.getOrDefault(d1, 0) + 1);
+    map.put(d2, map.getOrDefault(d2, 0) + 1);
+    map.put(d3, map.getOrDefault(d3, 0) + 1);
+    map.put(d4, map.getOrDefault(d4, 0) + 1);
+    map.put(d5, map.getOrDefault(d5, 0) + 1);
+    map.put(d6, map.getOrDefault(d6, 0) + 1);
+    if (map.size() == 2) {
+      for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+        if (entry.getKey() == 0) {
+          return false;
+        }
+        if (entry.getValue() != 2 && entry.getValue() != 4) {
+          return false;
+        }
+      }
+    } else {
+      return false;
+    }
+    return true;
+  }
+
+  public int getDistance(int[] p1, int[] p2) {
+    return (p1[0] - p2[0]) * (p1[0] - p2[0]) + (p1[1] - p2[1]) * (p1[1] - p2[1]);
+  }
+
+  public int len = -1;
+
+  public boolean validSquare2(int[] p1, int[] p2, int[] p3, int[] p4) {
+    return validSquareHelp(p1, p2, p3) && validSquareHelp(p1, p2, p4) && validSquareHelp(p1, p3, p4)
+        && validSquareHelp(p2, p3, p4);
+  }
+
+  public boolean validSquareHelp(int[] p1, int[] p2, int[] p3) {
+    int d1 = getDistance(p1, p2);
+    int d2 = getDistance(p1, p3);
+    int d3 = getDistance(p2, p3);
+    boolean isRight = d1 + d2 == d3 || d1 + d3 == d2 || d2 + d3 == d1;
+
+    if (!isRight) {
+      return false;
+    }
+
+    if (len == -1) {
+      len = Math.min(d1, d2);
+    }
+
+    if (d1 == 0 || d2 == 0 || d3 == 0 || len != Math.min(d1, d2)) {
+      return false;
+    }
+
+    return true;
+  }
+
+  public int findLHS(int[] nums) {
+    Map<Integer, Integer> map = new HashMap<>();
+    Set<Integer> set = new HashSet<>();
+    for (int n : nums) {
+      set.add(n);
+    }
+    int res = 0;
+    for (int n : nums) {
+      map.put(n, map.getOrDefault(n, 0) + 1);
+      map.put(n - 1, map.getOrDefault(n - 1, 0) + 1);
+      if (set.contains(n + 1)) {
+        res = Math.max(res, map.get(n));
+      }
+      if (set.contains(n - 1)) {
+        res = Math.max(res, map.get(n - 1));
+      }
+    }
     return res;
   }
 
