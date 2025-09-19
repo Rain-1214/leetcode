@@ -544,4 +544,27 @@ public class AlgorithmController581to600 {
     return minM * minN;
   }
 
+  public String[] findRestaurant(String[] list1, String[] list2) {
+    Map<String, Integer> map = new HashMap<>();
+    for (int i = 0; i < list1.length; i++) {
+      map.put(list1[i], i);
+    }
+    int minIndex = Integer.MAX_VALUE;
+    List<String> res = new ArrayList<>();
+    for (int i = 0; i < list2.length; i++) {
+      String s = list2[i];
+      if (map.containsKey(s)) {
+        int index = map.get(s) + i;
+        if (index < minIndex) {
+          minIndex = index;
+          res.clear();
+          res.add(s);
+        } else if (index == minIndex) {
+          res.add(s);
+        }
+      }
+    }
+    return res.toArray(new String[res.size()]);
+  }
+
 }
