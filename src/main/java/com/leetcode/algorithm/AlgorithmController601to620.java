@@ -1,5 +1,7 @@
 package com.leetcode.algorithm;
 
+import com.leetcode.entity.TreeNode;
+
 public class AlgorithmController601to620 {
   class StringIterator {
 
@@ -74,6 +76,55 @@ public class AlgorithmController601to620 {
       }
     }
     return count >= n;
+  }
+
+  public String tree2str(TreeNode root) {
+    if (root == null) {
+      return "";
+    }
+    var sb = new StringBuilder();
+    sb.append(root.val);
+    String left = tree2str(root.left);
+    String right = tree2str(root.right);
+    if (left.length() > 0) {
+      sb.append("(");
+      sb.append(left);
+      sb.append(")");
+    }
+    if (left.length() == 0 && right.length() > 0) {
+      sb.append("()");
+    }
+    if (right.length() > 0) {
+      sb.append("(");
+      sb.append(right);
+      sb.append(")");
+    }
+    return sb.toString();
+  }
+
+  public String tree2str2(TreeNode root) {
+    var sb = new StringBuilder();
+    tree2str2Helper(root, sb);
+    return sb.toString();
+
+  }
+
+  public void tree2str2Helper(TreeNode root, StringBuilder sb) {
+    if (root == null) {
+      return;
+    }
+    sb.append(root.val);
+    if (root.left == null && root.right == null) {
+      return;
+    }
+    sb.append("(");
+    tree2str2Helper(root.left, sb);
+    sb.append(")");
+    if (root.right != null) {
+      sb.append("(");
+      tree2str2Helper(root.right, sb);
+      sb.append(")");
+    }
   }
 
 }
